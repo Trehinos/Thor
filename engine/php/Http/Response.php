@@ -18,8 +18,7 @@ class Response
         string $body = '',
         int $status = self::STATUS_SUCCESS,
         array $headers = []
-    )
-    {
+    ) {
         $this->body = $body;
         $this->status = $status;
         $this->headers = $headers;
@@ -29,5 +28,25 @@ class Response
     {
         return $this->body;
     }
+
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param string $name
+     * @param array|string $value
+     */
+    public function setHeader(string $name, $value)
+    {
+        $this->headers[$name] = $value;
+    }
+
 
 }

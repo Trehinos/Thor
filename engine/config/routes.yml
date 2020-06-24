@@ -9,11 +9,16 @@
 
 index:
     path: "/"
+    action:
+        class: Thor\Controller\Main
+        method: index
 
 hello:
     path: "/hello/$name"
     parameters:
         name:
             regepx: "\\w+"
-            default: "world"
+    action:
+        class: Thor\Controller\Main
+        method: hello
 
