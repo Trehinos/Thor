@@ -1,0 +1,28 @@
+{
+    "name": "trehinos/thor",
+    "description": "Thor PHP framework witch provides HTTP, MySQL and other tools",
+    "minimum-stability": "stable",
+    "version": "0.1-dev",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Sébastien GELDREICH",
+            "email": "trehinos@gmail.com"
+        }
+    ],
+    "config": {
+        "vendor-dir": "engine/vendors/php/",
+        "bin-dir": "bin/"
+    },
+    "autoload": {
+        "psr-4": {
+            "Thor\\": "engine/php/"
+        }
+    },
+    "require": {
+        "php": "7.4",
+        "ext-pdo": "*",
+        "symfony/yaml": "5.*",
+        "twig/twig": "3.*"
+    }
+}

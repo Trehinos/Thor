@@ -1,0 +1,26 @@
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>{% block head_title %}Thor framework{% endblock %}</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    {% block head_css %}{% endblock %}
+    {% block head_js %}{% endblock %}
+</head>
+<body>
+<div class="container">
+    {% block body_html %}
+        <h1>{% block body_title %}{% endblock %}</h1>
+        <p>{% block body_text %}{% endblock %}</p>
+    {% endblock %}
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script defer src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script defer src="assets/fontawesome/js/all.min.js"></script>
+{% block body_js %}{% endblock %}
+</body>
+</html>

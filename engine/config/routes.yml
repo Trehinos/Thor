@@ -1,0 +1,19 @@
+# routename:
+#       path: ...
+#       parameters:
+#           name:
+#               regexp:
+#               default:
+#           ...
+#  ...
+
+index:
+    path: "/"
+
+hello:
+    path: "/hello/$name"
+    parameters:
+        name:
+            regepx: "\\w+"
+            default: "world"
+
