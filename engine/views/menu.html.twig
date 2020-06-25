@@ -1,0 +1,10 @@
+<ul>
+    {% for item in menu %}
+        <li>
+            <a href="{{ url(item.route) }}">
+                {{ icon(item.icon, item.icon_col ?? 'fas', true)|raw }}
+                {{ item.label }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

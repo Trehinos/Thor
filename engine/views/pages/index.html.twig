@@ -1,10 +1,10 @@
-{% extends "base.html.twig" %}
+{% extends "thor.html.twig" %}
 
 {% block head_title %}Index - Thor{% endblock %}
 
-{% block body_title %}Thor{% endblock %}
+{% block titlebar %}{{ icon('home')|raw }} Index{% endblock %}
 
-{% block body_text %}
+{% block page %}
     Système de contrôle et cadre de travail pour serveur PHP.
     <br>
     <a class="btn btn-primary" href="{{ url('hello', {name: 'world'}) }}">

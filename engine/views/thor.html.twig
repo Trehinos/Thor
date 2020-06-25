@@ -1,0 +1,106 @@
+{% extends "base.html.twig" %}
+
+{% block head_css %}
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        #menu {
+            color: #ccc;
+            background: #222;
+            position: fixed;
+            width: 320px;
+            height: 100%;
+        }
+
+        #menu ul, #menu li {
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu li a {
+            display: block;
+            background: #444;
+            text-decoration: none;
+            color: #fff;
+            padding: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #menu li a:hover {
+            cursor: pointer;
+            background: #333;
+        }
+
+        #menu li a.selected {
+            cursor: pointer;
+            background: #333;
+            color: #66f;
+        }
+
+        #content {
+            margin-left: 320px;
+            width: calc(100% - 320px);
+            height: 100%;
+        }
+
+        #toolbar {
+            position: fixed;
+            top: 24px;
+            width: calc(100% - 320px);
+            background: #bbb;
+            color: #444;
+            font-weight: 900;
+            height: 24px;
+            line-height: 24px;
+            padding-left: 16px;
+        }
+
+        #titlebar {
+            position: fixed;
+            width: calc(100% - 320px);
+            background: #444;
+            color: #ccc;
+            font-weight: 900;
+            height: 24px;
+            line-height: 24px;
+            padding-left: 16px;
+        }
+
+        #footer {
+            position: fixed;
+            bottom: 0;
+            left: 320px;
+            width: calc(100% - 320px);
+            background: #444;
+            color: #ccc;
+            height: 24px;
+            line-height: 24px;
+            padding-left: 16px;
+        }
+
+        #page {;
+            padding: 64px 16px;
+        }
+    </style>
+{% endblock %}
+
+{% block body_html %}
+    <div id="menu">
+        {% block menu %}
+            <h1 class="text-center m-4" style="color: #fa4;">
+                {{ icon('bolt', 'fad')|raw }}
+                THOR
+            </h1>
+            {{ render('Main', 'menu')|raw }}
+        {% endblock %}
+    </div>
+    <div id="content">
+        <div id="toolbar">{% block toolbar %}{% endblock %}</div>
+        <div id="titlebar">{% block titlebar %}{% endblock %}</div>
+        <div id="page">{% block page %}{% endblock %}</div>
+    </div>
+    <div id="footer">THOR {{ icon('copyright', 'far', true)|raw }} 2020 Sébastien GELDREICH</div>
+    <div id="modal"></div>
+{% endblock %}

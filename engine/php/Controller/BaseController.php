@@ -2,7 +2,6 @@
 
 namespace Thor\Controller;
 
-use Thor\Database\PdoRequester;
 use Thor\Http\Response;
 use Thor\Http\Server;
 
@@ -19,11 +18,6 @@ abstract class BaseController
     public function getServer(): Server
     {
         return $this->server;
-    }
-
-    public function getRequester(): PdoRequester
-    {
-        return $this->server->getRequester();
     }
 
     public function view(string $fileName, array $params = [])

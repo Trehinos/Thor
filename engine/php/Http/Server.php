@@ -19,16 +19,16 @@ class Server
 
     const ENV = self::DEV;
 
-    private Environment $twig;
+    private ?Environment $twig;
 
-    private PdoRequester $database;
+    private ?PdoRequester $database;
 
-    private Router $router;
+    private ?Router $router;
 
     public function __construct(
-        Environment $twig,
-        PdoRequester $database,
-        Router $router
+        Environment $twig = null,
+        PdoRequester $database = null,
+        Router $router = null
     ) {
         $this->twig = $twig;
         $this->database = $database;
@@ -48,6 +48,9 @@ class Server
      */
     public function handle(Request $request): Response
     {
+        if (null === $this->router) {
+            return new Response('No router', 500);
+        }
         $route = $this->router->match($request);
 
         if (null === $route) {
@@ -62,17 +65,17 @@ class Server
         return $controller->$cMethod(...array_values($params));
     }
 
-    public function getTwig(): Environment
+    public function getTwig(): ?Environment
     {
         return $this->twig;
     }
 
-    public function getRequester(): PdoRequester
+    public function getRequester(): ?PdoRequester
     {
         return $this->database;
     }
 
-    public function getRouter(): Router
+    public function getRouter(): ?Router
     {
         return $this->router;
     }

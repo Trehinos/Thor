@@ -7,7 +7,7 @@ final class Globals
     const CODE_DIR = __DIR__ . '/../../';
     const ENGINE_DIR = __DIR__ . '/../';
     const PHP_DIR = __DIR__ . '/';
-    const CONFIG_DIR = self::ENGINE_DIR . '/config/';
+    const CONFIG_DIR = self::ENGINE_DIR . 'config/';
 
     static function post(string $name, $default = null, ?int $filter = null)
     {
