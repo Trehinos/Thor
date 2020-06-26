@@ -31,7 +31,7 @@ final class Route
     {
         $path = $this->path;
         foreach ($this->parameters as $pName => $pInfos) {
-            $regexp = $pInfos['regexp'] ?? '.*';
+            $regexp = $pInfos['regex'] ?? '.*';
             $path = str_replace("\$$pName", "(?P<$pName>$regexp)", $path);
         }
 

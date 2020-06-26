@@ -1,10 +1,18 @@
 <ul>
     {% for item in menu %}
-        <li>
-            <a href="{{ url(item.route) }}">
-                {{ icon(item.icon, item.icon_col ?? 'fas', true)|raw }}
+        {% set is_group = item.group is defined %}
+        <li class="d-flex mb-1">
+            <a href="{{ url(item.route) }}" class="flex-fill">
+                {{ icon(item.icon, 'mr-2 fa-lg ' ~ (item.icon_col ?? 'fas'), true)|raw }}
                 {{ item.label }}
             </a>
+            {% if is_group %}
+                {% for sub_item in item.group %}
+                    <a href="{{ url(sub_item.route) }}" title="{{ sub_item.label ?? '' }}">
+                        {{ icon(sub_item.icon, 'fa-lg ' ~ (sub_item.icon_col ?? 'fas'), true)|raw }}
+                    </a>
+                {% endfor %}
+            {% endif %}
         </li>
     {% endfor %}
 </ul>

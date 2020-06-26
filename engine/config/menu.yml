@@ -1,3 +1,12 @@
 - label: Index
   icon: home
   route: index
+- label: Utilisateurs
+  icon: users
+  icon_col: fas
+  route: index
+  group:
+    - icon: user-plus
+      route: index
+      label: Ajouter un utilisateur
+

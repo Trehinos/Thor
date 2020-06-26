@@ -1,18 +1,17 @@
 <?php
 
-namespace Thor;
+namespace Thor\Http;
 
 use Thor\Database\PdoHandler;
 use Thor\Database\PdoRequester;
-use Thor\Http\Request;
+use Thor\Factories\TwigFactory;
+use Thor\Globals;
 use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
-use Thor\Http\Server;
+use Thor\KernelInterface;
 
 use Twig\Environment;
-use Twig\Error\Error;
 use Twig\Loader\FilesystemLoader;
-use Twig\TwigFunction;
 
 final class HttpKernel implements KernelInterface
 {
@@ -27,7 +26,7 @@ final class HttpKernel implements KernelInterface
     public function __construct(array $configuration)
     {
         $router = self::createRouterFromConfiguration($configuration['routes'] ?? []);
-        $twig = self::createTwigFromConfiguration($router, $configuration['twig'] ?? []);
+        $twig = self::createTwigFromConfiguration($configuration['twig'] ?? []);
         $requester = self::createRequesterFromConfiguration($configuration['database'] ?? []);
 
         $this->server = new Server(
@@ -41,52 +40,8 @@ final class HttpKernel implements KernelInterface
 
     private function addTwigFunctions()
     {
-        $server = $this->server;
-        $router = $server->getRouter();
-        $twigEnv = $server->getTwig();
-
-        $twigEnv->addFunction(
-            new TwigFunction(
-                'url',
-                function (string $routeName, array $params = []) use ($router) : string {
-                    $route = $router->getRoute($routeName);
-                    if (null === $route) {
-                        throw new Error("Twig, function 'url' : route '$routeName' not found.");
-                    }
-
-                    $path = $route->getPath();
-                    foreach ($params as $paramName => $paramValue) {
-                        $path = str_replace("\$$paramName", "$paramValue", $path);
-                    }
-                    if (substr($path, 0, 1) !== '/') {
-                        $path = "/$path";
-                        if ('/' === $path) {
-                            $path = '';
-                        }
-                    }
-                    return "/index.php$path";
-                }
-            )
-        );
-        $twigEnv->addFunction(
-            new TwigFunction(
-                'icon',
-                function (string $icon, string $prefix = 'fas', bool $fixed = false) {
-                    $fw = $fixed ? 'fa-fw' : '';
-                    return "<i class='$prefix fa-$icon $fw'></i>";
-                }
-            )
-        );
-        $twigEnv->addFunction(
-            new TwigFunction(
-                'render',
-                function (string $cClass, string $cMethod, array $params = []) use ($server) {
-                    $cClass = "Thor\\Controller\\$cClass";
-                    $controller = new $cClass($server);
-                    return $controller->$cMethod(...$params)->getBody();
-                }
-            )
-        );
+        $twigFactory = new TwigFactory($server = $this->server, $server->getRouter(), $server->getTwig());
+        $twigFactory->addDefaults();
     }
 
     private static function createRequesterFromConfiguration(array $db_config): PdoRequester
@@ -115,17 +70,15 @@ final class HttpKernel implements KernelInterface
         return new Router($routesObj);
     }
 
-    private static function createTwigFromConfiguration(Router $router, array $twig_config): Environment
+    private static function createTwigFromConfiguration(array $twig_config): Environment
     {
-        $twigEnv = new Environment(
+        return new Environment(
             new FilesystemLoader(Globals::CODE_DIR . ($twig_config['views_dir'] ?? '')),
             [
                 'cache' => Globals::CODE_DIR . ($twig_config['cache_dir'] ?? ''),
                 'debug' => Server::ENV !== Server::PROD
             ]
         );
-
-        return $twigEnv;
     }
 
     public function execute()

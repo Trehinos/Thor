@@ -9,16 +9,31 @@
 
 index:
     path: "/"
+    method: GET
     action:
         class: Thor\Controller\Main
         method: index
 
 hello:
     path: "/hello/$name"
+    method: GET
     parameters:
         name:
-            regepx: "\\w+"
+            regex: "\\w+"
     action:
         class: Thor\Controller\Main
         method: hello
 
+create-admin:
+    path: "/framework/create/admin"
+    method: GET
+    action:
+        class: Thor\Controller\Main
+        method: createAdmin
+
+generate-url:
+    path: "/framework/generate-url"
+    method: GET
+    action:
+        class: Thor\Controller\Main
+        method: generateUrl

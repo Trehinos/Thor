@@ -89,10 +89,13 @@
 {% block body_html %}
     <div id="menu">
         {% block menu %}
-            <h1 class="text-center m-4" style="color: #fa4;">
+            <h1 class="text-center mt-4 mb-2" style="color: #fa4;">
                 {{ icon('bolt', 'fad')|raw }}
                 THOR
             </h1>
+            <div class="text-center mb-4" style="color: #fff; font-size: 0.75em;">
+                Système de développement PHP.
+            </div>
             {{ render('Main', 'menu')|raw }}
         {% endblock %}
     </div>

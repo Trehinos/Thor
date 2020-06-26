@@ -13,7 +13,7 @@ require_once __DIR__ . '/engine/vendors/php/autoload.php';
 ini_set('display_errors', E_ALL);
 
 use Thor\Globals;
-use Thor\HttpKernel;
+use Thor\Http\HttpKernel;
 use Thor\Application;
 use Symfony\Component\Yaml\Yaml;
 
