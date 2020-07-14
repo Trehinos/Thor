@@ -20,6 +20,16 @@ final class User implements PdoRowInterface
         $this->pwd_hash = $hashMaker->hash($clearPwd);
     }
 
+    public static function getPdoColumnsDefinitions(): array
+    {
+        return [
+            'id' => 'INT PRIMARY KEY',
+            'public_id' => 'VARCHAR(255)',
+            'username' => 'VARCHAR(255)',
+            'password' => 'VARCHAR(255)',
+        ];
+    }
+
     public function toPdoArray(): array
     {
         return [
@@ -36,6 +46,47 @@ final class User implements PdoRowInterface
         $this->setPublicId($pdoArray['public_id']);
         $this->username = $pdoArray['username'];
         $this->pwd_hash = $pdoArray['password'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     */
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPwdHash(): string
+    {
+        return $this->pwd_hash;
+    }
+
+    /**
+     * @param string $pwd_hash
+     */
+    public function setPwdHash(string $pwd_hash): void
+    {
+        $this->pwd_hash = $pwd_hash;
+    }
+
+    public static function generatePassword(int $size = 16): string
+    {
+        return str_replace(
+            ['/', '+'],
+            ['#', '$'],
+            trim(base64_encode(random_bytes($size)), '=')
+        );
     }
 
 }

@@ -5,6 +5,8 @@ namespace Thor\Database;
 interface PdoRowInterface
 {
 
+    public static function getPdoColumnsDefinitions(): array;
+
     public function getId(): ?int;
 
     public function getPublicId(): ?string;

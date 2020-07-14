@@ -2,6 +2,7 @@
 
 namespace Thor\Controller;
 
+use Thor\Debug\Logger;
 use Thor\Http\Response;
 use Thor\Http\Server;
 
@@ -20,9 +21,24 @@ abstract class BaseController
         return $this->server;
     }
 
-    public function view(string $fileName, array $params = [])
+    public function view(string $fileName, array $params = []): Response
     {
+        Logger::write("     -> Twig : rendering file '$fileName'");
         return new Response($this->server->getTwig()->render($fileName, $params));
+    }
+
+    public function generateUrl(string $routeName, array $params = []): string
+    {
+        if (!$route = $this->server->getRouter()->getRoute($routeName)) {
+            return '#generate-url-error';
+        }
+
+        return $this->server->getRouter()->getUrl($routeName, $params);
+    }
+
+    public function redirect(string $routeName, array $params = [])
+    {
+        return new Response('', 302, ['Location' => $this->generateUrl($routeName, $params)]);
     }
 
 }

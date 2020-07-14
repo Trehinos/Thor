@@ -2,10 +2,10 @@
 
 namespace Thor\Factories;
 
+use Symfony\Component\VarDumper\VarDumper;
 use Thor\Http\Routing\Router;
 use Thor\Http\Server;
 use Twig\Environment;
-use Twig\Error\Error;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -34,35 +34,24 @@ final class TwigFactory
         $server = $this->server;
         $router = $this->router;
 
+        $this->twig->addGlobal('server', $server);
+        $this->twig->addGlobal('_', $server->getLanguage());
+
         $this->twig->addFunction(
             new TwigFunction(
                 'url',
                 function (string $routeName, array $params = []) use ($router) : string {
-                    $route = $router->getRoute($routeName);
-                    if (null === $route) {
-                        throw new Error("Twig, function 'url' : route '$routeName' not found.");
-                    }
-
-                    $path = $route->getPath();
-                    foreach ($params as $paramName => $paramValue) {
-                        $path = str_replace("\$$paramName", "$paramValue", $path);
-                    }
-                    if (substr($path, 0, 1) !== '/') {
-                        $path = "/$path";
-                        if ('/' === $path) {
-                            $path = '';
-                        }
-                    }
-                    return "/index.php$path";
+                    return $router->getUrl($routeName, $params);
                 }
             )
         );
         $this->twig->addFunction(
             new TwigFunction(
                 'icon',
-                function (string $icon, string $prefix = 'fas', bool $fixed = false) {
+                function (string $icon, string $prefix = 'fas', bool $fixed = false, string $style = '') {
                     $fw = $fixed ? 'fa-fw' : '';
-                    return "<i class='$prefix fa-$icon $fw'></i>";
+                    $style = ('' !== $style) ? "style='$style'" : '';
+                    return "<i class='$prefix fa-$icon $fw' $style></i>";
                 }
             )
         );
@@ -76,10 +65,24 @@ final class TwigFactory
                 }
             )
         );
+        $this->twig->addFunction(
+            new TwigFunction(
+                'dump',
+                function ($var) {
+                    return VarDumper::dump($var);
+                }
+            )
+        );
         $this->twig->addFilter(
             new TwigFilter(
                 'classname',
                 fn($value) => substr($value, strrpos($value, '\\') + 1)
+            )
+        );
+        $this->twig->addFilter( // TRANSLATE
+            new TwigFilter(
+                't',
+                fn(string $str) => $server->getLanguage()[$str] ?? $str
             )
         );
 

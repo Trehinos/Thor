@@ -1,17 +1,24 @@
 {% extends "thor.html.twig" %}
 
-{% block head_title %}Index - Thor{% endblock %}
+{% block head_title %}{{ _.index.title }} - Thor{% endblock %}
 
-{% block titlebar %}{{ icon('home')|raw }} Index{% endblock %}
+{% block titlebar %}{{ icon('book', 'fas', true)|raw }} {{ _.index.title }}{% endblock %}
+
+{% block toolbar %}
+    <label for="search"></label>
+    <!-- TODO onkeyup -->
+    <input type="text" id="search" class="form-control form-control-sm d-inline-block"
+           placeholder="{{ _.index.search_placeholder }}" style="width: 240px;"
+    >
+{% endblock %}
 
 {% block page %}
-    <h2>{{ icon('search', 'fas', true)|raw }} Recherche</h2>
-    <div class="form-group">
-        <label for="search">Rechercher (nom de route, path)</label>
-        <input type="text" id="search" class="form-control">
+    <div class="card bg-light text-info mb-4">
+        <div class="card-body">
+            {{ icon('info-circle', 'fas fa-lg')|raw }}
+            {{ _.index.tip }} <code>engine/config/routes.yml</code>.
+        </div>
     </div>
-    <hr>
-    <h2>{{ icon('list', 'fas', true)|raw }} Index des routes</h2>
     <ul>
         {% for routeName, route in routes %}
             <li class="align-text-top mb-4" id="route-{{ routeName }}">
@@ -30,8 +37,11 @@
                 <div class="border bg-light p-2" style="min-height: 48px;">
                     {% for pName, pInfos in route.parameters %}
                         <div class="form-group d-inline-block align-text-top">
-                            <label for="route-{{ routeName }}-{{ pName }}">{{ pName }}</label>
-                            <input type="text" id="route-{{ routeName }}-{{ pName }}" class="param form-control" value="" data-param-name="{{ pName }}">
+                            <label>{{ pName }} :
+                                <input type="text" id="route-{{ routeName }}-{{ pName }}"
+                                       class="param form-control d-inline-block"
+                                       value="" data-param-name="{{ pName }}">
+                            </label>
                         </div>
                     {% endfor %}
                     <button class="btn btn-primary float-right"

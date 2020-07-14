@@ -2,13 +2,18 @@
     {% for item in menu %}
         {% set is_group = item.group is defined %}
         <li class="d-flex mb-1">
-            <a href="{{ url(item.route) }}" class="flex-fill">
+            <a href="{% if item.route != '.' %}{{ url(item.route) }}{% else %}#{% endif %}"
+               class="flex-fill {% if server.currentRouteName == item.route %}selected{% endif %}"
+            >
                 {{ icon(item.icon, 'mr-2 fa-lg ' ~ (item.icon_col ?? 'fas'), true)|raw }}
-                {{ item.label }}
+                {{ _.menu[item.label] ?? item.label ?? '' }}
             </a>
             {% if is_group %}
                 {% for sub_item in item.group %}
-                    <a href="{{ url(sub_item.route) }}" title="{{ sub_item.label ?? '' }}">
+                    <a href="{% if sub_item.route != '.' %}{{ url(sub_item.route) }}{% else %}#{% endif %}"
+                       title="{{ _.menu[sub_item.label] ?? sub_item.label ?? '' }}"
+                       {% if server.currentRouteName == sub_item.route %}class="selected"{% endif %}
+                    >
                         {{ icon(sub_item.icon, 'fa-lg ' ~ (sub_item.icon_col ?? 'fas'), true)|raw }}
                     </a>
                 {% endfor %}

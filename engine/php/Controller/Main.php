@@ -6,6 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 use Thor\Database\CrudHelper;
 use Thor\Globals;
 use Thor\Http\Response;
+use Thor\Http\Server;
 use Thor\Security\User;
 
 final class Main extends BaseController
@@ -31,9 +32,9 @@ final class Main extends BaseController
         );
     }
 
-    public function hello(string $name): Response
+    public function changelog(): Response
     {
-        return new Response("Hello $name");
+        return $this->view('pages/changelog.html.twig');
     }
 
     public function createAdmin(): Response
@@ -45,9 +46,9 @@ final class Main extends BaseController
         return new Response("Admin $pid created.");
     }
 
-    public function generateUrl(): Response
+    public function generateUrlResponse(): Response
     {
-        $routeName = Globals::get('routeName');
+        $routeName = Server::get('routeName');
         $route = $this->getServer()->getRouter()->getRoute($routeName);
         if (null === $route) {
             return new Response();

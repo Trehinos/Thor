@@ -1,0 +1,24 @@
+userClass: Thor\Security\User
+usernameProperty: Username
+passwordProperty: PwdHash
+
+roles:
+    dev:
+        extends: admin
+        permissions: [developper]
+    admin:
+        extends: user
+        permissions: [user_manager]
+    user:
+        permissions: []
+
+permissions:
+    - user_manager
+    - developper
+
+configuration:
+    base-role: user
+    firewall-pattern: "^/"
+    login-route: login
+    logout-route: logout
+    check-route: "check-login"

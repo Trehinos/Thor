@@ -1,12 +1,16 @@
-- label: Index
-  icon: home
+- label: index
+  icon: book
   route: index
-- label: Utilisateurs
+- label: users
   icon: users
-  icon_col: fas
-  route: index
+  route: users
   group:
-    - icon: user-plus
-      route: index
-      label: Ajouter un utilisateur
-
+    - icon: user-friends
+      route: .
+      label: users-groups
+    - icon: user-check
+      route: .
+      label: users-roles
+    - icon: badge-check
+      route: .
+      label: users-permissions

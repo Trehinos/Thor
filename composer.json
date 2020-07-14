@@ -20,9 +20,10 @@
         }
     },
     "require": {
-        "php": "7.4",
+        "php": "^7.4",
         "ext-pdo": "*",
         "symfony/yaml": "5.*",
+        "symfony/var-dumper": "5.*",
         "twig/twig": "3.*"
     }
 }

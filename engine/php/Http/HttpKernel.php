@@ -4,6 +4,7 @@ namespace Thor\Http;
 
 use Thor\Database\PdoHandler;
 use Thor\Database\PdoRequester;
+use Thor\Debug\Logger;
 use Thor\Factories\TwigFactory;
 use Thor\Globals;
 use Thor\Http\Routing\Route;
@@ -29,18 +30,15 @@ final class HttpKernel implements KernelInterface
         $twig = self::createTwigFromConfiguration($configuration['twig'] ?? []);
         $requester = self::createRequesterFromConfiguration($configuration['database'] ?? []);
 
+        Logger::write('Instantiate HttpKernel');
         $this->server = new Server(
             $twig,
             $requester,
             $router,
+            $configuration['language'] ?? []
         );
 
-        $this->addTwigFunctions();
-    }
-
-    private function addTwigFunctions()
-    {
-        $twigFactory = new TwigFactory($server = $this->server, $server->getRouter(), $server->getTwig());
+        $twigFactory = new TwigFactory($this->server, $router, $twig);
         $twigFactory->addDefaults();
     }
 
@@ -84,7 +82,9 @@ final class HttpKernel implements KernelInterface
     public function execute()
     {
         ob_start();
+        Logger::write('Server handle the HTTP request');
         $response = $this->server->handle(Request::createFromServer());
+        Logger::write("HTTP Response generated (code : {$response->getStatus()}).", Logger::VERBOSE);
 
         if (Server::ENV === Server::PROD) {
             ob_clean();                         // Prevent accidental echoes or var_dump from controller in prod
@@ -93,6 +93,7 @@ final class HttpKernel implements KernelInterface
         http_response_code($response->getStatus());                                 // Emit status code
 
         if (!empty($headers = $response->getHeaders())) {
+            Logger::write("Send headers", Logger::DEV);
             foreach ($headers as $headerName => $headerValue) {                     // Emit headers
                 if (is_array($headerValue)) {
                     foreach ($headerValue as $subValue) {
@@ -105,6 +106,7 @@ final class HttpKernel implements KernelInterface
         }
 
         if (($body = $response->getBody()) !== '') {
+            Logger::write("Send body", Logger::DEV);
             echo $body;                                                             // Print body
         }
     }

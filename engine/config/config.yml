@@ -1,0 +1,8 @@
+# [fr]/en
+lang: fr
+
+# [dev]/debug/prod
+env: dev
+
+# [engine/]
+log_path: var/logs/

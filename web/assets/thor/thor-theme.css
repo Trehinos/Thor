@@ -1,0 +1,112 @@
+
+html, body {
+    height: 100%;
+    background: #eee;
+}
+
+#menu {
+    color: #ccc;
+    background: #222;
+    position: fixed;
+    width: 320px;
+    height: 100%;
+}
+
+#menu ul, #menu li {
+    margin: 0;
+    padding: 0;
+}
+
+#menu li a {
+    display: block;
+    background: #444;
+    text-decoration: none;
+    color: #aaa;
+    padding: 4px 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#menu li a:hover {
+    cursor: pointer;
+    color: #fff;
+}
+
+#menu li a.selected {
+    cursor: pointer;
+    background: #333;
+    color: #fff;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 320px;
+    height: 100px;
+    background: #111;
+    color: #777;
+    line-height: 24px;
+    font-size: 0.8em;
+    padding: 8px 4px;
+}
+
+#footer a {
+    color: #77a;
+    text-decoration: none;
+}
+#footer a:hover {
+    color: #aaa;
+}
+
+#content {
+    margin-left: 320px;
+    width: calc(100% - 320px);
+    height: 100%;
+}
+
+#toolbar {
+    z-index: 1;
+    position: fixed;
+    top: 24px;
+    width: calc(100% - 320px);
+    background: #bbb;
+    color: #444;
+    font-weight: 900;
+    padding: 8px 16px;
+    height: 48px;
+    line-height: 24px;
+}
+
+#titlebar {
+    z-index: 1;
+    position: fixed;
+    width: calc(100% - 320px);
+    background: #444;
+    color: #ccc;
+    font-weight: 900;
+    height: 24px;
+    line-height: 24px;
+    padding-left: 16px;
+}
+
+#modal .modal-header {
+    position: relative;
+}
+
+#modal .close {
+    position: absolute;
+    margin: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #f40;
+}
+
+#page {;
+    padding: 96px 16px;
+}
+
+/* ****************************************************************************************************************** */
+.fa-li {
+    top: 5px;
+}

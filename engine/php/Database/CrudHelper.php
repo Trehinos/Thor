@@ -21,8 +21,8 @@ final class CrudHelper
 
     public function listAll(): array
     {
-        $rows = $this->requester->request("SELECT * FROM {$this->table()}", [])[0] ?? [];
-        if (empty($row)) {
+        $rows = $this->requester->request("SELECT * FROM {$this->table()}", [])->fetchAll();
+        if (empty($rows)) {
             return [];
         }
 
@@ -57,7 +57,7 @@ final class CrudHelper
 
     public function readOne(string $id): ?PdoRowInterface
     {
-        $row = $this->requester->request("SELECT * FROM {$this->table()} WHERE id = ?", [$id])[0] ?? [];
+        $row = $this->requester->request("SELECT * FROM {$this->table()} WHERE id = ?", [$id])->fetchAll()[0] ?? [];
         if (empty($row)) {
             return null;
         }
@@ -71,7 +71,7 @@ final class CrudHelper
 
     public function readOneFromPid(string $pid): ?PdoRowInterface
     {
-        $row = $this->requester->request("SELECT * FROM {$this->table()} WHERE public_id = ?", [$pid])[0] ?? [];
+        $row = $this->requester->request("SELECT * FROM {$this->table()} WHERE public_id = ?", [$pid])->fetchAll()[0] ?? [];
         if (empty($row)) {
             return null;
         }

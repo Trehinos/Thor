@@ -1,0 +1,41 @@
+general:
+    create: "Create"
+    edit: "Edit"
+    remove: "Remove"
+    id: "ID"
+    public_id: "Public ID"
+
+menu:
+    index: "Index"
+    users: "Users"
+    users-groups: "Groups"
+    users-roles: "Roles"
+    users-permissions: "Permissions"
+
+footer:
+    about: "About"
+    legal: "Legal"
+    changelog: "Changelog"
+
+index:
+    title: "Index"
+    search_placeholder: "Search route..."
+    tip: "This interface helps testing application routes. These are defined in"
+    route: "Route"
+
+users:
+    title: "Users"
+    create_user: "Create user"
+    edit_user: "Edit user"
+    username: "Username"
+    password: "Password"
+    hide_password: "Hide password"
+    show_password: "Show password"
+    password_warning: "The password will never be shown again. Keep it safe !<br>Max length : 255 characters<br>Allowed characters : ALL"
+    new_password: "New password"
+    change_password: "Change password"
+
+changelog:
+    title: "Changelog"
+    legend: "Legend"
+

@@ -3,7 +3,6 @@
 namespace Thor\Http;
 
 // Done : HTTP 1.1
-use Thor\Globals;
 
 /** @see https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_73/rzaie/rzaiewebdav.htm */
 final class Request
@@ -95,13 +94,13 @@ final class Request
 
     public function queryGet(string $name, $default = null)
     {
-        return Globals::get($name, $default);
+        return Server::get($name, $default);
     }
 
     public function postVariable(string $name, $default = null)
     {
         if ($this->type === self::POST) {
-            return Globals::post($name, $default);
+            return Server::post($name, $default);
         }
 
         return null;

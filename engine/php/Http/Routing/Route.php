@@ -27,7 +27,7 @@ final class Route
         $this->controllerMethod = $controllerMethod;
     }
 
-    public function matches(string $pathInfo, string $method): bool
+    public function matches(string $pathInfo): bool
     {
         $path = $this->path;
         foreach ($this->parameters as $pName => $pInfos) {
@@ -43,7 +43,7 @@ final class Route
                 }
             }
             $this->filledParams = $parameters;
-            return $this->method = $method;
+            return true;
         }
 
         return false;

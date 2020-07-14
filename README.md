@@ -19,6 +19,7 @@ Now installed, with **Thor** you can :
 * Framework
     * Twig.
     * PDO handler and requester.
+    * CrudHelper and PdoRowInterface.
     * HTTP request/response cycle handling :
         * Routing (path info matches regexp).
         * Twig ```url(route_name, route_params)``` function.
@@ -30,7 +31,4 @@ Now installed, with **Thor** you can :
 * Documentation
 * Users, authentication, firewall
 * Form (class hierarchy and html dump)
-* Database
-    * Table representation
-    * EntityEngine (Table to object from a specified class)
 * Form to database CRUD actions engine

@@ -9,6 +9,7 @@ class Response
 
     const STATUS_SUCCESS = 200;
     const STATUS_NOT_FOUND = 404;
+    const STATUS_METHOD_NOT_ALLOWED = 405;
 
     private array $headers;
 
