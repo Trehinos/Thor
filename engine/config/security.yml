@@ -5,16 +5,17 @@ passwordProperty: PwdHash
 roles:
     dev:
         extends: admin
-        permissions: [developper]
+        permissions: [develop]
     admin:
         extends: user
-        permissions: [user_manager]
+        permissions: [manage]
     user:
-        permissions: []
+        permissions: [signout]
 
 permissions:
-    - user_manager
-    - developper
+    - signout
+    - manage
+    - develop
 
 configuration:
     base-role: user
