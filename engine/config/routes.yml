@@ -22,6 +22,20 @@ changelog:
         class: Thor\Controller\Main
         method: changelog
 
+about:
+    path: "/about"
+    method: GET
+    action:
+        class: Thor\Controller\Main
+        method: about
+
+legal:
+    path: "/legal"
+    method: GET
+    action:
+        class: Thor\Controller\Main
+        method: legal
+
 create-admin:
     path: "/framework/create/admin"
     method: POST
