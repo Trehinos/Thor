@@ -29,10 +29,10 @@
             Trehinos/Thor &alpha;
         </div>
         <div>{{ icon('copyright', 'far fa-lg', true)|raw }} 2020 Sébastien GELDREICH</div>
-        <div class="mt-1 pt-1 border-top border-secondary">
+        <div class="mt-1 pt-1 border-top border-secondary" style="font-size: 0.9em;">
             {{ icon('info-circle', 'fas fa-lg', true)|raw }}
-            <a href="#">{{ _.footer.about }}</a> -
-            <a href="#">{{ _.footer.legal }}</a> -
+            <a href="{{ url('about') }}">{{ _.footer.about }}</a> -
+            <a href="{{ url('legal') }}">{{ _.footer.legal }}</a> -
             <a href="{{ url('changelog') }}">{{ _.footer.changelog }}</a>
         </div>
     </div>

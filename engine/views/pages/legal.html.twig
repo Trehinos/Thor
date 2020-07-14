@@ -1,0 +1,9 @@
+{% extends "thor.html.twig" %}
+
+{% block head_title %}{{ _.legal.title }} - Thor{% endblock %}
+
+{% block titlebar %}{{ icon('balance-scale', 'fas', true)|raw }} {{ _.legal.title }}{% endblock %}
+
+{% block page %}
+    {{ _.legal.description|raw }}
+{% endblock %}

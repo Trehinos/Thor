@@ -37,6 +37,16 @@ final class Main extends BaseController
         return $this->view('pages/changelog.html.twig');
     }
 
+    public function about(): Response
+    {
+        return $this->view('pages/about.html.twig');
+    }
+
+    public function legal(): Response
+    {
+        return $this->view('pages/legal.html.twig');
+    }
+
     public function createAdmin(): Response
     {
         $user = new User('admin', 'password');

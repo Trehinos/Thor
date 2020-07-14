@@ -38,4 +38,20 @@ users:
 changelog:
     title: "Changelog"
     legend: "Legend"
+about:
+    title: "About"
+    description: |-
+        <strong>Thor</strong> is a PHP framework.<br>
+        <strong>Author</strong> : Sébastien GELDREICH<br>
+        <strong>Version</strong> : &alpha; - 0.1
+legal:
+    title: "Legal"
+    description: |-
+        <i class="far fa-copyright"></i> 2020 Sébastien GELDREICH<br>
+        Licence : MIT
+
+# ######################################################################################################################
+errors:
+    too-short-username: "Username too short (4 char. min.) or too long (255 char. max.) or invalid characters."
+    too-short-password: "Password too short (16 char. min.) or too long (255 char. max.)."
 

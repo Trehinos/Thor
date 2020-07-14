@@ -81,7 +81,7 @@ try {
     $app->execute();
     Logger::write('Application executed !');
 } catch (Throwable $e) {
-    $pad = str_repeat(' ', 28);
+    $pad = str_repeat(' ', 33);
     $traceStr = '';
 
     foreach ($e->getTrace() as $trace) {

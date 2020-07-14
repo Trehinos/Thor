@@ -1,19 +1,14 @@
 # THOR
-A docker-compose system which provide a HTTP/PHP(Pdo/Twig)/MySQL development environment.  
-**Thor** is designed as a PHP *framework* as well as a web *software.
+**Thor** is designed as a PHP *framework* as well as a web *software*.  
+This project's goal is to provide a base project for business projects.
 
-*This repository is under ```thor/code``` directory in a **Thor** release.*
+**This project is still in development. Further releases installation process will be
+simplified.**
 
 ## Setup THOR
 1. Download the project and unzip it. Say it has been unzipped in ```thor/```.
-2. Go to ```thor/``` directory from a command line.
-3. Type ```docker-composer up```. System is up.
-
-## Use THOR
-Now installed, with **Thor** you can :
-* From a web browser : go to ```127.0.0.1:6788``` to go to **Thor** web context.
-* From file system, go to ```thor/code``` to extends **Thor** framework and develop your own app from it.
-* Use PhpMyAdmin at ```127.0.0.1:6706```. Database name is **mimir**.
+2. Go to ```thor/``` in a terminal and type ```composer update```.
+3. Launch ```thor/engine/sql/setup.sql``` in a SQL environment to setup Thor DB.
 
 ## Features
 * Framework
@@ -25,7 +20,7 @@ Now installed, with **Thor** you can :
         * Twig ```url(route_name, route_params)``` function.
         * Class with methods controllers. The class MUST extend ```Thor\Controller\BaseController```.
     * Web frameworks : Bootstrap and FontAwesome.
-* Software
+* Software (web application) as a base project.
 
 ## TODO
 * Documentation
