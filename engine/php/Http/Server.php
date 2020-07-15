@@ -63,11 +63,11 @@ class Server
         $route = $this->router->match($request);
 
         if (null === $route) {
-            Logger::write(' -> No route matched', Logger::DEBUG);
+            Logger::write(' -> No route matched', Logger::DEBUG, Logger::WARNING);
             return new Response404($this->twig->render('errors/404.html.twig'));
         }
         if (false === $route) {
-            Logger::write(' -> Method not allowed for this route', Logger::DEBUG);
+            Logger::write(" -> Method not allowed for route '{$this->current_routeName}'",  Logger::DEBUG, Logger::WARNING);
             return new Response(
                 'METHOD NOT ALLOWED',
                 Response::STATUS_METHOD_NOT_ALLOWED,

@@ -20,10 +20,10 @@ use Symfony\Component\Yaml\Yaml;
 $database = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'database.yml'));
 $config = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'config.yml'));
 
-$thor_env = $config['env'] ?? 'dev';
+$thor_env = $config['env'] ?? 'debug';
 $path = $config['log_path'] ?? 'var/';
 
-$thor_logger = Logger::getDefaultLogger($thor_env, Globals::CODE_DIR . $path);
+Logger::getDefaultLogger($thor_env, Globals::CODE_DIR . $path);
 
 if ('prod' === $thor_env) {
     ini_set('display_errors', 0);
@@ -40,7 +40,7 @@ try {
     switch ($thor_kernel ?? null) {
         case 'http':
             if ('cli' === $sapi) {
-                Logger::write("PANIC ABORT : HTTP kernel tried to be executed from CLI context.", Logger::PROD);
+                Logger::write("PANIC ABORT : HTTP kernel tried to be executed from CLI context.", Logger::PROD, Logger::ERROR);
                 exit;
             }
             Logger::write('Start HTTP context');
@@ -63,14 +63,14 @@ try {
 
         case 'cli':
             if ('cli' !== $sapi) {
-                Logger::write("PANIC ABORT : CLI kernel tried to be executed from another context.", Logger::PROD);
+                Logger::write("PANIC ABORT : CLI kernel tried to be executed from another context.", Logger::PROD, Logger::ERROR);
                 exit;
             }
             echo "Not implemented...\n";
             exit;
 
         default:
-            Logger::write("PANIC ABORT : kernel not defined.", Logger::PROD);
+            Logger::write("PANIC ABORT : kernel not defined.", Logger::PROD, Logger::ERROR);
             echo "Error :\nKernel not selected.\n";
             exit;
     }
@@ -81,22 +81,10 @@ try {
     $app->execute();
     Logger::write('Application executed !');
 } catch (Throwable $e) {
-    $pad = str_repeat(' ', 33);
-    $traceStr = '';
-
-    foreach ($e->getTrace() as $trace) {
-        $traceStr .= "$pad  • Location : {$trace['file']}:{$trace['line']}\n$pad    Function : {$trace['function']}\n";
-    }
-
-    $message = <<<EOT
-        ERROR THROWN IN FILE {$e->getFile()} LINE {$e->getLine()} : {$e->getMessage()}
-        $pad Trace :
-        $traceStr                 
-        EOT;
-    $thor_logger->log($message, Logger::DEBUG);
+    Logger::logThrowable($e);
     echo "UNRECOVERABLE ERROR\n";
 }
 
-$thor_logger->log(str_repeat('#', 90), Logger::DEV);
+Logger::write('END ### END', Logger::DEV);
 
 exit; // make sure this script can't be included with further actions

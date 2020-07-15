@@ -110,3 +110,10 @@ html, body {
 .fa-li {
     top: 5px;
 }
+.modal-header {
+    background: #666;
+    color: #fff;
+}
+.modal-footer {
+    background: #ccc;
+}

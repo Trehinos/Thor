@@ -8,9 +8,6 @@
     - icon: user-friends
       route: .
       label: users-groups
-    - icon: user-check
-      route: .
-      label: users-roles
-    - icon: badge-check
-      route: .
-      label: users-permissions
+- label: Documentation
+  icon: books
+  route: .
