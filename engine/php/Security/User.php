@@ -2,6 +2,7 @@
 
 namespace Thor\Security;
 
+use Exception;
 use Thor\Database\PdoRowInterface;
 use Thor\Database\PdoRowTrait;
 
@@ -48,38 +49,33 @@ final class User implements PdoRowInterface
         $this->pwd_hash = $pdoArray['password'];
     }
 
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     */
     public function setUsername(string $username): void
     {
         $this->username = $username;
     }
 
-    /**
-     * @return string
-     */
     public function getPwdHash(): string
     {
         return $this->pwd_hash;
     }
 
-    /**
-     * @param string $pwd_hash
-     */
     public function setPwdHash(string $pwd_hash): void
     {
         $this->pwd_hash = $pwd_hash;
     }
 
+    /**
+     * @param int $size
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public static function generatePassword(int $size = 16): string
     {
         return str_replace(

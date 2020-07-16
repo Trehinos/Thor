@@ -4,5 +4,7 @@ lang: fr
 # [dev]/debug/prod
 env: debug
 
+app_name: "Thor"
+
 # [engine/]
 log_path: var/logs/

@@ -62,12 +62,14 @@ try {
             break;
 
         case 'cli':
+        case 'repl':
+        case 'automaton':
             if ('cli' !== $sapi) {
-                Logger::write("PANIC ABORT : CLI kernel tried to be executed from another context.", Logger::PROD, Logger::ERROR);
+                Logger::write("PANIC ABORT : CLI, REPL or automaton kernel tried to be executed from another context than CLI.", Logger::PROD, Logger::ERROR);
                 exit;
             }
             echo "Not implemented...\n";
-            exit;
+            break;
 
         default:
             Logger::write("PANIC ABORT : kernel not defined.", Logger::PROD, Logger::ERROR);
