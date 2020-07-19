@@ -2,7 +2,7 @@
 lang: fr
 
 # [dev]/debug/prod
-env: debug
+env: dev
 
 app_name: "Thor"
 

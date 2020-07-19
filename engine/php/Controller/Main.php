@@ -3,7 +3,7 @@
 namespace Thor\Controller;
 
 use Symfony\Component\Yaml\Yaml;
-use Thor\Database\CrudHelper;
+use Thor\Database\Sql\CrudHelper;
 use Thor\Globals;
 use Thor\Http\Response;
 use Thor\Http\Server;

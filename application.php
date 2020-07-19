@@ -17,7 +17,7 @@ use Thor\Http\HttpKernel;
 use Thor\Application;
 use Symfony\Component\Yaml\Yaml;
 
-$database = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'database.yml'));
+$databases = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'database.yml'));
 $config = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'config.yml'));
 
 $thor_env = $config['env'] ?? 'debug';
@@ -55,7 +55,7 @@ try {
                 [
                     'routes' => $routes,
                     'twig' => $twig,
-                    'database' => $database,
+                    'databases' => $databases,
                     'language' => $language
                 ]
             );

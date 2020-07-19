@@ -2,7 +2,7 @@
 
 namespace Thor\Controller;
 
-use Thor\Database\CrudHelper;
+use Thor\Database\Sql\CrudHelper;
 use Thor\Http\Response;
 use Thor\Http\Server;
 use Thor\Security\User;

@@ -2,6 +2,8 @@
 
 namespace Thor\Http;
 
+use Thor\Database\PdoCollection;
+use Thor\Database\PdoHandler;
 use Thor\Database\PdoRequester;
 
 use Thor\Debug\Logger;
@@ -22,7 +24,7 @@ class Server
 
     private ?Environment $twig;
 
-    private ?PdoRequester $database;
+    private ?PdoCollection $databases;
 
     private ?Router $router;
 
@@ -31,13 +33,13 @@ class Server
     private ?string $current_routeName = null;
 
     public function __construct(
-        Environment $twig = null,
-        PdoRequester $database = null,
-        Router $router = null,
+        ?Environment $twig = null,
+        ?PdoCollection $databases = null,
+        ?Router $router = null,
         $language = []
     ) {
         $this->twig = $twig;
-        $this->database = $database;
+        $this->databases = $databases;
         $this->router = $router;
         $this->language = $language;
     }
@@ -59,7 +61,10 @@ class Server
             return new Response('No router', 500);
         }
         $ip = $_SERVER['REMOTE_ADDR'];
-        Logger::write("Routing request [{$request->getMethod()} '{$request->getPathInfo()}'] from $ip", Logger::VERBOSE);
+        Logger::write(
+            "Routing request [{$request->getMethod()} '{$request->getPathInfo()}'] from $ip",
+            Logger::VERBOSE
+        );
         $route = $this->router->match($request);
 
         if (null === $route) {
@@ -67,7 +72,11 @@ class Server
             return new Response404($this->twig->render('errors/404.html.twig'));
         }
         if (false === $route) {
-            Logger::write(" -> Method not allowed for route '{$this->current_routeName}'",  Logger::DEBUG, Logger::WARNING);
+            Logger::write(
+                " -> Method not allowed for route '{$this->current_routeName}'",
+                Logger::DEBUG,
+                Logger::WARNING
+            );
             return new Response(
                 'METHOD NOT ALLOWED',
                 Response::STATUS_METHOD_NOT_ALLOWED,
@@ -98,9 +107,20 @@ class Server
         return $this->twig;
     }
 
-    public function getRequester(): ?PdoRequester
+    public function getHandler(string $connectionName = 'default'): ?PdoHandler
     {
-        return $this->database;
+        Logger::write("Loading handler $connectionName", Logger::DEBUG);
+        return $this->databases->get($connectionName);
+    }
+
+    public function getRequester(string $connectionName = 'default'): ?PdoRequester
+    {
+        $handler = $this->getHandler($connectionName);
+        if (null === $handler) {
+            return null;
+        }
+
+        return new PdoRequester($handler);
     }
 
     public function getRouter(): ?Router

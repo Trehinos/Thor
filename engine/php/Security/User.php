@@ -6,7 +6,7 @@ use Exception;
 use Thor\Database\PdoRowInterface;
 use Thor\Database\PdoRowTrait;
 
-final class User implements PdoRowInterface
+class User implements PdoRowInterface
 {
 
     use PdoRowTrait;
@@ -21,32 +21,26 @@ final class User implements PdoRowInterface
         $this->pwd_hash = $hashMaker->hash($clearPwd);
     }
 
-    public static function getPdoColumnsDefinitions(): array
+    protected static function getTableColumns(): array
     {
         return [
-            'id' => 'INT PRIMARY KEY',
-            'public_id' => 'VARCHAR(255)',
-            'username' => 'VARCHAR(255)',
-            'password' => 'VARCHAR(255)',
+            'username' => 'VARCHAR(255) NOT NULL',
+            'password' => 'VARCHAR(255) NOT NULL',
         ];
     }
 
-    public function toPdoArray(): array
+    protected function toPdo(): array
     {
         return [
-            'id' => $this->id,
-            'public_id' => $this->public_id,
-            'username' => $this->username,
-            'password' => $this->pwd_hash
+            'username' => $this->getUsername(),
+            'password' => $this->getPwdHash()
         ];
     }
 
-    public function fromPdoArray(array $pdoArray)
+    protected function fromPdo(array $pdoArray)
     {
-        $this->setId($pdoArray['id']);
-        $this->setPublicId($pdoArray['public_id']);
-        $this->username = $pdoArray['username'];
-        $this->pwd_hash = $pdoArray['password'];
+        $this->setUsername($pdoArray['username']);
+        $this->setPwdHash($pdoArray['password']);
     }
 
     public function getUsername(): string
