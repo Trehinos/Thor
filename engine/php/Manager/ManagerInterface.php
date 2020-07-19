@@ -1,6 +1,8 @@
 <?php
 
-namespace Thor\Managers;
+namespace Thor\Manager;
+
+use Thor\Database\PdoRowInterface;
 
 interface ManagerInterface
 {
@@ -15,13 +17,13 @@ interface ManagerInterface
      *
      * @return void
      */
-    public function load(array $criteria);
+    public function load(array $criteria = []): void;
 
     /**
      * getAll():
      *      Returns the internal array
      *
-     * @return array
+     * @return PdoRowInterface[]
      */
     public function getAll(): array;
 

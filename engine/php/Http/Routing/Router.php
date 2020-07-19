@@ -63,8 +63,8 @@ final class Router
          */
         foreach ($this->routes as $routeName => $route) {
             if ($route->matches($pathInfo)) {
+                $this->matched_routeName = $routeName;
                 if ($method === $route->getMethod()) {
-                    $this->matched_routeName = $routeName;
                     return $route;
                 } else {
                     $this->errorRoute = $route;

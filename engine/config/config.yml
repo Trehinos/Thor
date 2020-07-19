@@ -1,8 +1,10 @@
 # [fr]/en
-lang: en
+lang: fr
 
 # [dev]/debug/prod
 env: dev
+
+app_name: "Thor"
 
 # [engine/]
 log_path: var/logs/

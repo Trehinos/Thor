@@ -2,6 +2,7 @@
 
 namespace Thor\Http;
 
+use Thor\Database\PdoCollection;
 use Thor\Database\PdoHandler;
 use Thor\Database\PdoRequester;
 use Thor\Debug\Logger;
@@ -28,12 +29,12 @@ final class HttpKernel implements KernelInterface
     {
         $router = self::createRouterFromConfiguration($configuration['routes'] ?? []);
         $twig = self::createTwigFromConfiguration($configuration['twig'] ?? []);
-        $requester = self::createRequesterFromConfiguration($configuration['database'] ?? []);
+        $pdos = self::createDatabasesFromConfiguration($configuration['databases'] ?? []);
 
         Logger::write('Instantiate HttpKernel');
         $this->server = new Server(
             $twig,
-            $requester,
+            $pdos,
             $router,
             $configuration['language'] ?? []
         );
@@ -42,15 +43,22 @@ final class HttpKernel implements KernelInterface
         $twigFactory->addDefaults();
     }
 
-    private static function createRequesterFromConfiguration(array $db_config): PdoRequester
+    private static function createDatabasesFromConfiguration(array $db_config): PdoCollection
     {
-        return new PdoRequester(
-            new PdoHandler(
-                $db_config['dsn'] ?? '',
-                $db_config['user'] ?? '',
-                $db_config['password'] ?? ''
-            )
-        );
+        $pdos = new PdoCollection();
+
+        foreach ($db_config as $connectionName => $config) {
+            $pdos->add(
+                $connectionName,
+                new PdoHandler(
+                    $config['dsn'] ?? '',
+                    $config['user'] ?? '',
+                    $config['password'] ?? ''
+                )
+            );
+        }
+
+        return $pdos;
     }
 
     private static function createRouterFromConfiguration(array $routes): Router
