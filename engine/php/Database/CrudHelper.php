@@ -1,13 +1,13 @@
 <?php
 
-namespace Thor\Database\Sql;
+namespace Thor\Database;
 
-use Thor\Database\PdoRequester;
-use Thor\Database\PdoRowInterface;
+use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoExtension\PdoRowInterface;
+use Thor\Database\Sql\Criteria;
 
 /**
- * Class CrudHelper : SQL generator facade
- *
+ * Class CrudHelper : SQL CRUD operation requester for PdoRowInterface objects.
  *
  * @package Thor\Database\Sql
  */
@@ -17,6 +17,13 @@ final class CrudHelper
     private PdoRequester $requester;
     private string $className;
 
+    /**
+     * CrudHelper constructor.
+     * Creates a new CRUD requester to manage PdoRowInterface objects.
+     *
+     * @param string $className MUST implement PdoRowInterface.
+     * @param PdoRequester $requester
+     */
     public function __construct(string $className, PdoRequester $requester)
     {
         $this->requester = $requester;
@@ -37,9 +44,7 @@ final class CrudHelper
 
         $rowsObjs = [];
         foreach ($rows as $row) {
-            $className = $this->className;
-            $rowObj = new $className();
-            $rowObj->fromPdoArray($row);
+            $rowObj = self::instantiateFromRow($this->className, $row);
             $rowsObjs[] = $rowObj;
         }
 
@@ -60,11 +65,11 @@ final class CrudHelper
     }
 
     /**
-     * @param PdoRowInterface[] $rows
+     * @param array $rows
      *
-     * @return int number of rows written
+     * @return bool
      */
-    public function createMultiple(array $rows): int
+    public function createMultiple(array $rows): bool
     {
         $allValues = [];
         $sqlArray = [];
@@ -78,9 +83,7 @@ final class CrudHelper
         }
 
         $marks = implode(', ', $sqlArray);
-        $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $allValues);
-
-        return count($rows);
+        return $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $allValues);
     }
 
     private static function compileRowValues(PdoRowInterface $row): array
@@ -95,83 +98,77 @@ final class CrudHelper
         return [$columns, $values, array_values($pdoArray)];
     }
 
-    private function instantiateFromRow(array $row)
+    public function readOne(string $id)
     {
-        $className = $this->className;
-        $rowObj = new $className();
-        $rowObj->fromPdoArray($row);
-
-        return $rowObj;
-
+        return $this->readOneBy(new Criteria(['id' => $id]));
     }
 
-    public function readOne(string $id): ?PdoRowInterface
+    public function readOneFromPid(string $pid)
     {
-        $row = $this->requester->request("SELECT * FROM {$this->table()} WHERE id = ?", [$id])->fetchAll()[0] ?? [];
-        if (empty($row)) {
-            return null;
-        }
-
-        return $this->instantiateFromRow($row);
+        return $this->readOneBy(new Criteria(['public_id' => $pid]));
     }
 
-    public function readOneBy(Criteria $criteria): ?PdoRowInterface
+    public function readOneBy(Criteria $criteria)
     {
-        $sql = (($t_sql = $criteria->getSql()) === '') ? '' : "WHERE $t_sql";
-        $row = $this->requester->request("SELECT * FROM {$this->table()} $sql", $criteria->getParams())->fetchAll()[0] ?? [];
-        if (empty($row)) {
-            return null;
-        }
-
-        return $this->instantiateFromRow($row);
-    }
-
-    public function readOneFromPid(string $pid): ?PdoRowInterface
-    {
+        $sql = Criteria::getWhere($criteria);
         $row = $this->requester->request(
-                "SELECT * FROM {$this->table()} WHERE public_id = ?",
-                [$pid]
+                "SELECT * FROM {$this->table()} $sql",
+                $criteria->getParams()
             )->fetchAll()[0] ?? [];
+
         if (empty($row)) {
             return null;
         }
 
-        return $this->instantiateFromRow($row);
+        return self::instantiateFromRow($this->className, $row);
     }
 
     /**
      * @param Criteria $criteria
-     * @return PdoRowInterface[]
+     *
+     * @return array
      */
     public function readMultipleBy(Criteria $criteria): array
     {
-        $sql = (($t_sql = $criteria->getSql()) === '') ? '' : "WHERE $t_sql";
-        $rows = $this->requester->request("SELECT * FROM {$this->table()} $sql", $criteria->getParams())->fetchAll() ?? [];
+        $sql = Criteria::getWhere($criteria);
+        $rows = $this->requester->request(
+                "SELECT * FROM {$this->table()} $sql",
+                $criteria->getParams()
+            )->fetchAll() ?? [];
+
         if (empty($row)) {
             return [];
         }
 
         $objs = [];
         foreach ($rows as $row) {
-            $objs[] = $this->instantiateFromRow($row);
+            $objs[] = self::instantiateFromRow($this->className, $row);
         }
+
         return $objs;
     }
 
-    public function updateOne(PdoRowInterface $row)
+    public function updateOne(PdoRowInterface $row): bool
     {
         $pdoArray = $row->toPdoArray();
         $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($pdoArray)));
 
-        $this->requester->execute(
+        return $this->requester->execute(
             "UPDATE {$this->table()} SET $sets WHERE id=?",
             array_values($pdoArray) + [$row->getId()]
         );
     }
 
-    public function deleteOne(PdoRowInterface $row)
+    public function deleteOne(PdoRowInterface $row): bool
     {
-        $this->requester->execute("DELETE FROM {$this->table()} WHERE id=?", [$row->getId()]);
+        return $this->requester->execute("DELETE FROM {$this->table()} WHERE id=?", [$row->getId()]);
+    }
+
+    public static function instantiateFromRow(string $className, array $row)
+    {
+        $rowObj = new $className();
+        $rowObj->fromPdoArray($row);
+        return $rowObj;
     }
 
 }

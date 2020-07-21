@@ -8,46 +8,51 @@
 #  ...
 
 # main routes
+menu:
+    action:
+        class: Thor\App\Actions\Main
+        method: menu
+
 index:
     path: "/"
     method: GET
     action:
-        class: Thor\Controller\Main
+        class: Thor\App\Actions\Main
         method: index
 
 changelog:
     path: "/changelog"
     method: GET
     action:
-        class: Thor\Controller\Main
+        class: Thor\App\Actions\Main
         method: changelog
 
 about:
     path: "/about"
     method: GET
     action:
-        class: Thor\Controller\Main
+        class: Thor\App\Actions\Main
         method: about
 
 legal:
     path: "/legal"
     method: GET
     action:
-        class: Thor\Controller\Main
+        class: Thor\App\Actions\Main
         method: legal
 
 create-admin:
     path: "/framework/create/admin"
     method: POST
     action:
-        class: Thor\Controller\Main
+        class: Thor\App\Actions\Main
         method: createAdmin
 
 generate-url:
     path: "/framework/generate-url"
     method: GET
     action:
-        class: Thor\Controller\Main
+        class: Thor\App\Actions\Main
         method: generateUrlResponse
 
 # users routes
@@ -55,21 +60,21 @@ users:
     path: "/users"
     method: GET
     action:
-        class: Thor\Controller\Users
+        class: Thor\App\Actions\Users
         method: usersInterface
 
 users-create-form:
     path: "/users/create/form"
     method: GET
     action:
-        class: Thor\Controller\Users
+        class: Thor\App\Actions\Users
         method: createForm
 
 users-create-action:
     path: "/users/create/action"
     method: POST
     action:
-        class: Thor\Controller\Users
+        class: Thor\App\Actions\Users
         method: createAction
 
 users-edit-form:
@@ -79,5 +84,5 @@ users-edit-form:
         public_id:
             regex: "[A-Za-z0-9-]+"
     action:
-        class: Thor\Controller\Users
+        class: Thor\App\Actions\Users
         method: editForm

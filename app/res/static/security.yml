@@ -1,4 +1,4 @@
-userClass: Thor\Security\User
+userClass: Thor\App\Entities\User
 usernameProperty: Username
 passwordProperty: PwdHash
 

@@ -1,13 +1,16 @@
 <?php
 
-namespace Thor\Controller;
+namespace Thor\App\Actions;
 
 use Symfony\Component\Yaml\Yaml;
-use Thor\Database\Sql\CrudHelper;
+
+use Thor\App\Entities\User;
+use Thor\Controller\BaseController;
+use Thor\Database\CrudHelper;
+use Thor\Debug\Logger;
 use Thor\Globals;
 use Thor\Http\Response;
 use Thor\Http\Server;
-use Thor\Security\User;
 
 final class Main extends BaseController
 {
@@ -27,7 +30,7 @@ final class Main extends BaseController
         return $this->view(
             'menu.html.twig',
             [
-                'menu' => Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'menu.yml'))
+                'menu' => Yaml::parse(file_get_contents(Globals::STATIC_DIR . 'menu.yml'))
             ]
         );
     }
@@ -53,7 +56,8 @@ final class Main extends BaseController
         $userCrud = new CrudHelper(User::class, $this->getServer()->getRequester());
         $pid = $userCrud->createOne($user);
 
-        return new Response("Admin $pid created.");
+        Logger::write("Admin $pid created.", Logger::VERBOSE);
+        return new Response();
     }
 
     public function generateUrlResponse(): Response

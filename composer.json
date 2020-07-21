@@ -2,7 +2,7 @@
     "name": "trehinos/thor",
     "description": "Thor PHP framework witch provides HTTP, MySQL and other tools",
     "minimum-stability": "stable",
-    "version": "0.1-dev",
+    "version": "0.2-dev",
     "license": "proprietary",
     "authors": [
         {
@@ -16,7 +16,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Thor\\": "engine/php/"
+            "Thor\\": "engine/php/",
+            "Thor\\App\\": "app/src/"
         }
     },
     "require": {

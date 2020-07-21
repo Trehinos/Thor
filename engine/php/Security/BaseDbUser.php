@@ -3,10 +3,11 @@
 namespace Thor\Security;
 
 use Exception;
-use Thor\Database\PdoRowInterface;
-use Thor\Database\PdoRowTrait;
 
-class User implements PdoRowInterface
+use Thor\Database\PdoExtension\PdoRowInterface;
+use Thor\Database\PdoExtension\PdoRowTrait;
+
+abstract class BaseDbUser implements PdoRowInterface
 {
 
     use PdoRowTrait;

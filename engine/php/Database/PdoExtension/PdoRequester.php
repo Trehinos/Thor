@@ -1,8 +1,9 @@
 <?php
 
-namespace Thor\Database;
+namespace Thor\Database\PdoExtension;
 
 use PDOStatement;
+
 use Thor\Debug\Logger;
 
 final class PdoRequester
@@ -21,12 +22,15 @@ final class PdoRequester
      *
      * @param string $sql
      * @param array $parameters
+     *
+     * @return bool
      */
-    public function execute(string $sql, array $parameters)
+    public function execute(string $sql, array $parameters): bool
     {
         Logger::write("DB execute ($sql).", Logger::DEBUG);
         $stmt = $this->handler->getPdo()->prepare($sql);
-        $stmt->execute($parameters);
+
+        return $stmt->execute($parameters);
     }
 
     /**
@@ -35,6 +39,7 @@ final class PdoRequester
      *
      * @param string $sql
      * @param array $parameters
+     *
      * @return PDOStatement
      */
     public function request(string $sql, array $parameters): PDOStatement

@@ -1,21 +1,24 @@
 <?php
 
-namespace Thor\Controller;
+namespace Thor\App\Actions;
 
-use Thor\Database\Sql\CrudHelper;
+use Thor\App\Managers\UserManager;
+use Thor\Controller\BaseController;
+use Thor\Database\CrudHelper;
 use Thor\Http\Response;
 use Thor\Http\Server;
-use Thor\Security\User;
+
+use Thor\App\Entities\User;
 
 final class Users extends BaseController
 {
 
-    private CrudHelper $crud;
+    private UserManager $manager;
 
     public function __construct(Server $server)
     {
         parent::__construct($server);
-        $this->crud = new CrudHelper(User::class, $this->getServer()->getRequester());
+        $this->manager = new UserManager(new CrudHelper(User::class, $this->getServer()->getRequester()));
     }
 
     public function usersInterface(): Response
@@ -23,7 +26,7 @@ final class Users extends BaseController
         return $this->view(
             'pages/users.html.twig',
             [
-                'users' => $this->crud->listAll()
+                'users' => $this->manager->getUserCrud()->listAll()
             ]
         );
     }
@@ -49,10 +52,7 @@ final class Users extends BaseController
             ]
         );
 
-        $password = Server::post(
-            'password',
-            null,
-        );
+        $password = Server::post('password', null,);
 
         $errors = [];
         if (!$username) {
@@ -63,9 +63,7 @@ final class Users extends BaseController
         }
 
         if (empty($errors)) {
-            $this->crud->createOne(
-                new User($username, $password)
-            );
+            $this->manager->createUser($username, $password);
         }
 
         return $this->redirect('users');
@@ -73,7 +71,7 @@ final class Users extends BaseController
 
     public function editForm(string $public_id): Response
     {
-        $user = $this->crud->readOneFromPid($public_id);
+        $user = $this->manager->getUserCrud()->readOneFromPid($public_id);
 
         return $this->view(
             'pages/users_modals/edit.html.twig',
@@ -81,6 +79,29 @@ final class Users extends BaseController
                 'user' => $user
             ]
         );
+    }
+
+    public function editAction(string $public_id): Response
+    {
+        $username = Server::post(
+            'username',
+            null,
+            FILTER_VALIDATE_REGEXP,
+            [
+                'options' => ['regexp' => '/[A-Za-z0-9]{4,255}/']
+            ]
+        );
+
+        $errors = [];
+        if (!$username) {
+            $errors[] = 'too-short-username';
+        }
+
+        if (empty($errors)) {
+            $this->manager->updateUser($public_id, $username);
+        }
+
+        return $this->redirect('users');
     }
 
 }

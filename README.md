@@ -37,8 +37,9 @@ simplified.**
 
 ## Configuration
 All config files are in ```thor/engine/config/``` :
-* ```config.yml``` contains the main configuration as language, environment and application name...
-* ```database.yml``` contains DB connection information.
+* ```config.yml``` contains the main parameters as the language, the environment and the application name...
+* ```database.yml``` contains DB connections information.
+* ```db_definition.yml``` contains tables information.
 * ```menu.yml``` contains the menu settings.
 * ```routes.yml``` contains routes patterns and target controllers information.
 * ```security.yml``` contains security configuration.

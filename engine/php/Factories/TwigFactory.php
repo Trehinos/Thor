@@ -58,8 +58,11 @@ final class TwigFactory
         $this->twig->addFunction(
             new TwigFunction(
                 'render',
-                function (string $cClass, string $cMethod, array $params = []) use ($server) {
-                    $cClass = "Thor\\Controller\\$cClass";
+                function (string $routeName, array $params = []) use ($server) {
+                    $route = $server->getRouter()->getRoute($routeName);
+                    $cClass = $route->getControllerClass();
+                    $cMethod = $route->getControllerMethod();
+
                     $controller = new $cClass($server);
                     return $controller->$cMethod(...$params)->getBody();
                 }

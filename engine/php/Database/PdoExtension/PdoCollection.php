@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Database;
+namespace Thor\Database\PdoExtension;
 
 final class PdoCollection
 {

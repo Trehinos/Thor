@@ -6,5 +6,7 @@ env: dev
 
 app_name: "Thor"
 
+timezone: Europe/Paris
+
 # [engine/]
 log_path: var/logs/
