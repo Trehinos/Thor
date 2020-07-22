@@ -9,16 +9,19 @@ use Thor\Http\Response;
 use Thor\Http\Server;
 
 use Thor\App\Entities\User;
+use Thor\Validation\PostVarRegex;
 
 final class Users extends BaseController
 {
 
     private UserManager $manager;
+    private PostVarRegex $usernameValidator;
 
     public function __construct(Server $server)
     {
         parent::__construct($server);
         $this->manager = new UserManager(new CrudHelper(User::class, $this->getServer()->getRequester()));
+        $this->usernameValidator = new PostVarRegex('/^[A-Za-z0-9]{4,255}$/');
     }
 
     public function usersInterface(): Response
@@ -43,15 +46,7 @@ final class Users extends BaseController
 
     public function createAction(): Response
     {
-        $username = Server::post(
-            'username',
-            null,
-            FILTER_VALIDATE_REGEXP,
-            [
-                'options' => ['regexp' => '/[A-Za-z0-9]{4,255}/']
-            ]
-        );
-
+        $username = $this->usernameValidator->filter('username');
         $password = Server::post('password', null,);
 
         $errors = [];
@@ -83,14 +78,7 @@ final class Users extends BaseController
 
     public function editAction(string $public_id): Response
     {
-        $username = Server::post(
-            'username',
-            null,
-            FILTER_VALIDATE_REGEXP,
-            [
-                'options' => ['regexp' => '/[A-Za-z0-9]{4,255}/']
-            ]
-        );
+        $username = $this->usernameValidator->filter('username');
 
         $errors = [];
         if (!$username) {
