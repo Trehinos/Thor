@@ -1,0 +1,5 @@
+# using PDO
+default:
+    dsn: "mysql:host=mimir;dbname=mimir"
+    user: thor
+    password: dWd26lQKNAJSZ207aR1R2gVDqcK9Xxje

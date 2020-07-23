@@ -2,9 +2,9 @@
 
 namespace Thor\Http;
 
-use Thor\Database\PdoCollection;
-use Thor\Database\PdoHandler;
-use Thor\Database\PdoRequester;
+use Thor\Database\PdoExtension\PdoCollection;
+use Thor\Database\PdoExtension\PdoHandler;
+
 use Thor\Debug\Logger;
 use Thor\Factories\TwigFactory;
 use Thor\Globals;
@@ -66,9 +66,9 @@ final class HttpKernel implements KernelInterface
         $routesObj = [];
         foreach ($routes as $routeName => $routeInfo) {
             $routesObj[$routeName] = new Route(
-                $routeInfo['path'],
                 $routeInfo['action']['class'],
                 $routeInfo['action']['method'],
+                $routeInfo['path'] ?? '',
                 $routeInfo['method'] ?? 'GET',
                 $routeInfo['parameters'] ?? []
             );
@@ -91,7 +91,8 @@ final class HttpKernel implements KernelInterface
     {
         ob_start();
         Logger::write('Server handle the HTTP request');
-        $response = $this->server->handle(Request::createFromServer());
+        $request = Request::createFromServer();
+        $response = $this->server->handle($request);
         Logger::write("HTTP Response generated (code : {$response->getStatus()}).", Logger::VERBOSE);
 
         if (Server::ENV === Server::PROD) {
@@ -113,7 +114,7 @@ final class HttpKernel implements KernelInterface
             }
         }
 
-        if (($body = $response->getBody()) !== '') {
+        if ($request->responseHasBody && ($body = $response->getBody()) !== '') {
             Logger::write("Send body", Logger::DEV);
             echo $body;                                                             // Print body
         }

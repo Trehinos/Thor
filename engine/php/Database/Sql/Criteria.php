@@ -17,7 +17,7 @@ final class Criteria
     public function __construct(array $criteria = [], bool $glue = self::GLUE_AND)
     {
         $this->criteria = $criteria;
-        $this->andGlue = $andGlue;
+        $this->andGlue = $glue;
     }
 
     /**
@@ -27,7 +27,7 @@ final class Criteria
      *      'and' => [...]
      *      'or' => [...]
      *
-     * @param bool $andGlue
+     * @param bool $glue
      *
      * @return array ['sql' => ..., 'params' => ...]
      */
@@ -48,11 +48,14 @@ final class Criteria
             } else {
                 if (is_array($value)) {
                     $params = array_merge($params, $value);
-                    $sqlArray[] = '"' . $key . '" IN (' .
-                        implode(',', array_fill(0, count($value), '?')) .
-                        ')';
+                    $marks = implode(',', array_fill(0, count($value), '?'));
+                    $sqlArray[] = '"' . $key . '" IN (' . $marks . ')';
                 } else {
                     ['op' => $op, 'value' => $value] = self::parseValue($value);
+
+                    if ($value === null) {
+                        $mark = 'NULL';
+                    }
 
                     $params[] = $value;
                     $sqlArray[] = "$key $op ?";
@@ -64,6 +67,16 @@ final class Criteria
             'sql' => implode($glue ? ' AND ' : ' OR ', $sqlArray),
             'params' => $params
         ];
+    }
+
+    /**
+     * @param Criteria $criteria
+     *
+     * @return string SQL with 'WHERE' if there is any criteria or ''.
+     */
+    public static function getWhere(Criteria $criteria): string
+    {
+        return (($t_sql = $criteria->getSql()) === '') ? '' : "WHERE $t_sql";
     }
 
     public function getSql(): string
@@ -101,6 +114,21 @@ final class Criteria
                 $value = substr($value, 2);
                 break;
 
+            case '%*':
+                $op = 'LIKE';
+                $value = substr("%$value", 2);
+                break;
+
+            case '*%':
+                $op = 'LIKE';
+                $value = substr("$value%", 2);
+                break;
+
+            case '!%';
+                $op = 'NOT LIKE';
+                $value = substr("%$value%", 2);
+                break;
+
             default:
                 switch ($first = substr($value, 0, 1)) {
                     case '=':
@@ -108,6 +136,22 @@ final class Criteria
                     case '<':
                         $op = $first;
                         $value = substr($value, 1);
+                        break;
+
+                    case '%':
+                        $op = 'LIKE';
+                        $value = substr("%$value%", 1);
+                        break;
+
+                    case '!':
+                        $op = 'NOT';
+                        $value = null;
+                        break;
+
+                    case '$':
+                        $op = '';
+                        $value = null;
+                        break;
                 }
         }
 

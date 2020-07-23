@@ -35,14 +35,18 @@ simplified.**
 7. Copy ```bootstrap.min.css``` in ```thor/web/assets/bootstrap/css/bootstrap.min.css```
 8. The user who runs PHP has to be allowed to write in ```thor/var/``` folder.
 
-## Configuration
-All config files are in ```thor/engine/config/``` :
-* ```config.yml``` contains the main configuration as language, environment and application name...
-* ```database.yml``` contains DB connection information.
+## Configuration & static files
+All configuration files are in ```thor/app/res/config/``` or in ```thor/app/res/static/```:
+### Config
+* ```config.yml``` contains the main parameters as the language, the environment and the application name...
+* ```database.yml``` contains DB connections information.
+* ```twig.yml``` contains TWIG configuration.
+### Static
+* ```db_definition.yml``` contains tables information.
 * ```menu.yml``` contains the menu settings.
 * ```routes.yml``` contains routes patterns and target controllers information.
 * ```security.yml``` contains security configuration.
-* ```twig.yml``` contains TWIG configuration.
+* Languages files
 
 To add a config file, create a new **YAML** file in the configuration folder.
 Then, you can read this file by writing :
@@ -71,6 +75,7 @@ $config = Yaml::parse(Globals::CONFIG_DIR . 'filename.yml');
 
 ## TODO
 * Documentation
+* Db Definition (create table, stop using static function)
 * Security
     * Edit/delete/change password
     * Login, check, logout

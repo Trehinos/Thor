@@ -17,7 +17,7 @@ final class Route
 
     private string $controllerMethod;
 
-    public function __construct(string $path, string $controllerClass, string $controllerMethod, string $method = 'GET', array $parameters = [])
+    public function __construct(string $controllerClass, string $controllerMethod, string $path = '/', string $method = 'GET', array $parameters = [])
     {
         $this->path = $path;
         $this->method = $method;

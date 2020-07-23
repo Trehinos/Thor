@@ -29,17 +29,17 @@ final class Request
     const LOCK = 'LOCK';
     const UNLOCK = 'UNLOCK';
 
-    private bool $_hasBody;
-    private bool $_responseHasBody;
-    private bool $_safe;
-    private bool $_idempotent;
-    private bool $_cache;
-    private bool $_html;
-
     private string $type;
     private array $headers;
     private string $body;
     private string $pathInfo;
+
+    public bool $hasBody;
+    public bool $responseHasBody;
+    public bool $safe;
+    public bool $idempotent;
+    public bool $cache;
+    public bool $html;
 
     private function __construct(
         string $type,
@@ -59,12 +59,12 @@ final class Request
         $this->body = $body;
         $this->pathInfo = $pathInfo;
 
-        $this->_hasBody = $hasBody;
-        $this->_responseHasBody = $responseHasBody;
-        $this->_safe = $safe;
-        $this->_idempotent = $idempotent;
-        $this->_cache = $cache;
-        $this->_html = $html;
+        $this->hasBody = $hasBody;
+        $this->responseHasBody = $responseHasBody;
+        $this->safe = $safe;
+        $this->idempotent = $idempotent;
+        $this->cache = $cache;
+        $this->html = $html;
     }
 
     public function getMethod(): string

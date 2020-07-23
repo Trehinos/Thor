@@ -17,8 +17,8 @@ use Thor\Http\HttpKernel;
 use Thor\Application;
 use Symfony\Component\Yaml\Yaml;
 
-$databases = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'database.yml'));
 $config = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'config.yml'));
+$databases = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'database.yml'));
 
 $thor_env = $config['env'] ?? 'debug';
 $path = $config['log_path'] ?? 'var/';
@@ -32,7 +32,7 @@ if ('prod' === $thor_env) {
 } else {
     ini_set('display_errors', E_ALL);
 }
-ini_set('date.timezone', 'Europe/Paris');
+ini_set('date.timezone', $config['timezone'] ?? 'Europe/Paris');
 
 $kernel = null;
 $sapi = php_sapi_name();
@@ -45,12 +45,12 @@ try {
             }
             Logger::write('Start HTTP context');
             Logger::write('Load routes configuration');
-            $routes = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'routes.yml'));
+            $routes = Yaml::parse(file_get_contents(Globals::STATIC_DIR . 'routes.yml'));
             Logger::write('Load twig configuration');
             $twig = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'twig.yml'));
             $lang = $config['lang'] ?? 'fr';
             Logger::write('Load language configuration');
-            $language = Yaml::parse(file_get_contents(Globals::ENGINE_DIR . "langs/$lang.yml"));
+            $language = Yaml::parse(file_get_contents(Globals::STATIC_DIR . "langs/$lang.yml"));
             $kernel = new HttpKernel(
                 [
                     'routes' => $routes,

@@ -12,6 +12,19 @@ final class Router
     private ?Route $errorRoute = null;
     private ?string $matched_routeName = null;
 
+    public function __construct(array $routes)
+    {
+        $this->routes = $routes;
+    }
+
+    /**
+     * @param string $routeName
+     * @param array $params
+     *
+     * @return string
+     *
+     * @throws Error
+     */
     public function getUrl(string $routeName, array $params = []): string
     {
         $route = $this->getRoute($routeName);
@@ -32,17 +45,8 @@ final class Router
         return "/index.php$path";
     }
 
-    public
-    function __construct(
-        array $routes
-    ) {
-        $this->routes = $routes;
-    }
-
-    public
-    function getRoute(
-        string $name
-    ): ?Route {
+    public function getRoute(string $name): ?Route
+    {
         return $this->routes[$name] ?? null;
     }
 
@@ -51,10 +55,8 @@ final class Router
      *
      * @return Route|false|null
      */
-    public
-    function match(
-        Request $request
-    ) {
+    public function match(Request $request)
+    {
         $pathInfo = $request->getPathInfo();
         $method = $request->getMethod();
 
@@ -76,21 +78,19 @@ final class Router
         return null;
     }
 
-    public
-    function getMatchedRouteName(): ?string
+    public function getMatchedRouteName(): ?string
     {
         return $this->matched_routeName;
     }
 
-    public
-    function getErrorRoute(): ?Route
+    public function getErrorRoute(): ?Route
     {
         return $this->errorRoute;
     }
 
-    public
-    function getRoutes(): array
+    public function getRoutes(): array
     {
         return $this->routes;
     }
+
 }

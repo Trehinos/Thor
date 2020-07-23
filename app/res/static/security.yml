@@ -1,0 +1,25 @@
+userClass: Thor\App\Entities\User
+usernameProperty: Username
+passwordProperty: PwdHash
+
+roles:
+    dev:
+        extends: admin
+        permissions: [develop]
+    admin:
+        extends: user
+        permissions: [manage]
+    user:
+        permissions: [signout]
+
+permissions:
+    - signout
+    - manage
+    - develop
+
+configuration:
+    base-role: user
+    firewall-pattern: "^/"
+    login-route: login
+    logout-route: logout
+    check-route: "check-login"

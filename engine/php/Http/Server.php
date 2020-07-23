@@ -2,9 +2,9 @@
 
 namespace Thor\Http;
 
-use Thor\Database\PdoCollection;
-use Thor\Database\PdoHandler;
-use Thor\Database\PdoRequester;
+use Thor\Database\PdoExtension\PdoCollection;
+use Thor\Database\PdoExtension\PdoHandler;
+use Thor\Database\PdoExtension\PdoRequester;
 
 use Thor\Debug\Logger;
 use Thor\Http\Routing\Router;
