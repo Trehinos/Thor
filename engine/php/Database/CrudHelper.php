@@ -5,6 +5,7 @@ namespace Thor\Database;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\PdoExtension\PdoRowInterface;
 use Thor\Database\Sql\Criteria;
+use Thor\Debug\Logger;
 
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRowInterface objects.
@@ -112,7 +113,7 @@ final class CrudHelper
     {
         $sql = Criteria::getWhere($criteria);
         $row = $this->requester->request(
-                "SELECT * FROM {$this->table()} $sql",
+                $sql = "SELECT * FROM {$this->table()} $sql",
                 $criteria->getParams()
             )->fetchAll()[0] ?? [];
 
@@ -154,8 +155,8 @@ final class CrudHelper
         $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($pdoArray)));
 
         return $this->requester->execute(
-            "UPDATE {$this->table()} SET $sets WHERE id=?",
-            array_values($pdoArray) + [$row->getId()]
+            "UPDATE {$this->table()} SET $sets WHERE id = ?",
+            array_merge(array_values($pdoArray), [$row->getId()])
         );
     }
 

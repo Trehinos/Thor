@@ -2,7 +2,7 @@
 
 namespace Thor\Security;
 
-final class PasswordHash
+final class PasswordHasher
 {
 
     private string $algo;
@@ -21,7 +21,7 @@ final class PasswordHash
         return password_hash($password, $this->algo, $this->options);
     }
 
-    public function verify(string $password, string $hash): bool
+    public static function verify(string $password, string $hash): bool
     {
         return password_verify($password, $hash);
     }

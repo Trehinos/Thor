@@ -1,8 +1,9 @@
 <?php
 
-namespace Thor\Validation;
+namespace Thor\Validation\Filters;
 
 use Thor\Http\Server;
+use Thor\Validation\FilterInterface;
 
 class PostVarRegex implements FilterInterface
 {

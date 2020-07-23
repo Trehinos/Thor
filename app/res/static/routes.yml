@@ -78,7 +78,7 @@ users-create-action:
         method: createAction
 
 users-edit-form:
-    path: "/users/edit/$public_id"
+    path: "/users/$public_id/edit/form"
     method: GET
     parameters:
         public_id:
@@ -86,3 +86,13 @@ users-edit-form:
     action:
         class: Thor\App\Actions\Users
         method: editForm
+
+users-edit-action:
+    path: "/users/$public_id/edit/action"
+    method: POST
+    parameters:
+        public_id:
+            regex: "[A-Za-z0-9-]+"
+    action:
+        class: Thor\App\Actions\Users
+        method: editAction

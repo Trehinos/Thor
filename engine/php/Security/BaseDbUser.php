@@ -2,24 +2,24 @@
 
 namespace Thor\Security;
 
-use Exception;
-
 use Thor\Database\PdoExtension\PdoRowInterface;
 use Thor\Database\PdoExtension\PdoRowTrait;
 
-abstract class BaseDbUser implements PdoRowInterface
+abstract class BaseDbUser implements PdoRowInterface, UserInterface
 {
 
     use PdoRowTrait;
 
+    private static ?PasswordHasher $hashMaker = null;
+
     private string $username;
     private string $pwd_hash;
 
-    public function __construct(string $username = '', string $clearPwd = '')
+    public function __construct(string $username = '', string $clearPassword = '')
     {
-        $hashMaker = new PasswordHash();
+        self::$hashMaker ??= new PasswordHasher();
         $this->username = $username;
-        $this->pwd_hash = $hashMaker->hash($clearPwd);
+        $this->pwd_hash = self::$hashMaker->hash($clearPassword);
     }
 
     protected static function getTableColumns(): array
@@ -34,14 +34,14 @@ abstract class BaseDbUser implements PdoRowInterface
     {
         return [
             'username' => $this->getUsername(),
-            'password' => $this->getPwdHash()
+            'password' => $this->pwd_hash
         ];
     }
 
     protected function fromPdo(array $pdoArray)
     {
         $this->setUsername($pdoArray['username']);
-        $this->setPwdHash($pdoArray['password']);
+        $this->pwd_hash = $pdoArray['password'];
     }
 
     public function getUsername(): string
@@ -54,30 +54,14 @@ abstract class BaseDbUser implements PdoRowInterface
         $this->username = $username;
     }
 
-    public function getPwdHash(): string
+    public function hasPwdHashFor(string $clearPassword): bool
     {
-        return $this->pwd_hash;
+        return PasswordHasher::verify($clearPassword, $this->pwd_hash);
     }
 
-    public function setPwdHash(string $pwd_hash): void
+    public function setPwdHashFrom(string $clearPassword): void
     {
-        $this->pwd_hash = $pwd_hash;
-    }
-
-    /**
-     * @param int $size
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    public static function generatePassword(int $size = 16): string
-    {
-        return str_replace(
-            ['/', '+'],
-            ['#', '$'],
-            trim(base64_encode(random_bytes($size)), '=')
-        );
+        $this->pwd_hash = self::$hashMaker->hash($clearPassword);
     }
 
 }

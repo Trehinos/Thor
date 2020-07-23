@@ -3,7 +3,7 @@
 {% block modal_title %}{{ _.users.edit_user }}{% endblock %}
 
 {% block modal_body %}
-    <form id="form-create-user" action="{{ '' }}" method="POST">
+    <form id="form-create-user" action="{{ url('users-edit-action', {'public_id': user.publicId}) }}" method="POST">
         <div class="form-group">
             <label for="user-id">{{ _.general.id }}</label>
             <input readonly type="text" id="user-id" value="{{ user.id }}" class="form-control">
