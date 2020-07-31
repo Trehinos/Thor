@@ -13,18 +13,25 @@ final class PdoHandler
 
     private string $password;
 
+    private array $options;
+
     private ?PDO $pdo;
 
     public function __construct(
         string $dsn,
         string $user = '',
-        string $password = ''
-    )
-    {
+        string $password = '',
+        array $options = []
+    ) {
         $this->pdo = null;
         $this->dsn = $dsn;
         $this->user = $user;
         $this->password = $password;
+        $this->options = $options + [
+                PDO::ATTR_CASE => PDO::CASE_LOWER,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            ];
     }
 
     public function getPdo(): PDO
@@ -34,10 +41,14 @@ final class PdoHandler
 
     public function connect(): PDO
     {
-        return $this->pdo ??= new PDO($this->dsn, $this->user, $this->password, [
-            PDO::ATTR_CASE => PDO::CASE_LOWER,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]);
+        return $this->pdo ??= new PDO(
+            $this->dsn,
+            $this->user,
+            $this->password,
+            $this->options
+        );
     }
 
 }
+
+
