@@ -47,14 +47,13 @@ final class UserManager
         return $state;
     }
 
-    public function deleteOne(string $public_id, string $username): bool
+    public function deleteUser(string $public_id): bool
     {
         $state = false;
         $user = $this->userCrud->readOneFromPid($public_id);
         if ($user) {
-            $user->setUsername($username);
-            $state = $this->userCrud->updateOne($user);
-            Logger::write("User $public_id updated !", Logger::VERBOSE);
+            $state = $this->userCrud->deleteOne($user);
+            Logger::write("User $public_id deleted !", Logger::VERBOSE);
         }
 
         return $state;

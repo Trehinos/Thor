@@ -6,10 +6,10 @@ use Symfony\Component\Yaml\Yaml;
 
 use Thor\App\Entities\User;
 use Thor\App\Managers\UserManager;
-use Thor\Controller\BaseController;
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Globals;
+use Thor\Http\BaseController;
 use Thor\Http\Response;
 use Thor\Http\Server;
 

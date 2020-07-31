@@ -96,3 +96,13 @@ users-edit-action:
     action:
         class: Thor\App\Actions\Users
         method: editAction
+
+users-delete-action:
+    path: "/users/$public_id/delete"
+    method: POST
+    parameters:
+        public_id:
+            regex: "[A-Za-z0-9-]+"
+    action:
+        class: Thor\App\Actions\Users
+        method: deleteAction

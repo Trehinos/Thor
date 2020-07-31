@@ -1,10 +1,8 @@
 <?php
 
-namespace Thor\Controller;
+namespace Thor\Http;
 
 use Thor\Debug\Logger;
-use Thor\Http\Response;
-use Thor\Http\Server;
 
 abstract class BaseController
 {

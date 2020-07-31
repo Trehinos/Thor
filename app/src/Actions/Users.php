@@ -5,9 +5,9 @@ namespace Thor\App\Actions;
 use Exception;
 
 use Thor\App\Managers\UserManager;
-use Thor\Controller\BaseController;
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
+use Thor\Http\BaseController;
 use Thor\Http\Response;
 use Thor\Http\Server;
 
@@ -56,6 +56,8 @@ final class Users extends BaseController
 
     /**
      * POST /users/create/action
+     *
+     * TODO : gestion des erreurs en session
      *
      * @return Response
      */
@@ -112,6 +114,13 @@ final class Users extends BaseController
             exit;
         }
         $this->manager->updateUser($public_id, $username);
+
+        return $this->redirect('users');
+    }
+
+    public function deleteAction(string $public_id): Response
+    {
+        $this->manager->deleteUser($public_id);
 
         return $this->redirect('users');
     }
