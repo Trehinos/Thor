@@ -1,17 +1,18 @@
 <?php
 
-namespace Thor\App\Actions;
+namespace Packages\EMS\Main\Actions;
 
 use Symfony\Component\Yaml\Yaml;
 
-use Thor\App\Entities\User;
-use Thor\App\Managers\UserManager;
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Globals;
 use Thor\Http\BaseController;
 use Thor\Http\Response;
 use Thor\Http\Server;
+
+use Packages\EMS\Main\Entities\User;
+use Packages\EMS\Main\Domain\Managers\UserManager;
 
 final class Main extends BaseController
 {

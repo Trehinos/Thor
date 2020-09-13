@@ -16,8 +16,12 @@
     },
     "autoload": {
         "psr-4": {
+            "App\\": "app/src/",
             "Thor\\": "engine/php/",
-            "Thor\\App\\": "app/src/"
+            "Packages\\": "ems/packages/",
+            "Plugins\\": "ems/plugins/",
+            "Themes\\": "ems/themes/",
+            "Ems\\": "ems/core/"
         }
     },
     "require": {

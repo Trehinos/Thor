@@ -1,18 +1,19 @@
 <?php
 
-namespace Thor\App\Actions;
+namespace Packages\EMS\Main\Actions;
 
 use Exception;
 
-use Thor\App\Managers\UserManager;
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Http\BaseController;
 use Thor\Http\Response;
 use Thor\Http\Server;
 
-use Thor\App\Entities\User;
 use Thor\Validation\Filters\PostVarRegex;
+
+use Packages\EMS\Main\Domain\Managers\UserManager;
+use Packages\EMS\Main\Entities\User;
 
 final class Users extends BaseController
 {

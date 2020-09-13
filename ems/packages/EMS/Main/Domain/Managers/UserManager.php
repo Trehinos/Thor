@@ -1,10 +1,11 @@
 <?php
 
-namespace Thor\App\Managers;
+namespace Packages\EMS\Main\Domain\Managers;
 
 use Exception;
 
-use Thor\App\Entities\User;
+use Packages\EMS\Main\Entities\User;
+
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 

@@ -11,11 +11,12 @@
 
 require_once __DIR__ . '/engine/vendors/php/autoload.php';
 
+use Symfony\Component\Yaml\Yaml;
+
 use Thor\Debug\Logger;
 use Thor\Globals;
 use Thor\Http\HttpKernel;
 use Thor\Application;
-use Symfony\Component\Yaml\Yaml;
 
 $config = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'config.yml'));
 $databases = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'database.yml'));
