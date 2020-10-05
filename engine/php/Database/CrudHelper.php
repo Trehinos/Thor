@@ -5,7 +5,6 @@ namespace Thor\Database;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\PdoExtension\PdoRowInterface;
 use Thor\Database\Sql\Criteria;
-use Thor\Debug\Logger;
 
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRowInterface objects.
@@ -16,6 +15,7 @@ final class CrudHelper
 {
 
     private PdoRequester $requester;
+
     private string $className;
 
     /**
@@ -31,11 +31,21 @@ final class CrudHelper
         $this->className = $className;
     }
 
+    /**
+     * table(): returns the table name calculated from classname.
+     *
+     * @return string
+     */
     public function table(): string
     {
         return strtolower(substr($this->className, strrpos($this->className, '\\') + 1));
     }
 
+    /**
+     * listAll(): lists all records of a table.
+     *
+     * @return array
+     */
     public function listAll(): array
     {
         $rows = $this->requester->request("SELECT * FROM {$this->table()}", [])->fetchAll();
@@ -53,6 +63,8 @@ final class CrudHelper
     }
 
     /**
+     * createOne(): create one record from a PdoRowInterface object.
+     *
      * @param PdoRowInterface $row
      *
      * @return string the public_id
@@ -66,7 +78,9 @@ final class CrudHelper
     }
 
     /**
-     * @param array $rows
+     * createMultiple(): create one record for each PdoRowInterface object in the $rows array.
+     *
+     * @param PdoRowInterface[] $rows
      *
      * @return bool
      */
@@ -87,6 +101,15 @@ final class CrudHelper
         return $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $allValues);
     }
 
+    /**
+     * compileRowValues(): compile a PdoRowInterface into an array of columns, one "?" per value, and an array of parameters.
+     *
+     * @param PdoRowInterface $row
+     *
+     * @return array
+     *
+     * @internal
+     */
     private static function compileRowValues(PdoRowInterface $row): array
     {
         $row->generatePublicId();
@@ -99,16 +122,37 @@ final class CrudHelper
         return [$columns, $values, array_values($pdoArray)];
     }
 
+    /**
+     * readOne(): performs a SELECT statement from the table with corresponding ID.
+     *
+     * @param string $id
+     *
+     * @return mixed|null
+     */
     public function readOne(string $id)
     {
         return $this->readOneBy(new Criteria(['id' => $id]));
     }
 
+    /**
+     * readOneFromPid(): performs a SELECT statement from the table with corresponding public ID.
+     *
+     * @param string $pid
+     *
+     * @return mixed|null
+     */
     public function readOneFromPid(string $pid)
     {
         return $this->readOneBy(new Criteria(['public_id' => $pid]));
     }
 
+    /**
+     * readOneBy(): performs a SELECT statement from the table with corresponding criteria and returns one row.
+     *
+     * @param Criteria $criteria
+     *
+     * @return mixed|null
+     */
     public function readOneBy(Criteria $criteria)
     {
         $sql = Criteria::getWhere($criteria);
@@ -125,6 +169,8 @@ final class CrudHelper
     }
 
     /**
+     * readMultipleBy(): performs a SELECT statement from the table with corresponding criteria and returns every rows.
+     *
      * @param Criteria $criteria
      *
      * @return array
@@ -149,6 +195,13 @@ final class CrudHelper
         return $objs;
     }
 
+    /**
+     * updateOne(): update one row in the database with the corresponding ID.
+     *
+     * @param PdoRowInterface $row
+     *
+     * @return bool
+     */
     public function updateOne(PdoRowInterface $row): bool
     {
         $pdoArray = $row->toPdoArray();
@@ -160,11 +213,26 @@ final class CrudHelper
         );
     }
 
+    /**
+     * deleteOne(): delete one record with the corresponding ID.
+     *
+     * @param PdoRowInterface $row
+     *
+     * @return bool
+     */
     public function deleteOne(PdoRowInterface $row): bool
     {
         return $this->requester->execute("DELETE FROM {$this->table()} WHERE id=?", [$row->getId()]);
     }
 
+    /**
+     * instantiateFromRow(): instantiate a PdoRowInterface specialization from a row array.
+     *
+     * @param string $className
+     * @param array $row
+     *
+     * @return mixed
+     */
     public static function instantiateFromRow(string $className, array $row)
     {
         $rowObj = new $className();

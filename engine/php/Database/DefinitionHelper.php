@@ -5,6 +5,9 @@ namespace Thor\Database;
 final class DefinitionHelper
 {
 
+    /**
+     * @var array the array definition representation.
+     */
     private array $schema;
 
     public function __construct(array $configuration)
@@ -12,6 +15,13 @@ final class DefinitionHelper
         $this->schema = $configuration;
     }
 
+    /**
+     * getDefinition(): returns an array representation of a table (without table inheritance).
+     *
+     * @param string $name
+     *
+     * @return array|null
+     */
     public function getDefinition(string $name): ?array
     {
         foreach ($this->schema as $definition) {
@@ -23,6 +33,13 @@ final class DefinitionHelper
         return null;
     }
 
+    /**
+     * getTableDefinition(): returns an array representation of a table (with table inheritance).
+     *
+     * @param string $name
+     *
+     * @return array|null
+     */
     public function getTableDefinition(string $name): ?array
     {
         $tableDef = $this->getDefinition($name);
@@ -45,6 +62,13 @@ final class DefinitionHelper
         return $tableDef;
     }
 
+    /**
+     * getTableDefinitionSql(): returns a create statement SQL code for the named table.
+     *
+     * @param string $name
+     *
+     * @return string|null
+     */
     public function getTableDefinitionSql(string $name): ?string
     {
         $tableDefinition = $this->getTableDefinition($name);
@@ -88,6 +112,11 @@ final class DefinitionHelper
         return "CREATE TABLE $name ($rowsStr)";
     }
 
+    /**
+     * getTableList(): returns all names of real tables in the definition array.
+     *
+     * @return array
+     */
     public function getTablesList(): array
     {
         $tableNames = [];

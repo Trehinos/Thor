@@ -32,6 +32,14 @@ final class Logger
         self::ERROR => 'ERR',
     ];
 
+    /**
+     * Logger constructor.
+     *
+     * @param string $env
+     * @param string $basePath
+     * @param string $dateFormat
+     * @param string|null $filename
+     */
     public function __construct(
         string $env = 'DEV',
         string $basePath = __DIR__ . '/../',
@@ -44,6 +52,15 @@ final class Logger
         $this->filename = $filename;
     }
 
+    /**
+     * log(): writes log message in the log file if level is over the default log level.
+     *
+     * @param string $message
+     * @param int $level
+     * @param int $severity
+     *
+     * @return $this
+     */
     public function log(string $message, int $level = self::DEBUG, int $severity = self::NOTICE): self
     {
         if ($level >= self::LEVELS[$this->env]) {
@@ -71,6 +88,15 @@ final class Logger
 
     private static ?self $logger = null;
 
+    /**
+     * getDefaultLogger(): returns the static logger or create one with specified parameters.
+     *
+     * @param string $env
+     * @param string $basePath
+     * @param string $dateFormat
+     *
+     * @return self
+     */
     public static function getDefaultLogger(
         string $env = 'DEV',
         string $basePath = __DIR__ . '/../',
@@ -79,6 +105,11 @@ final class Logger
         return self::$logger ??= new self($env, $basePath, $dateFormat);
     }
 
+    /**
+     * logThrowable(): logs an exception with the static logger.
+     *
+     * @param \Throwable $e
+     */
     public static function logThrowable(\Throwable $e)
     {
         $pad = str_repeat(' ', 37);
@@ -96,6 +127,13 @@ final class Logger
         self::write($message, Logger::DEBUG, Logger::ERROR);
     }
 
+    /**
+     * log(): writes log message with the static logger if level is over the static log level.
+     *
+     * @param string $message
+     * @param int $level
+     * @param int $severity
+     */
     public static function write(string $message, int $level = self::DEV, int $severity = self::NOTICE)
     {
         self::getDefaultLogger()->log($message, $level, $severity);
