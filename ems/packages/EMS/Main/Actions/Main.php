@@ -5,6 +5,7 @@ namespace Packages\EMS\Main\Actions;
 use Symfony\Component\Yaml\Yaml;
 
 use Thor\Database\CrudHelper;
+use Thor\Database\DefinitionHelper;
 use Thor\Debug\Logger;
 use Thor\Globals;
 use Thor\Http\BaseController;
@@ -24,10 +25,14 @@ final class Main extends BaseController
      */
     public function index(): Response
     {
+        $dHelper = new DefinitionHelper(Yaml::parseFile(Globals::STATIC_DIR . 'db_definition.yml')['schema'] ?? []);
+        $defs = $dHelper->getTablesList();
+
         return $this->view(
             'pages/index.html.twig',
             [
-                'routes' => $this->getServer()->getRouter()->getRoutes()
+                'routes' => $this->getServer()->getRouter()->getRoutes(),
+                'defs' => $defs
             ]
         );
     }

@@ -75,15 +75,17 @@ final class Users extends BaseController
             $errors[] = 'too-short-password';
         }
 
-        if (empty($errors)) {
-            $this->manager->createUser($username, $clearPassword);
+        if (!empty($errors)) {
+            Logger::write(print_r($errors, true), Logger::DEBUG, Logger::ERROR);
+            exit;
         }
 
+        $this->manager->createUser($username, $clearPassword);
         return $this->redirect('users');
     }
 
     /**
-     * GET /users/edit
+     * GET /users/$public_id/edit/form
      *
      * @param string $public_id
      *
@@ -101,6 +103,12 @@ final class Users extends BaseController
         );
     }
 
+    /**
+     * POST /users/$public_id/edit/action
+     *
+     * @param string $public_id
+     * @return Response
+     */
     public function editAction(string $public_id): Response
     {
         $username = $this->usernameFilter->filter('username');

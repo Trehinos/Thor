@@ -2,7 +2,7 @@ schema:
     -   name: default
         type: virtual
         columns:
-            id: INT NOT NULL PRIMARY KEY AUTO_INCREMENT
+            id: INT NOT NULL AUTO_INCREMENT
             public_id: VARCHAR(255) NOT NULL
         index:
             id: PRIMARY

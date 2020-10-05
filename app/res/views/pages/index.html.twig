@@ -19,6 +19,7 @@
             {{ _.index.tip }} <code>engine/config/routes.yml</code>.
         </div>
     </div>
+    {{ dump(defs) }}
     <ul>
         {% for routeName, route in routes %}
             <li class="align-text-top mb-4" id="route-{{ routeName }}">
@@ -88,6 +89,5 @@
         $(() => {
 
         });
-
     </script>
 {% endblock %}
