@@ -20,6 +20,11 @@
         </div>
     </div>
     {{ dump(defs) }}
+    {% for def in defs %}
+    <pre>
+        {{ helper.tableDefinitionSql(def.name) }}
+    </pre>
+    {% endfor %}
     <ul>
         {% for routeName, route in routes %}
             <li class="align-text-top mb-4" id="route-{{ routeName }}">

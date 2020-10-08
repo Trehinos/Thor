@@ -32,7 +32,8 @@ final class Main extends BaseController
             'pages/index.html.twig',
             [
                 'routes' => $this->getServer()->getRouter()->getRoutes(),
-                'defs' => $defs
+                'defs' => $defs,
+                'helper' => $dHelper
             ]
         );
     }

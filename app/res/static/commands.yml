@@ -1,0 +1,17 @@
+help:
+    class: Packages\EMS\Main\Commands\Main
+    method: help
+
+echo:
+    class: Packages\EMS\Main\Commands\Main
+    method: echo
+    options:
+        - short: u
+          long: upper
+        - short: l
+          long: lower
+        - short: c
+          long: color
+          value: "0*1?[0-9]"
+    arguments:
+        message: ".*"

@@ -13,7 +13,7 @@ final class CliKernel implements KernelInterface
     /**
      * CliKernel constructor.
      *
-     * @param array $commands
+     * @param CommandInterface[] $commands
      * @param string ...$commandLineArguments
      */
     public function __construct(array $commands, string ...$commandLineArguments)
@@ -24,6 +24,18 @@ final class CliKernel implements KernelInterface
 
     public function execute()
     {
-        // @TODO parse command line arguments and execute the right command from commands array
+
     }
+
+    /**
+     * @param CommandInterface[] $commands
+     *
+     * @return self
+     */
+    public static function createCli(array $commands): self
+    {
+        global $argv;
+        return new self($commands, ...$argv);
+    }
+
 }

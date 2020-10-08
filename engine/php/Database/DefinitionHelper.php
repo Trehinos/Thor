@@ -46,6 +46,7 @@ final class DefinitionHelper
         if (null === $tableDef) {
             return null;
         }
+        
         $extends = $tableDef['extends'] ?? null;
         if (null !== $extends) {
             $extendsDef = $this->getTableDefinition($extends);
@@ -55,8 +56,8 @@ final class DefinitionHelper
             $tableDef['columns'] ??= [];
             $tableDef['index'] ??= [];
 
-            $tableDef['columns'] += ($extendsDef['columns'] ?? []);
-            $tableDef['index'] += ($extendsDef['index'] ?? []);
+            $tableDef['columns'] = ($extendsDef['columns'] ?? []) + $tableDef['columns'] ;
+            $tableDef['index'] = ($extendsDef['index'] ?? []) + $tableDef['index'];
         }
 
         return $tableDef;
