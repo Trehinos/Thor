@@ -27,6 +27,15 @@ final class HttpKernel implements KernelInterface
      */
     public function __construct(array $configuration)
     {
+        if ('cli' === php_sapi_name()) {
+            Logger::write(
+                "PANIC ABORT : HTTP kernel tried to be executed from CLI context.",
+                Logger::PROD,
+                Logger::ERROR
+            );
+            exit;
+        }
+        Logger::write('Start HTTP context');
         $router = self::createRouterFromConfiguration($configuration['routes'] ?? []);
         $twig = self::createTwigFromConfiguration($configuration['twig'] ?? []);
         $pdos = self::createDatabasesFromConfiguration($configuration['databases'] ?? []);
@@ -79,7 +88,12 @@ final class HttpKernel implements KernelInterface
     private static function createTwigFromConfiguration(array $twig_config): Environment
     {
         return new Environment(
-            new FilesystemLoader(Globals::CODE_DIR . ($twig_config['views_dir'] ?? '')),
+            new FilesystemLoader(
+                array_map(
+                    fn(string $path) => Globals::CODE_DIR . $path,
+                    $twig_config['views_dir'] ?? []
+                )
+            ),
             [
                 'cache' => Globals::CODE_DIR . ($twig_config['cache_dir'] ?? ''),
                 'debug' => Server::ENV !== Server::PROD

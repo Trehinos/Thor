@@ -1,24 +1,23 @@
 schema:
+### THOR ###############################################################################################################
     -   name: default
         type: virtual
         columns:
             id: INT NOT NULL AUTO_INCREMENT
             public_id: VARCHAR(255) NOT NULL
         index:
-            primary:
-                id
-            unique:
-                - public_id
+            id: PRIMARY
+            public_id: UNIQUE
 
-    -   extends: default
-        name: user
+### EMS ################################################################################################################
+    -   name: user
+        extends: default
         type: table
         columns:
             username: VARCHAR(255) NOT NULL
             password: VARCHAR(255) NOT NULL
         index:
-            unique:
-                - username
+            username: UNIQUE
 
     -   name: permissions
         type: enumeration
@@ -44,10 +43,9 @@ schema:
             modified: DATETIME DEFAULT NULL
             permissions: ENUM:permissions
         index:
-            unique:
-                - name
-                - owner, created
+            name: UNIQUE
 
+### APP ################################################################################################################
     -   extends: meta
         name: account
         type: table

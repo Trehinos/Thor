@@ -2,6 +2,9 @@
 
 namespace Thor\Debug;
 
+use DateTime;
+use Throwable;
+
 final class Logger
 {
 
@@ -41,7 +44,7 @@ final class Logger
      * @param string|null $filename
      */
     public function __construct(
-        string $env = 'DEV',
+        string $env,
         string $basePath = __DIR__ . '/../',
         string $dateFormat = 'Y-m-d H:i:s.v',
         ?string $filename = null
@@ -70,7 +73,7 @@ final class Logger
                 ' ',
                 STR_PAD_RIGHT
             );
-            $now = new \DateTime();
+            $now = new DateTime();
             $nowStr = $now->format($this->dateFormat);
             $sev = str_pad(self::SEVERITY[$severity], 3, ' ', STR_PAD_LEFT);
             $message = "$nowStr $env $sev: $message";
@@ -98,19 +101,25 @@ final class Logger
      * @return self
      */
     public static function getDefaultLogger(
-        string $env = 'DEV',
+        ?string $env = null,
         string $basePath = __DIR__ . '/../',
         string $dateFormat = 'Y-m-d H:i:s.v'
     ): self {
-        return self::$logger ??= new self($env, $basePath, $dateFormat);
+        if (null !== self::$logger && $env !== null) {
+            self::$logger->env = $env;
+            self::$logger->basePath = $basePath;
+            self::$logger->dateFormat = $dateFormat;
+        }
+
+        return self::$logger ??= new self($env ?? 'DEV', $basePath, $dateFormat);
     }
 
     /**
      * logThrowable(): logs an exception with the static logger.
      *
-     * @param \Throwable $e
+     * @param Throwable $e
      */
-    public static function logThrowable(\Throwable $e)
+    public static function logThrowable(Throwable $e)
     {
         $pad = str_repeat(' ', 37);
         $traceStr = '';

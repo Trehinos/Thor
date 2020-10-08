@@ -5,21 +5,25 @@ namespace Thor\Cli;
 final class CommandArgument
 {
 
-    private string $shortArgument;
+    public string $name;
 
-    private string $longArgument;
+    public string $shortArgument;
 
-    private string $description;
+    public string $longArgument;
 
-    private bool $hasValue;
+    public string $description;
+
+    public bool $hasValue;
 
     public function __construct(
-        string $longArgument,
-        ?string $shortArgument = null,
+        string $name,
         string $description = '',
-        bool $hasValue = false
+        bool $hasValue = false,
+        ?string $longArgument = null,
+        ?string $shortArgument = null
     ) {
-        $this->longArgument = $longArgument;
+        $this->name = strtolower($name);
+        $this->longArgument = strtolower($longArgument ?? $name);
         $this->shortArgument = $shortArgument ?? substr($longArgument, 0, 1);
         $this->description = $description;
         $this->hasValue = $hasValue;

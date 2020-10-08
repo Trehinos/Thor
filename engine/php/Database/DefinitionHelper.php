@@ -46,7 +46,7 @@ final class DefinitionHelper
         if (null === $tableDef) {
             return null;
         }
-        
+
         $extends = $tableDef['extends'] ?? null;
         if (null !== $extends) {
             $extendsDef = $this->getTableDefinition($extends);
@@ -82,10 +82,19 @@ final class DefinitionHelper
             $rows[] = "$cName AS $def";
         }
 
+        $rows = array_merge($rows, $this->compileIndexes($tableDefinition['index'] ?? []));
+
+        $rowsStr = implode(', ', $rows);
+        return "CREATE TABLE $name ($rowsStr)";
+    }
+
+    private function compileIndexes(array $indexes): array
+    {
+        $rows = [];
         $pks = [];
         $unq = [];
         $idx = [];
-        foreach ($tableDefinition['index'] as $indexName => $def) {
+        foreach ($indexes as $indexName => $def) {
             switch (strtoupper($def)) {
                 case 'PRIMARY':
                     $pks[] = $indexName;
@@ -109,8 +118,7 @@ final class DefinitionHelper
             $rows[] = 'INDEX (' . implode(', ', $idx) . ')';
         }
 
-        $rowsStr = implode(', ', $rows);
-        return "CREATE TABLE $name ($rowsStr)";
+        return $rows;
     }
 
     /**

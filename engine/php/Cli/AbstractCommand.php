@@ -17,10 +17,9 @@ abstract class AbstractCommand implements CommandInterface
      */
     public function __construct(
         string $command,
-        string $description,
+        string $description = '',
         array $arguments = []
-    )
-    {
+    ) {
         $this->command = $command;
         $this->description = $description;
         $this->arguments = $arguments;
@@ -32,6 +31,14 @@ abstract class AbstractCommand implements CommandInterface
     public function getCommand(): string
     {
         return $this->command;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
     /**
