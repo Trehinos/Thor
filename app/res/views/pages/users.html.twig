@@ -7,6 +7,8 @@
     <style>
         #users .user .btn, #users .user small {
             opacity: 0.1;
+        }
+        #users .user small {
             transition: opacity ease 0.6s;
         }
         #users .user {
@@ -14,11 +16,15 @@
             transition: background-color ease 0.6s;
             box-shadow: #7774 0 0 2px 1px;
         }
+
         #users .user:hover {
             background: #fff;
         }
 
-        #users .user:hover .btn, #users .user:hover small {
+        #users .user:hover .btn:disabled {
+            opacity: 0.5;
+        }
+        #users .user:hover .btn:enabled, #users .user:hover small {
             opacity: 1;
         }
     </style>
@@ -37,27 +43,39 @@
 
 {% block page %}
     <div class="d-flex flex-wrap justify-content-around" id="users">
-    {% for user in users %}
-        <div class="m-1 p-4 user">
-            {{ icon('user', 'fa-2x fas')|raw }}
-            {{ user.username }}
-            <small>#{{ user.publicId }}</small>
-            <hr class="mt-1 mb-2">
-            <button class="btn btn-sm btn-secondary"
-                    onclick="Modal.load('{{ url('users-edit-form', {public_id: user.publicId}) }}');"
-            >
-                {{ icon('edit')|raw }}
-                {{ _.general.edit }}
-            </button>
-            <button class="btn btn-sm btn-warning">
-                {{ icon('lock')|raw }}
-                {{ _.users.change_password }}
-            </button>
-            <button class="btn btn-sm btn-danger">
-                {{ icon('trash')|raw }}
-                {{ _.general.remove }}
-            </button>
-        </div>
-    {% endfor %}
+        {% for user in users %}
+            <div class="m-1 p-4 user">
+                {{ icon('user', 'fa-2x fas')|raw }}
+                {{ user.username }}
+                <small>#{{ user.publicId }}</small>
+                <hr class="mt-1 mb-2">
+                <button class="btn btn-sm btn-secondary"
+                        onclick="Modal.load('{{ url('users-edit-form', {public_id: user.publicId}) }}');"
+                >
+                    {{ icon('edit')|raw }}
+                    {{ _.general.edit }}
+                </button>
+                <button class="btn btn-sm btn-secondary"
+                        disabled
+                >
+                    {{ icon('user-friends')|raw }}
+                    Groupes
+                </button>
+                <button class="btn btn-sm btn-warning">
+                    {{ icon('lock')|raw }}
+                    {{ _.users.change_password }}
+                </button>
+                <form onsubmit="if(!confirm('Supprimer l\'utilisateur {{ user.username }} ?')) return false;"
+                      action="{{ url('users-delete-action', {public_id: user.publicId}) }}"
+                      method="POST"
+                      style="display: inline-block"
+                >
+                    <button class="btn btn-sm btn-danger">
+                        {{ icon('trash')|raw }}
+                        {{ _.general.remove }}
+                    </button>
+                </form>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

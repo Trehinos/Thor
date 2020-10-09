@@ -10,71 +10,71 @@
 # main routes
 menu:
     action:
-        class: Thor\App\Actions\Main
+        class: Packages\EMS\Main\Actions\Main
         method: menu
 
 index:
     path: "/"
     method: GET
     action:
-        class: Thor\App\Actions\Main
+        class: Packages\EMS\Main\Actions\Main
         method: index
 
 changelog:
     path: "/changelog"
     method: GET
     action:
-        class: Thor\App\Actions\Main
+        class: Packages\EMS\Main\Actions\Main
         method: changelog
 
 about:
     path: "/about"
     method: GET
     action:
-        class: Thor\App\Actions\Main
+        class: Packages\EMS\Main\Actions\Main
         method: about
 
 legal:
     path: "/legal"
     method: GET
     action:
-        class: Thor\App\Actions\Main
+        class: Packages\EMS\Main\Actions\Main
         method: legal
 
 create-admin:
     path: "/framework/create/admin"
     method: POST
     action:
-        class: Thor\App\Actions\Main
+        class: Packages\EMS\Main\Actions\Main
         method: createAdmin
 
 generate-url:
     path: "/framework/generate-url"
     method: GET
     action:
-        class: Thor\App\Actions\Main
+        class: Packages\EMS\Main\Actions\Main
         method: generateUrlResponse
 
-# users routes
+# users routes__________________________________________________________________________________________________________
 users:
     path: "/users"
     method: GET
     action:
-        class: Thor\App\Actions\Users
+        class: Packages\EMS\Main\Actions\Users
         method: usersInterface
 
 users-create-form:
     path: "/users/create/form"
     method: GET
     action:
-        class: Thor\App\Actions\Users
+        class: Packages\EMS\Main\Actions\Users
         method: createForm
 
 users-create-action:
     path: "/users/create/action"
     method: POST
     action:
-        class: Thor\App\Actions\Users
+        class: Packages\EMS\Main\Actions\Users
         method: createAction
 
 users-edit-form:
@@ -84,7 +84,7 @@ users-edit-form:
         public_id:
             regex: "[A-Za-z0-9-]+"
     action:
-        class: Thor\App\Actions\Users
+        class: Packages\EMS\Main\Actions\Users
         method: editForm
 
 users-edit-action:
@@ -94,5 +94,15 @@ users-edit-action:
         public_id:
             regex: "[A-Za-z0-9-]+"
     action:
-        class: Thor\App\Actions\Users
+        class: Packages\EMS\Main\Actions\Users
         method: editAction
+
+users-delete-action:
+    path: "/users/$public_id/delete"
+    method: POST
+    parameters:
+        public_id:
+            regex: "[A-Za-z0-9-]+"
+    action:
+        class: Packages\EMS\Main\Actions\Users
+        method: deleteAction
