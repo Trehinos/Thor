@@ -7,9 +7,10 @@
     <style>
         #users .user .btn, #users .user small {
             opacity: 0.1;
+        }
+        #users .user small {
             transition: opacity ease 0.6s;
         }
-
         #users .user {
             background: none;
             transition: background-color ease 0.6s;
@@ -20,7 +21,10 @@
             background: #fff;
         }
 
-        #users .user:hover .btn, #users .user:hover small {
+        #users .user:hover .btn:disabled {
+            opacity: 0.5;
+        }
+        #users .user:hover .btn:enabled, #users .user:hover small {
             opacity: 1;
         }
     </style>
@@ -50,6 +54,12 @@
                 >
                     {{ icon('edit')|raw }}
                     {{ _.general.edit }}
+                </button>
+                <button class="btn btn-sm btn-secondary"
+                        disabled
+                >
+                    {{ icon('user-friends')|raw }}
+                    Groupes
                 </button>
                 <button class="btn btn-sm btn-warning">
                     {{ icon('lock')|raw }}
