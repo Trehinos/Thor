@@ -53,12 +53,14 @@ final class Criteria
                 } else {
                     ['op' => $op, 'value' => $value] = self::parseValue($value);
 
+                    $mark = '?';
                     if ($value === null) {
-                        $mark = 'NULL';
+                        $op = ($op === '=' ? 'IS' : ($op === '!=' ? 'IS NOT' : $op));
+                        $sqlArray[] = "$key $op NULL";
                     }
 
                     $params[] = $value;
-                    $sqlArray[] = "$key $op ?";
+                    $sqlArray[] = "$key $op $mark";
                 }
             }
         }
@@ -102,57 +104,59 @@ final class Criteria
         ['sql' => $this->sql, 'params' => $this->params] = self::compile($this->criteria, $this->andGlue);
     }
 
-    private static function parseValue(string $value): array
+    private static function parseValue(?string $value): array
     {
         $op = '=';
-        switch ($twoFirsts = substr($value, 0, 2)) {
-            case '!=':
-            case '<>':
-            case '>=':
-            case '<=':
-                $op = $twoFirsts;
-                $value = substr($value, 2);
-                break;
+        if (null !== $value) {
+            switch ($twoFirsts = substr($value, 0, 2)) {
+                case '!=':
+                case '<>':
+                case '>=':
+                case '<=':
+                    $op = $twoFirsts;
+                    $value = substr($value, 2);
+                    break;
 
-            case '%*':
-                $op = 'LIKE';
-                $value = substr("%$value", 2);
-                break;
+                case '%*':
+                    $op = 'LIKE';
+                    $value = substr("%$value", 2);
+                    break;
 
-            case '*%':
-                $op = 'LIKE';
-                $value = substr("$value%", 2);
-                break;
+                case '*%':
+                    $op = 'LIKE';
+                    $value = substr("$value%", 2);
+                    break;
 
-            case '!%';
-                $op = 'NOT LIKE';
-                $value = substr("%$value%", 2);
-                break;
+                case '!%';
+                    $op = 'NOT LIKE';
+                    $value = substr("%$value%", 2);
+                    break;
 
-            default:
-                switch ($first = substr($value, 0, 1)) {
-                    case '=':
-                    case '>':
-                    case '<':
-                        $op = $first;
-                        $value = substr($value, 1);
-                        break;
+                default:
+                    switch ($first = substr($value, 0, 1)) {
+                        case '=':
+                        case '>':
+                        case '<':
+                            $op = $first;
+                            $value = substr($value, 1);
+                            break;
 
-                    case '%':
-                        $op = 'LIKE';
-                        $value = substr("%$value%", 1);
-                        break;
+                        case '%':
+                            $op = 'LIKE';
+                            $value = substr("%$value%", 1);
+                            break;
 
-                    case '!':
-                        $op = 'NOT';
-                        $value = null;
-                        break;
+                        case '!':
+                            $op = 'NOT';
+                            $value = null;
+                            break;
 
-                    case '$':
-                        $op = '';
-                        $value = null;
-                        break;
-                }
+                        case '$':
+                            $op = '';
+                            $value = null;
+                            break;
+                    }
+            }
         }
 
         return [

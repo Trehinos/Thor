@@ -11,7 +11,7 @@
  * @since 2020-06
  */
 
-require_once __DIR__ . '/engine/vendors/php/autoload.php';
+require_once __DIR__ . '/vendors/autoload.php';
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -73,6 +73,7 @@ try {
     Logger::logThrowable($e);
     echo "UNRECOVERABLE ERROR\n";
     if (in_array($thor_env, ['dev', 'debug'])) {
+        echo "<pre>";
         throw $e;
     }
 }

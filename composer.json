@@ -11,13 +11,13 @@
         }
     ],
     "config": {
-        "vendor-dir": "engine/vendors/php/",
+        "vendor-dir": "vendors/",
         "bin-dir": "bin/"
     },
     "autoload": {
         "psr-4": {
             "App\\": "app/src/",
-            "Thor\\": "engine/php/",
+            "Thor\\": "thor/",
             "Packages\\": "ems/packages/",
             "Plugins\\": "ems/plugins/",
             "Themes\\": "ems/themes/",
