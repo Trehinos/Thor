@@ -9,7 +9,6 @@ schema:
             id: PRIMARY
             public_id: UNIQUE
 
-### EMS ################################################################################################################
     -   name: user
         extends: default
         type: table
@@ -19,6 +18,7 @@ schema:
         index:
             username: UNIQUE
 
+### EMS ################################################################################################################
     -   name: permissions
         type: enumeration
         values:

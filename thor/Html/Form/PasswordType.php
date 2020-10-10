@@ -5,9 +5,9 @@ namespace Thor\Html\Form;
 class PasswordType extends InputType
 {
 
-    public function __construct(bool $readOnly = false, bool $required = false)
+    public function __construct(string $name, bool $required = false, bool $readOnly = false)
     {
-        parent::__construct('password', $readOnly, $required);
+        parent::__construct($name,'password', $readOnly, $required);
         $this->set('');
     }
 

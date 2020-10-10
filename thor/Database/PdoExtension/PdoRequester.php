@@ -6,24 +6,38 @@ use PDOStatement;
 
 use Thor\Debug\Logger;
 
+/**
+ * Class PdoRequester: use a PdoHandler to request a database.
+ * @package Thor\Database\PdoExtension
+ *
+ * @since 2020-06
+ * @version 1.0
+ * @author Sébastien Geldreich
+ * @copyright Author
+ * @license MIT
+ */
 final class PdoRequester
 {
 
     private PdoHandler $handler;
 
+    /**
+     * PdoRequester constructor.
+     *
+     * @param PdoHandler $handler
+     */
     public function __construct(PdoHandler $handler)
     {
         $this->handler = $handler;
     }
 
     /**
-     * execute
-     *      Execute a parameterized SQL query with the PdoHandler
+     * execute(): execute a parameterized SQL query with the PdoHandler
      *
      * @param string $sql
      * @param array $parameters
      *
-     * @return bool
+     * @return bool if the request is a success.
      */
     public function execute(string $sql, array $parameters = []): bool
     {
@@ -34,13 +48,12 @@ final class PdoRequester
     }
 
     /**
-     * request
-     *      Execute a parameterized SQL query with the PdoHandler and returns the result as a PDOStatement object.
+     * request(): execute a parameterized SQL query with the PdoHandler and returns the result as a PDOStatement object.
      *
      * @param string $sql
      * @param array $parameters
      *
-     * @return PDOStatement
+     * @return PDOStatement as a result.
      */
     public function request(string $sql, array $parameters = []): PDOStatement
     {

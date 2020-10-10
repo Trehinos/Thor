@@ -17,6 +17,8 @@ use Symfony\Component\Yaml\Yaml;
 
 use Thor\Cli\CliKernel;
 use Thor\ConfigurationLoader;
+use Thor\Database\DefinitionHelper;
+use Thor\Database\PdoExtension\AdvancedPdoRow;
 use Thor\Debug\Logger;
 use Thor\Globals;
 use Thor\Http\HttpKernel;
@@ -40,6 +42,12 @@ if ('prod' === $thor_env) {
 } else {
     ini_set('display_errors', E_ALL);
 }
+
+// Static state
+AdvancedPdoRow::$definitionHelper = new DefinitionHelper(
+    ConfigurationLoader::loadStatic('db_definition')['db_definition']['schema'] ?? []
+);
+
 
 // Execute kernel
 $kernel = null;

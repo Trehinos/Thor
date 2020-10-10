@@ -12,9 +12,20 @@ class InputType extends HtmlTag implements FieldInterface
      */
     private $value;
 
-    public function __construct(string $type, bool $readOnly = false, bool $required = false)
+    public function __construct(string $name, string $type, bool $required = false, bool $readOnly = false)
     {
-        parent::__construct('input', true, ['type' => $type, 'readonly' => $readOnly, 'required' => $required]);
+        parent::__construct(
+            'input',
+            true,
+            [
+                'type' => $type,
+                'readonly' => $readOnly,
+                'required' => $required,
+                'name' => $name,
+                'id' => $name,
+                'class' => 'form-control'
+            ]
+        );
     }
 
     /**

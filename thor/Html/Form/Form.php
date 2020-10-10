@@ -2,6 +2,7 @@
 
 namespace Thor\Html\Form;
 
+use Thor\Database\PdoExtension\PdoRowInterface;
 use Thor\Html\HtmlTag;
 use Thor\Http\Request;
 
@@ -17,11 +18,17 @@ abstract class Form extends HtmlTag implements FormInterface
 
     abstract public static function formDefinition(): array;
 
+    /**
+     * @param FieldInterface[] $data
+     */
     public function setData(array $data): void
     {
         $this->data = $data + $this->data;
     }
 
+    /**
+     * @return FieldInterface[]
+     */
     public function getFields(): array
     {
         return $this->data;
@@ -30,6 +37,14 @@ abstract class Form extends HtmlTag implements FormInterface
     public function getChildren(): array
     {
         return array_values(static::formDefinition());
+    }
+
+    /**
+     * @param PdoRowInterface $row
+     */
+    public static function setFromPdoRow(PdoRowInterface $row): void
+    {
+
     }
 
 }

@@ -2,9 +2,22 @@
 
 namespace Thor\Cli;
 
+/**
+ * Interface CommandInterface
+ * @package Thor\Cli
+ *
+ * @since 2020-09
+ * @version 1.0
+ * @author Sébastien Geldreich
+ * @copyright Author
+ * @license MIT
+ */
 interface CommandInterface
 {
 
+    /**
+     * @return string the command name.
+     */
     public function getCommand(): string;
 
     /**
@@ -12,8 +25,14 @@ interface CommandInterface
      */
     public function getArguments(): array;
 
+    /**
+     * @return string an optional description.
+     */
     public function getDescription(): string;
 
+    /**
+     * what the command do when executed.
+     */
     public function execute(): void;
 
     /**
@@ -21,6 +40,6 @@ interface CommandInterface
      *
      * @return array ['arg' => value]
      */
-    public function parseArguments(array $argvCopy): array;
+    public function compileArguments(array $argvCopy): array;
 
 }

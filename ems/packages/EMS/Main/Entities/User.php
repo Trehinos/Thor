@@ -7,6 +7,8 @@ use Thor\Security\BaseDbUser;
 class User extends BaseDbUser
 {
 
+    public static string $tableName = 'user';
+
     public function __construct(string $username = '', string $clearPwd = '')
     {
         parent::__construct($username, $clearPwd);
