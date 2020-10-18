@@ -2,15 +2,16 @@
 
 namespace Thor\Http;
 
-use Thor\Database\PdoExtension\PdoCollection;
-use Thor\Database\PdoExtension\PdoHandler;
-
-use Thor\Debug\Logger;
-use Thor\Factories\TwigFactory;
 use Thor\Globals;
+use Thor\Debug\Logger;
+use Thor\KernelInterface;
 use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
-use Thor\KernelInterface;
+use Thor\Factories\TwigFactory;
+use Thor\Security\SecurityContext;
+use Thor\Security\SecurityConfiguration;
+use Thor\Database\PdoExtension\PdoHandler;
+use Thor\Database\PdoExtension\PdoCollection;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -39,17 +40,16 @@ final class HttpKernel implements KernelInterface
         $router = self::createRouterFromConfiguration($configuration['routes'] ?? []);
         $twig = self::createTwigFromConfiguration($configuration['twig'] ?? []);
         $pdos = self::createDatabasesFromConfiguration($configuration['databases'] ?? []);
-
-        Logger::write('Instantiate HttpKernel');
-        $this->server = new Server(
-            $twig,
-            $pdos,
-            $router,
-            $configuration['language'] ?? []
-        );
+        $security = self::createSecurityContext($configuration['security'] ?? []);
+        $this->server = new Server($pdos, $router, $twig, $security, $configuration['language'] ?? []);
 
         $twigFactory = new TwigFactory($this->server, $router, $twig);
         $twigFactory->addDefaults();
+    }
+
+    private static function createSecurityContext(array $securityConfig): SecurityContext
+    {
+        return SecurityContext::loadFromSession(new SecurityConfiguration($securityConfig));
     }
 
     private static function createDatabasesFromConfiguration(array $db_config): PdoCollection

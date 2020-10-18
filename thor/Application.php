@@ -85,7 +85,7 @@ final class Application implements KernelInterface
                 case 'http':
                     $kernel = new HttpKernel(
                         ['databases' => self::$databases, 'language' => self::$language] +
-                        ConfigurationLoader::loadConfig('twig') +
+                        ConfigurationLoader::loadConfig('twig', 'security') +
                         ConfigurationLoader::loadStatic('routes')
                     );
                     break;

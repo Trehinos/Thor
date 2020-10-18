@@ -8,6 +8,7 @@ use Thor\Database\PdoExtension\PdoRequester;
 
 use Thor\Debug\Logger;
 use Thor\Http\Routing\Router;
+use Thor\Security\SecurityContext;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -28,20 +29,29 @@ class Server
 
     private ?Router $router;
 
+    private ?SecurityContext $security;
+
     private array $language;
 
     private ?string $current_routeName = null;
 
     public function __construct(
-        ?Environment $twig = null,
         ?PdoCollection $databases = null,
         ?Router $router = null,
-        $language = []
+        ?Environment $twig = null,
+        ?SecurityContext $security = null,
+        array $language = []
     ) {
         $this->twig = $twig;
         $this->databases = $databases;
         $this->router = $router;
+        $this->security = $security;
         $this->language = $language;
+    }
+
+    public function getSecurity(): SecurityContext
+    {
+        return $this->security;
     }
 
     /**
