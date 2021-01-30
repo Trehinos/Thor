@@ -144,11 +144,11 @@ final class HttpKernel implements KernelInterface
         }
         Logger::write('Start HTTP context');
         Logger::write('Load routes configuration');
-        $routes = Yaml::parse(file_get_contents(Globals::STATIC_DIR . 'routes.yml'));
+        $routes = $config['routes'] ?? Yaml::parse(file_get_contents(Globals::STATIC_DIR . 'routes.yml'));
         Logger::write('Load twig configuration');
-        $twig = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'twig.yml'));
+        $twig = $config['twig'] ?? Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'twig.yml'));
         Logger::write('Load security configuration');
-        $security = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'security.yml'));
+        $security = $config['security'] ?? Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'security.yml'));
         $lang = $config['config']['lang'] ?? 'fr';
         Logger::write('Load language configuration');
         $language = Yaml::parse(file_get_contents(Globals::STATIC_DIR . "langs/$lang.yml"));

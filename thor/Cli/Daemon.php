@@ -30,20 +30,22 @@ abstract class Daemon extends Command
             ($lastTime->add(new DateInterval("PT{$this->periodicityInSeconds}S"))) > $now;
     }
 
-    public function executeIfRunnable(): void
+    abstract protected function execute(): void;
+
+    final public function executeIfRunnable(): void
     {
         if ($this->isNowRunnable()) {
             $this->execute();
         }
     }
 
-    public function getStartToday(): DateTime
+    final public function getStartToday(): DateTime
     {
         $now = new DateTime();
         return DateTime::createFromFormat('YmdHis', "{$now->format('Ymd')}{$this->startHis}");
     }
 
-    public function getEndToday(): DateTime
+    final public function getEndToday(): DateTime
     {
         $now = new DateTime();
         return DateTime::createFromFormat('YmdHis', "{$now->format('Ymd')}{$this->endHis}");

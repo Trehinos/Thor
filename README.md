@@ -5,7 +5,7 @@ This project's goal is to provide a base project for business projects.
 **This project is still in development. Further releases installation process will be
 simplified.**
 
-&copy; 2020 Trehinos
+&copy; 2021 Trehinos
 
 ## Build on
 ### Environment
@@ -60,5 +60,5 @@ $config = Yaml::parse(Globals::CONFIG_DIR . 'filename.yml');
 ## [Documentation](docs/SUMMARY.md)
 
 ## License
-License : MIT
+License : MIT  
 &copy; 2021 Trehinos
