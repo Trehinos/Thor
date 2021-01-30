@@ -1,4 +1,4 @@
-# THOR v0.2-dev
+# THOR v0.2
 **Thor** is designed as a PHP *framework* as well as a web *software*.  
 This project's goal is to provide a base project for business projects.
 
@@ -11,7 +11,7 @@ simplified.**
 ### Environment
 * Pdo compatible DBMS
 * HTTP server
-* PHP 7.4+ / Pdo / DBMS PHP drivers
+* PHP 8.0 / Pdo / DBMS PHP drivers
 * Composer
 
 ### Vendors

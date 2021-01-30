@@ -40,12 +40,12 @@ interface PdoRowInterface
     // DEFAULT ACCESSORS & METHODS
 
     /**
-     * @return int the row identifier. Used in foreign keys.
+     * @return ?int the row identifier. Used in foreign keys.
      */
     public function getId(): ?int;
 
     /**
-     * @return string the public row identifier. Used in pages.
+     * @return ?string the public row identifier. Used in pages.
      */
     public function getPublicId(): ?string;
 
