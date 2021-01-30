@@ -11,17 +11,17 @@
         }
     ],
     "config": {
-        "vendor-dir": "engine/vendors/php/",
+        "vendor-dir": "vendors/",
         "bin-dir": "bin/"
     },
     "autoload": {
         "psr-4": {
-            "Thor\\": "engine/php/",
-            "Thor\\App\\": "app/src/"
+            "App\\": "app/src/",
+            "Thor\\": "thor/"
         }
     },
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "ext-pdo": "*",
         "symfony/yaml": "5.*",
         "symfony/var-dumper": "5.*",

@@ -36,3 +36,9 @@ const Modal = {
         return Modal;
     }
 };
+
+const confirmPost = (url, params, message, after) => {
+    if (confirm(message)) {
+        $.post(url, params, after);
+    }
+};

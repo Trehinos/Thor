@@ -42,8 +42,7 @@ about:
     title: "A propos"
     description: |-
         <strong>Thor</strong> est un framework PHP.<br>
-        <strong>Auteur</strong> : Sébastien GELDREICH<br>
-        <strong>Version</strong> : &alpha; - 0.1
+        <strong>License</strong> : MIT (&copy; Sébastien GELDREICH)<br>
 legal:
     title: "Mentions légales"
     description: |-

@@ -1,2 +1,3 @@
 cache_dir: var/cache/twig/
-views_dir: app/res/views/
+views_dir:
+    - app/res/views/

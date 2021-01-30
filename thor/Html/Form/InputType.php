@@ -1,0 +1,27 @@
+<?php
+
+namespace Thor\Html\Form;
+
+use Thor\Html\HtmlTag;
+
+class InputType extends HtmlTag implements FieldInterface
+{
+
+    private string $value;
+
+    public function __construct(string $type, bool $readOnly = false, bool $required = false)
+    {
+        parent::__construct('input', true, ['type' => $type, 'readonly' => $readOnly, 'required' => $required]);
+    }
+
+    public function get(): string
+    {
+        return $this->value;
+    }
+
+    public function set(mixed $value): void
+    {
+        $this->value = (string) $value;
+    }
+
+}

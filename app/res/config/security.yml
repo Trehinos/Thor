@@ -1,0 +1,11 @@
+userPdoRow:
+    pdoRowClass: App\Entities\User
+    passwordCompareMethod: hasPwdHashFor
+configuration:
+    login-route: login
+    logout-route: logout
+    check-route: check
+    session-key: token
+    # token-expire : time in minutes
+    token-expire: 60
+    # pdo-handler: default
