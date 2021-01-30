@@ -7,7 +7,7 @@ simplified.**
 
 &copy; 2021 Trehinos
 
-## Build on
+## Dependencies
 ### Environment
 * Pdo compatible DBMS
 * HTTP server
@@ -40,12 +40,14 @@ All configuration files are in ```thor/app/res/config/``` or in ```thor/app/res/
 ### Config
 * ```config.yml``` contains the main parameters as the language, the environment and the application name...
 * ```database.yml``` contains DB connections information.
+* ```security.yml``` contains security configuration.
 * ```twig.yml``` contains TWIG configuration.
 ### Static
+* ```commands.yml``` contains the CLI commands target class and arguments information.
 * ```db_definition.yml``` contains tables information.
+* ```icons.yml``` font-awesome 5.13.1 icons list.
 * ```menu.yml``` contains the menu settings.
 * ```routes.yml``` contains routes patterns and target controllers information.
-* ```security.yml``` contains security configuration.
 * Languages files
 
 To add a config file, create a new **YAML** file in the configuration folder.
@@ -57,8 +59,9 @@ use Symfony\Component\Yaml\Yaml;
 $config = Yaml::parse(Globals::CONFIG_DIR . 'filename.yml');
 ```  
 
-## [Documentation](docs/SUMMARY.md)
+## Documentation
+Lien : [Documentation](docs/SUMMARY.md)
 
 ## License
-License : MIT  
+License : [MIT](LICENSE)  
 &copy; 2021 Trehinos
