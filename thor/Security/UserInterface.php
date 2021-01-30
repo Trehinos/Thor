@@ -9,6 +9,4 @@ interface UserInterface
 
     public function hasPwdHashFor(string $clearPassword): bool;
 
-    public function getRoles(): array;
-
 }

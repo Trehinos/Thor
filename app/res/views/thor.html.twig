@@ -8,33 +8,57 @@
     <div id="menu">
         {% block menu %}
             <h1 class="text-center mt-4 mb-0 " style="color: #bbb;">
-                {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fc0; --fa-secondary-color: #c80;')|raw }}
+                {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;')|raw }}
                 <br>
-                TT
+                <span style="color: #8cf">THOR</span>
             </h1>
             <div class="text-center mb-4" style="color: #ddd; font-size: 0.75em;">
-                PHP Framework
+                PHP Tools
             </div>
             {{ render('menu')|raw }}
+            <div id="user-box">
+                <a class="float-right btn btn-dark"
+                   href="{{ url('logout') }}"
+                >
+                    <i class="fas fa-sign-out"></i>
+                </a>
+                <div class="mt-1">
+                    <i class="fas fa-user fa-lg"></i>
+                    {{ server.user.username }}
+                </div>
+            </div>
         {% endblock %}
     </div>
-    <div id="content">
-        <div id="toolbar">{% block toolbar %}{% endblock %}</div>
-        <div id="titlebar">{% block titlebar %}{% endblock %}</div>
-        <div id="page">{% block page %}{% endblock %}</div>
-    </div>
+    <div id="content">{% block body_content %}{% endblock %}</div>
     <div id="footer" class="pt-2">
         <div>
-            {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fc0; --fa-secondary-color: #c80;')|raw }}
-            Trehinos/Thor &beta;-dev
+            {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;')|raw }}
+            Trehinos/Thor {{ version }}
         </div>
         <div>{{ icon('copyright', 'far fa-lg', true)|raw }} 2020 Sébastien GELDREICH</div>
-        <div class="mt-1 pt-1 border-top border-secondary" style="font-size: 0.9em;">
-            {{ icon('info-circle', 'fas fa-lg', true)|raw }}
-            <a href="{{ url('about') }}">{{ _.footer.about }}</a> -
-            <a href="{{ url('legal') }}">{{ _.footer.legal }}</a> -
-            <a href="{{ url('changelog') }}">{{ _.footer.changelog }}</a>
-        </div>
+        {% block footer %}
+            <div class="mt-1 pt-1 border-top border-secondary" style="font-size: 0.9em;">
+                {{ icon('info-circle', 'fas fa-lg', true)|raw }}
+                <button
+                        id="btn-about"
+                        onclick="menuClick($(this));"
+                        data-url="{{ url('about') }}">
+                    {{ _.footer.about }}
+                </button>
+                <button
+                        id="btn-legal"
+                        onclick="menuClick($(this));"
+                        data-url="{{ url('legal') }}">
+                    {{ _.footer.legal }}
+                </button>
+                <button
+                        id="btn-changelog"
+                        onclick="menuClick($(this));"
+                        data-url="{{ url('changelog') }}">
+                    {{ _.footer.changelog }}
+                </button>
+            </div>
+        {% endblock %}
     </div>
 
     <div id="modal" class="modal" tabindex="-1" role="dialog">

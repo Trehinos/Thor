@@ -4,10 +4,8 @@
  * Thor system
  *      PHP framework and tool
  *
- * This file has to be required by an application starter (e.g., web/index.php)
- *
  * @author Sébastien GELDREICH
- * @version 0.1
+ * @version 0.2
  * @since 2020-06
  */
 
@@ -16,22 +14,35 @@ require_once __DIR__ . '/vendors/autoload.php';
 use Thor\Globals;
 use Thor\Application;
 use Thor\Debug\Logger;
-use Thor\ConfigurationLoader;
-use Thor\Database\DefinitionHelper;
-use Thor\Database\PdoExtension\AdvancedPdoRow;
+use Symfony\Component\Yaml\Yaml;
 
-// Load configuration
-Application::loadMainConfiguration();
-Application::setErrorReporting();
+$config = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'config.yml'));
+$databases = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'database.yml'));
 
-// Set global static state
-$path = Application::$config['log_path'] ?? 'var/';
-Logger::getDefaultLogger(Application::$thor_env, Globals::CODE_DIR . $path);
-AdvancedPdoRow::$definitionHelper = new DefinitionHelper(
-    ConfigurationLoader::loadStatic('db_definition')['db_definition']['schema'] ?? []
+Application::init(
+    in_array(
+        strtoupper($config['env'] ?? ''),
+        ['DEV', 'DEBUG', 'VERBOSE', 'PROD']
+    ) ? $config['env'] : 'DEBUG',
+    $config['log_path'] ?? 'var/'
 );
 
-// Start application
-Application::executeKernel($thor_kernel ?? null);
+$kernel = null;
+$sapi = php_sapi_name();
+
+$application = new Application(
+    Application::getKernel(
+        $thor_kernel ?? [],
+        [
+            'databases' => $databases,
+            'config' => $config
+        ]
+    )
+);
+Logger::write('Execute application');
+$application->execute();
+Logger::write('Application executed !');
+
+Logger::write('END ### END', Logger::LEVEL_DEV);
 
 exit; // make sure this script can't be included with further actions

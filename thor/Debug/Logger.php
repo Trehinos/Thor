@@ -2,69 +2,48 @@
 
 namespace Thor\Debug;
 
-use DateTime;
-use Throwable;
+use JetBrains\PhpStorm\ExpectedValues;
+use JetBrains\PhpStorm\Pure;
 
 final class Logger
 {
 
     private string $env;
-    private string $basePath;
-    private string $dateFormat;
-    private ?string $filename;
 
-    const DEV = 0;
-    const DEBUG = 1;
-    const VERBOSE = 2;
-    const PROD = 3;
+    public const LEVEL_DEV = 0;
+    public const LEVEL_DEBUG = 1;
+    public const LEVEL_VERBOSE = 2;
+    public const LEVEL_PROD = 3;
 
     private const LEVELS = [
-        'DEV' => self::DEV,
-        'DEBUG' => self::DEBUG,
-        'VERBOSE' => self::VERBOSE,
-        'PROD' => self::PROD,
+        'DEV' => self::LEVEL_DEV,
+        'DEBUG' => self::LEVEL_DEBUG,
+        'VERBOSE' => self::LEVEL_VERBOSE,
+        'PROD' => self::LEVEL_PROD,
     ];
 
-    const NOTICE = 0;
-    const WARNING = 1;
-    const ERROR = 2;
+    public const SEVERITY_NOTICE = 0;
+    public const SEVERITY_WARNING = 1;
+    public const SEVERITY_ERROR = 2;
 
     private const SEVERITY = [
-        self::NOTICE => '',
-        self::WARNING => 'W',
-        self::ERROR => 'ERR',
+        self::SEVERITY_NOTICE => '',
+        self::SEVERITY_WARNING => 'W',
+        self::SEVERITY_ERROR => 'ERR',
     ];
 
-    /**
-     * Logger constructor.
-     *
-     * @param string $env
-     * @param string $basePath
-     * @param string $dateFormat
-     * @param string|null $filename
-     */
+    #[Pure]
     public function __construct(
-        string $env,
-        string $basePath = __DIR__ . '/../',
-        string $dateFormat = 'Y-m-d H:i:s.v',
-        ?string $filename = null
+        #[ExpectedValues(['DEV', 'DEBUG', 'VERBOSE', 'PROD'])]
+        string $env = 'DEV',
+        private string $basePath = __DIR__ . '/../',
+        private string $dateFormat = 'Y-m-d H:i:s.v',
+        private ?string $filename = null
     ) {
         $this->env = strtoupper($env);
-        $this->basePath = $basePath;
-        $this->dateFormat = $dateFormat;
-        $this->filename = $filename;
     }
 
-    /**
-     * log(): writes log message in the log file if level is over the default log level.
-     *
-     * @param string $message
-     * @param int $level
-     * @param int $severity
-     *
-     * @return $this
-     */
-    public function log(string $message, int $level = self::DEBUG, int $severity = self::NOTICE): self
+    public function log(string $message, int $level = self::LEVEL_DEBUG, int $severity = self::SEVERITY_NOTICE): self
     {
         if ($level >= self::LEVELS[$this->env]) {
             $env = str_pad(
@@ -73,7 +52,7 @@ final class Logger
                 ' ',
                 STR_PAD_RIGHT
             );
-            $now = new DateTime();
+            $now = new \DateTime();
             $nowStr = $now->format($this->dateFormat);
             $sev = str_pad(self::SEVERITY[$severity], 3, ' ', STR_PAD_LEFT);
             $message = "$nowStr $env $sev: $message";
@@ -91,35 +70,16 @@ final class Logger
 
     private static ?self $logger = null;
 
-    /**
-     * getDefaultLogger(): returns the static logger or create one with specified parameters.
-     *
-     * @param string $env
-     * @param string $basePath
-     * @param string $dateFormat
-     *
-     * @return self
-     */
     public static function getDefaultLogger(
-        ?string $env = null,
+        #[ExpectedValues(['DEV', 'DEBUG', 'VERBOSE', 'PROD'])]
+        string $env = 'DEV',
         string $basePath = __DIR__ . '/../',
         string $dateFormat = 'Y-m-d H:i:s.v'
     ): self {
-        if (null !== self::$logger && $env !== null) {
-            self::$logger->env = $env;
-            self::$logger->basePath = $basePath;
-            self::$logger->dateFormat = $dateFormat;
-        }
-
-        return self::$logger ??= new self($env ?? 'DEV', $basePath, $dateFormat);
+        return self::$logger ??= new self($env, $basePath, $dateFormat);
     }
 
-    /**
-     * logThrowable(): logs an exception with the static logger.
-     *
-     * @param Throwable $e
-     */
-    public static function logThrowable(Throwable $e)
+    public static function logThrowable(\Throwable $e): void
     {
         $pad = str_repeat(' ', 37);
         $traceStr = '';
@@ -128,23 +88,23 @@ final class Logger
             $traceStr .= "$pad  • Location : {$trace['file']}:{$trace['line']}\n$pad    Function : {$trace['function']}\n";
         }
 
+        self::write(
+            "ERROR THROWN IN FILE {$e->getFile()} LINE {$e->getLine()} : {$e->getMessage()}",
+            Logger::LEVEL_PROD,
+            Logger::SEVERITY_ERROR
+        );
         $message = <<<EOT
-            ERROR THROWN IN FILE {$e->getFile()} LINE {$e->getLine()} : {$e->getMessage()}
             $pad Trace :
             $traceStr                 
             EOT;
-        self::write($message, Logger::DEBUG, Logger::ERROR);
+        self::write($message, Logger::LEVEL_DEBUG, Logger::SEVERITY_ERROR);
     }
 
-    /**
-     * log(): writes log message with the static logger if level is over the static log level.
-     *
-     * @param string $message
-     * @param int $level
-     * @param int $severity
-     */
-    public static function write(string $message, int $level = self::DEV, int $severity = self::NOTICE)
-    {
+    public static function write(
+        string $message,
+        int $level = self::LEVEL_DEV,
+        int $severity = self::SEVERITY_NOTICE
+    ): void {
         self::getDefaultLogger()->log($message, $level, $severity);
     }
 

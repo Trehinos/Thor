@@ -2,48 +2,67 @@
 
 namespace Thor\Security;
 
-use Thor\Database\PdoExtension\AdvancedPdoRow;
+use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoExtension\PdoRowInterface;
+use Thor\Database\PdoExtension\PdoRowTrait;
 
 abstract class BaseDbUser implements PdoRowInterface, UserInterface
 {
 
-    use AdvancedPdoRow;
-
-    public static string $tableName = 'user';
+    use PdoRowTrait;
 
     private static ?PasswordHasher $hashMaker = null;
 
-    public function __construct(string $username = '', string $clearPassword = '')
+    private string $pwd_hash;
+
+    public function __construct(private string $username = '', string $clearPassword = '')
     {
         self::$hashMaker ??= new PasswordHasher();
-        $this->attributes['username'] = $username;
-        $this->attributes['password'] = self::$hashMaker->hash($clearPassword);
+        $this->pwd_hash = self::$hashMaker->hash($clearPassword);
+    }
+
+    #[ArrayShape(['username' => "string", 'password' => "string"])]
+    protected static function getTableColumns(): array
+    {
+        return [
+            'username' => 'VARCHAR(255) NOT NULL',
+            'password' => 'VARCHAR(255) NOT NULL',
+        ];
+    }
+
+    #[ArrayShape(['username' => "string", 'password' => "string"])]
+    protected function toPdo(): array
+    {
+        return [
+            'username' => $this->getUsername(),
+            'password' => $this->pwd_hash
+        ];
+    }
+
+    protected function fromPdo(array $pdoArray): void
+    {
+        $this->setUsername($pdoArray['username']);
+        $this->pwd_hash = $pdoArray['password'];
     }
 
     public function getUsername(): string
     {
-        return $this->attributes['username'] ?? '';
+        return $this->username;
     }
 
     public function setUsername(string $username): void
     {
-        $this->attributes['username'] = $username;
+        $this->username = $username;
     }
 
     public function hasPwdHashFor(string $clearPassword): bool
     {
-        return PasswordHasher::verify($clearPassword, $this->attributes['password'] ?? '');
+        return PasswordHasher::verify($clearPassword, $this->pwd_hash);
     }
 
     public function setPwdHashFrom(string $clearPassword): void
     {
-        $this->attributes['password'] = self::$hashMaker->hash($clearPassword);
-    }
-
-    public function getRoles(): array
-    {
-        return ['user'];
+        $this->pwd_hash = self::$hashMaker->hash($clearPassword);
     }
 
 }

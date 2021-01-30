@@ -5,6 +5,6 @@ namespace Thor\Validation;
 interface FilterInterface
 {
 
-    public function filter($value);
+    public function filter(mixed $value): mixed;
 
 }

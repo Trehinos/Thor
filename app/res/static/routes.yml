@@ -10,71 +10,78 @@
 # main routes
 menu:
     action:
-        class: App\Main\Actions\Main
+        class: App\Actions\Main
         method: menu
 
 index:
     path: "/"
     method: GET
     action:
-        class: App\Main\Actions\Main
+        class: App\Actions\Main
         method: index
+
+index-page:
+    path: "/index"
+    method: GET
+    action:
+        class: App\Actions\Main
+        method: indexPage
 
 changelog:
     path: "/changelog"
     method: GET
     action:
-        class: App\Main\Actions\Main
+        class: App\Actions\Main
         method: changelog
 
 about:
     path: "/about"
     method: GET
     action:
-        class: App\Main\Actions\Main
+        class: App\Actions\Main
         method: about
 
 legal:
     path: "/legal"
     method: GET
     action:
-        class: App\Main\Actions\Main
+        class: App\Actions\Main
         method: legal
 
 create-admin:
     path: "/framework/create/admin"
     method: POST
     action:
-        class: App\Main\Actions\Main
+        class: App\Actions\Main
         method: createAdmin
 
 generate-url:
     path: "/framework/generate-url"
     method: GET
     action:
-        class: App\Main\Actions\Main
+        class: App\Actions\Main
         method: generateUrlResponse
 
-# users routes__________________________________________________________________________________________________________
+# users routes
 users:
     path: "/users"
     method: GET
     action:
-        class: App\Main\Actions\Users
+        class: App\Actions\Users
         method: usersInterface
 
 users-create-form:
     path: "/users/create/form"
     method: GET
     action:
-        class: App\Main\Actions\Users
+        class: App\Actions\Users
         method: createForm
 
 users-create-action:
     path: "/users/create/action"
     method: POST
     action:
-        class: App\Main\Actions\Users
+        class: App\Actions\Users
         method: createAction
 
 users-edit-form:
@@ -84,7 +91,7 @@ users-edit-form:
         public_id:
             regex: "[A-Za-z0-9-]+"
     action:
-        class: App\Main\Actions\Users
+        class: App\Actions\Users
         method: editForm
 
 users-edit-action:
@@ -94,15 +101,56 @@ users-edit-action:
         public_id:
             regex: "[A-Za-z0-9-]+"
     action:
-        class: App\Main\Actions\Users
+        class: App\Actions\Users
         method: editAction
 
-users-delete-action:
-    path: "/users/$public_id/delete"
+users-change-password-form:
+    path: "/users/$public_id/change-password/form"
+    method: GET
+    parameters:
+        public_id:
+            regex: "[A-Za-z0-9-]+"
+    action:
+        class: App\Actions\Users
+        method: passwordForm
+
+users-change-password-action:
+    path: "/users/$public_id/change-password/action"
     method: POST
     parameters:
         public_id:
             regex: "[A-Za-z0-9-]+"
     action:
-        class: App\Main\Actions\Users
+        class: App\Actions\Users
+        method: passwordAction
+
+users-delete-action:
+    path: "/users/$public_id/delete/action"
+    method: POST
+    parameters:
+        public_id:
+            regex: "[A-Za-z0-9-]+"
+    action:
+        class: App\Actions\Users
         method: deleteAction
+
+login:
+    path: "/login"
+    method: GET
+    action:
+        class: App\Actions\Security
+        method: login
+
+check:
+    path: "/security/login/action"
+    method: POST
+    action:
+        class: App\Actions\Security
+        method: check
+
+logout:
+    path: "/logout"
+    method: GET
+    action:
+        class: App\Actions\Security
+        method: logout

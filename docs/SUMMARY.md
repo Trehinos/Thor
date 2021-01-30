@@ -1,4 +1,4 @@
-# Thor ocumentation
+# Thor documentation
 ## Structure
 ### Application
 - Resources

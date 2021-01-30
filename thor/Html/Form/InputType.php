@@ -7,38 +7,21 @@ use Thor\Html\HtmlTag;
 class InputType extends HtmlTag implements FieldInterface
 {
 
-    /**
-     * @var mixed
-     */
-    private $value;
+    private string $value;
 
-    public function __construct(string $name, string $type, bool $required = false, bool $readOnly = false)
+    public function __construct(string $type, bool $readOnly = false, bool $required = false)
     {
-        parent::__construct(
-            'input',
-            true,
-            [
-                'type' => $type,
-                'readonly' => $readOnly,
-                'required' => $required,
-                'name' => $name,
-                'id' => $name,
-                'class' => 'form-control'
-            ]
-        );
+        parent::__construct('input', true, ['type' => $type, 'readonly' => $readOnly, 'required' => $required]);
     }
 
-    /**
-     * @return mixed
-     */
-    public function get()
+    public function get(): string
     {
         return $this->value;
     }
 
-    public function set($value): void
+    public function set(mixed $value): void
     {
-        $this->value = $value;
+        $this->value = (string) $value;
     }
 
 }

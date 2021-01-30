@@ -1,17 +1,11 @@
-userClass: Thor\App\Entities\User
-usernameProperty: Username
-passwordProperty: PwdHash
-
-roles:
-    dev:
-        extends: admin
-    admin:
-        extends: user
-    user: ~
-
+userPdoRow:
+    pdoRowClass: App\Entities\User
+    passwordCompareMethod: hasPwdHashFor
 configuration:
-    base-role: user
-    firewall-pattern: "^.*"
-    login-url: "/login"
-    logout-url: "/logout"
-    check-url: "/check-login"
+    login-route: login
+    logout-route: logout
+    check-route: check
+    session-key: token
+    # token-expire : time in minutes
+    token-expire: 60
+    # pdo-handler: default

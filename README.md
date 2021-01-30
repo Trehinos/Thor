@@ -57,35 +57,8 @@ use Symfony\Component\Yaml\Yaml;
 $config = Yaml::parse(Globals::CONFIG_DIR . 'filename.yml');
 ```  
 
-## Features
-* Framework
-    * Security
-        * User management interface (create).
-    * PDO handler and requester.
-    * CrudHelper and PdoRowInterface.
-    * HTTP request/response cycle handling :
-        * Routing (path info matches regexp).
-        * Twig ```url(route_name, route_params)``` function.
-        * Class with methods controllers.  
-          The class MUST extend ```Thor\Controller\BaseController```.
-            * TWIG template engine
-            * TWIG utility functions and filters
-    * Web frameworks : Bootstrap and FontAwesome.
-* Software (web application) as a base project.
+## [Documentation](docs/SUMMARY.md)
 
-## TODO
-* Documentation
-* Db Definition (create table, stop using static function)
-* Security
-    * Edit/delete/change password
-    * Login, check, logout
-    * Firewall (pathinfo pattern)
-    * Permissions and roles
-    * User groups
-* Form (class hierarchy and html dump)
-* Form to database CRUD actions engine
-* CLI/REPL/Automaton contexts
-    * ConsoleControl / ConsoleReader
-    * Command
-    * Argument
-    * Process
+## License
+License : MIT
+&copy; 2021 Trehinos
