@@ -20,12 +20,12 @@ final class Router
     /**
      * @param string $routeName
      * @param array $params
-     *
+     * @param string $queryString without '&'
      * @return string
      *
      * @throws Error
      */
-    public function getUrl(string $routeName, array $params = []): string
+    public function getUrl(string $routeName, array $params = [], string $queryString = ''): string
     {
         $route = $this->getRoute($routeName);
         if (null === $route) {
@@ -42,7 +42,7 @@ final class Router
                 $path = '';
             }
         }
-        return "/index.php$path";
+        return "/index.php$path" . ($queryString !== '' ? "?$queryString" : '');
     }
 
     public function getRoute(string $name): ?Route

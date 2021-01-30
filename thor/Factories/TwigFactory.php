@@ -39,9 +39,10 @@ final class TwigFactory
         $this->twig->addFunction(
             new TwigFunction(
                 'url',
-                function (string $routeName, array $params = []) use ($router): string {
-                    return $router->getUrl($routeName, $params);
-                }
+                function (string $routeName, array $params = [], string $queryString = '') use ($router): string {
+                    return $router->getUrl($routeName, $params, $queryString);
+                },
+                ['is_safe' => ['html']]
             )
         );
         $this->twig->addFunction(
@@ -51,7 +52,8 @@ final class TwigFactory
                     $fw = $fixed ? 'fa-fw' : '';
                     $style = ('' !== $style) ? "style='$style'" : '';
                     return "<i class='$prefix fa-$icon $fw' $style></i>";
-                }
+                },
+                ['is_safe' => ['html']]
             )
         );
         $this->twig->addFunction(
@@ -64,7 +66,8 @@ final class TwigFactory
 
                     $controller = new $cClass($server);
                     return $controller->$cMethod(...$params)->getBody();
-                }
+                },
+                ['is_safe' => ['html']]
             )
         );
         $this->twig->addFunction(
@@ -72,7 +75,8 @@ final class TwigFactory
                 'dump',
                 function ($var) {
                     return VarDumper::dump($var);
-                }
+                },
+                ['is_safe' => ['html']]
             )
         );
         $this->twig->addFilter(
@@ -84,7 +88,8 @@ final class TwigFactory
         $this->twig->addFilter( // TRANSLATE
             new TwigFilter(
                 't',
-                fn(string $str) => $server->getLanguage()[$str] ?? $str
+                fn(string $str) => $server->getLanguage()[$str] ?? $str,
+                ['is_safe' => ['html']]
             )
         );
 

@@ -232,17 +232,17 @@ class Server
         $_SESSION[$name] = $value;
     }
 
-    public function generateUrl(string $routeName, array $params = [], string $urlAppend = ''): string
+    public function generateUrl(string $routeName, array $params = [], string $queryString = ''): string
     {
         if (!$route = $this->getRouter()->getRoute($routeName)) {
             return '#generate-url-error';
         }
 
-        return $this->getRouter()->getUrl($routeName, $params) . $urlAppend;
+        return $this->getRouter()->getUrl($routeName, $params, $queryString);
     }
 
-    public function redirect(string $routeName, array $params = [], string $urlAppend = ''): Response
+    public function redirect(string $routeName, array $params = [], string $queryString = ''): Response
     {
-        return new Response('', 302, ['Location' => $this->generateUrl($routeName, $params, $urlAppend)]);
+        return new Response('', 302, ['Location' => $this->generateUrl($routeName, $params, $queryString)]);
     }
 }

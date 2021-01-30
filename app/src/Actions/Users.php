@@ -76,7 +76,7 @@ final class Users extends BaseController
             $this->manager->createUser($username, $clearPassword);
         }
 
-        return $this->redirect('index', urlAppend: '?menuItem=users');
+        return $this->redirect('index', queryString: 'menuItem=users');
     }
 
     /**
@@ -120,7 +120,7 @@ final class Users extends BaseController
         }
         $this->manager->updateUser($public_id, $username);
 
-        return $this->redirect('index', urlAppend: '?menuItem=users');
+        return $this->redirect('index', queryString: 'menuItem=users');
     }
 
     /**
@@ -137,7 +137,8 @@ final class Users extends BaseController
         return $this->view(
             'pages/users_modals/change-password.html.twig',
             [
-                'user' => $user
+                'user' => $user,
+                'generatedPassword' => UserManager::generatePassword()
             ]
         );
     }
@@ -151,12 +152,13 @@ final class Users extends BaseController
      */
     public function passwordAction(string $public_id): Response
     {
-        $password = $this->usernameFilter->filter('password');
-        $confirmPassword = $this->usernameFilter->filter('confirmPassword');
+        $password = Server::post('password');
+        $confirmPassword = Server::post('confirm-password');
 
         $errors = [];
         if ($password !== $confirmPassword || strlen($password) < 16) {
             $errors[] = 'bad-password';
+            Logger::write("$password <> $confirmPassword");
         }
 
         if (!empty($errors)) {
@@ -165,7 +167,7 @@ final class Users extends BaseController
         }
         $this->manager->setPassword($public_id, $password);
 
-        return $this->redirect('index', urlAppend: '?menuItem=users');
+        return $this->redirect('index', queryString: 'menuItem=users');
     }
 
     /**
@@ -179,7 +181,7 @@ final class Users extends BaseController
     {
         $this->manager->deleteOne($public_id);
 
-        return $this->redirect('index', urlAppend: '?menuItem=users');
+        return $this->redirect('index', queryString: 'menuItem=users');
     }
 
 }

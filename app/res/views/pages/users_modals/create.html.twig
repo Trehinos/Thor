@@ -15,22 +15,34 @@
                     title="{{ _.users.hide_password }}"
                     onclick="$('#user-password').attr('type', 'password')"
             >
-                {{ icon('eye-slash')|raw }}
+                {{ icon('eye-slash') }} cacher
             </button>
             <button type="button" class="btn btn-danger btn-sm"
                     title="{{ _.users.show_password }}"
                     onclick="$('#user-password').attr('type', 'text')"
             >
-                {{ icon('eye')|raw }}
+                {{ icon('eye') }} afficher
             </button>
         </label>
         <input type="text" id="user-password" name="password" value="{{ generatedPassword }}" class="form-control">
-        <small class="form-text text-muted">{{ icon('exclamation-triangle')|raw }} {{ _.users.password_warning|raw }}</small>
     </div>
+    <small class="form-text text-muted">{{ icon('exclamation-triangle') }} {{ _.users.password_warning|raw }}</small>
 </form>
 {% endblock %}
 
 {% block modal_footer %}
+    <button class="btn btn-outline-dark"
+            onclick="$('#user-password').val('{{ generatedPassword }}');"
+            type="button"
+    >
+        Mot de passe généré
+    </button>
+    <button class="btn btn-outline-dark"
+            onclick="$('#user-password').val('');"
+            type="button"
+    >
+        Vider le champ
+    </button>
     <button form="form-create-user" type="submit" class="btn btn-primary">
         {{ _.general.create }}
     </button>

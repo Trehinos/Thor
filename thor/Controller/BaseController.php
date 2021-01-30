@@ -29,9 +29,9 @@ abstract class BaseController
         return $this->getServer()->generateUrl($routeName, $params, $urlAppend);
     }
 
-    public function redirect(string $routeName, array $params = [], string $urlAppend = ''): Response
+    public function redirect(string $routeName, array $params = [], string $queryString = ''): Response
     {
-        return $this->getServer()->redirect($routeName, $params, $urlAppend);
+        return $this->getServer()->redirect($routeName, $params, $queryString);
     }
 
     public function redirectTo(string $url): Response

@@ -8,7 +8,7 @@
                     data-url="{% if item.route != '.' %}{{ url(item.route) }}{% else %}#{% endif %}"
                class="flex-fill {% if server.currentRouteName == item.route %}selected{% endif %}"
             >
-                {{ icon(item.icon, 'mr-2 fa-lg ' ~ (item.icon_col ?? 'fas'), true)|raw }}
+                {{ icon(item.icon, 'mr-2 fa-lg ' ~ (item.icon_col ?? 'fas'), true) }}
                 {{ _.menu[item.label] ?? item.label ?? '' }}
             </button>
             {% if is_group %}
@@ -19,7 +19,7 @@
                        title="{{ _.menu[sub_item.label] ?? sub_item.label ?? '' }}"
                        {% if server.currentRouteName == sub_item.route %}class="selected"{% endif %}
                     >
-                        {{ icon(sub_item.icon, 'fa-lg ' ~ (sub_item.icon_col ?? 'fas'), true)|raw }}
+                        {{ icon(sub_item.icon, 'fa-lg ' ~ (sub_item.icon_col ?? 'fas'), true) }}
                     </button>
                 {% endfor %}
             {% endif %}

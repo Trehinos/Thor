@@ -3,7 +3,7 @@
     <button class="btn btn-sm btn-primary"
             onclick="Modal.load('{{ url('users-create-form') }}');"
     >
-        {{ icon('plus')|raw }}
+        {{ icon('plus') }}
         {{ _.general.create }}
     </button>
 </div>
@@ -11,26 +11,26 @@
     <div class="d-flex flex-wrap justify-content-around" id="users">
         {% for user in users %}
             <div class="m-1 p-4 user">
-                {{ icon('user', 'fa-2x fas')|raw }}
+                {{ icon('user', 'fa-2x fas') }}
                 {{ user.username }}
                 <small>#{{ user.publicId }}</small>
                 <hr class="mt-1 mb-2">
                 <button class="btn btn-sm btn-secondary"
                         onclick="Modal.load('{{ url('users-edit-form', {public_id: user.publicId}) }}');"
                 >
-                    {{ icon('edit')|raw }}
+                    {{ icon('edit') }}
                     {{ _.general.edit }}
                 </button>
                 <button class="btn btn-sm btn-warning"
                         onclick="Modal.load('{{ url('users-change-password-form', {public_id: user.publicId}) }}');"
                 >
-                    {{ icon('lock')|raw }}
+                    {{ icon('lock') }}
                     {{ _.users.change_password }}
                 </button>
                 <button class="btn btn-sm btn-danger"
                         onclick="confirmPost('{{ url('users-delete-action', {public_id: user.publicId}) }}', {}, 'Supprimer cet utilisateur ?', () => {$(this).parent().remove();})"
                 >
-                    {{ icon('trash')|raw }}
+                    {{ icon('trash') }}
                     {{ _.general.remove }}
                 </button>
             </div>
