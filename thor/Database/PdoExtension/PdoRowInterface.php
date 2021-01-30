@@ -9,6 +9,8 @@ interface PdoRowInterface
 
     public static function getPdoColumnsDefinitions(): array;
 
+    public static function getTableName(): string;
+
     public function toPdoArray(): array;
 
     public function fromPdoArray(array $pdoArray): void;

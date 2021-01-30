@@ -24,9 +24,11 @@ final class DefinitionHelper
      */
     public function getDefinition(string $name): ?array
     {
-        foreach ($this->schema as $definition) {
-            if ($definition['name'] === $name) {
-                return $definition;
+        foreach ($this->schema as $definitions) {
+            foreach ($definitions as $definition) {
+                if ($definition['name'] === $name) {
+                    return $definition;
+                }
             }
         }
 
@@ -56,7 +58,7 @@ final class DefinitionHelper
             $tableDef['columns'] ??= [];
             $tableDef['index'] ??= [];
 
-            $tableDef['columns'] = ($extendsDef['columns'] ?? []) + $tableDef['columns'] ;
+            $tableDef['columns'] = ($extendsDef['columns'] ?? []) + $tableDef['columns'];
             $tableDef['index'] = ($extendsDef['index'] ?? []) + $tableDef['index'];
         }
 

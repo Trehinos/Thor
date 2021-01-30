@@ -2,7 +2,6 @@
 
 namespace Thor\Database\PdoExtension;
 
-use Thor\ConfigurationLoader;
 use Thor\Database\DefinitionHelper;
 
 /**
@@ -19,11 +18,14 @@ trait AdvancedPdoRow
 {
 
     /**
-     * Set the DefinitionHelper which is used to resolve columns.
+     * Get the DefinitionHelper which is used to resolve columns.
      *
-     * @var DefinitionHelper|null
+     * @return DefinitionHelper|null
      */
-    public static ?DefinitionHelper $definitionHelper = null;
+    public static function getDefinitionHelper(): ?DefinitionHelper
+    {
+        return null;
+    }
 
     /**
      * All attributes of the PdoRow.
@@ -32,9 +34,6 @@ trait AdvancedPdoRow
      */
     protected array $attributes = ['id' => null, 'public_id' => null];
 
-    /**
-     * @return int
-     */
     public function getId(): ?int
     {
         return $this->attributes['id'] ?? null;
@@ -85,8 +84,13 @@ trait AdvancedPdoRow
      */
     final public static function getPdoColumnsDefinitions(): array
     {
-        return static::$definitionHelper->getTableDefinition(static::$tableName)['columns'] ?? [];
+        return static::getDefinitionHelper()->getTableDefinition(static::getTableName())['columns'] ?? [];
     }
+
+    /**
+     * @return string
+     */
+    abstract public static function getTableName(): string;
 
     /**
      * @return array
@@ -94,7 +98,7 @@ trait AdvancedPdoRow
     final public function toPdoArray(): array
     {
         $pdoArray = [];
-        foreach (self::getPdoColumnsDefinitions() as $columnName => $columnDef_unused) {
+        foreach (static::getPdoColumnsDefinitions() as $columnName => $columnDef_unused) {
             $pdoArray[$columnName] = $this->attributes[$columnName] ?? null;
         }
         return $pdoArray;
@@ -106,7 +110,7 @@ trait AdvancedPdoRow
     final public function fromPdoArray(array $pdoArray): void
     {
         $this->attributes = [];
-        foreach (self::getPdoColumnsDefinitions() as $columnName => $columnDef_unused) {
+        foreach (static::getPdoColumnsDefinitions() as $columnName => $columnDef_unused) {
             $this->attributes[$columnName] = $pdoArray[$columnName] ?? null;
         }
     }

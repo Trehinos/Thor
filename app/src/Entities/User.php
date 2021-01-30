@@ -2,7 +2,9 @@
 
 namespace App\Entities;
 
+use Thor\Database\DefinitionHelper;
 use Thor\Security\BaseDbUser;
+use Thor\Thor;
 
 class User extends BaseDbUser
 {
@@ -12,4 +14,13 @@ class User extends BaseDbUser
         parent::__construct($username, $clearPwd);
     }
 
+    public static function getTableName(): string
+    {
+        return 'user';
+    }
+
+    public static function getDefinitionHelper(): ?DefinitionHelper
+    {
+        return new DefinitionHelper(Thor::getInstance()->getDefinitionHelperConfiguration());
+    }
 }

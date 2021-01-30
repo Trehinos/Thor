@@ -33,12 +33,13 @@ final class TwigFactory
 
         $this->twig->addGlobal('server', $server);
         $this->twig->addGlobal('version', Thor::VERSION);
+        $this->twig->addGlobal('versionName', Thor::VERSION_NAME);
         $this->twig->addGlobal('_', $server->getLanguage());
 
         $this->twig->addFunction(
             new TwigFunction(
                 'url',
-                function (string $routeName, array $params = []) use ($router) : string {
+                function (string $routeName, array $params = []) use ($router): string {
                     return $router->getUrl($routeName, $params);
                 }
             )

@@ -1,19 +1,19 @@
 schema:
-### THOR ###############################################################################################################
-    -   name: default
-        type: virtual
-        columns:
-            id: INT NOT NULL AUTO_INCREMENT
-            public_id: VARCHAR(255) NOT NULL
-        index:
-            id: PRIMARY
-            public_id: UNIQUE
+  ### THOR ###############################################################################################################
+  - name: default
+    type: virtual
+    columns:
+      id: INT NOT NULL AUTO_INCREMENT
+      public_id: VARCHAR(255) NOT NULL
+    index:
+      id: PRIMARY
+      public_id: UNIQUE
 
-    -   name: user
-        extends: default
-        type: table
-        columns:
-            username: VARCHAR(255) NOT NULL
-            password: VARCHAR(255) NOT NULL
-        index:
-            username: UNIQUE
+  - name: user
+    extends: default
+    type: table
+    columns:
+      username: VARCHAR(255) NOT NULL
+      password: VARCHAR(255) NOT NULL
+    index:
+      username: UNIQUE

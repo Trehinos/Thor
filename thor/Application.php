@@ -39,19 +39,17 @@ final class Application implements KernelInterface
     }
 
     public static function getKernel(
-        ?string $thor_kernel = null,
-        #[ArrayShape(['databases' => 'array', 'config' => 'array'])]
-        array $config = []
+        ?string $thor_kernel = null
     ): ?KernelInterface {
         try {
             $kernel = null;
             switch ($thor_kernel ?? null) {
                 case 'http':
-                    $kernel = HttpKernel::create($config);
+                    $kernel = HttpKernel::create();
                     break;
 
                 case 'cli':
-                    $kernel = CliKernel::create($config);
+                    $kernel = CliKernel::create();
                     break;
 
                 default:

@@ -15,6 +15,7 @@ use Thor\Http\Routing\Router;
 use Thor\KernelInterface;
 
 use Thor\Security\SecurityContext;
+use Thor\Thor;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -132,7 +133,7 @@ final class HttpKernel implements KernelInterface
         }
     }
 
-    public static function create(array $config = []): self
+    public static function create(): self
     {
         if ('cli' === php_sapi_name()) {
             Logger::write(
@@ -143,24 +144,7 @@ final class HttpKernel implements KernelInterface
             exit;
         }
         Logger::write('Start HTTP context');
-        Logger::write('Load routes configuration');
-        $routes = $config['routes'] ?? Yaml::parse(file_get_contents(Globals::STATIC_DIR . 'routes.yml'));
-        Logger::write('Load twig configuration');
-        $twig = $config['twig'] ?? Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'twig.yml'));
-        Logger::write('Load security configuration');
-        $security = $config['security'] ?? Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'security.yml'));
-        $lang = $config['config']['lang'] ?? 'fr';
-        Logger::write('Load language configuration');
-        $language = Yaml::parse(file_get_contents(Globals::STATIC_DIR . "langs/$lang.yml"));
-        return new self(
-            [
-                'routes' => $routes,
-                'twig' => $twig,
-                'databases' => $config['databases'] ?? [],
-                'security' => $security,
-                'language' => $language
-            ]
-        );
+        return new self(Thor::getInstance()->getHttpConfiguration());
     }
 
 }

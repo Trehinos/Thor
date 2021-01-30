@@ -9,6 +9,7 @@ use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Debug\Logger;
 use Thor\Globals;
 use Thor\KernelInterface;
+use Thor\Thor;
 
 final class CliKernel implements KernelInterface
 {
@@ -152,7 +153,7 @@ final class CliKernel implements KernelInterface
         $commandObject->$commandAction();
     }
 
-    public static function create(array $config = []): self
+    public static function create(): self
     {
         if ('cli' !== php_sapi_name()) {
             Logger::write(
@@ -162,14 +163,7 @@ final class CliKernel implements KernelInterface
             );
             exit;
         }
-
-        $commands = Yaml::parse(file_get_contents(Globals::STATIC_DIR . 'commands.yml'));
-
-        return new self(
-            [
-                'databases' => $config['databases'] ?? [],
-                'commands' => $commands ?? []
-            ]
-        );
+        Logger::write('Start CLI context');
+        return new self(Thor::getInstance()->getConsoleConfiguration());
     }
 }
