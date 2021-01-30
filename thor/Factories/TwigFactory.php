@@ -5,6 +5,7 @@ namespace Thor\Factories;
 use Symfony\Component\VarDumper\VarDumper;
 use Thor\Http\Routing\Router;
 use Thor\Http\Server;
+use Thor\Thor;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
@@ -31,6 +32,7 @@ final class TwigFactory
         $router = $this->router;
 
         $this->twig->addGlobal('server', $server);
+        $this->twig->addGlobal('version', Thor::VERSION);
         $this->twig->addGlobal('_', $server->getLanguage());
 
         $this->twig->addFunction(

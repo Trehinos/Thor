@@ -84,9 +84,7 @@ final class Main extends BaseController
      */
     public function about(): Response
     {
-        return $this->view('pages/about.html.twig', [
-            'version' => Thor::VERSION
-        ]);
+        return $this->view('pages/about.html.twig');
     }
 
     /**

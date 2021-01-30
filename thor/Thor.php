@@ -8,7 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 final class Thor
 {
 
-    public const VERSION = '0.2-dev';
+    public const VERSION = '0.2';
     public const VERSION_NAME = 'beta';
 
     public function __construct(
