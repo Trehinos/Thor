@@ -60,7 +60,7 @@ $config = Yaml::parse(Globals::CONFIG_DIR . 'filename.yml');
 ```  
 
 ## Documentation
-Lien : [Documentation](docs/SUMMARY.md)
+Link : [Documentation](docs/SUMMARY.md)
 
 ## License
 License : [MIT](LICENSE)  
