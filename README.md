@@ -1,4 +1,4 @@
-# THOR
+# THOR v0.2
 **Thor** is designed as a PHP *framework* as well as a web *software*.  
 This project's goal is to provide a base project for business projects.
 
@@ -11,7 +11,7 @@ simplified.**
 ### Environment
 * Pdo compatible DBMS
 * HTTP server
-* PHP 7.4+ / Pdo / DBMS PHP drivers
+* PHP 8.0 / Pdo / DBMS PHP drivers
 * Composer
 
 ### Vendors
@@ -57,35 +57,8 @@ use Symfony\Component\Yaml\Yaml;
 $config = Yaml::parse(Globals::CONFIG_DIR . 'filename.yml');
 ```  
 
-## Features
-* Framework
-    * Security
-        * User management interface (create).
-    * PDO handler and requester.
-    * CrudHelper and PdoRowInterface.
-    * HTTP request/response cycle handling :
-        * Routing (path info matches regexp).
-        * Twig ```url(route_name, route_params)``` function.
-        * Class with methods controllers.  
-          The class MUST extend ```Thor\Controller\BaseController```.
-            * TWIG template engine
-            * TWIG utility functions and filters
-    * Web frameworks : Bootstrap and FontAwesome.
-* Software (web application) as a base project.
+## [Documentation](docs/SUMMARY.md)
 
-## TODO
-* Documentation
-* Db Definition (create table, stop using static function)
-* Security
-    * Edit/delete/change password
-    * Login, check, logout
-    * Firewall (pathinfo pattern)
-    * Permissions and roles
-    * User groups
-* Form (class hierarchy and html dump)
-* Form to database CRUD actions engine
-* CLI/REPL/Automaton contexts
-    * ConsoleControl / ConsoleReader
-    * Command
-    * Argument
-    * Process
+## License
+License : MIT
+&copy; 2021 Trehinos

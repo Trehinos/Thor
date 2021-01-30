@@ -1,4 +1,0 @@
-# using PDO
-dsn: #odbc/mysql/...:dbname=...;host=...
-user: #user
-password: #password

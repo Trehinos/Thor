@@ -1,45 +1,19 @@
 schema:
+### THOR ###############################################################################################################
     -   name: default
         type: virtual
         columns:
-            id: INT NOT NULL PRIMARY KEY AUTO_INCREMENT
+            id: INT NOT NULL AUTO_INCREMENT
             public_id: VARCHAR(255) NOT NULL
         index:
             id: PRIMARY
             public_id: UNIQUE
 
-    -   extends: default
-        name: user
+    -   name: user
+        extends: default
         type: table
         columns:
             username: VARCHAR(255) NOT NULL
             password: VARCHAR(255) NOT NULL
         index:
             username: UNIQUE
-
-    -   extends: default
-        name: meta
-        type: virtual
-        columns:
-            name: VARCHAR(255) NOT NULL
-            created: DATETIME NOT NULL DEFAULT NOW()
-            creator: VARCHAR(255) NOT NULL DEFAULT ''
-            modified: DATETIME DEFAULT NULL
-        index:
-            name: UNIQUE
-
-    -   extends: meta
-        name: account
-        type: table
-        columns:
-            started: DATETIME NOT NULL DEFAULT NOW()
-            closed: DATETIME DEFAULT NULL
-
-    -   extends: meta
-        name: account_line
-        type: table
-        columns:
-            moved: DATETIME NOT NULL
-            label: VARCHAR(255) NOT NULL
-            amount: INT NOT NULL
-
