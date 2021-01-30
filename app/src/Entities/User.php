@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\App\Entities;
+namespace App\Entities;
 
 use Thor\Security\BaseDbUser;
 

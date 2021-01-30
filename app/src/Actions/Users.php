@@ -1,17 +1,17 @@
 <?php
 
-namespace Thor\App\Actions;
+namespace App\Actions;
 
 use Exception;
 
-use Thor\App\Managers\UserManager;
+use App\Managers\UserManager;
 use Thor\Controller\BaseController;
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Http\Response;
 use Thor\Http\Server;
 
-use Thor\App\Entities\User;
+use App\Entities\User;
 use Thor\Validation\Filters\PostVarRegex;
 
 final class Users extends BaseController
@@ -24,7 +24,7 @@ final class Users extends BaseController
     {
         parent::__construct($server);
         $this->manager = new UserManager(new CrudHelper(User::class, $this->getServer()->getRequester()));
-        $this->usernameFilter = new PostVarRegex('/^[A-Za-z0-9]{4,255}$/');
+        $this->usernameFilter = new PostVarRegex('/^[A-Za-z0-9]{2,255}$/');
     }
 
     public function usersInterface(): Response
@@ -62,7 +62,7 @@ final class Users extends BaseController
     public function createAction(): Response
     {
         $username = $this->usernameFilter->filter('username');
-        $clearPassword = Server::post('password', null);
+        $clearPassword = Server::post('password');
 
         $errors = [];
         if (!$username) {
@@ -76,11 +76,11 @@ final class Users extends BaseController
             $this->manager->createUser($username, $clearPassword);
         }
 
-        return $this->redirect('users');
+        return $this->redirect('index', urlAppend: '?menuItem=users');
     }
 
     /**
-     * GET /users/edit
+     * GET /users/$public_id/edit/form
      *
      * @param string $public_id
      *
@@ -98,6 +98,13 @@ final class Users extends BaseController
         );
     }
 
+    /**
+     * POST /users/$public_id/edit/action
+     *
+     * @param string $public_id
+     *
+     * @return Response
+     */
     public function editAction(string $public_id): Response
     {
         $username = $this->usernameFilter->filter('username');
@@ -108,12 +115,71 @@ final class Users extends BaseController
         }
 
         if (!empty($errors)) {
-            Logger::write(print_r($errors, true), Logger::DEBUG, Logger::ERROR);
+            Logger::write(print_r($errors, true), Logger::LEVEL_DEBUG, Logger::SEVERITY_ERROR);
             exit;
         }
         $this->manager->updateUser($public_id, $username);
 
-        return $this->redirect('users');
+        return $this->redirect('index', urlAppend: '?menuItem=users');
+    }
+
+    /**
+     * GET /users/$public_id/change-password/form
+     *
+     * @param string $public_id
+     *
+     * @return Response
+     */
+    public function passwordForm(string $public_id): Response
+    {
+        $user = $this->manager->getUserCrud()->readOneFromPid($public_id);
+
+        return $this->view(
+            'pages/users_modals/change-password.html.twig',
+            [
+                'user' => $user
+            ]
+        );
+    }
+
+    /**
+     * POST /users/$public_id/change-password/action
+     *
+     * @param string $public_id
+     *
+     * @return Response
+     */
+    public function passwordAction(string $public_id): Response
+    {
+        $password = $this->usernameFilter->filter('password');
+        $confirmPassword = $this->usernameFilter->filter('confirmPassword');
+
+        $errors = [];
+        if ($password !== $confirmPassword || strlen($password) < 16) {
+            $errors[] = 'bad-password';
+        }
+
+        if (!empty($errors)) {
+            Logger::write(print_r($errors, true), Logger::LEVEL_DEBUG, Logger::SEVERITY_ERROR);
+            exit;
+        }
+        $this->manager->setPassword($public_id, $password);
+
+        return $this->redirect('index', urlAppend: '?menuItem=users');
+    }
+
+    /**
+     * POST /users/$public_id/delete/action
+     *
+     * @param string $public_id
+     *
+     * @return Response
+     */
+    public function deleteAction(string $public_id): Response
+    {
+        $this->manager->deleteOne($public_id);
+
+        return $this->redirect('index', urlAppend: '?menuItem=users');
     }
 
 }

@@ -1,32 +1,53 @@
 <?php
 
-namespace Thor\App\Actions;
+namespace App\Actions;
 
 use Symfony\Component\Yaml\Yaml;
 
-use Thor\App\Entities\User;
-use Thor\App\Managers\UserManager;
+use App\Entities\User;
+use App\Managers\UserManager;
 use Thor\Controller\BaseController;
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Globals;
 use Thor\Http\Response;
 use Thor\Http\Server;
+use Thor\Thor;
 
 final class Main extends BaseController
 {
 
     /**
-     * GET /
+     * GET /?page=page
      *
      * @return Response
      */
     public function index(): Response
     {
+        $menuItem = Server::get('menuItem');
+
+        return $this->view(
+            'page.html.twig',
+            [
+                'menuItem' => $menuItem
+            ]
+        );
+    }
+
+    /**
+     * GET /index
+     *
+     * @return Response
+     */
+    public function indexPage(): Response
+    {
+        $icons = Yaml::parseFile(Globals::STATIC_DIR . 'icons.yml');
+
         return $this->view(
             'pages/index.html.twig',
             [
-                'routes' => $this->getServer()->getRouter()->getRoutes()
+                'routes' => $this->getServer()->getRouter()->getRoutes(),
+                'icons' => $icons
             ]
         );
     }
@@ -63,7 +84,9 @@ final class Main extends BaseController
      */
     public function about(): Response
     {
-        return $this->view('pages/about.html.twig');
+        return $this->view('pages/about.html.twig', [
+            'version' => Thor::VERSION
+        ]);
     }
 
     /**
@@ -86,7 +109,7 @@ final class Main extends BaseController
         $userManager = new UserManager(new CrudHelper(User::class, $this->getServer()->getRequester()));
         $pid = $userManager->createUser('admin', 'password');
 
-        Logger::write("Admin $pid created.", Logger::VERBOSE);
+        Logger::write("Admin $pid created.", Logger::LEVEL_VERBOSE);
         return new Response();
     }
 

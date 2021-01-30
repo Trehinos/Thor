@@ -1,11 +1,12 @@
 <?php
 
-namespace Thor\App\Managers;
+namespace App\Managers;
 
 use Exception;
 
-use Thor\App\Entities\User;
+use App\Entities\User;
 use Thor\Database\CrudHelper;
+use Thor\Database\Sql\Criteria;
 use Thor\Debug\Logger;
 
 final class UserManager
@@ -29,7 +30,7 @@ final class UserManager
         $public_id = $this->userCrud->createOne(
             new User($username, $clearPassword)
         );
-        Logger::write("User $public_id created.", Logger::VERBOSE);
+        Logger::write("User $public_id created.", Logger::LEVEL_VERBOSE);
 
         return $public_id;
     }
@@ -41,20 +42,32 @@ final class UserManager
         if ($user) {
             $user->setUsername($username);
             $state = $this->userCrud->updateOne($user);
-            Logger::write("User $public_id updated !", Logger::VERBOSE);
+            Logger::write("User $public_id updated !", Logger::LEVEL_VERBOSE);
         }
 
         return $state;
     }
 
-    public function deleteOne(string $public_id, string $username): bool
+    public function setPassword(string $public_id, string $password): bool
     {
         $state = false;
         $user = $this->userCrud->readOneFromPid($public_id);
         if ($user) {
-            $user->setUsername($username);
+            $user->setPwdHashFrom($password);
             $state = $this->userCrud->updateOne($user);
-            Logger::write("User $public_id updated !", Logger::VERBOSE);
+            Logger::write("User $public_id updated !", Logger::LEVEL_VERBOSE);
+        }
+
+        return $state;
+    }
+
+    public function deleteOne(string $public_id): bool
+    {
+        $state = false;
+        $user = $this->userCrud->readOneFromPid($public_id);
+        if ($user) {
+            $state = $this->userCrud->deleteOne($user);
+            Logger::write("User $public_id deleted !", Logger::LEVEL_VERBOSE);
         }
 
         return $state;
@@ -63,6 +76,11 @@ final class UserManager
     public function getFromPublicId(string $public_id): ?User
     {
         return $this->userCrud->readOneFromPid($public_id);
+    }
+
+    public function getFromUsername(string $username): ?User
+    {
+        return $this->userCrud->readOneBy(new Criteria(['username' => $username]));
     }
 
     public function verifyUserPassword(string $public_id, string $clearPassword): bool
