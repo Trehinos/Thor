@@ -5,6 +5,4 @@ namespace Thor\Security;
 final class Authenticator
 {
 
-
-
 }

@@ -2,6 +2,8 @@
 
 namespace Thor\Database\PdoExtension;
 
+use Exception;
+
 trait PdoRowTrait
 {
 
@@ -10,7 +12,7 @@ trait PdoRowTrait
     private ?string $public_id = null;
 
     /**
-     * @return int
+     * @return ?int
      */
     public function getId(): ?int
     {
@@ -26,7 +28,7 @@ trait PdoRowTrait
     }
 
     /**
-     * @return string
+     * @return ?string
      */
     public function getPublicId(): ?string
     {
@@ -41,6 +43,9 @@ trait PdoRowTrait
         $this->public_id = $public_id;
     }
 
+    /**
+     * @throws Exception
+     */
     public function generatePublicId(): void
     {
         $this->public_id = bin2hex(random_bytes(2)) .
@@ -82,6 +87,6 @@ trait PdoRowTrait
         $this->fromPdo($pdoArray);
     }
 
-    abstract protected function fromPdo(array $pdoArray);
+    abstract protected function fromPdo(array $pdoArray): void;
 
 }

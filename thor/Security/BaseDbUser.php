@@ -2,6 +2,7 @@
 
 namespace Thor\Security;
 
+use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoExtension\PdoRowInterface;
 use Thor\Database\PdoExtension\PdoRowTrait;
 
@@ -12,16 +13,15 @@ abstract class BaseDbUser implements PdoRowInterface, UserInterface
 
     private static ?PasswordHasher $hashMaker = null;
 
-    private string $username;
     private string $pwd_hash;
 
-    public function __construct(string $username = '', string $clearPassword = '')
+    public function __construct(private string $username = '', string $clearPassword = '')
     {
         self::$hashMaker ??= new PasswordHasher();
-        $this->username = $username;
         $this->pwd_hash = self::$hashMaker->hash($clearPassword);
     }
 
+    #[ArrayShape(['username' => "string", 'password' => "string"])]
     protected static function getTableColumns(): array
     {
         return [
@@ -30,6 +30,7 @@ abstract class BaseDbUser implements PdoRowInterface, UserInterface
         ];
     }
 
+    #[ArrayShape(['username' => "string", 'password' => "string"])]
     protected function toPdo(): array
     {
         return [
@@ -38,7 +39,7 @@ abstract class BaseDbUser implements PdoRowInterface, UserInterface
         ];
     }
 
-    protected function fromPdo(array $pdoArray)
+    protected function fromPdo(array $pdoArray): void
     {
         $this->setUsername($pdoArray['username']);
         $this->pwd_hash = $pdoArray['password'];

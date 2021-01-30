@@ -1,9 +1,5 @@
-{% extends "thor.html.twig" %}
-
-{% block head_title %}{{ _.about.title }} - Thor{% endblock %}
-
-{% block titlebar %}{{ icon('info-square', 'fas', true)|raw }} {{ _.about.title }}{% endblock %}
-
-{% block page %}
+<div id="titlebar">{{ icon('info-square', 'fas', true)|raw }} {{ _.about.title }}</div>
+<div id="page">
+    <strong>Version</strong> : {{ version }}<br><br>
     {{ _.about.description|raw }}
-{% endblock %}
+</div>

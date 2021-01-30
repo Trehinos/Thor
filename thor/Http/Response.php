@@ -5,24 +5,16 @@ namespace Thor\Http;
 class Response
 {
 
-    private int $status;
-
-    const STATUS_SUCCESS = 200;
-    const STATUS_NOT_FOUND = 404;
-    const STATUS_METHOD_NOT_ALLOWED = 405;
-
-    private array $headers;
-
-    private string $body;
+    public const STATUS_SUCCESS = 200;
+    public const STATUS_FORBIDDEN = 403;
+    public const STATUS_NOT_FOUND = 404;
+    public const STATUS_METHOD_NOT_ALLOWED = 405;
 
     public function __construct(
-        string $body = '',
-        int $status = self::STATUS_SUCCESS,
-        array $headers = []
+        private string $body = '',
+        private  int $status = self::STATUS_SUCCESS,
+        private array $headers = []
     ) {
-        $this->body = $body;
-        $this->status = $status;
-        $this->headers = $headers;
     }
 
     public function getBody(): string
@@ -44,7 +36,7 @@ class Response
      * @param string $name
      * @param array|string $value
      */
-    public function setHeader(string $name, $value)
+    public function setHeader(string $name, array|string $value)
     {
         $this->headers[$name] = $value;
     }

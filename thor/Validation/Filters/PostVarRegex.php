@@ -15,10 +15,10 @@ class PostVarRegex implements FilterInterface
         $this->regExp = $regExp;
     }
 
-    public function filter($post_var_name)
+    public function filter(mixed $value): array|string|null
     {
         return Server::post(
-            $post_var_name,
+            $value,
             null,
             FILTER_VALIDATE_REGEXP,
             [

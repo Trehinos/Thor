@@ -7,8 +7,8 @@ use Thor\Html\HtmlInterface;
 interface FieldInterface extends HtmlInterface
 {
 
-    public function get();
+    public function get(): mixed;
 
-    public function set($value): void;
+    public function set(mixed $value): void;
 
 }

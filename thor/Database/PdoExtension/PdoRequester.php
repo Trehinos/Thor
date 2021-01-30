@@ -9,11 +9,8 @@ use Thor\Debug\Logger;
 final class PdoRequester
 {
 
-    private PdoHandler $handler;
-
-    public function __construct(PdoHandler $handler)
+    public function __construct(private PdoHandler $handler)
     {
-        $this->handler = $handler;
     }
 
     /**
@@ -25,9 +22,9 @@ final class PdoRequester
      *
      * @return bool
      */
-    public function execute(string $sql, array $parameters = []): bool
+    public function execute(string $sql, array $parameters): bool
     {
-        Logger::write("DB execute ($sql).", Logger::DEBUG);
+        Logger::write("DB execute ($sql).", Logger::LEVEL_DEBUG);
         $stmt = $this->handler->getPdo()->prepare($sql);
 
         return $stmt->execute($parameters);
@@ -42,9 +39,9 @@ final class PdoRequester
      *
      * @return PDOStatement
      */
-    public function request(string $sql, array $parameters = []): PDOStatement
+    public function request(string $sql, array $parameters): PDOStatement
     {
-        Logger::write("DB request ($sql).", Logger::DEBUG);
+        Logger::write("DB request ($sql).", Logger::LEVEL_DEBUG);
         $stmt = $this->handler->getPdo()->prepare($sql);
         $stmt->execute($parameters);
 

@@ -1,98 +1,10 @@
-{% extends "thor.html.twig" %}
+<div id="titlebar">{{ icon('book', 'fas', true)|raw }} {{ _.index.title }}</div>
+<div id="toolbar">
 
-{% block head_title %}{{ _.index.title }} - Thor{% endblock %}
+</div>
+<div id="page">
 
-{% block titlebar %}{{ icon('book', 'fas', true)|raw }} {{ _.index.title }}{% endblock %}
+</div>
 
-{% block toolbar %}
-    <label for="search"></label>
-    <!-- TODO onkeyup -->
-    <input type="text" id="search" class="form-control form-control-sm d-inline-block"
-           placeholder="{{ _.index.search_placeholder }}" style="width: 240px;"
-    >
-{% endblock %}
-
-{% block page %}
-    <div class="card bg-light text-info mb-4">
-        <div class="card-body">
-            {{ icon('info-circle', 'fas fa-lg')|raw }}
-            {{ _.index.tip }} <code>engine/config/routes.yml</code>.
-        </div>
-    </div>
-    {{ dump(defs) }}
-    {% for def in defs %}
-    <pre>
-        {{ helper.tableDefinitionSql(def.name) }}
-    </pre>
-    {% endfor %}
-    <ul>
-        {% for routeName, route in routes %}
-            <li class="align-text-top mb-4" id="route-{{ routeName }}">
-                <strong>Route <span class="route-name">{{ routeName }}</span></strong> :
-                <div class="badge badge-primary">
-                    {{ route.controllerClass|classname }}::
-                </div>
-                <div class="badge badge-info">
-                    {{ route.controllerMethod }}()
-                </div>
-                {% for pName, pInfos in route.parameters %}
-                    <div class="badge badge-success">
-                        ${{ pName }} : {{ pInfos.regex ?? '.*' }}
-                    </div>
-                {% endfor %}
-                <div class="border bg-light p-2" style="min-height: 48px;">
-                    {% for pName, pInfos in route.parameters %}
-                        <div class="form-group d-inline-block align-text-top">
-                            <label>{{ pName }} :
-                                <input type="text" id="route-{{ routeName }}-{{ pName }}"
-                                       class="param form-control d-inline-block"
-                                       value="" data-param-name="{{ pName }}">
-                            </label>
-                        </div>
-                    {% endfor %}
-                    <button class="btn btn-primary float-right"
-                            onclick="generateUrl('{{ routeName }}')"
-                    >
-                        {{ icon('play')|raw }}
-                    </button>
-                    <br>
-                    <hr>
-                    <div class="badge badge-secondary">
-                        {{ route.method }}
-                    </div>
-                    {{ route.path }}
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-{% endblock %}
-
-{% block body_js %}
-    {{ parent() }}
-    <script>
-
-        function generateUrl(routeName) {
-            let $params = $("#route-" + routeName + " input.param");
-
-            let data = {routeName};
-
-            if ($params.length > 1) {
-                $params.each((index, element) => {
-                    let $element = $(element);
-                    data["param-" + $element.data("param-name")] = $element.val();
-                });
-            } else {
-                data["param-" + $params.data("param-name")] = $params.val();
-            }
-
-            $.get("{{ url("generate-url") }}", data, (response) => {
-                window.location.href = response;
-            });
-
-        }
-
-        $(() => {
-
-        });
-    </script>
-{% endblock %}
+<script>
+</script>

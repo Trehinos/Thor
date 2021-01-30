@@ -5,26 +5,15 @@ namespace Thor\Http\Routing;
 final class Route
 {
 
-    private string $path;
+    private array $filledParams = [];
 
-    private string $method;
-
-    private array $parameters;
-
-    private array $filledParams;
-
-    private string $controllerClass;
-
-    private string $controllerMethod;
-
-    public function __construct(string $controllerClass, string $controllerMethod, string $path = '/', string $method = 'GET', array $parameters = [])
-    {
-        $this->path = $path;
-        $this->method = $method;
-        $this->parameters = $parameters;
-        $this->filledParams = [];
-        $this->controllerClass = $controllerClass;
-        $this->controllerMethod = $controllerMethod;
+    public function __construct(
+        private string $controllerClass,
+        private string $controllerMethod,
+        private string $path = '/',
+        private string $method = 'GET',
+        private array $parameters = []
+    ) {
     }
 
     public function matches(string $pathInfo): bool
@@ -57,11 +46,6 @@ final class Route
         }
 
         return "/index.php$path";
-    }
-
-    public function getFilledParameters(): array
-    {
-        return $this->filledParams;
     }
 
     /**
@@ -111,7 +95,6 @@ final class Route
     {
         return $this->controllerMethod;
     }
-
 
 
 }

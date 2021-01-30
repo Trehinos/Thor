@@ -2,12 +2,16 @@
 
 namespace Thor\Http;
 
+use JetBrains\PhpStorm\Pure;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoExtension\PdoRequester;
 
 use Thor\Debug\Logger;
 use Thor\Http\Routing\Router;
+use Thor\Security\BaseDbUser;
+use Thor\Security\SecurityContext;
+use Thor\Security\UserInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -16,32 +20,30 @@ use Twig\Error\SyntaxError;
 class Server
 {
 
-    const DEV = 'dev';
-    const DEBUG = 'debug';
-    const PROD = 'prod';
-
-    const ENV = self::DEV;
-
-    private ?Environment $twig;
-
-    private ?PdoCollection $databases;
-
-    private ?Router $router;
-
-    private array $language;
+    public const DEV = 'dev';
+    public const DEBUG = 'debug';
+    public const PROD = 'prod';
+    public const ENV = self::DEV;
 
     private ?string $current_routeName = null;
 
     public function __construct(
-        ?Environment $twig = null,
-        ?PdoCollection $databases = null,
-        ?Router $router = null,
-        $language = []
+        private ?Environment $twig = null,
+        private ?PdoCollection $databases = null,
+        private ?Router $router = null,
+        private ?SecurityContext $security = null,
+        private array $language = []
     ) {
-        $this->twig = $twig;
-        $this->databases = $databases;
-        $this->router = $router;
-        $this->language = $language;
+    }
+
+    public function getSecurity(): ?SecurityContext
+    {
+        return $this->security;
+    }
+
+    public function getUser(): UserInterface
+    {
+        return $this->getSecurity()->getUser($this->getSecurity()->getCurrentUsername());
     }
 
     /**
@@ -63,19 +65,34 @@ class Server
         $ip = $_SERVER['REMOTE_ADDR'];
         Logger::write(
             "Routing request [{$request->getMethod()} '{$request->getPathInfo()}'] from $ip",
-            Logger::VERBOSE
+            Logger::LEVEL_VERBOSE
         );
         $route = $this->router->match($request);
 
+        if ($this->security?->isActive()) {
+            if (
+                !$this->security->isAuthenticated($request->getHeader($this->security->tokenKey)) &&
+                !in_array(
+                    $this->router->getMatchedRouteName(),
+                    [
+                        $this->security->loginRoute,
+                        $this->security->logoutRoute,
+                        $this->security->checkRoute,
+                    ]
+                )) {
+                return $this->redirect($this->security?->loginRoute ?? 'login');
+            }
+        }
+
         if (null === $route) {
-            Logger::write(' -> No route matched', Logger::DEBUG, Logger::WARNING);
+            Logger::write(' -> No route matched', Logger::LEVEL_DEBUG, Logger::SEVERITY_WARNING);
             return new Response404($this->twig->render('errors/404.html.twig'));
         }
         if (false === $route) {
             Logger::write(
                 " -> Method not allowed for route '{$this->current_routeName}'",
-                Logger::DEBUG,
-                Logger::WARNING
+                Logger::LEVEL_DEBUG,
+                Logger::SEVERITY_WARNING
             );
             return new Response(
                 'METHOD NOT ALLOWED',
@@ -85,15 +102,15 @@ class Server
         }
 
         $this->current_routeName = $this->router->getMatchedRouteName();
-        Logger::write(" -> Matched with route '{$this->current_routeName}'", Logger::DEBUG);
+        Logger::write(" -> Matched with route '{$this->current_routeName}'", Logger::LEVEL_DEBUG);
 
         $params = $route->getFilledParams();
         $cClass = $route->getControllerClass();
         $cMethod = $route->getControllerMethod();
 
-        Logger::write("  • Instantiate controller of type '$cClass'", Logger::DEBUG);
+        Logger::write("  • Instantiate controller of type '$cClass'", Logger::LEVEL_DEBUG);
         $controller = new $cClass($this);
-        Logger::write("  • Execute '$cClass::$cMethod()'", Logger::DEBUG);
+        Logger::write("  • Execute '$cClass::$cMethod()'", Logger::LEVEL_DEBUG);
         return $controller->$cMethod(...array_values($params));
     }
 
@@ -109,7 +126,7 @@ class Server
 
     public function getHandler(string $connectionName = 'default'): ?PdoHandler
     {
-        Logger::write("Loading handler $connectionName", Logger::DEBUG);
+        Logger::write("Loading handler $connectionName", Logger::LEVEL_DEBUG);
         return $this->databases->get($connectionName);
     }
 
@@ -133,8 +150,13 @@ class Server
         return $this->language;
     }
 
-    static function post(string $name, $default = null, ?int $filter = null, array $filter_options = [])
-    {
+    #[Pure] public static function post(
+        string $name,
+        string|array|null $default = null,
+        ?int $filter = null,
+        array $filter_options = [],
+
+    ): string|array|null {
         if (null !== $filter) {
             return (false === ($filtered = filter_input(INPUT_POST, $name, $filter, $filter_options)))
                 ? $default
@@ -144,8 +166,12 @@ class Server
         return $_POST[$name] ?? $default;
     }
 
-    static function get(string $name, $default = null, ?int $filter = null, array $filter_options = [])
-    {
+    #[Pure] public static function get(
+        string $name,
+        string|array|null $default = null,
+        ?int $filter = null,
+        array $filter_options = []
+    ): string|array|null {
         if (null !== $filter) {
             return (false === ($filtered = filter_input(INPUT_GET, $name, $filter, $filter_options)))
                 ? $default
@@ -155,8 +181,12 @@ class Server
         return $_GET[$name] ?? $default;
     }
 
-    static function readCookie(string $name, string $default = '', ?int $filter = null, array $filter_options = [])
-    {
+    #[Pure] public static function readCookie(
+        string $name,
+        string $default = '',
+        ?int $filter = null,
+        array $filter_options = []
+    ) {
         if (null !== $filter) {
             return (false === ($filtered = filter_input(INPUT_COOKIE, $name, $filter, $filter_options)))
                 ? $default
@@ -166,26 +196,26 @@ class Server
         return $_COOKIE[$name] ?? $default;
     }
 
-    static function writeCookie(string $name, string $value)
+    public static function writeCookie(string $name, string $value): void
     {
         setcookie($name, $value);
     }
 
-    static function writeCookieArray(string $name, array $value)
+    public static function writeCookieArray(string $name, array $value): void
     {
         foreach ($value as $key => $v) {
             self::writeCookie("$name[$key]", $v);
         }
     }
 
-    static function readSession(string $name, $default = null, ?int $filter = null)
+    public static function readSession(string $name, $default = null, ?int $filter = null): mixed
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
 
         if (null !== $filter) {
-            return (false === ($filtered = filter_input(INPUT_SESSION, $name, $filter)))
+            return (false === ($filtered = filter_var($_SESSION[$name], $filter)))
                 ? $default
                 : $filtered;
         }
@@ -193,7 +223,7 @@ class Server
         return $_SESSION[$name] ?? $default;
     }
 
-    static function writeSession(string $name, $value)
+    public static function writeSession(string $name, $value): void
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
@@ -202,4 +232,17 @@ class Server
         $_SESSION[$name] = $value;
     }
 
+    public function generateUrl(string $routeName, array $params = [], string $urlAppend = ''): string
+    {
+        if (!$route = $this->getRouter()->getRoute($routeName)) {
+            return '#generate-url-error';
+        }
+
+        return $this->getRouter()->getUrl($routeName, $params) . $urlAppend;
+    }
+
+    public function redirect(string $routeName, array $params = [], string $urlAppend = ''): Response
+    {
+        return new Response('', 302, ['Location' => $this->generateUrl($routeName, $params, $urlAppend)]);
+    }
 }

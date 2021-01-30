@@ -1,17 +1,44 @@
-help:
-    class: Packages\EMS\Main\Commands\Main
-    method: help
+user/create:
+  class: App\Commands\UserCommand
+  command: createUser
+  description: create a new user in DB
+  arguments:
+    username:
+      hasValue: true
+      description: user's login
+    password:
+      hasValue: true
+      description: user's clear password. Will be hashed before insertion
 
-echo:
-    class: Packages\EMS\Main\Commands\Main
-    method: echo
-    options:
-        - short: u
-          long: upper
-        - short: l
-          long: lower
-        - short: c
-          long: color
-          value: "0*1?[0-9]"
-    arguments:
-        message: ".*"
+user/list:
+  class: App\Commands\UserCommand
+  command: listUsers
+  description: list all users in DB
+  arguments:
+    search:
+      hasValue: true
+      description: User login search request
+
+user/edit:
+  class: App\Commands\UserCommand
+  command: editUser
+  description: create a new user in DB
+  arguments:
+    pid:
+      hasValue: true
+      description: user's PID. Needed to identify the user in DB
+    username:
+      hasValue: true
+      description: user's new login
+    password:
+      hasValue: true
+      description: user's new clear password. Will be hashed before insertion
+
+user/delete:
+  class: App\Commands\UserCommand
+  command: deleteUser
+  description: delete an existing user in DB
+  arguments:
+    pid:
+      hasValue: true
+      description: user's PID. Needed to identify the user in DB

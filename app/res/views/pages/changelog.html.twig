@@ -1,20 +1,5 @@
-{% extends "thor.html.twig" %}
-
-{% block head_title %}{{ _.changelog.title }} - Thor{% endblock %}
-
-{% block titlebar %}{{ icon('code-branch', 'fas', true)|raw }} {{ _.changelog.title }}{% endblock %}
-
-{% block head_css %}
-    {{ parent() }}
-    <style>
-        #versions > .card {
-            min-width: 240px;
-            margin: 0.4em;
-        }
-    </style>
-{% endblock %}
-
-{% block page %}
+<div id="titlebar">{{ icon('code-branch', 'fas', true)|raw }} {{ _.changelog.title }}</div>
+<div id="page">
     <div id="versions" class="d-flex flex-wrap">
         <div class="card">
             <div class="card-body">
@@ -52,107 +37,19 @@
             </div>
         </div>
         <div class="card flex-fill">
-            <div class="card-body bg-light text-muted">
-                <h5 class="card-title">
-                    Version &zeta; [0.6] <small class="text-muted">future...</small>
-                </h5>
-                <div class="card-text">
-                    <ul class="fa-ul">
-                        <li>
-                            <span class="fa-li" style="color: #07b; color: #888;">{{ icon('plus-square')|raw }}</span>
-                            Business administrator utilities (users and roles management, parameters configuration)
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="card flex-fill">
-            <div class="card-body bg-light text-muted">
-                <h5 class="card-title">
-                    Version &epsilon; [0.5] <small class="text-muted">future...</small>
-                </h5>
-                <div class="card-text">
-                    <ul class="fa-ul">
-                        <li>
-                            <span class="fa-li" style="color: #07b; color: #888;">{{ icon('plus-square')|raw }}</span>
-                            Business developer utilities (classes, forms, pages)
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="card flex-fill">
-            <div class="card-body bg-light text-muted">
-                <h5 class="card-title">
-                    Version &delta; [0.4] <small class="text-muted">future...</small>
-                </h5>
-                <div class="card-text">
-                    <ul class="fa-ul">
-                        <li>
-                            <span class="fa-li" style="color: #07b; color: #888;">{{ icon('plus-square')|raw }}</span>
-                            Thor specialized Exceptions and Recoveries.
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="card flex-fill">
-            <div class="card-body bg-light text-muted">
-                <h5 class="card-title">
-                    Version &gamma; [0.3] <small class="text-muted">future...</small>
-                </h5>
-                <div class="card-text">
-                    <ul class="fa-ul">
-                        <li>
-                            <span class="fa-li" style="color: #07b; color: #888;">{{ icon('plus-square')|raw }}</span>
-                            Form utility (class -> form -> html)
-                        </li>
-                        <li>
-                            <span class="fa-li" style="color: #07b; color: #888;">{{ icon('plus-square')|raw }}</span>
-                            In-project documentation
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="card flex-fill">
             <div class="card-body">
-                <h5 class="card-title text-primary">
-                    Version &beta; [0.2] <small class="text-muted">current</small>
+                <h5 class="card-title">
+                    Version &beta; [0.2] <small class="text-muted">future</small>
                 </h5>
                 <div class="card-text">
                     <ul class="fa-ul">
-                        <li class="text-muted">
-                            <span class="fa-li" style="color: #07b;">{{ icon('plus-square')|raw }}</span>
-                            Users & security
-                            <ul>
-                                <li><span style="color: #000;">Users management (create, edit, remove</span>, change password<span style="color: #000;">)</span></li>
-                                <li>
-                                    Users roles (permissions collection, custom index), in YML
-                                </li>
-                                <li>Route firewall (permissions)</li>
-                                <li>Login/Check/Logout</li>
-                            </ul>
-                        </li>
                         <li>
                             <span class="fa-li" style="color: #07b;">{{ icon('plus-square')|raw }}</span>
-                            Framework : PdoRow improvements, multi-database support.
+                            User : Change password
                         </li>
                         <li>
-                            <span class="fa-li" style="color: #07b;">{{ icon('plus-square')|raw }}</span>
-                            Framework : Database : Schema and Definition helpers.
-                        </li>
-                        <li>
-                            <span class="fa-li" style="color: #07b;">{{ icon('plus-square')|raw }}</span>
-                            Framework : CliKernel and Command abstraction.
-                        </li>
-                        <li>
-                            <span class="fa-li" style="color: #0b7">{{ icon('sync')|raw }}</span>
-                            Folder structure reorder
-                        </li>
-                        <li>
-                            <span class="fa-li" style="color: #96f;">{{ icon('palette')|raw }}</span>
-                            Favicon with bolt
+                            <span class="fa-li" style="color: #07b; color: #888;">{{ icon('plus-square')|raw }}</span>
+                            ...
                         </li>
                     </ul>
                 </div>
@@ -161,38 +58,28 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">
-                    Version &alpha; [0.1] <small class="text-muted">2020-07-14</small>
+                    Version &alpha; [0.1] <small class="text-primary">in dev</small>
                 </h5>
                 <div class="card-text">
                     <ul class="fa-ul">
                         <li>
                             <span class="fa-li" style="color: #07b">{{ icon('plus-square')|raw }}</span>
-                            Framework
+                            Cli user commands
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #0b7">{{ icon('sync')|raw }}</span>
+                            From Trehinos/Thor
                             <ul>
-                                <li>Menu system</li>
-                                <li>HTTP kernel, router, Request and Response cycle, controllers</li>
-                                <li>Twig and Thor PdoHandler</li>
-                                <li>Debug utilities (logger)</li>
+                                <li>PHP 8.0 rewrite</li>
+                                <li>CliKernel</li>
+                                <li>Improvements</li>
+                                <li>Page AJAX loading</li>
+                                <li>Delete user</li>
                             </ul>
-                        </li>
-                        <li>
-                            <span class="fa-li" style="color: #07b">{{ icon('plus-square')|raw }}</span>
-                            Added index page (route list and tests)
-                        </li>
-                        <li>
-                            <span class="fa-li" style="color: #07b">{{ icon('plus-square')|raw }}</span>
-                            Added users interface
-                            <ul>
-                                <li>Add and edit user forms (add is working)</li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span class="fa-li" style="color: #07b">{{ icon('plus-square')|raw }}</span>
-                            Changelog page
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
+</div>

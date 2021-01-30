@@ -2,22 +2,18 @@
 
 namespace Thor\Database\Sql;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 final class Criteria
 {
-
-    private array $criteria;
-    private bool $andGlue;
-
-    const GLUE_AND = true;
-    const GLUE_OR = false;
+    public const GLUE_AND = true;
+    public const GLUE_OR = false;
 
     private ?string $sql = null;
     private ?array $params = null;
 
-    public function __construct(array $criteria = [], bool $glue = self::GLUE_AND)
+    public function __construct(private array $criteria = [], private bool $glue = self::GLUE_AND)
     {
-        $this->criteria = $criteria;
-        $this->andGlue = $glue;
     }
 
     /**
@@ -29,10 +25,13 @@ final class Criteria
      *
      * @param bool $glue
      *
-     * @return array ['sql' => ..., 'params' => ...]
+     * @return array
      */
-    public static function compile(array $criteria, bool $glue = self::GLUE_AND): array
-    {
+    #[ArrayShape(['sql' => "string", 'params' => "array"])]
+    public static function compile(
+        array $criteria,
+        bool $glue = self::GLUE_AND
+    ): array {
         $sqlArray = [];
         $params = [];
 
@@ -53,14 +52,12 @@ final class Criteria
                 } else {
                     ['op' => $op, 'value' => $value] = self::parseValue($value);
 
-                    $mark = '?';
                     if ($value === null) {
-                        $op = ($op === '=' ? 'IS' : ($op === '!=' ? 'IS NOT' : $op));
-                        $sqlArray[] = "$key $op NULL";
+                        $mark = 'NULL';
                     }
 
                     $params[] = $value;
-                    $sqlArray[] = "$key $op $mark";
+                    $sqlArray[] = "$key $op ?";
                 }
             }
         }
@@ -99,64 +96,64 @@ final class Criteria
         return $this->params;
     }
 
-    private function make()
+    private function make(): void
     {
-        ['sql' => $this->sql, 'params' => $this->params] = self::compile($this->criteria, $this->andGlue);
+        ['sql' => $this->sql, 'params' => $this->params] = self::compile($this->criteria, $this->glue);
     }
 
-    private static function parseValue(?string $value): array
-    {
+    #[ArrayShape(['op' => "false|string", 'value' => "false|null|string"])]
+    private static function parseValue(
+        string $value
+    ): array {
         $op = '=';
-        if (null !== $value) {
-            switch ($twoFirsts = substr($value, 0, 2)) {
-                case '!=':
-                case '<>':
-                case '>=':
-                case '<=':
-                    $op = $twoFirsts;
-                    $value = substr($value, 2);
-                    break;
+        switch ($twoFirsts = substr($value, 0, 2)) {
+            case '!=':
+            case '<>':
+            case '>=':
+            case '<=':
+                $op = $twoFirsts;
+                $value = substr($value, 2);
+                break;
 
-                case '%*':
-                    $op = 'LIKE';
-                    $value = substr("%$value", 2);
-                    break;
+            case '%*':
+                $op = 'LIKE';
+                $value = substr("%$value", 2);
+                break;
 
-                case '*%':
-                    $op = 'LIKE';
-                    $value = substr("$value%", 2);
-                    break;
+            case '*%':
+                $op = 'LIKE';
+                $value = substr("$value%", 2);
+                break;
 
-                case '!%';
-                    $op = 'NOT LIKE';
-                    $value = substr("%$value%", 2);
-                    break;
+            case '!%';
+                $op = 'NOT LIKE';
+                $value = substr("%$value%", 2);
+                break;
 
-                default:
-                    switch ($first = substr($value, 0, 1)) {
-                        case '=':
-                        case '>':
-                        case '<':
-                            $op = $first;
-                            $value = substr($value, 1);
-                            break;
+            default:
+                switch ($first = substr($value, 0, 1)) {
+                    case '=':
+                    case '>':
+                    case '<':
+                        $op = $first;
+                        $value = substr($value, 1);
+                        break;
 
-                        case '%':
-                            $op = 'LIKE';
-                            $value = substr("%$value%", 1);
-                            break;
+                    case '%':
+                        $op = 'LIKE';
+                        $value = substr("%$value%", 1);
+                        break;
 
-                        case '!':
-                            $op = 'NOT';
-                            $value = null;
-                            break;
+                    case '!':
+                        $op = 'NOT';
+                        $value = null;
+                        break;
 
-                        case '$':
-                            $op = '';
-                            $value = null;
-                            break;
-                    }
-            }
+                    case '$':
+                        $op = '';
+                        $value = null;
+                        break;
+                }
         }
 
         return [

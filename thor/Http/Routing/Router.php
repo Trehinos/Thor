@@ -50,12 +50,7 @@ final class Router
         return $this->routes[$name] ?? null;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Route|false|null
-     */
-    public function match(Request $request)
+    public function match(Request $request): Route|false|null
     {
         $pathInfo = $request->getPathInfo();
         $method = $request->getMethod();

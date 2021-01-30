@@ -13,14 +13,10 @@ use Twig\TwigFunction;
 final class TwigFactory
 {
 
-    private Server $server;
-    private Router $router;
     private Environment $twig;
 
-    public function __construct(Server $server, Router $router, ?Environment $twig = null)
+    public function __construct(private Server $server, private Router $router, ?Environment $twig = null)
     {
-        $this->server = $server;
-        $this->router = $router;
         $this->twig = $twig ?? new Environment(new FilesystemLoader());
     }
 

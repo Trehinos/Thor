@@ -2,6 +2,16 @@
 
 namespace Thor\Cli;
 
+/**
+ * Class AbstractCommand
+ * @package Thor\Cli
+ *
+ * @since 2020-09
+ * @version 1.0
+ * @author Sébastien Geldreich
+ * @copyright Author
+ * @license MIT
+ */
 abstract class AbstractCommand implements CommandInterface
 {
 
@@ -26,7 +36,7 @@ abstract class AbstractCommand implements CommandInterface
     }
 
     /**
-     * @return string
+     * @return string the command name.
      */
     public function getCommand(): string
     {
@@ -34,7 +44,7 @@ abstract class AbstractCommand implements CommandInterface
     }
 
     /**
-     * @return string
+     * @return string an optional description.
      */
     public function getDescription(): string
     {
@@ -42,7 +52,7 @@ abstract class AbstractCommand implements CommandInterface
     }
 
     /**
-     * @return array
+     * @return CommandArgument[] every possible arguments of this command.
      */
     public function getArguments(): array
     {

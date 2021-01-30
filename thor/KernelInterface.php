@@ -5,6 +5,6 @@ namespace Thor;
 interface KernelInterface
 {
 
-    public function execute();
+    public function execute(): void;
 
 }

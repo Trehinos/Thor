@@ -7,31 +7,14 @@ use PDO;
 final class PdoHandler
 {
 
-    private string $dsn;
-
-    private string $user;
-
-    private string $password;
-
-    private array $options;
-
-    private ?PDO $pdo;
+    private ?PDO $pdo = null;
 
     public function __construct(
-        string $dsn,
-        string $user = '',
-        string $password = '',
-        array $options = []
-    ) {
-        $this->pdo = null;
-        $this->dsn = $dsn;
-        $this->user = $user;
-        $this->password = $password;
-        $this->options = $options + [
-                PDO::ATTR_CASE => PDO::CASE_LOWER,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            ];
+        private string $dsn,
+        private string $user = '',
+        private string $password = ''
+    )
+    {
     }
 
     public function getPdo(): PDO
@@ -41,14 +24,11 @@ final class PdoHandler
 
     public function connect(): PDO
     {
-        return $this->pdo ??= new PDO(
-            $this->dsn,
-            $this->user,
-            $this->password,
-            $this->options
-        );
+        return $this->pdo ??= new PDO($this->dsn, $this->user, $this->password, [
+            PDO::ATTR_CASE => PDO::CASE_LOWER,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ]);
     }
 
 }
-
-

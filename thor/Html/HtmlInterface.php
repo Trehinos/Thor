@@ -7,7 +7,7 @@ interface HtmlInterface
 
     public function toHtml(): string;
 
-    public function getAttr(string $name);
+    public function getAttr(string $name): mixed;
 
     public function setAttr(string $name, $value): void;
 

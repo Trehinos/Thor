@@ -1,47 +1,13 @@
-{% extends "thor.html.twig" %}
-
-{% block head_title %}{{ _.users.title }} - Thor{% endblock %}
-
-{% block head_css %}
-    {{ parent() }}
-    <style>
-        #users .user .btn, #users .user small {
-            opacity: 0.1;
-        }
-        #users .user small {
-            transition: opacity ease 0.6s;
-        }
-        #users .user {
-            background: none;
-            transition: background-color ease 0.6s;
-            box-shadow: #7774 0 0 2px 1px;
-        }
-
-        #users .user:hover {
-            background: #fff;
-        }
-
-        #users .user:hover .btn:disabled {
-            opacity: 0.5;
-        }
-        #users .user:hover .btn:enabled, #users .user:hover small {
-            opacity: 1;
-        }
-    </style>
-{% endblock %}
-
-{% block titlebar %}{{ icon('users', 'fas', true)|raw }} {{ _.users.title }}{% endblock %}
-
-{% block toolbar %}
+<div id="titlebar">{{ icon('users', 'fas', true)|raw }} {{ _.users.title }}</div>
+<div id="toolbar">
     <button class="btn btn-sm btn-primary"
             onclick="Modal.load('{{ url('users-create-form') }}');"
     >
         {{ icon('plus')|raw }}
         {{ _.general.create }}
     </button>
-{% endblock %}
-
-{% block page %}
+</div>
+<div id="page">
     <div class="d-flex flex-wrap justify-content-around" id="users">
         {% for user in users %}
             <div class="m-1 p-4 user">
@@ -55,27 +21,19 @@
                     {{ icon('edit')|raw }}
                     {{ _.general.edit }}
                 </button>
-                <button class="btn btn-sm btn-secondary"
-                        disabled
+                <button class="btn btn-sm btn-warning"
+                        onclick="Modal.load('{{ url('users-change-password-form', {public_id: user.publicId}) }}');"
                 >
-                    {{ icon('user-friends')|raw }}
-                    Groupes
-                </button>
-                <button class="btn btn-sm btn-warning">
                     {{ icon('lock')|raw }}
                     {{ _.users.change_password }}
                 </button>
-                <form onsubmit="if(!confirm('Supprimer l\'utilisateur {{ user.username }} ?')) return false;"
-                      action="{{ url('users-delete-action', {public_id: user.publicId}) }}"
-                      method="POST"
-                      style="display: inline-block"
+                <button class="btn btn-sm btn-danger"
+                        onclick="confirmPost('{{ url('users-delete-action', {public_id: user.publicId}) }}', {}, 'Supprimer cet utilisateur ?', () => {$(this).parent().remove();})"
                 >
-                    <button class="btn btn-sm btn-danger">
-                        {{ icon('trash')|raw }}
-                        {{ _.general.remove }}
-                    </button>
-                </form>
+                    {{ icon('trash')|raw }}
+                    {{ _.general.remove }}
+                </button>
             </div>
         {% endfor %}
     </div>
-{% endblock %}
+</div>

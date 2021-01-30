@@ -17,15 +17,11 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/src/",
-            "Thor\\": "thor/",
-            "Packages\\": "ems/packages/",
-            "Plugins\\": "ems/plugins/",
-            "Themes\\": "ems/themes/",
-            "Ems\\": "ems/core/"
+            "Thor\\": "thor/"
         }
     },
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "ext-pdo": "*",
         "symfony/yaml": "5.*",
         "symfony/var-dumper": "5.*",

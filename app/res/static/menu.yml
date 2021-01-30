@@ -1,13 +1,13 @@
 - label: index
   icon: book
-  route: index
+  route: index-page
 - label: users
   icon: users
   route: users
   group:
     - icon: user-friends
-      route: .
+      route: index-page
       label: users-groups
 - label: Documentation
   icon: books
-  route: .
+  route: index-page

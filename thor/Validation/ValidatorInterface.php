@@ -5,6 +5,6 @@ namespace Thor\Validation;
 interface ValidatorInterface
 {
 
-    public function isValid($value): bool;
+    public function isValid(mixed $value): bool;
 
 }

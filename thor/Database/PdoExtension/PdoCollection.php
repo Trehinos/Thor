@@ -12,7 +12,7 @@ final class PdoCollection
         $this->handlers = [];
     }
 
-    public function add(string $connectionName, PdoHandler $handler)
+    public function add(string $connectionName, PdoHandler $handler): void
     {
         $this->handlers[$connectionName] = $handler;
     }
