@@ -48,53 +48,34 @@ final class Route
         return "/index.php$path";
     }
 
-    /**
-     * @return string
-     */
     public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * @return string
-     */
     public function getMethod(): string
     {
         return $this->method;
     }
 
-    /**
-     * @return array
-     */
     public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    /**
-     * @return array
-     */
     public function getFilledParams(): array
     {
         return $this->filledParams;
     }
 
-    /**
-     * @return string
-     */
     public function getControllerClass(): string
     {
         return $this->controllerClass;
     }
 
-    /**
-     * @return string
-     */
     public function getControllerMethod(): string
     {
         return $this->controllerMethod;
     }
-
 
 }

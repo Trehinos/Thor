@@ -3,15 +3,16 @@
 namespace Thor\Http;
 
 use Thor\Debug\Logger;
+use Twig\Error\Error;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 abstract class BaseController
 {
 
-    private Server $server;
-
-    public function __construct(Server $server)
+    public function __construct(private Server $server)
     {
-        $this->server = $server;
     }
 
     public function getServer(): Server
@@ -19,12 +20,28 @@ abstract class BaseController
         return $this->server;
     }
 
+    /**
+     * @param string $fileName
+     * @param array $params
+     * @return Response
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function view(string $fileName, array $params = []): Response
     {
         Logger::write("     -> Twig : rendering file '$fileName'");
         return new Response($this->server->getTwig()->render($fileName, $params));
     }
 
+    /**
+     * @param string $routeName
+     * @param array $params
+     * @return string
+     *
+     * @throws Error
+     */
     public function generateUrl(string $routeName, array $params = []): string
     {
         if (!$route = $this->server->getRouter()->getRoute($routeName)) {
@@ -34,9 +51,12 @@ abstract class BaseController
         return $this->server->getRouter()->getUrl($routeName, $params);
     }
 
-    public function redirect(string $routeName, array $params = [])
+    public function redirect(string $routeName, array $params = []): Response
     {
-        return new Response('', 302, ['Location' => $this->generateUrl($routeName, $params)]);
+        return new Response(
+            '', Response::STATUS_REDIRECT,
+            ['Location' => $this->generateUrl($routeName, $params)]
+        );
     }
 
 }

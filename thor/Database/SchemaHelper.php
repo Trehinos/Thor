@@ -7,14 +7,8 @@ use Thor\Database\PdoExtension\PdoRequester;
 final class SchemaHelper
 {
 
-    private PdoRequester $requester;
-
-    private DefinitionHelper $definitions;
-
-    public function __construct(PdoRequester $requester, DefinitionHelper $definitions)
+    public function __construct(private PdoRequester $requester, private DefinitionHelper $definitions)
     {
-        $this->requester = $requester;
-        $this->definitions = $definitions;
     }
 
     /**

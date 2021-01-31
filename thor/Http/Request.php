@@ -3,6 +3,7 @@
 namespace Thor\Http;
 
 // Done : HTTP 1.1
+use JetBrains\PhpStorm\Pure;
 
 /** @see https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_73/rzaie/rzaiewebdav.htm */
 final class Request
@@ -69,12 +70,14 @@ final class Request
         return $this->body;
     }
 
-    public function queryGet(string $name, $default = null)
+    #[Pure]
+    public function queryGet(string $name, $default = null): string|array|null
     {
         return Server::get($name, $default);
     }
 
-    public function postVariable(string $name, $default = null)
+    #[Pure]
+    public function postVariable(string $name, $default = null): string|array|null
     {
         if ($this->type === self::POST) {
             return Server::post($name, $default);
@@ -101,6 +104,7 @@ final class Request
             $body,
             $pathInfo,
             $hasBody,
+
             // response has a body
             in_array($type, [self::GET, self::POST, self::CONNECT, self::OPTIONS, self::PROPFIND]),
             // is safe

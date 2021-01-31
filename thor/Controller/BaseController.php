@@ -24,9 +24,9 @@ abstract class BaseController
         return new Response($this->server->getTwig()->render($fileName, $params));
     }
 
-    public function generateUrl(string $routeName, array $params = [], string $urlAppend = ''): string
+    public function generateUrl(string $routeName, array $params = [], string $queryString = ''): string
     {
-        return $this->getServer()->generateUrl($routeName, $params, $urlAppend);
+        return $this->getServer()->generateUrl($routeName, $params, $queryString);
     }
 
     public function redirect(string $routeName, array $params = [], string $queryString = ''): Response

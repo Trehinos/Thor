@@ -2,6 +2,7 @@
 
 namespace Thor\Database\PdoExtension;
 
+use Exception;
 use Thor\Database\DefinitionHelper;
 
 /**
@@ -19,8 +20,7 @@ trait AdvancedPdoRow
 
     /**
      * Get the DefinitionHelper which is used to resolve columns.
-     *
-     * @return DefinitionHelper|null
+     * To be overwritten by child class.
      */
     public static function getDefinitionHelper(): ?DefinitionHelper
     {
@@ -29,8 +29,6 @@ trait AdvancedPdoRow
 
     /**
      * All attributes of the PdoRow.
-     *
-     * @var array
      */
     protected array $attributes = ['id' => null, 'public_id' => null];
 
@@ -39,16 +37,13 @@ trait AdvancedPdoRow
         return $this->attributes['id'] ?? null;
     }
 
-    /**
-     * @param int $id
-     */
     public function setId(int $id): void
     {
         $this->attributes['id'] = $id;
     }
 
     /**
-     * @return string
+     * @throws Exception
      */
     public function getPublicId(): ?string
     {
@@ -58,16 +53,13 @@ trait AdvancedPdoRow
         return $this->attributes['public_id'] ?? null;
     }
 
-    /**
-     * @param string $public_id
-     */
     public function setPublicId(string $public_id): void
     {
         $this->attributes['public_id'] = $public_id;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function generatePublicId(): void
     {
@@ -79,22 +71,13 @@ trait AdvancedPdoRow
             '-' . bin2hex(random_bytes(4));
     }
 
-    /**
-     * @return array
-     */
     final public static function getPdoColumnsDefinitions(): array
     {
         return static::getDefinitionHelper()->getTableDefinition(static::getTableName())['columns'] ?? [];
     }
 
-    /**
-     * @return string
-     */
     abstract public static function getTableName(): string;
 
-    /**
-     * @return array
-     */
     final public function toPdoArray(): array
     {
         $pdoArray = [];
@@ -104,9 +87,6 @@ trait AdvancedPdoRow
         return $pdoArray;
     }
 
-    /**
-     * @param array $pdoArray
-     */
     final public function fromPdoArray(array $pdoArray): void
     {
         $this->attributes = [];

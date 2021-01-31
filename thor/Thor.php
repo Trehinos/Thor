@@ -17,6 +17,7 @@ final class Thor
     private array $configurations = [];
 
     public function __construct(
+        private ?string $globalConfigFile = null,
         private ?string $dbDefinitionFile = null,
         private ?string $databaseConfigFile = null,
         private ?string $menuFile = null,
@@ -34,6 +35,7 @@ final class Thor
     }
 
     #[ArrayShape([
+        'config' => "array|mixed",
         'databases' => "array|mixed",
         'routes' => "array|mixed",
         'security' => "array|mixed",
@@ -42,6 +44,7 @@ final class Thor
     ])] public function getHttpConfiguration(): array
     {
         return [
+            'config' => $this->loadConfig($this->globalConfigFile),
             'databases' => $this->loadConfig($this->databaseConfigFile),
             'routes' => $this->loadConfig($this->routesFile),
             'security' => $this->loadConfig($this->securityFile),
@@ -51,20 +54,18 @@ final class Thor
     }
 
     #[ArrayShape([
+        'config' => "array|mixed",
         'databases' => "array|mixed",
         'commands' => "array|mixed",
         'language' => "array|mixed"
     ])] public function getConsoleConfiguration(): array
     {
-        $consoleConfiguration = [
-            'databases' => $this->databaseConfigFile ? Yaml::parseFile($this->databaseConfigFile) : [],
-            'commands' => $this->commandsFile ? Yaml::parseFile($this->commandsFile) : [],
-            'language' => $this->languageFile ? Yaml::parseFile($this->languageFile) : []
+        return [
+            'config' => $this->loadConfig($this->globalConfigFile),
+            'databases' => $this->loadConfig($this->databaseConfigFile),
+            'commands' => $this->loadConfig($this->commandsFile),
+            'language' => $this->loadConfig($this->languageFile),
         ];
-
-        $this->configurations = $consoleConfiguration + $this->configurations;
-
-        return $consoleConfiguration;
     }
 
     private function loadConfig(?string $configName): array
@@ -77,6 +78,7 @@ final class Thor
         $language = self::DEFAULT_LANGUAGE;
 
         return self::$defaultInstance ??= new self(
+            Globals::CONFIG_DIR . 'config.yml',
             Globals::STATIC_DIR . 'db_definition.yml',
             Globals::CONFIG_DIR . 'database.yml',
             Globals::STATIC_DIR . 'menu.yml',

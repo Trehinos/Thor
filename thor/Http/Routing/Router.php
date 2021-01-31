@@ -8,19 +8,18 @@ use Twig\Error\Error;
 final class Router
 {
 
-    private array $routes;
     private ?Route $errorRoute = null;
     private ?string $matched_routeName = null;
 
-    public function __construct(array $routes)
+    public function __construct(private array $routes)
     {
-        $this->routes = $routes;
     }
 
     /**
      * @param string $routeName
      * @param array $params
      * @param string $queryString without '&'
+     *
      * @return string
      *
      * @throws Error

@@ -31,7 +31,6 @@ class HtmlTag implements HtmlInterface
         $this->tag = strtolower($tag);
         $this->attrs = $attrs + [
                 'id' => bin2hex(random_bytes(8)),
-                'class' => 'form-control'
             ];
     }
 

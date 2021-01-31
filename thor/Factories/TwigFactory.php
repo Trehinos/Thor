@@ -32,6 +32,7 @@ final class TwigFactory
         $router = $this->router;
 
         $this->twig->addGlobal('server', $server);
+        $this->twig->addGlobal('appName', $server->getAppName());
         $this->twig->addGlobal('version', Thor::VERSION);
         $this->twig->addGlobal('versionName', Thor::VERSION_NAME);
         $this->twig->addGlobal('_', $server->getLanguage());

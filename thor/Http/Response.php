@@ -6,6 +6,7 @@ class Response
 {
 
     public const STATUS_SUCCESS = 200;
+    public const STATUS_REDIRECT = 302;
     public const STATUS_FORBIDDEN = 403;
     public const STATUS_NOT_FOUND = 404;
     public const STATUS_METHOD_NOT_ALLOWED = 405;

@@ -26,6 +26,7 @@ final class HttpKernel implements KernelInterface
 
     public function __construct(
         #[ArrayShape([
+            'config' => 'array',
             'databases' => 'array',
             'routes' => 'array',
             'twig' => 'array',
@@ -40,6 +41,7 @@ final class HttpKernel implements KernelInterface
 
         Logger::write('Instantiate HttpKernel');
         $this->server = new Server(
+            $configuration['config'],
             $twig,
             $pdos,
             $router,

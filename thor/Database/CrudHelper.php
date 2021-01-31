@@ -63,11 +63,6 @@ final class CrudHelper
         return $row->getPublicId();
     }
 
-    /**
-     * @param array $rows
-     *
-     * @return bool
-     */
     public function createMultiple(array $rows): bool
     {
         $allValues = [];

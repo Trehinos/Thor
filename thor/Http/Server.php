@@ -28,6 +28,7 @@ class Server
     private ?string $current_routeName = null;
 
     public function __construct(
+        private array $config,
         private ?Environment $twig = null,
         private ?PdoCollection $databases = null,
         private ?Router $router = null,
@@ -39,6 +40,11 @@ class Server
     public function getSecurity(): ?SecurityContext
     {
         return $this->security;
+    }
+
+    public function getAppName(): string
+    {
+        return $this->config['app_name'] ?? '';
     }
 
     public function getUser(): UserInterface
