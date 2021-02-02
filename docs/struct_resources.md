@@ -23,7 +23,7 @@ These folders contain static data files in [YAML](https://en.wikipedia.org/wiki/
 
 ### Static data
 Static data are located in ```thor/app/res/static/```.  
-Characteristics of static data are : they **never change** between *environments*, they **shall change** between *projects*.
+Characteristics of static data are : they **never change** between *environments*, they **ever change** between *projects*.
 > **PHP** : ```Thor\Globals::STATIC_DIR```.
 
 ### Configuration
