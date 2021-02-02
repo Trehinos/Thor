@@ -19,15 +19,16 @@ Characteristics of "config" : it **may change** between *environments*, it **may
 
 ### How to **read a YAML resource file** ?
 ```php
-use Thor\Thor;
+// With Symfony/Yaml
 use Thor\Globals;
 use Symfony\Component\Yaml\Yaml;
-
-// With Symfony/Yaml
 $config = Yaml::parseFile(Globals::CONFIG_DIR . 'filename.yml');
 $static = Yaml::parseFile(Globals::STATIC_DIR . 'filename.yml');
 
+
 // Static singleton for default configuration files.
+use Thor\Thor;
+
 $config = Thor::getInstance()->loadConfig('config file key');
 $static = Thor::getInstance()->loadConfig('static file key');
 ```
