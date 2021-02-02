@@ -3,6 +3,8 @@
 namespace Thor\Http;
 
 use JetBrains\PhpStorm\ArrayShape;
+use ReflectionClass;
+use ReflectionMethod;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Database\PdoExtension\PdoHandler;
@@ -71,16 +73,42 @@ final class HttpKernel implements KernelInterface
         return $pdos;
     }
 
+    private static function loadRouteAttr(array $routesObj, array $pathsList): array
+    {
+        foreach ($pathsList as $loadPath) {
+            $rc = new ReflectionClass($loadPath);
+            foreach ($rc->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+                if (!empty($routeAttrs = $method->getAttributes(Route::class))) {
+                    foreach ($routeAttrs as $routeAttr) {
+                        $route = $routeAttr->newInstance();
+                        $route->setControllerClass($rc->getName());
+                        $route->setControllerMethod($method->getName());
+                        $routesObj[$route->getRouteName()] = $route;
+                    }
+                }
+            }
+        }
+        return $routesObj;
+    }
+
     private static function createRouterFromConfiguration(array $routes): Router
     {
         $routesObj = [];
         foreach ($routes as $routeName => $routeInfo) {
+            if ($routeName === 'load') {
+                $routesObj = self::loadRouteAttr($routesObj, $routeInfo);
+                continue;
+            }
+            $rClass = $routeInfo['action']['class'];
+            $rMethod = $routeInfo['action']['method'];
+
             $routesObj[$routeName] = new Route(
-                $routeInfo['action']['class'],
-                $routeInfo['action']['method'],
+                $routeName,
                 $routeInfo['path'] ?? '',
                 $routeInfo['method'] ?? 'GET',
-                $routeInfo['parameters'] ?? []
+                $routeInfo['parameters'] ?? [],
+                $rClass,
+                $rMethod
             );
         }
         return new Router($routesObj);

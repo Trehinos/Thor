@@ -11,17 +11,13 @@ use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Globals;
 use Thor\Http\Response;
+use Thor\Http\Routing\Route;
 use Thor\Http\Server;
-use Thor\Thor;
 
 final class Main extends BaseController
 {
 
-    /**
-     * GET /?page=page
-     *
-     * @return Response
-     */
+    #[Route('index', '/', 'GET')]
     public function index(): Response
     {
         $menuItem = Server::get('menuItem');
@@ -34,20 +30,16 @@ final class Main extends BaseController
         );
     }
 
-    /**
-     * GET /index
-     *
-     * @return Response
-     */
+    #[Route('index-page', '/index', 'GET')]
     public function indexPage(): Response
     {
-        $icons = Yaml::parseFile(Globals::STATIC_DIR . 'icons.yml');
+        //$icons = Yaml::parseFile(Globals::STATIC_DIR . 'icons.yml');
 
         return $this->view(
             'pages/index.html.twig',
             [
                 'routes' => $this->getServer()->getRouter()->getRoutes(),
-                'icons' => $icons
+//                'icons' => $icons
             ]
         );
     }

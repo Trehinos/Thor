@@ -8,24 +8,14 @@
 #  ...
 
 # main routes
+
+load:
+    - App\Actions\Main
+
 menu:
     action:
         class: App\Actions\Main
         method: menu
-
-index:
-    path: "/"
-    method: GET
-    action:
-        class: App\Actions\Main
-        method: index
-
-index-page:
-    path: "/index"
-    method: GET
-    action:
-        class: App\Actions\Main
-        method: indexPage
 
 changelog:
     path: "/changelog"

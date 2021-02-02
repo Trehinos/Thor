@@ -68,7 +68,7 @@ final class Thor
         ];
     }
 
-    private function loadConfig(?string $configName): array
+    public function loadConfig(?string $configName): array
     {
         return $this->configurations[$configName] ??= ($configName ? Yaml::parseFile($configName) : []);
     }

@@ -33,10 +33,6 @@ class Response
         return $this->headers;
     }
 
-    /**
-     * @param string $name
-     * @param array|string $value
-     */
     public function setHeader(string $name, array|string $value)
     {
         $this->headers[$name] = $value;

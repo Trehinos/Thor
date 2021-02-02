@@ -1,15 +1,15 @@
 # Thor documentation
-## Structure
-### Application
-- Resources
+
+## Application
+
+- [Resources](struct_resources.md)
     - Static data
     - Configuration
     - SQL
     - Views
-- PHP code   
-### Documentation
-### Vendors
-### Thor
+
+## Thor
+
 - Cli module
 - Database
 - Debug utilities
@@ -18,14 +18,17 @@
 - Http module
 - Security
 - Validation utilities
-- Yaml configuration loader
-### Web root
+
+## Entry points, Kernel and application
+
 - HTTP entry point
-- Assets
-### Binaries
+- Cli entry point
+
+## Binaries
+
 - Console entry point
-### Variable files
+
+## Variable files
+
 - Cache
 - Logs
-
-## Framework

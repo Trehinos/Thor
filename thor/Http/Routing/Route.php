@@ -2,18 +2,47 @@
 
 namespace Thor\Http\Routing;
 
+use Attribute;
+use Thor\Http\Request;
+
+#[Attribute(Attribute::TARGET_METHOD)]
 final class Route
 {
 
     private array $filledParams = [];
 
     public function __construct(
-        private string $controllerClass,
-        private string $controllerMethod,
+        private ?string $routeName = null,
         private string $path = '/',
-        private string $method = 'GET',
-        private array $parameters = []
+        private string $method = Request::GET,
+        private array $parameters = [],
+        private ?string $controllerClass = null,
+        private ?string $controllerMethod = null,
     ) {
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRouteName(): ?string
+    {
+        return $this->routeName;
+    }
+
+    /**
+     * @param string|null $controllerClass
+     */
+    public function setControllerClass(?string $controllerClass): void
+    {
+        $this->controllerClass = $controllerClass;
+    }
+
+    /**
+     * @param string|null $controllerMethod
+     */
+    public function setControllerMethod(?string $controllerMethod): void
+    {
+        $this->controllerMethod = $controllerMethod;
     }
 
     public function matches(string $pathInfo): bool
