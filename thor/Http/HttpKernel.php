@@ -5,7 +5,6 @@ namespace Thor\Http;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionClass;
 use ReflectionMethod;
-use Symfony\Component\Yaml\Yaml;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Database\PdoExtension\PdoHandler;
 
