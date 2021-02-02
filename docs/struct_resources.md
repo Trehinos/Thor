@@ -6,30 +6,47 @@ all serverside resources.
 ## Yaml files
 These folders contain static data files in [YAML](https://en.wikipedia.org/wiki/YAML) organized in two directories : ```static``` and ```config```.
 
-> How to **read a YAML resource file** ?
-> ```php
-> use Thor\Thor;
-> use Thor\Globals;
-> use Symfony\Component\Yaml\Yaml;
-> 
-> // With Symfony/Yaml
-> $config = Yaml::parseFile(Globals::CONFIG_DIR . 'filename.yml');
-> $static = Yaml::parseFile(Globals::STATIC_DIR . 'filename.yml');
-> 
-> // Static singleton for default configuration files.
-> $config = Thor::getInstance()->loadConfig('config file key');
-> $static = Thor::getInstance()->loadConfig('static file key');
-> ```
-
 ### Static data
 Static data are located in ```thor/app/res/static/```.  
-Characteristics of static data are : they **never change** between *environments*, they **ever change** between *projects*.
+Characteristics of static data are : it **doesn't change** between *environments*, it **changes** between *projects*.
 > **PHP** : ```Thor\Globals::STATIC_DIR```.
 
 ### Configuration
 Configuration of the application is located in ```thor/app/res/config/```.  
 Characteristics of "config" : it **may change** between *environments*, it **may change** between *projects*.
 > **PHP** : ```Thor\Globals::CONFIG_DIR```.
+
+
+### How to **read a YAML resource file** ?
+```php
+use Thor\Thor;
+use Thor\Globals;
+use Symfony\Component\Yaml\Yaml;
+
+// With Symfony/Yaml
+$config = Yaml::parseFile(Globals::CONFIG_DIR . 'filename.yml');
+$static = Yaml::parseFile(Globals::STATIC_DIR . 'filename.yml');
+
+// Static singleton for default configuration files.
+$config = Thor::getInstance()->loadConfig('config file key');
+$static = Thor::getInstance()->loadConfig('static file key');
+```
+
+#### Config file keys
+* config
+* database
+* security
+* twig
+
+#### Static file keys
+* langs
+    * fr
+    * en
+* commands
+* db_definitions
+* icons
+* menu
+* routes
 
 ## SQL
 SQL scripts are located in ```thor/app/res/sql/```.
