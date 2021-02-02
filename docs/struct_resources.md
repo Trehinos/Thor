@@ -40,9 +40,7 @@ $static = Thor::getInstance()->loadConfig('static file key');
 * twig
 
 #### Static file keys
-* langs
-    * fr
-    * en
+* langs/{config.lang}
 * commands
 * db_definitions
 * icons
