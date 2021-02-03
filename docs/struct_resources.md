@@ -1,7 +1,10 @@
 # Resources folder
 The resource folder, located by default at ```thor/app/res/```, contains
 all serverside resources.
-> **PHP** : ```Thor\Globals::RESOURCES_DIR```. 
+> **get path in PHP** :
+> ```php
+>   $path = Thor\Globals::RESOURCES_DIR;
+> ```
 
 ## Yaml files
 These folders contain static data files in [YAML](https://en.wikipedia.org/wiki/YAML) organized in two directories : ```static``` and ```config```.
@@ -9,12 +12,18 @@ These folders contain static data files in [YAML](https://en.wikipedia.org/wiki/
 ### Static data
 Static data are located in ```thor/app/res/static/```.  
 Characteristics of static data are : it **doesn't change** between *environments*, it **changes** between *projects*.
-> **PHP** : ```Thor\Globals::STATIC_DIR```.
+> **get path in PHP** :
+> ```php
+>   $path = Thor\Globals::STATIC_DIR;
+> ```
 
 ### Configuration
 Configuration of the application is located in ```thor/app/res/config/```.  
 Characteristics of "config" : it **may change** between *environments*, it **may change** between *projects*.
-> **PHP** : ```Thor\Globals::CONFIG_DIR```.
+> **get path in PHP** :
+> ```php
+>   $path = Thor\Globals::CONFIG_DIR;
+> ```
 
 
 ### How to **read a YAML resource file** ?
@@ -49,9 +58,15 @@ $static = Thor::getInstance()->loadConfig('static file key');
 
 ## SQL
 SQL scripts are located in ```thor/app/res/sql/```.
-> **PHP** : ```Thor\Globals::RES_DIR . 'sql/```.
+> **get path in PHP** :
+> ```php
+>   $path = Thor\Globals::RESOURCES_DIR . 'sql/';
+> ```
 
 ## Views
 **Twig** view files are located in ```thor/app/res/views/```.  
 Edit ```views_dir``` array in ```thor/app/res/config/twig.yml``` to add folders.
-> **PHP** : ```Thor\Thor::getInstance()->loadConfig('twig')['views_dir'][$index]'```.
+> **get paths in PHP** :
+> ```php
+>  $viewsFoldersArray = Thor\Thor::getInstance()->loadConfig('twig')['views_dir'];
+> ```
