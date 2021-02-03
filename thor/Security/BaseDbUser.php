@@ -3,17 +3,23 @@
 namespace Thor\Security;
 
 use Thor\Database\PdoExtension\AdvancedPdoRow;
+use Thor\Database\PdoExtension\PdoColumn;
 use Thor\Database\PdoExtension\PdoRowInterface;
 
+#[PdoColumn('username', 'VARCHAR(255)', 'string')]
+#[PdoColumn('password', 'VARCHAR(255)', 'string')]
 abstract class BaseDbUser implements PdoRowInterface, UserInterface
 {
 
-    use AdvancedPdoRow;
+    use AdvancedPdoRow {
+        AdvancedPdoRow::__construct as private adwConstruct;
+    }
 
     private static ?PasswordHasher $hashMaker = null;
 
     public function __construct(string $username = '', string $clearPassword = '')
     {
+        $this->adwConstruct();
         $this->attributes['username'] = $username;
         self::$hashMaker ??= new PasswordHasher();
         $this->attributes['password'] = self::$hashMaker->hash($clearPassword);

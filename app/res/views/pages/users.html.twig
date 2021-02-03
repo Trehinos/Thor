@@ -13,7 +13,8 @@
             <div class="m-1 p-4 user">
                 {{ icon('user', 'fa-2x fas') }}
                 {{ user.username }}
-                <small>#{{ user.publicId }}</small>
+                <span class="text-info">#{{ user.publicId|slice(0, 9) }}</span>
+                <small>{{ user.publicId|slice(10) }}</small>
                 <hr class="mt-1 mb-2">
                 <button class="btn btn-sm btn-secondary"
                         onclick="Modal.load('{{ url('users-edit-form', {public_id: user.publicId}) }}');"

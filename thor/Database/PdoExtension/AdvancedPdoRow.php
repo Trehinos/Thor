@@ -3,6 +3,7 @@
 namespace Thor\Database\PdoExtension;
 
 use Exception;
+use ReflectionClass;
 use Thor\Database\DefinitionHelper;
 
 /**
@@ -15,8 +16,13 @@ use Thor\Database\DefinitionHelper;
  * @copyright Author
  * @license MIT
  */
+#[PdoColumn('id', 'INTEGER', 'integer')]
+#[PdoColumn('public_id', 'VARCHAR(255)', 'string')]
 trait AdvancedPdoRow
 {
+
+    private static ?array $tableDefinition = null;
+    private static ?string $tableName = null;
 
     /**
      * Get the DefinitionHelper which is used to resolve columns.
@@ -30,7 +36,13 @@ trait AdvancedPdoRow
     /**
      * All attributes of the PdoRow.
      */
-    protected array $attributes = ['id' => null, 'public_id' => null];
+    protected array $attributes;
+
+    public function __construct()
+    {
+        $this->attributes['id'] = null;
+        $this->attributes['public_id'] = null;
+    }
 
     public function getId(): ?int
     {
@@ -71,17 +83,47 @@ trait AdvancedPdoRow
             '-' . bin2hex(random_bytes(4));
     }
 
-    final public static function getPdoColumnsDefinitions(): array
+    final public function getPdoColumnsDefinitions(): array
     {
-        return static::getDefinitionHelper()->getTableDefinition(static::getTableName())['columns'] ?? [];
+        if (null !== self::$tableDefinition) {
+            return self::$tableDefinition;
+        }
+        $rc = new ReflectionClass($this::class);
+        $columns = $rc->getAttributes(PdoColumn::class);
+        foreach ($rc->getTraits() as $trait) {
+            $columns = array_merge($columns, $trait->getAttributes(PdoColumn::class));
+        }
+
+        $p = $rc;
+        while ($p = $p->getParentClass()) {
+            $columns = array_merge($columns, $p->getAttributes(PdoColumn::class));
+            foreach ($p->getTraits() as $trait) {
+                $columns = array_merge($columns, $trait->getAttributes(PdoColumn::class));
+            }
+        }
+
+        $pdoDefs = [];
+        foreach ($columns as $column) {
+            /** @var PdoColumn */ $pdoColumn = $column->newInstance();
+            $pdoDefs[$pdoColumn->getName()] = $pdoColumn->getSqlType();
+        }
+
+        return self::$tableDefinition = $pdoDefs;
     }
 
-    abstract public static function getTableName(): string;
+    final public function getTableName(): string
+    {
+        if (null !== self::$tableName) {
+            return self::$tableName;
+        }
+        $rc = new ReflectionClass($this);
+        return self::$tableName = $rc->getAttributes(PdoRow::class)[0]->getName();
+    }
 
     final public function toPdoArray(): array
     {
         $pdoArray = [];
-        foreach (static::getPdoColumnsDefinitions() as $columnName => $columnDef_unused) {
+        foreach ($this->getPdoColumnsDefinitions() as $columnName => $columnDef_unused) {
             $pdoArray[$columnName] = $this->attributes[$columnName] ?? null;
         }
         return $pdoArray;
@@ -90,7 +132,7 @@ trait AdvancedPdoRow
     final public function fromPdoArray(array $pdoArray): void
     {
         $this->attributes = [];
-        foreach (static::getPdoColumnsDefinitions() as $columnName => $columnDef_unused) {
+        foreach ($this->getPdoColumnsDefinitions() as $columnName => $columnDef_unused) {
             $this->attributes[$columnName] = $pdoArray[$columnName] ?? null;
         }
     }

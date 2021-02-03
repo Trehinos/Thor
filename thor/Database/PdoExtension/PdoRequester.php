@@ -31,6 +31,29 @@ final class PdoRequester
     }
 
     /**
+     * executeMultiple
+     *      Execute a parameterized SQL query with the PdoHandler
+     *
+     * @param string $sql
+     * @param array[] $parameters
+     *
+     * @return bool
+     */
+    public function executeMultiple(string $sql, array $parameters): bool
+    {
+        $size = count($parameters);
+        Logger::write("DB execute $size x ($sql).", Logger::LEVEL_DEBUG);
+        $stmt = $this->handler->getPdo()->prepare($sql);
+        $result = true;
+
+        foreach ($parameters as $pdoRowsArray) {
+            $result = $result && $stmt->execute($pdoRowsArray);
+        }
+
+        return $result;
+    }
+
+    /**
      * request
      *      Execute a parameterized SQL query with the PdoHandler and returns the result as a PDOStatement object.
      *
@@ -46,6 +69,11 @@ final class PdoRequester
         $stmt->execute($parameters);
 
         return $stmt;
+    }
+
+    public function getPdoHandler(): PdoHandler
+    {
+        return $this->handler;
     }
 
 }

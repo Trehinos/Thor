@@ -7,9 +7,9 @@ interface PdoRowInterface
 
     // <-> SQL Methods
 
-    public static function getPdoColumnsDefinitions(): array;
+    public function getPdoColumnsDefinitions(): array;
 
-    public static function getTableName(): string;
+    public function getTableName(): string;
 
     public function toPdoArray(): array;
 

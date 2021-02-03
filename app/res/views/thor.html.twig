@@ -10,18 +10,23 @@
             <h1 class="text-center mt-4 mb-0 " style="color: #bbb;">
                 {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;')|raw }}
                 <br>
-                <span style="color: #8cf">{{ appName|upper }}</span>
+                <span style="color: #fa4">{{ appName|upper }}</span>
             </h1>
             <div class="text-center mb-4" style="color: #ddd; font-size: 0.75em;">
                 PHP Tools
             </div>
             {{ render('menu') }}
             <div id="user-box">
-                <a class="float-right btn btn-dark"
+                <a class="float-right btn btn-outline-light" title="logout"
                    href="{{ url('logout') }}"
                 >
                     <i class="fas fa-sign-out"></i>
                 </a>
+                <button class="btn btn-outline-warning float-right" title="change password"
+                        onclick="Modal.load('{{ url('users-change-password-form', {public_id: server.user.publicId}) }}');"
+                >
+                    {{ icon('lock') }}
+                </button>
                 <div class="mt-1">
                     <i class="fas fa-user fa-lg"></i>
                     {{ server.user.username }}
