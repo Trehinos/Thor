@@ -21,12 +21,8 @@
 
 ## Entry points, Kernel and application
 
-- HTTP entry point
-- Cli entry point
-
-## Binaries
-
-- Console entry point
+- HTTP entry point : Routing & Controllers
+- Cli entry point : CliKernel & Commands
 
 ## Variable files
 
