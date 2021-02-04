@@ -18,7 +18,6 @@ final class Thor
 
     public function __construct(
         private ?string $globalConfigFile = null,
-        private ?string $dbDefinitionFile = null,
         private ?string $databaseConfigFile = null,
         private ?string $menuFile = null,
         private ?string $routesFile = null,
@@ -27,11 +26,6 @@ final class Thor
         private ?string $twigFile = null,
         private ?string $securityFile = null
     ) {
-    }
-
-    public function getDefinitionHelperConfiguration(): array
-    {
-        return $this->loadConfig($this->dbDefinitionFile);
     }
 
     #[ArrayShape([
@@ -79,7 +73,6 @@ final class Thor
 
         return self::$defaultInstance ??= new self(
             Globals::CONFIG_DIR . 'config.yml',
-            Globals::STATIC_DIR . 'db_definition.yml',
             Globals::CONFIG_DIR . 'database.yml',
             Globals::STATIC_DIR . 'menu.yml',
             Globals::STATIC_DIR . 'routes.yml',

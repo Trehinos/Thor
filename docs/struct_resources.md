@@ -51,7 +51,6 @@ $static = Thor::getInstance()->loadConfig('static file key');
 #### Static file keys
 * langs/{config.lang}
 * commands
-* db_definitions
 * icons
 * menu
 * routes

@@ -44,7 +44,6 @@ All configuration files are in ```thor/app/res/config/``` or in ```thor/app/res/
 * ```twig.yml``` contains TWIG configuration.
 ### Static
 * ```commands.yml``` contains the CLI commands target class and arguments information.
-* ```db_definition.yml``` contains tables information.
 * ```icons.yml``` font-awesome 5.13.1 icons list.
 * ```menu.yml``` contains the menu settings.
 * ```routes.yml``` contains routes patterns and target controllers information.
