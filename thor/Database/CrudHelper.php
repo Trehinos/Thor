@@ -3,21 +3,25 @@
 namespace Thor\Database;
 
 use JetBrains\PhpStorm\Pure;
+use ReflectionClass;
 use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoExtension\PdoRow;
 use Thor\Database\PdoExtension\PdoRowInterface;
 use Thor\Database\Sql\Criteria;
 
 /**
- * Class CrudHelper : SQL CRUD operation requester for PdoRowInterface objects.
+ * Class CrudHelper : SQL CRUD operation requester for PdoRows.
  *
  * @package Thor\Database\Sql
  */
 final class CrudHelper
 {
 
+    private ?string $tableName = null;
+
     /**
      * CrudHelper constructor.
-     * Creates a new CRUD requester to manage PdoRowInterface objects.
+     * Creates a new CRUD requester to manage PdoRows
      *
      * @param string $className
      * @param PdoRequester $requester
@@ -31,7 +35,17 @@ final class CrudHelper
     #[Pure]
     public function table(): string
     {
-        return strtolower(substr($this->className, strrpos($this->className, '\\') + 1));
+        if (null !== $this->tableName) {
+            return $this->tableName;
+        }
+        $rc = new ReflectionClass($this->className);
+        $pdoRowAttrs = $rc->getAttributes(PdoRow::class);
+
+        if (empty($pdoRowAttrs)) {
+            return strtolower(substr($this->className, strrpos($this->className, '\\') + 1));
+        }
+
+        return $this->tableName = $pdoRowAttrs[0]->newInstance()->getTableName();
     }
 
     public function listAll(): array
