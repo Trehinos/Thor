@@ -103,7 +103,7 @@ final class Criteria
 
     #[ArrayShape(['op' => "false|string", 'value' => "false|null|string"])]
     private static function parseValue(
-        string $value
+        ?string $value
     ): array {
         $op = '=';
         switch ($twoFirsts = substr($value, 0, 2)) {
@@ -149,10 +149,10 @@ final class Criteria
                         $value = null;
                         break;
 
-                    case '$':
-                        $op = '';
-                        $value = null;
-                        break;
+                    default:
+                        if ($value === null) {
+                            $op = 'IS';
+                        }
                 }
         }
 

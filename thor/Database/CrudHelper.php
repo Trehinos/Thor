@@ -4,6 +4,7 @@ namespace Thor\Database;
 
 use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
+use ReflectionException;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\PdoExtension\PdoRow;
 use Thor\Database\PdoExtension\PdoRowInterface;
@@ -17,7 +18,7 @@ use Thor\Database\Sql\Criteria;
 final class CrudHelper
 {
 
-    private ?string $tableName = null;
+    private PdoRow $pdoRowInfos;
 
     /**
      * CrudHelper constructor.
@@ -25,27 +26,22 @@ final class CrudHelper
      *
      * @param string $className
      * @param PdoRequester $requester
+     *
+     * @throws ReflectionException
      */
     public function __construct(
         private string $className,
         private PdoRequester $requester
     ) {
+        $rc = new ReflectionClass($this->className);
+        $pdoRowAttrs = $rc->getAttributes(PdoRow::class);
+        $this->pdoRowInfos = $pdoRowAttrs[0]->newInstance();
     }
 
     #[Pure]
     public function table(): string
     {
-        if (null !== $this->tableName) {
-            return $this->tableName;
-        }
-        $rc = new ReflectionClass($this->className);
-        $pdoRowAttrs = $rc->getAttributes(PdoRow::class);
-
-        if (empty($pdoRowAttrs)) {
-            return strtolower(substr($this->className, strrpos($this->className, '\\') + 1));
-        }
-
-        return $this->tableName = $pdoRowAttrs[0]->newInstance()->getTableName();
+        return $this->pdoRowInfos->getTableName();
     }
 
     public function listAll(): array
@@ -106,9 +102,19 @@ final class CrudHelper
         return [$columns, $values, array_values($pdoArray)];
     }
 
-    public function readOne(string $id): mixed
+    private function primaryArrayToCriteria(array $primaries): Criteria
     {
-        return $this->readOneBy(new Criteria(['id' => $id]));
+        return new Criteria(
+            array_combine(
+                $this->pdoRowInfos->getPrimaryKeys(),
+                $primaries
+            )
+        );
+    }
+
+    public function readOne(array $primaries): mixed
+    {
+        return $this->readOneBy($this->primaryArrayToCriteria($primaries));
     }
 
     public function readOneFromPid(string $pid): mixed
@@ -163,15 +169,21 @@ final class CrudHelper
         $pdoArray = $row->toPdoArray();
         $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($pdoArray)));
 
+        $criteria = $this->primaryArrayToCriteria($row->getPrimary());
+
         return $this->requester->execute(
-            "UPDATE {$this->table()} SET $sets WHERE id = ?",
-            array_merge(array_values($pdoArray), [$row->getId()])
+            "UPDATE {$this->table()} SET $sets " . Criteria::getWhere($criteria),
+            array_merge(array_values($pdoArray), $criteria->getParams())
         );
     }
 
     public function deleteOne(PdoRowInterface $row): bool
     {
-        return $this->requester->execute("DELETE FROM {$this->table()} WHERE id=?", [$row->getId()]);
+        $criteria = $this->primaryArrayToCriteria($row->getPrimary());
+        return $this->requester->execute(
+            "DELETE FROM {$this->table()} " . Criteria::getWhere($criteria),
+            $criteria->getParams()
+        );
     }
 
     public static function instantiateFromRow(string $className, array $row): mixed

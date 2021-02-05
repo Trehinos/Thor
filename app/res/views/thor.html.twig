@@ -20,12 +20,14 @@
                 <a class="float-right btn btn-outline-light" title="logout"
                    href="{{ url('logout') }}"
                 >
-                    <i class="fas fa-sign-out"></i>
+                    {{ icon('user', 'fas') }}
+                    {{ icon('sign-out', 'fas') }}
                 </a>
                 <button class="btn btn-outline-warning float-right" title="change password"
                         onclick="Modal.load('{{ url('users-change-password-form', {public_id: server.user.publicId}) }}');"
                 >
-                    {{ icon('lock') }}
+                    {{ icon('edit', 'fas') }}
+                    {{ icon('lock', 'fas') }}
                 </button>
                 <div class="mt-1">
                     <i class="fas fa-user fa-lg"></i>

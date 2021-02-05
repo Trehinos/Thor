@@ -42,12 +42,16 @@ html, body {
 
 #user-box {
     position: fixed;
-    bottom: 100px;
+    bottom: 110px;
     left: 0;
     width: 320px;
-    height: 2.8em;
-    padding: 8px;
+    height: 3.4em;
+    padding: 12px;
     background: #00552244;
+}
+
+#user-box > .btn {
+    margin-top: -4px;
 }
 
 #footer {

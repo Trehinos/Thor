@@ -2,14 +2,25 @@
 
 namespace Thor\Database\PdoExtension;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 interface PdoRowInterface
 {
 
     // <-> SQL Methods
 
+    /**
+     * @return array an array of 'column_name' => 'SQL_COLUMN_TYPE(SIZE)'.
+     */
     public static function getPdoColumnsDefinitions(): array;
 
-    public static function getTableName(): string;
+    /**
+     * @return string[] an array of field name(s).
+     */
+    public static function getPrimaryKeys(): array;
+
+    #[ArrayShape(['primary' => '?array', 'uniques' => '?array', 'indexes' => '?array', 'auto' => '?string'])]
+    public static function getIndexes(): array;
 
     public function toPdoArray(): array;
 
@@ -18,8 +29,19 @@ interface PdoRowInterface
 
     // DEFAULT ACCESSORS & METHODS
 
-    public function getId(): ?int;
+    /**
+     * @return array get primary keys in an array of 'column_name' => PHP_value.
+     */
+    public function getPrimary(): array;
 
+    /**
+     * @return string get primary keys in a concatenated string.
+     */
+    public function getPrimaryString(): string;
+
+    /**
+     * @return string|null returns the public_id. Generally null if created and generatePublicId() not called yet.
+     */
     public function getPublicId(): ?string;
 
     public function generatePublicId(): void;

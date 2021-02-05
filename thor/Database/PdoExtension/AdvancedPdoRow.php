@@ -3,6 +3,8 @@
 namespace Thor\Database\PdoExtension;
 
 use Exception;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
 
 /**
@@ -21,43 +23,40 @@ trait AdvancedPdoRow
 {
 
     private static ?array $tableDefinition = null;
-    private static ?string $tableName = null;
+    private static ?PdoRow $pdoRowInfo = null;
+
+    public function __construct(
+        private ?string $public_id = null,
+        private array $primaries = [null]
+    ) {
+    }
 
     /**
-     * All attributes of the PdoRow.
+     * @return string[] an array of field name(s).
      */
-    protected array $attributes;
-
-    public function __construct()
+    final public static function getPrimaryKeys(): array
     {
-        $this->attributes['id'] = null;
-        $this->attributes['public_id'] = null;
+        return self::getPdoRowInfo()->getPrimaryKeys();
     }
 
-    public function getId(): ?int
+    #[Pure]
+    #[ArrayShape(['primary' => '?array', 'uniques' => '?array', 'indexes' => '?array', 'auto' => '?string'])]
+    final public static function getIndexes(): array
     {
-        return $this->attributes['id'] ?? null;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->attributes['id'] = $id;
+        return self::getPdoRowInfo()->getIndexes();
     }
 
     /**
      * @throws Exception
      */
-    public function getPublicId(): ?string
+    final public function getPublicId(): ?string
     {
-        if (null === $this->attributes['public_id']) {
-            $this->generatePublicId();
-        }
-        return $this->attributes['public_id'] ?? null;
+        return $this->public_id;
     }
 
-    public function setPublicId(string $public_id): void
+    final public function setPublicId(string $public_id): void
     {
-        $this->attributes['public_id'] = $public_id;
+        $this->public_id = $public_id;
     }
 
     /**
@@ -65,12 +64,18 @@ trait AdvancedPdoRow
      */
     public function generatePublicId(): void
     {
-        $this->attributes['public_id'] = bin2hex(random_bytes(2)) .
+        $this->public_id = bin2hex(random_bytes(2)) .
             '-' . bin2hex(random_bytes(2)) .
             '-' . bin2hex(random_bytes(2)) .
             '-' . bin2hex(random_bytes(2)) .
             '-' . bin2hex(random_bytes(4)) .
             '-' . bin2hex(random_bytes(4));
+    }
+
+    private static function getPdoRowInfo(): ?PdoRow
+    {
+        return static::$pdoRowInfo ??=
+            (new ReflectionClass(static::class))->getAttributes(PdoRow::class)[0]->newInstance();
     }
 
     final public static function getPdoColumnsDefinitions(): array
@@ -94,21 +99,11 @@ trait AdvancedPdoRow
 
         $pdoDefs = [];
         foreach ($columns as $column) {
-            /** @var PdoColumn */
             $pdoColumn = $column->newInstance();
             $pdoDefs[$pdoColumn->getName()] = $pdoColumn;
         }
 
         return static::$tableDefinition = $pdoDefs;
-    }
-
-    final public static function getTableName(): string
-    {
-        if (null !== static::$tableName) {
-            return static::$tableName;
-        }
-        $rc = new ReflectionClass(static::class);
-        return static::$tableName = $rc->getAttributes(PdoRow::class)[0]->getName();
     }
 
     final public static function getTableDefinition(): object
@@ -123,21 +118,47 @@ trait AdvancedPdoRow
         /**
          * @var PdoColumn $pdoColumn
          */
-        foreach ($this->getPdoColumnsDefinitions() as $columnName => $pdoColumn) {
-            $pdoArray[$columnName] = $pdoColumn->toSql($this->attributes[$columnName] ?? null);
+        foreach (self::getPdoColumnsDefinitions() as $columnName => $pdoColumn) {
+            if (in_array($columnName,  static::getPrimaryKeys())) {
+                $pdoArray[$columnName] = $pdoColumn->toSql($this->primaries[$columnName] ?? null);
+                continue;
+            }
+            $pdoArray[$columnName] = $pdoColumn->toSql($this->$columnName ?? null);
         }
         return $pdoArray;
     }
 
     final public function fromPdoArray(array $pdoArray): void
     {
-        $this->attributes = [];
-        /**
-         * @var PdoColumn $pdoColumn
-         */
-        foreach ($this->getPdoColumnsDefinitions() as $columnName => $pdoColumn) {
-            $this->attributes[$columnName] = $pdoColumn->toPhp($pdoArray[$columnName] ?? null);
+        $this->primaries = [];
+        foreach ($pdoArray as $columnName => $columnSqlValue) {
+            if (in_array($columnName,  static::getPrimaryKeys())) {
+                $this->primaries[$columnName] = self::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
+                continue;
+            }
+            $this->$columnName = self::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
         }
+    }
+
+    /**
+     * @return array get primary values.
+     */
+    final public function getPrimary(): array
+    {
+        return $this->primaries;
+    }
+
+    final public function setPrimary(array $primary): void
+    {
+        $this->primaries = $primary;
+    }
+
+    /**
+     * @return string get primary keys in a concatenated string.
+     */
+    final public function getPrimaryString(): string
+    {
+        return array_reduce($this->primaries, fn($pString, $pKey) => "$pString$pKey", '');
     }
 
 }

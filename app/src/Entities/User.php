@@ -5,7 +5,7 @@ namespace App\Entities;
 use Thor\Database\PdoExtension\PdoRow;
 use Thor\Security\BaseDbUser;
 
-#[PdoRow('user')]
+#[PdoRow('user', ['primary' => ['id']])]
 class User extends BaseDbUser
 {
 
