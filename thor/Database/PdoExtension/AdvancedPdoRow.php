@@ -4,8 +4,9 @@ namespace Thor\Database\PdoExtension;
 
 use Exception;
 use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
+use Thor\Database\PdoExtension\Attributes\PdoColumn;
+use Thor\Database\PdoExtension\Attributes\PdoRow;
 
 /**
  * Trait AdvancedPdoRow: implements PdoRowInterface of a table definition extending the default virtual table.
@@ -23,7 +24,6 @@ trait AdvancedPdoRow
 {
 
     private static ?array $tableDefinition = null;
-    private static ?PdoRow $pdoRowInfo = null;
 
     public function __construct(
         private ?string $public_id = null,
@@ -36,14 +36,13 @@ trait AdvancedPdoRow
      */
     final public static function getPrimaryKeys(): array
     {
-        return self::getPdoRowInfo()->getPrimaryKeys();
+        return self::getTableDefinition()->getPrimaryKeys();
     }
 
-    #[Pure]
-    #[ArrayShape(['primary' => '?array', 'uniques' => '?array', 'indexes' => '?array', 'auto' => '?string'])]
+    #[ArrayShape(['primary' => '?array', 'auto' => '?string'])]
     final public static function getIndexes(): array
     {
-        return self::getPdoRowInfo()->getIndexes();
+        return self::getTableDefinition()->getIndexes();
     }
 
     /**
@@ -72,44 +71,46 @@ trait AdvancedPdoRow
             '-' . bin2hex(random_bytes(4));
     }
 
-    private static function getPdoRowInfo(): ?PdoRow
+    #[ArrayShape(['row' => 'Thor\Database\PdoExtension\Attributes\PdoRow|null', 'columns' => 'array'])]
+    private static function getRowsAndColumnsFromClass(
+        ReflectionClass $rc
+    ): array {
+        $infos = ['columns' => [], 'row' => null];
+        if ($p = $rc->getParentClass()) {
+            $infos = self::getRowsAndColumnsFromClass($p);
+        }
+        $infos['row'] = ($rc->getAttributes(PdoRow::class)[0] ?? null)?->newInstance() ?? $infos['row'];
+        foreach ($rc->getTraits() as $trait) {
+            $infos['columns'] = array_merge($infos['columns'], $trait->getAttributes(PdoColumn::class));
+        }
+        $infos['columns'] = array_merge($infos['columns'], $rc->getAttributes(PdoColumn::class));
+
+        return $infos;
+    }
+
+    #[ArrayShape(['row' => 'Thor\Database\PdoExtension\Attributes\PdoRow|null', 'columns' => 'array'])]
+    private static function getTD(): array
     {
-        return static::$pdoRowInfo ??=
-            (new ReflectionClass(static::class))->getAttributes(PdoRow::class)[0]->newInstance();
+        return static::$tableDefinition ??=
+            self::getRowsAndColumnsFromClass(new ReflectionClass(static::class));
     }
 
     final public static function getPdoColumnsDefinitions(): array
     {
-        if (null !== static::$tableDefinition) {
-            return static::$tableDefinition;
-        }
-        $rc = new ReflectionClass(static::class);
-        $columns = $rc->getAttributes(PdoColumn::class);
-        foreach ($rc->getTraits() as $trait) {
-            $columns = array_merge($columns, $trait->getAttributes(PdoColumn::class));
-        }
+        $pdoColumns = array_map(
+            fn($columnAttr) => $columnAttr->newInstance(),
+            self::getTD()['columns']
+        );
 
-        $p = $rc;
-        while ($p = $p->getParentClass()) {
-            $columns = array_merge($columns, $p->getAttributes(PdoColumn::class));
-            foreach ($p->getTraits() as $trait) {
-                $columns = array_merge($columns, $trait->getAttributes(PdoColumn::class));
-            }
-        }
-
-        $pdoDefs = [];
-        foreach ($columns as $column) {
-            $pdoColumn = $column->newInstance();
-            $pdoDefs[$pdoColumn->getName()] = $pdoColumn;
-        }
-
-        return static::$tableDefinition = $pdoDefs;
+        return array_combine(
+            array_map(fn(PdoColumn $column) => $column->getName(), $pdoColumns),
+            array_values($pdoColumns)
+        );
     }
 
-    final public static function getTableDefinition(): object
+    final public static function getTableDefinition(): PdoRow
     {
-        $rc = new ReflectionClass(static::class);
-        return $rc->getAttributes(PdoRow::class)[0]->newInstance();
+        return self::getTD()['row'];
     }
 
     final public function toPdoArray(): array
@@ -119,7 +120,7 @@ trait AdvancedPdoRow
          * @var PdoColumn $pdoColumn
          */
         foreach (self::getPdoColumnsDefinitions() as $columnName => $pdoColumn) {
-            if (in_array($columnName,  static::getPrimaryKeys())) {
+            if (in_array($columnName, static::getPrimaryKeys())) {
                 $pdoArray[$columnName] = $pdoColumn->toSql($this->primaries[$columnName] ?? null);
                 continue;
             }
@@ -132,7 +133,7 @@ trait AdvancedPdoRow
     {
         $this->primaries = [];
         foreach ($pdoArray as $columnName => $columnSqlValue) {
-            if (in_array($columnName,  static::getPrimaryKeys())) {
+            if (in_array($columnName, static::getPrimaryKeys())) {
                 $this->primaries[$columnName] = self::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
                 continue;
             }

@@ -3,7 +3,7 @@
 namespace Thor\Security;
 
 use Thor\Database\PdoExtension\AdvancedPdoRow;
-use Thor\Database\PdoExtension\PdoColumn;
+use Thor\Database\PdoExtension\Attributes\PdoColumn;
 use Thor\Database\PdoExtension\PdoRowInterface;
 
 #[PdoColumn('username', 'VARCHAR(255)', 'string')]

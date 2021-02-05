@@ -1,5 +1,6 @@
 # Thor Http
-*todo*
+This module is in charge of handling HTTP requests. It offers classes to implement a Request->Controller->Response cycle
+managed by a Router.
 
 ## The HTTP kernel and the HTTP cycle
 

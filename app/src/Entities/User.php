@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-use Thor\Database\PdoExtension\PdoRow;
+use Thor\Database\PdoExtension\Attributes\PdoRow;
 use Thor\Security\BaseDbUser;
 
 #[PdoRow('user', ['primary' => ['id']])]

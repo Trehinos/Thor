@@ -5,8 +5,8 @@ namespace Thor\Database;
 use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
 use ReflectionException;
+use Thor\Database\PdoExtension\Attributes\PdoRow;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoExtension\PdoRow;
 use Thor\Database\PdoExtension\PdoRowInterface;
 use Thor\Database\Sql\Criteria;
 

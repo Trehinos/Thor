@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Database\PdoExtension;
+namespace Thor\Database\PdoExtension\Attributes;
 
 use Attribute;
 use JetBrains\PhpStorm\ArrayShape;
