@@ -1,5 +1,5 @@
 # Thor Cli
-```Thor/Cli``` is the namespace of the CLI environment control.
+```Thor\Cli``` is the namespace of the CLI environment control.
 
 This module consist of the CliKernel, the Command base class,
 the Daemon definition and a Console utility class.
@@ -27,7 +27,7 @@ A command to be executed by the CLI kernel **has to** expand this class.
 > 
 > function bColor(int $bc = Console::COLOR_GRAY, ?int $mode = null) {} // Change Background color. 
 > 
-> function mode(int $mode = self::MODE_RESET) {} // Change mode
+> function mode(int $mode = Console::MODE_RESET) {} // Change mode
 > 
 > // Locate the cursor at the specified row ($y) and column ($x).
 > function locate(int $y, int $x) {} 
