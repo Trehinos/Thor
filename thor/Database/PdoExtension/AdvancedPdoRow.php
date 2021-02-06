@@ -73,7 +73,7 @@ trait AdvancedPdoRow
             '-' . bin2hex(random_bytes(4));
     }
 
-    #[ArrayShape(['row' => '?PdoRow', 'columns' => 'array'])]
+    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array'])]
     private static function getRowsAndColumnsFromClass(
         ReflectionClass $rc
     ): array {
@@ -112,7 +112,7 @@ trait AdvancedPdoRow
         ];
     }
 
-    #[ArrayShape(['row' => 'Thor\Database\PdoExtension\Attributes\PdoRow|null', 'columns' => 'array'])]
+    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array'])]
     private static function getTD(): array
     {
         return static::$tableDefinition ??=

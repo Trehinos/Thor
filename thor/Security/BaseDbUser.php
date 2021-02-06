@@ -19,9 +19,13 @@ abstract class BaseDbUser implements PdoRowInterface, UserInterface
 
     private string $password;
 
-    public function __construct(private string $username = '', string $clearPassword = '', string $id = null, string $public_id = null)
-    {
-        $this->adwConstruct($public_id, [$id]);
+    public function __construct(
+        private string $username = '',
+        string $clearPassword = '',
+        string $public_id = null,
+        array $primary = [null]
+    ) {
+        $this->adwConstruct($public_id, $primary);
         self::$hashMaker ??= new PasswordHasher();
         $this->password = self::$hashMaker->hash($clearPassword);
     }

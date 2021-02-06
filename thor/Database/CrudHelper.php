@@ -24,7 +24,7 @@ final class CrudHelper
      * CrudHelper constructor.
      * Creates a new CRUD requester to manage PdoRows
      *
-     * @param string $className
+     * @param string $className which implements PdoRowInterface and use AdvancedPdoRow trait.
      * @param PdoRequester $requester
      *
      * @throws ReflectionException
