@@ -85,7 +85,7 @@ class Console
      *
      * @return Console
      */
-    public function bColor(int $bc = self::COLOR_GRAY, ?int $mode = null): self
+    public function bColor(int $bc = self::COLOR_BLACK, ?int $mode = null): self
     {
         $bcolor = self::BACKGROUND + $bc;
         $str_mode = (null === $mode ? '' : ";$mode");

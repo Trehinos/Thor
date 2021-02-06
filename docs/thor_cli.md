@@ -25,7 +25,7 @@ A command to be executed by the CLI kernel **has to** expand the class ```Thor\C
 > 
 > function fColor(int $fc = Console::COLOR_GRAY, ?int $mode = null) {} // Change Foreground color.
 > 
-> function bColor(int $bc = Console::COLOR_GRAY, ?int $mode = null) {} // Change Background color. 
+> function bColor(int $bc = Console::COLOR_BLACK, ?int $mode = null) {} // Change Background color. 
 > 
 > function mode(int $mode = Console::MODE_RESET) {} // Change mode
 > 
