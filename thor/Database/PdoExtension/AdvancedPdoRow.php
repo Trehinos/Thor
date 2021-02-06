@@ -4,6 +4,7 @@ namespace Thor\Database\PdoExtension;
 
 use Exception;
 use JetBrains\PhpStorm\ArrayShape;
+use ReflectionAttribute;
 use ReflectionClass;
 use Thor\Database\PdoExtension\Attributes\PdoColumn;
 use Thor\Database\PdoExtension\Attributes\PdoRow;
@@ -18,6 +19,7 @@ use Thor\Database\PdoExtension\Attributes\PdoRow;
  * @copyright Author
  * @license MIT
  */
+#[PdoRow(indexes: ['primary' => ['id'], 'auto' => 'id'])]
 #[PdoColumn('id', 'INTEGER', 'integer')]
 #[PdoColumn('public_id', 'VARCHAR(255)', 'string')]
 trait AdvancedPdoRow
@@ -71,21 +73,43 @@ trait AdvancedPdoRow
             '-' . bin2hex(random_bytes(4));
     }
 
-    #[ArrayShape(['row' => 'Thor\Database\PdoExtension\Attributes\PdoRow|null', 'columns' => 'array'])]
+    #[ArrayShape(['row' => '?PdoRow', 'columns' => 'array'])]
     private static function getRowsAndColumnsFromClass(
         ReflectionClass $rc
     ): array {
-        $infos = ['columns' => [], 'row' => null];
-        if ($p = $rc->getParentClass()) {
-            $infos = self::getRowsAndColumnsFromClass($p);
-        }
-        $infos['row'] = ($rc->getAttributes(PdoRow::class)[0] ?? null)?->newInstance() ?? $infos['row'];
-        foreach ($rc->getTraits() as $trait) {
-            $infos['columns'] = array_merge($infos['columns'], $trait->getAttributes(PdoColumn::class));
-        }
-        $infos['columns'] = array_merge($infos['columns'], $rc->getAttributes(PdoColumn::class));
+        $row = ($rc->getAttributes(PdoRow::class)[0] ?? null)?->newInstance();
+        $columns = array_map(
+            fn(ReflectionAttribute $ra) => $ra->newInstance(),
+            $rc->getAttributes(PdoColumn::class)
+        );
 
-        return $infos;
+        foreach ($rc->getTraits() as $t) {
+            ['row' => $pRow, 'columns' => $pColumns] = self::getRowsAndColumnsFromClass($t);
+            ['row' => $row, 'columns' => $columns] = self::_merge($pRow, $row, $pColumns, $columns);
+        }
+
+        if ($p = $rc->getParentClass()) {
+            ['row' => $pRow, 'columns' => $pColumns] = self::getRowsAndColumnsFromClass($p);
+            ['row' => $row, 'columns' => $columns] = self::_merge($pRow, $row, $pColumns, $columns);
+        }
+
+        return ['row' => $row, 'columns' => $columns];
+    }
+
+    private static function _merge(?PdoRow $rowA, ?PdoRow $rowB, array $columnsA, array $columnsB): array
+    {
+        return [
+            'row' => ($rowA === null) ? $rowB :
+                new PdoRow(
+                    $rowB?->getTableName() ?? $rowA->getTableName(),
+                    [
+                        'primary' => array_merge($rowA->getPrimaryKeys(), $rowB?->getPrimaryKeys() ?? []),
+                        'auto' => $rowB?->getAutoColumnName() ?? $rowA->getAutoColumnName(),
+                    ]
+                )
+            ,
+            'columns' => array_merge($columnsA, $columnsB)
+        ];
     }
 
     #[ArrayShape(['row' => 'Thor\Database\PdoExtension\Attributes\PdoRow|null', 'columns' => 'array'])]
@@ -97,14 +121,9 @@ trait AdvancedPdoRow
 
     final public static function getPdoColumnsDefinitions(): array
     {
-        $pdoColumns = array_map(
-            fn($columnAttr) => $columnAttr->newInstance(),
-            self::getTD()['columns']
-        );
-
         return array_combine(
-            array_map(fn(PdoColumn $column) => $column->getName(), $pdoColumns),
-            array_values($pdoColumns)
+            array_map(fn(PdoColumn $column) => $column->getName(), self::getTD()['columns']),
+            array_values(self::getTD()['columns'])
         );
     }
 

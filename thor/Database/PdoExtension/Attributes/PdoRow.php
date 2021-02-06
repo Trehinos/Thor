@@ -10,13 +10,13 @@ class PdoRow
 {
 
     public function __construct(
-        private string $tableName,
+        private ?string $tableName = null,
         #[ArrayShape(['primary' => '?array', 'auto' => '?string'])]
         private array $indexes = []
     ) {
     }
 
-    public function getTableName(): string
+    public function getTableName(): ?string
     {
         return $this->tableName;
     }

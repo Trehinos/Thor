@@ -34,8 +34,7 @@ final class CrudHelper
         private PdoRequester $requester
     ) {
         $rc = new ReflectionClass($this->className);
-        $pdoRowAttrs = $rc->getAttributes(PdoRow::class);
-        $this->pdoRowInfos = $pdoRowAttrs[0]->newInstance();
+        $this->pdoRowInfos = $rc->getMethod('getTableDefinition')->invoke(null);
     }
 
     #[Pure]
