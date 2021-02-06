@@ -1,5 +1,5 @@
 # Thor Cli
-```Thor\Cli``` is the namespace of the CLI environment control.
+```Thor\Cli``` is the namespace of the CLI environment control classes.
 
 This module consist of the CliKernel, the Command base class,
 the Daemon definition and a Console utility class.
@@ -14,7 +14,7 @@ entry point is ```thor/bin/thor.php```.
 3. Execute the right command or echo error.
 
 ## Abstract Command and Console utility class
-A command to be executed by the CLI kernel **has to** expand this class.  
+A command to be executed by the CLI kernel **has to** expand the class ```Thor\Cli\Command```.  
 **One CLI command = one method** (like one route = one method in controllers).
 
 > You can use the ```console``` property to control the terminal output :
