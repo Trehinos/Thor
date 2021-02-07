@@ -19,7 +19,6 @@ interface PdoRowInterface
      */
     public static function getPrimaryKeys(): array;
 
-    #[ArrayShape(['primary' => '?array', 'uniques' => '?array', 'indexes' => '?array', 'auto' => '?string'])]
     public static function getIndexes(): array;
 
     public function toPdoArray(): array;

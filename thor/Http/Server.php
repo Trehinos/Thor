@@ -9,7 +9,6 @@ use Thor\Database\PdoExtension\PdoRequester;
 
 use Thor\Debug\Logger;
 use Thor\Http\Routing\Router;
-use Thor\Security\BaseDbUser;
 use Thor\Security\SecurityContext;
 use Thor\Security\UserInterface;
 use Twig\Environment;
@@ -192,7 +191,7 @@ class Server
         string $default = '',
         ?int $filter = null,
         array $filter_options = []
-    ) {
+    ) :string {
         if (null !== $filter) {
             return (false === ($filtered = filter_input(INPUT_COOKIE, $name, $filter, $filter_options)))
                 ? $default
@@ -229,7 +228,7 @@ class Server
         return $_SESSION[$name] ?? $default;
     }
 
-    public static function writeSession(string $name, $value): void
+    public static function writeSession(string $name, mixed $value): void
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();

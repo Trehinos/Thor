@@ -25,10 +25,10 @@ final class CliKernel implements KernelInterface
      * @param array $configuration ['database' => ... ]
      */
     public function __construct(
-        #[ArrayShape(['databases' => 'array', 'commands' => 'array'])]
+        #[ArrayShape(['database' => 'array', 'commands' => 'array'])]
         array $configuration
     ) {
-        $this->pdos = self::createDatabasesFromConfiguration($configuration['databases'] ?? []);
+        $this->pdos = self::createDatabasesFromConfiguration($configuration['database'] ?? []);
         $this->console = new Console();
         $this->commands = $configuration['commands'];
         Logger::write('Instantiate CliKernel');

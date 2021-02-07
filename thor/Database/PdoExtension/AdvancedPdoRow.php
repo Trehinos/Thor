@@ -4,13 +4,15 @@ namespace Thor\Database\PdoExtension;
 
 use Exception;
 use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 use ReflectionAttribute;
 use ReflectionClass;
 use Thor\Database\PdoExtension\Attributes\PdoColumn;
+use Thor\Database\PdoExtension\Attributes\PdoIndex;
 use Thor\Database\PdoExtension\Attributes\PdoRow;
 
 /**
- * Trait AdvancedPdoRow: implements PdoRowInterface of a table definition extending the default virtual table.
+ * Trait AdvancedPdoRow: implements PdoRowInterface with Pdo Attributes.
  * @package Thor\Database\PdoExtension
  *
  * @since 2020-10
@@ -19,7 +21,8 @@ use Thor\Database\PdoExtension\Attributes\PdoRow;
  * @copyright Author
  * @license MIT
  */
-#[PdoRow(indexes: ['primary' => ['id'], 'auto' => 'id'])]
+#[PdoRow(primary: ['id'], auto: 'id')]
+#[PdoIndex(['public_id'], null, true)]
 #[PdoColumn('id', 'INTEGER', 'integer')]
 #[PdoColumn('public_id', 'VARCHAR(255)', 'string')]
 trait AdvancedPdoRow
@@ -41,10 +44,9 @@ trait AdvancedPdoRow
         return self::getTableDefinition()->getPrimaryKeys();
     }
 
-    #[ArrayShape(['primary' => '?array', 'auto' => '?string'])]
     final public static function getIndexes(): array
     {
-        return self::getTableDefinition()->getIndexes();
+        return self::getTD()['indexes'];
     }
 
     /**
@@ -53,11 +55,6 @@ trait AdvancedPdoRow
     final public function getPublicId(): ?string
     {
         return $this->public_id;
-    }
-
-    final public function setPublicId(string $public_id): void
-    {
-        $this->public_id = $public_id;
     }
 
     /**
@@ -73,7 +70,7 @@ trait AdvancedPdoRow
             '-' . bin2hex(random_bytes(4));
     }
 
-    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array'])]
+    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array'])]
     private static function getRowsAndColumnsFromClass(
         ReflectionClass $rc
     ): array {
@@ -82,22 +79,36 @@ trait AdvancedPdoRow
             fn(ReflectionAttribute $ra) => $ra->newInstance(),
             $rc->getAttributes(PdoColumn::class)
         );
+        $indexes = array_map(
+            fn(ReflectionAttribute $ra) => $ra->newInstance(),
+            $rc->getAttributes(PdoIndex::class)
+        );
 
         foreach ($rc->getTraits() as $t) {
-            ['row' => $pRow, 'columns' => $pColumns] = self::getRowsAndColumnsFromClass($t);
-            ['row' => $row, 'columns' => $columns] = self::_merge($pRow, $row, $pColumns, $columns);
+            ['row' => $pRow, 'columns' => $pColumns, 'indexes' => $pIndexes] =
+                self::getRowsAndColumnsFromClass($t);
+            ['row' => $row, 'columns' => $columns, 'indexes' => $indexes] =
+                self::_merge($pRow, $row, $pColumns, $columns, $pIndexes, $indexes);
         }
 
         if ($p = $rc->getParentClass()) {
-            ['row' => $pRow, 'columns' => $pColumns] = self::getRowsAndColumnsFromClass($p);
-            ['row' => $row, 'columns' => $columns] = self::_merge($pRow, $row, $pColumns, $columns);
+            ['row' => $pRow, 'columns' => $pColumns, 'indexes' => $pIndexes] =
+                self::getRowsAndColumnsFromClass($p);
+            ['row' => $row, 'columns' => $columns, 'indexes' => $indexes] =
+                self::_merge($pRow, $row, $pColumns, $columns, $pIndexes, $indexes);
         }
 
-        return ['row' => $row, 'columns' => $columns];
+        return ['row' => $row, 'columns' => $columns, 'indexes' => $indexes];
     }
 
-    private static function _merge(?PdoRow $rowA, ?PdoRow $rowB, array $columnsA, array $columnsB): array
-    {
+    private static function _merge(
+        ?PdoRow $rowA,
+        ?PdoRow $rowB,
+        array $columnsA,
+        array $columnsB,
+        array $indexA,
+        array $indexB
+    ): array {
         return [
             'row' => ($rowA === null) ? $rowB :
                 new PdoRow(
@@ -108,11 +119,12 @@ trait AdvancedPdoRow
                     ]
                 )
             ,
-            'columns' => array_merge($columnsA, $columnsB)
+            'columns' => array_merge($columnsA, $columnsB),
+            'indexes' => array_merge($indexA, $indexB)
         ];
     }
 
-    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array'])]
+    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array'])]
     private static function getTD(): array
     {
         return static::$tableDefinition ??=
@@ -176,9 +188,10 @@ trait AdvancedPdoRow
     /**
      * @return string get primary keys in a concatenated string.
      */
+    #[Pure]
     final public function getPrimaryString(): string
     {
-        return array_reduce($this->primaries, fn($pString, $pKey) => "$pString$pKey", '');
+        return implode('-', $this->primaries);
     }
 
 }

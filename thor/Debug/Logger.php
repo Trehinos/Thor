@@ -62,6 +62,9 @@ final class Logger
                 $this->filename = "{$this->basePath}{$this->env}_{$nowFileName}.log";
             }
 
+            if (!file_exists(dirname($this->filename))) {
+                mkdir(dirname($this->filename));
+            }
             file_put_contents($this->filename, "$message\n", FILE_APPEND);
         }
 

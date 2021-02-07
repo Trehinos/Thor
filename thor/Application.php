@@ -2,7 +2,6 @@
 
 namespace Thor;
 
-use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\ExpectedValues;
 use Thor\Cli\CliKernel;
 use Thor\Debug\Logger;
@@ -54,7 +53,11 @@ final class Application implements KernelInterface
 
                 default:
                     $thor_kernel ??= '(null)';
-                    Logger::write("PANIC ABORT : kernel $thor_kernel not defined.", Logger::LEVEL_PROD, Logger::SEVERITY_ERROR);
+                    Logger::write(
+                        "PANIC ABORT : kernel $thor_kernel not defined.",
+                        Logger::LEVEL_PROD,
+                        Logger::SEVERITY_ERROR
+                    );
                     echo "Error :\nKernel not selected.\n";
                     exit;
             }

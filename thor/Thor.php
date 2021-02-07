@@ -14,73 +14,79 @@ final class Thor
 
     private static ?self $defaultInstance = null;
 
-    private array $configurations = [];
-
-    public function __construct(
-        private ?string $globalConfigFile = null,
-        private ?string $databaseConfigFile = null,
-        private ?string $menuFile = null,
-        private ?string $routesFile = null,
-        private ?string $commandsFile = null,
-        private ?string $languageFile = null,
-        private ?string $twigFile = null,
-        private ?string $securityFile = null
-    ) {
+    public function __construct(private array $configurations = [])
+    {
     }
 
     #[ArrayShape([
         'config' => "array|mixed",
-        'databases' => "array|mixed",
+        'database' => "array|mixed",
         'routes' => "array|mixed",
         'security' => "array|mixed",
         'twig' => "array|mixed",
         'language' => "array|mixed"
     ])] public function getHttpConfiguration(): array
     {
-        return [
-            'config' => $this->loadConfig($this->globalConfigFile),
-            'databases' => $this->loadConfig($this->databaseConfigFile),
-            'routes' => $this->loadConfig($this->routesFile),
-            'security' => $this->loadConfig($this->securityFile),
-            'twig' => $this->loadConfig($this->twigFile),
-            'language' => $this->loadConfig($this->languageFile)
-        ];
+        return $this->getConfigurationSet(['config', 'database', 'security', 'twig'], ['routes']) + [
+                'language' => Yaml::parseFile(
+                    Globals::STATIC_DIR . "langs/{$this->configurations['config']['lang']}.yml"
+                )
+            ];
+    }
+
+    public function getConfigurationSet(array $configList, array $staticList): array
+    {
+        foreach (
+            [
+                ['isStatic' => false, 'list' => $configList],
+                ['isStatic' => true, 'list' => $staticList],
+            ]
+            as ['isStatic' => $isStatic, 'list' => $list]
+        ) {
+            foreach ($list as $item) {
+                $this->configurations[$item] = $this->loadConfig($item, $isStatic);
+            }
+        }
+
+        return array_intersect_key(
+            $this->configurations,
+            array_combine(
+                array_merge($configList, $staticList),
+                array_merge($configList, $staticList)
+            )
+        );
     }
 
     #[ArrayShape([
         'config' => "array|mixed",
-        'databases' => "array|mixed",
+        'database' => "array|mixed",
         'commands' => "array|mixed",
         'language' => "array|mixed"
     ])] public function getConsoleConfiguration(): array
     {
-        return [
-            'config' => $this->loadConfig($this->globalConfigFile),
-            'databases' => $this->loadConfig($this->databaseConfigFile),
-            'commands' => $this->loadConfig($this->commandsFile),
-            'language' => $this->loadConfig($this->languageFile),
-        ];
+        return $this->getConfigurationSet(['config', 'database'], ['commands']) + [
+                'language' => Yaml::parseFile(
+                    Globals::STATIC_DIR . "langs/{$this->configurations['config']['lang']}.yml"
+                )
+            ];
     }
 
-    public function loadConfig(?string $configName): array
+    public function loadConfig(string $configName, bool $typeStatic = false): array
     {
-        return $this->configurations[$configName] ??= ($configName ? Yaml::parseFile($configName) : []);
+        return $this->configurations[$configName] ??=
+            Yaml::parseFile(($typeStatic ? Globals::STATIC_DIR : Globals::CONFIG_DIR) . "$configName.yml");
+    }
+
+    public function loadStatic(string $configName): array
+    {
+        return $this->loadConfig($configName, true);
     }
 
     public static function getInstance(): self
     {
         $language = self::DEFAULT_LANGUAGE;
 
-        return self::$defaultInstance ??= new self(
-            Globals::CONFIG_DIR . 'config.yml',
-            Globals::CONFIG_DIR . 'database.yml',
-            Globals::STATIC_DIR . 'menu.yml',
-            Globals::STATIC_DIR . 'routes.yml',
-            Globals::STATIC_DIR . 'commands.yml',
-            Globals::STATIC_DIR . "langs/$language.yml",
-            Globals::CONFIG_DIR . 'twig.yml',
-            Globals::CONFIG_DIR . 'security.yml'
-        );
+        return self::$defaultInstance ??= new self();
     }
 
 }

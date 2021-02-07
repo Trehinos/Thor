@@ -18,7 +18,9 @@ use Thor\Database\Sql\Criteria;
 final class CrudHelper
 {
 
-    private PdoRow $pdoRowInfos;
+    private string $tableName;
+    private array $primary;
+    private array $indexes;
 
     /**
      * CrudHelper constructor.
@@ -34,13 +36,15 @@ final class CrudHelper
         private PdoRequester $requester
     ) {
         $rc = new ReflectionClass($this->className);
-        $this->pdoRowInfos = $rc->getMethod('getTableDefinition')->invoke(null);
+        $this->tableName = $rc->getMethod('getTableDefinition')->invoke(null)->getTableName();
+        $this->primary = $rc->getMethod('getPrimaryKeys')->invoke(null);
+        $this->indexes = $rc->getMethod('getIndexes')->invoke(null);
     }
 
     #[Pure]
     public function table(): string
     {
-        return $this->pdoRowInfos->getTableName();
+        return $this->tableName;
     }
 
     public function listAll(): array
@@ -101,6 +105,7 @@ final class CrudHelper
         return [$columns, $values, array_values($pdoArray)];
     }
 
+    #[Pure]
     private function primaryArrayToCriteria(array $primaries): Criteria
     {
         return new Criteria(

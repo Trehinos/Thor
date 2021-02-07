@@ -28,7 +28,7 @@ final class HttpKernel implements KernelInterface
     public function __construct(
         #[ArrayShape([
             'config' => 'array',
-            'databases' => 'array',
+            'database' => 'array',
             'routes' => 'array',
             'twig' => 'array',
             'security' => 'array',
@@ -38,7 +38,7 @@ final class HttpKernel implements KernelInterface
     ) {
         $router = self::createRouterFromConfiguration($configuration['routes'] ?? []);
         $twig = self::createTwigFromConfiguration($configuration['twig'] ?? []);
-        $pdos = self::createDatabasesFromConfiguration($configuration['databases'] ?? []);
+        $pdos = self::createDatabasesFromConfiguration($configuration['database'] ?? []);
 
         Logger::write('Instantiate HttpKernel');
         $this->server = new Server(
@@ -173,6 +173,7 @@ final class HttpKernel implements KernelInterface
             exit;
         }
         Logger::write('Start HTTP context');
+
         return new self(Thor::getInstance()->getHttpConfiguration());
     }
 

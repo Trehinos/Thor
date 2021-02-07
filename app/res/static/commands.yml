@@ -42,3 +42,23 @@ user/delete:
     pid:
       hasValue: true
       description: user's PID. Needed to identify the user in DB
+
+route/add:
+  class: App\Commands\CoreCommand
+  command: routeAdd
+  description: add a route in app/res/routes.yml
+  arguments:
+    name:
+      hasValue: true
+      description: route identifier
+    path:
+      hasValue: true
+      description: route PATH
+    method:
+      hasValue: true
+      description: the request method GET, POST, ...
+
+route/list:
+  class: App\Commands\CoreCommand
+  command: routeList
+  description: list all routes in app/res/routes/yml

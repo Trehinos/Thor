@@ -2,7 +2,10 @@
 
 /**
  * Thor system
- *      PHP framework and tool
+ *      Main : instantiate Application and execute Kernel.
+ *
+ *  INPUT
+ *  $thor_kernel : has to be set by the entry point (HTTP:index.php/CLI:thor.php)
  *
  * @author Sébastien GELDREICH
  * @version 0.3
@@ -11,22 +14,21 @@
 
 require_once __DIR__ . '/vendors/autoload.php';
 
-use Thor\Globals;
+use Thor\Thor;
 use Thor\Application;
 use Thor\Debug\Logger;
-use Symfony\Component\Yaml\Yaml;
 
-$config = Yaml::parse(file_get_contents(Globals::CONFIG_DIR . 'config.yml'));
+$config = Thor::getInstance()->loadConfig('config');
 
 Application::init(
     in_array(
-        strtoupper($config['env'] ?? ''),
+        $env = strtoupper($config['env'] ?? ''),
         ['DEV', 'DEBUG', 'VERBOSE', 'PROD']
-    ) ? $config['env'] : 'DEBUG',
-    $config['log_path'] ?? 'var/'
+    ) ? $env : 'DEBUG',
+    $config['log_path'] ?? __DIR__ . '/var/'
 );
 
-$application = new Application(Application::getKernel($thor_kernel ?? []));
+$application = new Application(Application::getKernel($thor_kernel ?? ''));
 Logger::write('Execute application');
 $application->execute();
 Logger::write('Application executed !');

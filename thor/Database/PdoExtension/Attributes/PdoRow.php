@@ -11,8 +11,8 @@ class PdoRow
 
     public function __construct(
         private ?string $tableName = null,
-        #[ArrayShape(['primary' => '?array', 'auto' => '?string'])]
-        private array $indexes = []
+        private array $primary = [],
+        private ?string $auto = null
     ) {
     }
 
@@ -21,20 +21,14 @@ class PdoRow
         return $this->tableName;
     }
 
-    #[ArrayShape(['primary' => '?array', 'auto' => '?string'])]
-    public function getIndexes(): array
-    {
-        return $this->indexes;
-    }
-
     public function getPrimaryKeys(): array
     {
-        return $this->indexes['primary'] ?? [];
+        return $this->primary;
     }
 
     public function getAutoColumnName(): ?string
     {
-        return $this->indexes['auto'] ?? null;
+        return $this->auto;
     }
 
 }
