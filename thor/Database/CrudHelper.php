@@ -5,7 +5,6 @@ namespace Thor\Database;
 use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
 use ReflectionException;
-use Thor\Database\PdoExtension\Attributes\PdoRow;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\PdoExtension\PdoRowInterface;
 use Thor\Database\Sql\Criteria;
@@ -110,7 +109,7 @@ final class CrudHelper
     {
         return new Criteria(
             array_combine(
-                $this->pdoRowInfos->getPrimaryKeys(),
+                $this->primary,
                 $primaries
             )
         );

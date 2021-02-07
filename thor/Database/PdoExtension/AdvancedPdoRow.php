@@ -113,10 +113,8 @@ trait AdvancedPdoRow
             'row' => ($rowA === null) ? $rowB :
                 new PdoRow(
                     $rowB?->getTableName() ?? $rowA->getTableName(),
-                    [
-                        'primary' => array_merge($rowA->getPrimaryKeys(), $rowB?->getPrimaryKeys() ?? []),
-                        'auto' => $rowB?->getAutoColumnName() ?? $rowA->getAutoColumnName(),
-                    ]
+                    array_merge($rowA->getPrimaryKeys(), $rowB?->getPrimaryKeys() ?? []),
+                    $rowB?->getAutoColumnName() ?? $rowA->getAutoColumnName(),
                 )
             ,
             'columns' => array_merge($columnsA, $columnsB),
