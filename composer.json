@@ -2,8 +2,8 @@
     "name": "trehinos/thor",
     "description": "Thor PHP framework witch provides HTTP, MySQL and other tools",
     "minimum-stability": "stable",
-    "version": "0.2-dev",
-    "license": "proprietary",
+    "version": "0.3-dev",
+    "license": "MIT - (c) 2020-2021 Sébastien GELDREICH",
     "authors": [
         {
             "name": "Sébastien GELDREICH",

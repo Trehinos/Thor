@@ -5,7 +5,7 @@ This project's goal is to provide a base project for business projects.
 **This project is still in development. Further releases installation process will be
 simplified.**
 
-&copy; 2021 Trehinos
+&copy; 2020-2021 Trehinos
 
 ## Dependencies
 ### Environment
@@ -41,4 +41,4 @@ Link : [Documentation](docs/SUMMARY.md)
 
 ## License
 License : [MIT](LICENSE)  
-&copy; 2021 Trehinos
+&copy; 2020-2021 Trehinos
