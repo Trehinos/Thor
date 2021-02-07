@@ -37,23 +37,23 @@ $static = Yaml::parseFile(Globals::STATIC_DIR . 'filename.yml');
 
 // Static singleton for default configuration files.
 use Thor\Thor;
-
 $config = Thor::getInstance()->loadConfig('config file key');
-$static = Thor::getInstance()->loadConfig('static file key');
+$static = Thor::getInstance()->loadConfig('static file key', true);
 ```
 
-#### Config file keys
-* config
-* database
-* security
-* twig
+#### Configuration files (keys of ```loadConfig()```)
+* ```config``` contains the main configuration entries.
+* ```database``` contains database connections information.
+* ```security``` : ```userPdoRow.pdoRowClass``` and ```userPdoRow.hasPwdHashFor``` are links to
+  the user class and ```configuration``` contains the security configuration.
+* ```twig``` contains Twig library configuration.
 
-#### Static file keys
-* langs/{config.lang}
-* commands
-* icons
-* menu
-* routes
+#### Static files  (keys of ```loadConfig(, true)```)
+* ```langs/{lang}``` contains static strings in a specific language.
+* ```commands``` contains command information.
+* ```icons``` contains FontAwesome icon suffixes by categories.
+* ```menu``` contains the menu displayed by the application with Thor theme.
+* ```routes``` contains the routes of HTTP applications.
 
 ## SQL
 SQL scripts are located in ```thor/app/res/sql/```.
