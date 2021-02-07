@@ -21,10 +21,8 @@ use Thor\Database\PdoExtension\Attributes\PdoRow;
  * @copyright Author
  * @license MIT
  */
-#[PdoRow(primary: ['id'], auto: 'id')]
-#[PdoIndex(['public_id'], null, true)]
-#[PdoColumn('id', 'INTEGER', 'integer')]
 #[PdoColumn('public_id', 'VARCHAR(255)', 'string')]
+#[PdoIndex(['public_id'], null, true)]
 trait AdvancedPdoRow
 {
 
@@ -32,7 +30,7 @@ trait AdvancedPdoRow
 
     public function __construct(
         private ?string $public_id = null,
-        private array $primaries = [null]
+        private array $primaries = []
     ) {
     }
 

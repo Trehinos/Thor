@@ -1,4 +1,4 @@
-# THOR v0.2
+# THOR &gamma;-dev
 **Thor** is designed as a PHP *framework* as well as a web *software*.  
 This project's goal is to provide a base project for business projects.
 

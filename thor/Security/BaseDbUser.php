@@ -3,12 +3,15 @@
 namespace Thor\Security;
 
 use Thor\Database\PdoExtension\AdvancedPdoRow;
+use Thor\Database\PdoExtension\Attributes\PdoRow;
 use Thor\Database\PdoExtension\PdoRowInterface;
 use Thor\Database\PdoExtension\Attributes\PdoColumn;
 use Thor\Database\PdoExtension\Attributes\PdoIndex;
 
-#[PdoIndex(['username'], null, true)]
+#[PdoRow(primary: ['id'], auto: 'id')]
+#[PdoColumn('id', 'INTEGER', 'integer')]
 #[PdoColumn('username', 'VARCHAR(255)', 'string')]
+#[PdoIndex(['username'], null, true)]
 #[PdoColumn('password', 'VARCHAR(255)', 'string')]
 abstract class BaseDbUser implements PdoRowInterface, UserInterface
 {
