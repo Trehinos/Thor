@@ -22,7 +22,7 @@ use Thor\Database\PdoExtension\Attributes\PdoRow;
  * @license MIT
  */
 #[PdoColumn('public_id', 'VARCHAR(255)', 'string')]
-#[PdoIndex(['public_id'], null, true)]
+#[PdoIndex(['public_id'], true)]
 trait AdvancedPdoRow
 {
 

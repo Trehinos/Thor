@@ -11,6 +11,8 @@ use Throwable;
 final class Application implements KernelInterface
 {
 
+    static string $env = 'DEV';
+
     public function __construct(private ?KernelInterface $kernel = null)
     {
     }
@@ -62,8 +64,13 @@ final class Application implements KernelInterface
                     exit;
             }
         } catch (Throwable $e) {
-            Logger::logThrowable($e);
+            $logString = Logger::logThrowable($e);
             echo "UNRECOVERABLE ERROR THROWN\n";
+            if ('DEV' === self::$env) {
+                $message = " : {$e->getMessage()}";
+                echo ('http' === $thor_kernel) ? "<strong style='font-family: monospace;'>$message</strong><br>" : "$message\n";
+                echo ('http' === $thor_kernel) ? "<pre>$logString</pre>" : $logString;
+            }
         }
 
         return $kernel;

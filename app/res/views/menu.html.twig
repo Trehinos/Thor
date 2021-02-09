@@ -6,6 +6,7 @@
                     id="btn-{{ item.route }}"
                     onclick="menuClick($(this));"
                     data-url="{% if item.route != '.' %}{{ url(item.route) }}{% else %}#{% endif %}"
+                    data-item="{{ item.route }}"
                class="flex-fill {% if server.currentRouteName == item.route %}selected{% endif %}"
             >
                 {{ icon(item.icon, 'mr-2 fa-lg ' ~ (item.icon_col ?? 'fas'), true) }}
@@ -30,8 +31,10 @@
     function menuClick($elem) {
         let url = $elem.data("url");
         $("#menu ul li button").removeClass("selected");
-        loadPage(url, null, () => {
+        loadPage(url, null, (response) => {
+            $("#menu ul li button").removeClass("selected");
             $elem.addClass("selected");
+            window.history.pushState({"html":response}, null, "?menuItem=" + $elem.data("item"));
         });
     }
 </script>

@@ -1,5 +1,8 @@
-<div id="titlebar">{{ icon('info-square', 'fas', true) }} {{ _.about.title }}</div>
-<div id="page">
+{% extends "page-base.twig" %}
+
+{% block titlebar %}{{ icon('info-square', 'fas', true) }} {{ _.about.title }}{% endblock %}
+
+{% block page %}
     <strong>Version</strong> : {{ version }}<br><br>
     {{ _.about.description|raw }}
-</div>
+{% endblock %}

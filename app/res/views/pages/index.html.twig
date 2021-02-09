@@ -1,10 +1,3 @@
-<div id="titlebar">{{ icon('book', 'fas', true) }} {{ _.index.title }}</div>
-<div id="toolbar">
+{% extends "page-base.twig" %}
 
-</div>
-<div id="page">
-
-</div>
-
-<script>
-</script>
+{% block titlebar %}{{ icon('book', 'fas', true) }} {{ _.index.title }}{% endblock %}

@@ -4,7 +4,7 @@ namespace App\Managers;
 
 use Exception;
 
-use App\Entities\User;
+use Thor\Security\Entities\User;
 use Thor\Database\CrudHelper;
 use Thor\Database\Sql\Criteria;
 use Thor\Debug\Logger;

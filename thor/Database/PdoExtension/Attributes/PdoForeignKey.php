@@ -5,18 +5,17 @@ namespace Thor\Database\PdoExtension\Attributes;
 use Attribute;
 
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class PdoIndex
+class PdoForeignKey
 {
 
     private string $name;
 
     public function __construct(
+        private string $className,
         private array $columnNames,
-        private bool $isUnique = false,
         ?string $name = null
     ) {
-        $this->name = $name ??
-            (($this->isUnique ? 'uniq_' : 'index_') . strtolower(implode('_', $this->columnNames)));
+        $this->name = $name ?? 'fk_' . basename($this->className);
     }
 
     public function getName(): string
@@ -24,14 +23,14 @@ class PdoIndex
         return $this->name;
     }
 
+    public function getClassName(): string
+    {
+        return $this->className;
+    }
+
     public function getColumnNames(): array
     {
         return $this->columnNames;
-    }
-
-    public function isUnique(): bool
-    {
-        return $this->isUnique;
     }
 
 

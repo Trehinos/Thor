@@ -82,7 +82,7 @@ final class Logger
         return self::$logger ??= new self($env, $basePath, $dateFormat);
     }
 
-    public static function logThrowable(\Throwable $e): void
+    public static function logThrowable(\Throwable $e): string
     {
         $pad = str_repeat(' ', 37);
         $traceStr = '';
@@ -101,6 +101,8 @@ final class Logger
             $traceStr                 
             EOT;
         self::write($message, Logger::LEVEL_DEBUG, Logger::SEVERITY_ERROR);
+
+        return $message;
     }
 
     public static function write(

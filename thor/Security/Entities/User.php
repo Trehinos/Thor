@@ -1,19 +1,21 @@
 <?php
 
-namespace Thor\Security;
+namespace Thor\Security\Entities;
 
 use Thor\Database\PdoExtension\AdvancedPdoRow;
 use Thor\Database\PdoExtension\Attributes\PdoRow;
 use Thor\Database\PdoExtension\PdoRowInterface;
 use Thor\Database\PdoExtension\Attributes\PdoColumn;
 use Thor\Database\PdoExtension\Attributes\PdoIndex;
+use Thor\Security\PasswordHasher;
+use Thor\Security\UserInterface;
 
-#[PdoRow(primary: ['id'], auto: 'id')]
-#[PdoColumn('id', 'INTEGER', 'integer')]
-#[PdoColumn('username', 'VARCHAR(255)', 'string')]
-#[PdoIndex(['username'], null, true)]
+#[PdoRow('user', ['id'], 'id')]
+#[PdoColumn('id', 'INTEGER', 'integer', false)]
+#[PdoColumn('username', 'VARCHAR(255)', 'string', false)]
+#[PdoIndex(['username'], true)]
 #[PdoColumn('password', 'VARCHAR(255)', 'string')]
-abstract class BaseDbUser implements PdoRowInterface, UserInterface
+class User implements PdoRowInterface, UserInterface
 {
 
     use AdvancedPdoRow {

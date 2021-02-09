@@ -29,9 +29,10 @@ const Modal = {
         return Modal;
     },
     load: (url, data) => {
+        Modal.$elem.html("<div id='page'><div style='padding-top: 96px; text-align: center;'><i class='fas fa-2x fa-spin fa-spinner text-info'></i></div></div>");
+        Modal.open();
         $.get(url, data, (response) => {
             Modal.$elem.html(response);
-            Modal.open();
         });
         return Modal;
     }

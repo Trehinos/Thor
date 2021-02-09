@@ -10,8 +10,7 @@ use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Http\Response;
 use Thor\Http\Server;
-
-use App\Entities\User;
+use Thor\Security\Entities\User;
 
 final class Security extends BaseController
 {

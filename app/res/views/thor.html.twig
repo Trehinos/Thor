@@ -57,19 +57,24 @@
                 <button
                         id="btn-about"
                         onclick="menuClick($(this));"
-                        data-url="{{ url('about') }}">
+                        data-url="{{ url('about') }}"
+                        data-item="about">
                     {{ _.footer.about }}
                 </button>
                 <button
                         id="btn-legal"
                         onclick="menuClick($(this));"
-                        data-url="{{ url('legal') }}">
+                        data-url="{{ url('legal') }}"
+                        data-item="legal"
+                >
                     {{ _.footer.legal }}
                 </button>
                 <button
                         id="btn-changelog"
                         onclick="menuClick($(this));"
-                        data-url="{{ url('changelog') }}">
+                        data-url="{{ url('changelog') }}"
+                        data-item="changelog"
+                >
                     {{ _.footer.changelog }}
                 </button>
             </div>
@@ -77,7 +82,7 @@
     </div>
 
     <div id="modal" class="modal" tabindex="-1" role="dialog">
-        {% include "modal.html.twig" %}
+        {% include "modal-base.html.twig" %}
     </div>
 {% endblock %}
 

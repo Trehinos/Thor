@@ -80,7 +80,7 @@ final class HttpKernel implements KernelInterface
                 if (!empty($routeAttrs = $method->getAttributes(Route::class))) {
                     foreach ($routeAttrs as $routeAttr) {
                         $route = $routeAttr->newInstance();
-                        $route->setControllerClass($rc->getName());
+                        $route->setControllerClass($loadPath);
                         $route->setControllerMethod($method->getName());
                         $routesObj[$route->getRouteName()] = $route;
                     }

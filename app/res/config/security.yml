@@ -1,5 +1,5 @@
 userPdoRow:
-    pdoRowClass: App\Entities\User
+    pdoRowClass: Thor\Security\Entities\User
     passwordCompareMethod: hasPwdHashFor
 configuration:
     login-route: login

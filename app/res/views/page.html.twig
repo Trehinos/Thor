@@ -8,7 +8,7 @@
 
         function loadPage(url, params, callback) {
             let $page = $("#content");
-            $page.html("<div id='page'><div style='padding-top: 48px; text-align: center;'><i class='fas fa-4x fa-spin fa-spinner-third'></i></div></div>");
+            $page.html("<div id='page'><div style='padding-top: 48px; text-align: center;'><i class='fas fa-4x fa-spin fa-spinner'></i></div></div>");
             $page.load(url, params, (response) => {
                 if (callback) {
                     callback(response);
@@ -18,7 +18,7 @@
 
         $(() => {
             let menuItem = "{{ menuItem ? menuItem : "index-page" }}";
-            menuClick($(`#btn-${menuItem}`))
+            menuClick($(`#btn-${menuItem}`));
         });
 
     </script>

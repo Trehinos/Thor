@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use Exception;
-use App\Entities\User;
 use App\Managers\UserManager;
 use Thor\Cli\CliKernel;
 use Thor\Cli\Command;
@@ -11,6 +10,7 @@ use Thor\Cli\Console;
 use Thor\Database\CrudHelper;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\Sql\Criteria;
+use Thor\Security\Entities\User;
 
 final class UserCommand extends Command
 {

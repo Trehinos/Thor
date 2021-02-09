@@ -7,36 +7,8 @@
 #           ...
 #  ...
 
-# main routes
-
 load:
     - App\Actions\Main
-
-menu:
-    action:
-        class: App\Actions\Main
-        method: menu
-
-changelog:
-    path: "/changelog"
-    method: GET
-    action:
-        class: App\Actions\Main
-        method: changelog
-
-about:
-    path: "/about"
-    method: GET
-    action:
-        class: App\Actions\Main
-        method: about
-
-legal:
-    path: "/legal"
-    method: GET
-    action:
-        class: App\Actions\Main
-        method: legal
 
 create-admin:
     path: "/framework/create/admin"

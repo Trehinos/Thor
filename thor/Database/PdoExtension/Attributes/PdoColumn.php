@@ -22,6 +22,7 @@ class PdoColumn
         private string $name,
         private string $sqlType,
         private string $phpType,
+        private bool $nullable = true,
         ?callable $toSqlValue = null,
         ?callable $toPhpValue = null
     ) {

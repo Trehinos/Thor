@@ -1,13 +1,17 @@
-<div id="titlebar">{{ icon('users', 'fas', true)|raw }} {{ _.users.title }}</div>
-<div id="toolbar">
+{% extends "page-base.twig" %}
+
+{% block titlebar %}{{ icon('users', 'fas', true)|raw }} {{ _.users.title }}{% endblock %}
+
+{% block toolbar %}
     <button class="btn btn-sm btn-primary"
             onclick="Modal.load('{{ url('users-create-form') }}');"
     >
         {{ icon('plus') }}
         {{ _.general.create }}
     </button>
-</div>
-<div id="page">
+{% endblock %}
+
+{% block page %}
     <div class="d-flex flex-wrap justify-content-around" id="users">
         {% for user in users %}
             <div class="m-1 p-4 user">
@@ -37,4 +41,4 @@
             </div>
         {% endfor %}
     </div>
-</div>
+{% endblock %}

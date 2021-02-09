@@ -4,7 +4,7 @@ namespace App\Actions;
 
 use Symfony\Component\Yaml\Yaml;
 
-use App\Entities\User;
+use Thor\Security\Entities\User;
 use App\Managers\UserManager;
 use Thor\Controller\BaseController;
 use Thor\Database\CrudHelper;
@@ -44,11 +44,7 @@ final class Main extends BaseController
         );
     }
 
-    /**
-     * no matching path (called with a render, can be called by instance)
-     *
-     * @return Response
-     */
+    #[Route('menu')]
     public function menu(): Response
     {
         return $this->view(
@@ -59,31 +55,19 @@ final class Main extends BaseController
         );
     }
 
-    /**
-     * GET /changelog
-     *
-     * @return Response
-     */
+    #[Route('changelog', '/changelog', 'GET')]
     public function changelog(): Response
     {
         return $this->view('pages/changelog.html.twig');
     }
 
-    /**
-     * GET /about
-     *
-     * @return Response
-     */
+    #[Route('about', '/about', 'GET')]
     public function about(): Response
     {
         return $this->view('pages/about.html.twig');
     }
 
-    /**
-     * GET /legal
-     *
-     * @return Response
-     */
+    #[Route('legal', '/legal', 'GET')]
     public function legal(): Response
     {
         return $this->view('pages/legal.html.twig');
