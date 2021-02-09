@@ -45,13 +45,15 @@ html, body {
     bottom: 110px;
     left: 0;
     width: 320px;
-    height: 3.4em;
-    padding: 12px;
-    background: #00552244;
+    height: 2.66em;
+    padding: 5px;
+    background: #00aa6644;
+    font-weight: 600;
 }
 
-#user-box > .btn {
-    margin-top: -4px;
+#user-box > div > .btn {
+    font-size: 0.8em;
+    padding: 2px 6px;
 }
 
 #footer {
