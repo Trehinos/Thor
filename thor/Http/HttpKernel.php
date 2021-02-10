@@ -124,7 +124,7 @@ final class HttpKernel implements KernelInterface
             ),
             [
                 'cache' => Globals::CODE_DIR . ($twig_config['cache_dir'] ?? ''),
-                'debug' => Server::ENV !== Server::PROD
+                'debug' => Thor::isDev()
             ]
         );
     }
@@ -137,7 +137,7 @@ final class HttpKernel implements KernelInterface
         $response = $this->server->handle($request);
         Logger::write("HTTP Response generated (code : {$response->getStatus()}).", Logger::LEVEL_VERBOSE);
 
-        if (Server::ENV === Server::PROD) {
+        if (Thor::getInstance()->getEnv() === 'prod') {
             ob_clean(); // Prevent accidental echoes or var_dump from controller in prod
         }
 

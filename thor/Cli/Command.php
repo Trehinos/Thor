@@ -3,14 +3,19 @@
 namespace Thor\Cli;
 
 use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\NoReturn;
+use Thor\Thor;
 
 abstract class Command
 {
 
     protected Console $console;
 
-    public function __construct(protected string $name, private array $args)
-    {
+    public function __construct(
+        protected string $name,
+        private array $args,
+        private CliKernel $cli
+    ) {
         $this->console = new Console();
     }
 
@@ -22,6 +27,63 @@ abstract class Command
     public function get(string $arg): string|bool|null
     {
         return $this->args[$arg] ?? null;
+    }
+
+    public function usage(?string $name = null): void
+    {
+        $name ??= $this->name;
+        $commandInfos = $this->cli->commands[$name];
+        if (null === $commandInfos) {
+            $this->console
+                ->write('(usage error) Command ')
+                ->fColor(Console::COLOR_RED)
+                ->write($name)
+                ->fColor()
+                ->writeln(" not found...\n");
+            return;
+        }
+        $this->cli->displayCommandUsage($name, $commandInfos['arguments']);
+    }
+
+    #[NoReturn]
+    public function error(
+        string $title,
+        string $message,
+        bool $displayUsage = false,
+        bool $displayHelp = false
+    ): void {
+        if (Thor::isDev()) {
+            $this->console->fColor(Console::COLOR_RED)->writeln('ERROR')->mode();
+            $this->console->fColor(Console::COLOR_YELLOW)->write($title)
+                ->fColor()->writeln($message)
+                ->mode();
+
+            if ($displayUsage) {
+                $this->console->writeln();
+                $this->usage();
+            }
+            if ($displayHelp) {
+                $this->console->writeln();
+                $this->help();
+            }
+        }
+        exit;
+    }
+
+    public function help(?string $name = null): void
+    {
+        $name ??= $this->name;
+        $commandInfos = $this->cli->commands[$name];
+        if (null === $commandInfos) {
+            $this->console
+                ->write('(usage error) Command ')
+                ->fColor(Console::COLOR_RED)
+                ->write($name)
+                ->fColor()
+                ->writeln(" not found...\n");
+            return;
+        }
+        $this->cli->displayCommandDescription($name, $commandInfos['description'], $commandInfos['arguments']);
     }
 
     public static function getArgs(

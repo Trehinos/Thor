@@ -17,13 +17,13 @@ final class UserCommand extends Command
 
     private UserManager $userManager;
 
-    public function __construct(private CliKernel $kernel, array $args)
+    public function __construct(string $command, array $args, CliKernel $kernel)
     {
-        parent::__construct('user', $args);
+        parent::__construct($command, $args, $kernel);
         $this->userManager = new UserManager(
             new CrudHelper(
                 User::class,
-                new PdoRequester($this->kernel->pdos->get('default'))
+                new PdoRequester($kernel->pdos->get('default'))
             )
         );
     }

@@ -22,9 +22,9 @@ $config = Thor::getInstance()->loadConfig('config');
 
 Application::init(
     in_array(
-        $env = strtoupper($config['env'] ?? ''),
-        ['DEV', 'DEBUG', 'VERBOSE', 'PROD']
-    ) ? $env : 'DEBUG',
+        $env = strtolower($config['env'] ?? ''),
+        ['dev', 'debug', 'verbose', 'prod']
+    ) ? $env : 'debug',
     $config['log_path'] ?? __DIR__ . '/var/'
 );
 

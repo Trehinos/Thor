@@ -11,8 +11,6 @@ use Throwable;
 final class Application implements KernelInterface
 {
 
-    static string $env = 'DEV';
-
     public function __construct(private ?KernelInterface $kernel = null)
     {
     }
@@ -23,15 +21,15 @@ final class Application implements KernelInterface
     }
 
     public static function init(
-        #[ExpectedValues(['DEV', 'DEBUG', 'VERBOSE', 'PROD'])]
+        #[ExpectedValues(['dev', 'debug', 'verbose', 'prod'])]
         string $thor_env,
         string $logPath
     ): void {
         Logger::getDefaultLogger($thor_env, Globals::CODE_DIR . $logPath);
 
-        if ('PROD' === $thor_env) {
+        if ('prod' === $thor_env) {
             ini_set('display_errors', 0);
-        } elseif ('DEBUG' === $thor_env) {
+        } elseif ('debug' === $thor_env) {
             ini_set('display_errors', E_ERROR | E_WARNING | E_PARSE);
         } else {
             ini_set('display_errors', E_ALL);
@@ -66,7 +64,7 @@ final class Application implements KernelInterface
         } catch (Throwable $e) {
             $logString = Logger::logThrowable($e);
             echo "UNRECOVERABLE ERROR THROWN\n";
-            if ('DEV' === self::$env) {
+            if (Thor::isDev()) {
                 $message = " : {$e->getMessage()}";
                 echo ('http' === $thor_kernel) ? "<strong style='font-family: monospace;'>$message</strong><br>" : "$message\n";
                 echo ('http' === $thor_kernel) ? "<pre>$logString</pre>" : $logString;

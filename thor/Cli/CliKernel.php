@@ -68,7 +68,7 @@ final class CliKernel implements KernelInterface
     }
 
 
-    private function displayCommandDescription(
+    public function displayCommandDescription(
         string $command,
         string $description,
         #[ArrayShape(
@@ -85,7 +85,7 @@ final class CliKernel implements KernelInterface
         $span16 = str_repeat(' ', 16);
         $this->console
             ->home()
-            ->fColor(Console::COLOR_RED)->write("\t$command" . $spanCommand)
+            ->fColor(Console::COLOR_GREEN)->write("\t$command" . $spanCommand)
             ->fColor(mode: Console::MODE_UNDERSCORE)->writeln($description)
             ->mode();
 
@@ -109,6 +109,45 @@ final class CliKernel implements KernelInterface
         return $this;
     }
 
+    public function displayCommandUsage(
+        string $command,
+        #[ArrayShape(
+            [
+                [
+                    'arg' => 'string',
+                    'description' => 'string',
+                    'hasValue' => 'boolean'
+                ]
+            ]
+        )] array $args = []
+    ): self {
+        $this->console
+            ->home()
+            ->fColor(Console::COLOR_YELLOW)->write("$command")
+            ->fColor()->writeln(" usage :\n")
+            ->mode();
+
+        $this->console
+            ->home()
+            ->fColor(Console::COLOR_GREEN)->write("\t$command ")
+            ->mode();
+
+        foreach ($args as $argName => $arg) {
+            $argName = "-$argName";
+            $value = ($arg['hasValue'] ?? false) ? ' value' : '';
+            $this->console
+                ->write('[')
+                ->fColor(Console::COLOR_YELLOW)->write("$argName")
+                ->fColor()->write($value)
+                ->write('] ')
+                ->mode();
+        }
+
+        $this->console->writeln("\n");
+
+        return $this;
+    }
+
     public function execute(): void
     {
         $args = self::getArgs();
@@ -116,11 +155,11 @@ final class CliKernel implements KernelInterface
         if ('-help' === $command) {
             $this->console
                 ->clear()
-                ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)->writeln('Ombre v' . Globals::VERSION)
+                ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)->writeln('Thor v' . Thor::VERSION)
                 ->mode()->fColor()->write('Console help. ')
-                ->fColor(Console::COLOR_CYAN)->write('bin/ombre.php')
+                ->fColor(Console::COLOR_CYAN)->write('bin/thor.php')
                 ->fColor()->writeln(" command usage :")
-                ->fColor(Console::COLOR_CYAN)->write("\tbin/ombre.php ")
+                ->fColor(Console::COLOR_CYAN)->write("\tbin/thor.php ")
                 ->fColor()->write("-help ")
                 ->fColor(mode: Console::MODE_DIM)->write("| ")
                 ->mode()->fColor(Console::COLOR_RED)->write("command ")
@@ -149,7 +188,7 @@ final class CliKernel implements KernelInterface
 
         array_shift($args);
         $arguments = Command::getArgs($args, $commandSpecs['arguments'] ?? []);
-        $commandObject = new $commandClass($this, $arguments);
+        $commandObject = new $commandClass($command, $arguments, $this);
         $commandObject->$commandAction();
     }
 

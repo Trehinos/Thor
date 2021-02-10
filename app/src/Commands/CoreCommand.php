@@ -2,9 +2,11 @@
 
 namespace App\Commands;
 
+use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\CliKernel;
 use Thor\Cli\Command;
 use Thor\Cli\Console;
+use Thor\Globals;
 use Thor\Thor;
 
 final class CoreCommand extends Command
@@ -12,15 +14,38 @@ final class CoreCommand extends Command
 
     private array $routes;
 
-    public function __construct(private CliKernel $kernel, array $args)
+    public function __construct(string $command, array $args, CliKernel $kernel)
     {
-        parent::__construct('core', $args);
+        parent::__construct($command, $args, $kernel);
         $this->routes = Thor::getInstance()->loadConfig('routes', true);
     }
 
-    public function routeAdd()
+    public function routeSet()
     {
+        $name = $this->get('name');
+        $path = $this->get('path');
+        $method = $this->get('method');
+        $cClass = $this->get('action-class');
+        $cMethod = $this->get('action-method');
 
+        if (in_array(null, [$name, $path, $method, $cClass, $cMethod])) {
+            $this->error("Usage error\n", 'All parameters are required.', true, true);
+        }
+
+        $this->routes[$name] = [
+            'path' => $path,
+            'method' => $method,
+            'action' => [
+                'class' => $cClass,
+                'method' => $cMethod
+            ]
+        ];
+
+        file_put_contents(Globals::CODE_DIR . 'app/res/routes.yml', Yaml::dump($this->routes));
+        $this->console
+            ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
+            ->writeln("Done.")
+            ->mode();
     }
 
     public function routeList()
@@ -44,7 +69,7 @@ final class CoreCommand extends Command
                     ->fColor(Console::COLOR_GRAY, Console::MODE_DIM)
                     ->write('::')
                     ->fColor(Console::COLOR_BLUE, Console::MODE_RESET)
-                    ->write($m.'()')
+                    ->write($m . '()')
                     ->mode();
             }
 

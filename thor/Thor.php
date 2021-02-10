@@ -10,12 +10,21 @@ final class Thor
 
     public const VERSION = '0.3-dev';
     public const VERSION_NAME = 'gamma';
-    public const DEFAULT_LANGUAGE = 'fr';
 
     private static ?self $defaultInstance = null;
 
     public function __construct(private array $configurations = [])
     {
+    }
+
+    public function getEnv(): string
+    {
+        return $this->loadConfig('config')['env'] ?? 'dev';
+    }
+
+    public static function isDev(): bool
+    {
+        return self::getInstance()->getEnv() === 'dev';
     }
 
     #[ArrayShape([
@@ -84,8 +93,6 @@ final class Thor
 
     public static function getInstance(): self
     {
-        $language = self::DEFAULT_LANGUAGE;
-
         return self::$defaultInstance ??= new self();
     }
 

@@ -16,10 +16,10 @@ final class Logger
     public const LEVEL_PROD = 3;
 
     private const LEVELS = [
-        'DEV' => self::LEVEL_DEV,
-        'DEBUG' => self::LEVEL_DEBUG,
-        'VERBOSE' => self::LEVEL_VERBOSE,
-        'PROD' => self::LEVEL_PROD,
+        'dev' => self::LEVEL_DEV,
+        'debug' => self::LEVEL_DEBUG,
+        'verbose' => self::LEVEL_VERBOSE,
+        'prod' => self::LEVEL_PROD,
     ];
 
     public const SEVERITY_NOTICE = 0;
@@ -34,13 +34,13 @@ final class Logger
 
     #[Pure]
     public function __construct(
-        #[ExpectedValues(['DEV', 'DEBUG', 'VERBOSE', 'PROD'])]
-        string $env = 'DEV',
+        #[ExpectedValues(['dev', 'debug', 'verbose', 'prod'])]
+        string $env = 'dev',
         private string $basePath = __DIR__ . '/../',
         private string $dateFormat = 'Y-m-d H:i:s.v',
         private ?string $filename = null
     ) {
-        $this->env = strtoupper($env);
+        $this->env = strtolower($env);
     }
 
     public function log(string $message, int $level = self::LEVEL_DEBUG, int $severity = self::SEVERITY_NOTICE): self
@@ -74,8 +74,8 @@ final class Logger
     private static ?self $logger = null;
 
     public static function getDefaultLogger(
-        #[ExpectedValues(['DEV', 'DEBUG', 'VERBOSE', 'PROD'])]
-        string $env = 'DEV',
+        #[ExpectedValues(['dev', 'debug', 'verbose', 'prod'])]
+        string $env = 'dev',
         string $basePath = __DIR__ . '/../',
         string $dateFormat = 'Y-m-d H:i:s.v'
     ): self {

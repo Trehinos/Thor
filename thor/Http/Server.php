@@ -19,11 +19,6 @@ use Twig\Error\SyntaxError;
 class Server
 {
 
-    public const DEV = 'dev';
-    public const DEBUG = 'debug';
-    public const PROD = 'prod';
-    public const ENV = self::DEV;
-
     private ?string $current_routeName = null;
 
     public function __construct(
