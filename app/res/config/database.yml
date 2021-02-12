@@ -1,5 +1,5 @@
 # using PDO
 default:
-    dsn: "mysql:host=localhost;dbname=ombre"
-    user: ombre
-    password: dWd26lQKNAJSZ207aR1R2gVDqcK9Xxje
+    dsn: "mysql:host=localhost;dbname=thor"
+    user: root
+    password: ''

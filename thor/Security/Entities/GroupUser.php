@@ -4,15 +4,16 @@ namespace Thor\Security\Entities;
 
 use Thor\Database\PdoExtension\AdvancedPdoRow;
 use Thor\Database\PdoExtension\Attributes\PdoColumn;
-use Thor\Database\PdoExtension\Attributes\PdoIndex;
+use Thor\Database\PdoExtension\Attributes\PdoForeignKey;
 use Thor\Database\PdoExtension\Attributes\PdoRow;
 use Thor\Database\PdoExtension\PdoRowInterface;
 
-#[PdoRow("group", ['id'], 'id')]
-#[PdoColumn('id', 'INTEGER', 'integer', false)]
-#[PdoColumn('group_name', 'INTEGER', 'integer', true)]
-#[PdoIndex(['groupName', true])]
-class Group implements PdoRowInterface
+#[PdoRow("group_user", ['group_id', 'user_id'])]
+#[PdoColumn('group_id', 'INTEGER', 'integer', false)]
+#[PdoColumn('user_id', 'INTEGER', 'integer', false)]
+#[PdoForeignKey(Group::class, ['id'], ['group_id'])]
+#[PdoForeignKey(User::class, ['id'], ['user_id'])]
+class GroupUser implements PdoRowInterface
 {
 
     use AdvancedPdoRow {

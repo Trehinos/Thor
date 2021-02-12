@@ -3,11 +3,9 @@
 namespace Thor\Cli;
 
 use JetBrains\PhpStorm\ArrayShape;
-use Symfony\Component\Yaml\Yaml;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Debug\Logger;
-use Thor\Globals;
 use Thor\KernelInterface;
 use Thor\Thor;
 

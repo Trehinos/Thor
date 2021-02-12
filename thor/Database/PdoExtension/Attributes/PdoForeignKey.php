@@ -12,7 +12,8 @@ class PdoForeignKey
 
     public function __construct(
         private string $className,
-        private array $columnNames,
+        private array $targetColumns,
+        private array $localColumns,
         ?string $name = null
     ) {
         $this->name = $name ?? 'fk_' . basename($this->className);
@@ -28,9 +29,14 @@ class PdoForeignKey
         return $this->className;
     }
 
-    public function getColumnNames(): array
+    public function getTargetColumns(): array
     {
-        return $this->columnNames;
+        return $this->targetColumns;
+    }
+
+    public function getLocalColumns(): array
+    {
+        return $this->localColumns;
     }
 
 
