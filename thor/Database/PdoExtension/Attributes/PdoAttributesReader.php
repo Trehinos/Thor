@@ -48,7 +48,7 @@ final class PdoAttributesReader
                 self::_merge($pRow, $row, $pColumns, $columns, $pIndexes, $indexes, $fks, $pFks);
         }
 
-        return ['row' => $row, 'columns' => $columns, 'indexes' => $indexes];
+        return ['row' => $row, 'columns' => $columns, 'indexes' => $indexes, 'foreign_keys' => $fks];
     }
 
     #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
