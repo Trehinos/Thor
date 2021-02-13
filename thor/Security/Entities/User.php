@@ -14,7 +14,7 @@ use Thor\Security\UserInterface;
 #[PdoColumn('id', 'INTEGER', 'integer', false)]
 #[PdoColumn('username', 'VARCHAR(255)', 'string', false)]
 #[PdoIndex(['username'], true)]
-#[PdoColumn('password', 'VARCHAR(255)', 'string')]
+#[PdoColumn('password', 'VARCHAR(255)', 'string', false)]
 class User implements PdoRowInterface, UserInterface
 {
 

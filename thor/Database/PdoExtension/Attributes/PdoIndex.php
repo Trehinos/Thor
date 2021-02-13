@@ -3,6 +3,7 @@
 namespace Thor\Database\PdoExtension\Attributes;
 
 use Attribute;
+use JetBrains\PhpStorm\Pure;
 
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
 class PdoIndex
@@ -32,6 +33,14 @@ class PdoIndex
     public function isUnique(): bool
     {
         return $this->isUnique;
+    }
+
+    #[Pure] public function getSql(string $tableName): string
+    {
+        $unq = $this->isUnique() ? 'UNIQUE' : '';
+        $cols = implode(', ', $this->getColumnNames());
+
+        return "CREATE $unq INDEX {$this->getName()} ON $tableName ($cols)";
     }
 
 

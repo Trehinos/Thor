@@ -13,7 +13,7 @@ final class Route
 
     public function __construct(
         private ?string $routeName = null,
-        private string $path = '/',
+        private ?string $path = null,
         private string $method = Request::GET,
         private array $parameters = [],
         private ?string $controllerClass = null,
@@ -77,7 +77,7 @@ final class Route
         return "/index.php$path";
     }
 
-    public function getPath(): string
+    public function getPath(): ?string
     {
         return $this->path;
     }
@@ -97,12 +97,12 @@ final class Route
         return $this->filledParams;
     }
 
-    public function getControllerClass(): string
+    public function getControllerClass(): ?string
     {
         return $this->controllerClass;
     }
 
-    public function getControllerMethod(): string
+    public function getControllerMethod(): ?string
     {
         return $this->controllerMethod;
     }

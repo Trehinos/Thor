@@ -90,7 +90,7 @@ final class HttpKernel implements KernelInterface
         return $routesObj;
     }
 
-    private static function createRouterFromConfiguration(array $routes): Router
+    public static function createRouterFromConfiguration(array $routes): Router
     {
         $routesObj = [];
         foreach ($routes as $routeName => $routeInfo) {

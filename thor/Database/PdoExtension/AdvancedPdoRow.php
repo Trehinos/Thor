@@ -5,8 +5,6 @@ namespace Thor\Database\PdoExtension;
 use Exception;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
-use ReflectionAttribute;
-use ReflectionClass;
 use Thor\Database\PdoExtension\Attributes\PdoAttributesReader;
 use Thor\Database\PdoExtension\Attributes\PdoColumn;
 use Thor\Database\PdoExtension\Attributes\PdoIndex;

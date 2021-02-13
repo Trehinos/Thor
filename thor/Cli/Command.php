@@ -14,7 +14,7 @@ abstract class Command
     public function __construct(
         protected string $name,
         private array $args,
-        private CliKernel $cli
+        protected CliKernel $cli
     ) {
         $this->console = new Console();
     }

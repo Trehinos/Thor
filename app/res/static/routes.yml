@@ -10,13 +10,6 @@
 load:
     - App\Actions\Main
 
-create-admin:
-    path: "/framework/create/admin"
-    method: POST
-    action:
-        class: App\Actions\Main
-        method: createAdmin
-
 generate-url:
     path: "/framework/generate-url"
     method: GET

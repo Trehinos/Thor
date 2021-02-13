@@ -68,3 +68,8 @@ route/list:
   class: App\Commands\CoreCommand
   command: routeList
   description: list all routes in app/res/routes/yml
+
+core/setup:
+  class: App\Commands\CoreCommand
+  command: setup
+  description: create 'user' class and admin user

@@ -6,10 +6,10 @@ use PDOStatement;
 
 use Thor\Debug\Logger;
 
-final class PdoRequester
+class PdoRequester
 {
 
-    public function __construct(private PdoHandler $handler)
+    public function __construct(protected PdoHandler $handler)
     {
     }
 
@@ -22,9 +22,10 @@ final class PdoRequester
      *
      * @return bool
      */
-    public function execute(string $sql, array $parameters): bool
+    final public function execute(string $sql, array $parameters): bool
     {
         Logger::write("DB execute ($sql).", Logger::LEVEL_DEBUG);
+        Logger::writeData('DB parameters', $parameters, Logger::LEVEL_DEBUG);
         $stmt = $this->handler->getPdo()->prepare($sql);
 
         return $stmt->execute($parameters);
@@ -39,7 +40,7 @@ final class PdoRequester
      *
      * @return bool
      */
-    public function executeMultiple(string $sql, array $parameters): bool
+    final public function executeMultiple(string $sql, array $parameters): bool
     {
         $size = count($parameters);
         Logger::write("DB execute $size x ($sql).", Logger::LEVEL_DEBUG);
@@ -47,6 +48,7 @@ final class PdoRequester
         $result = true;
 
         foreach ($parameters as $pdoRowsArray) {
+            Logger::writeData(' -> DB parameters', $pdoRowsArray, Logger::LEVEL_DEBUG);
             $result = $result && $stmt->execute($pdoRowsArray);
         }
 
@@ -62,16 +64,17 @@ final class PdoRequester
      *
      * @return PDOStatement
      */
-    public function request(string $sql, array $parameters): PDOStatement
+    final public function request(string $sql, array $parameters): PDOStatement
     {
         Logger::write("DB request ($sql).", Logger::LEVEL_DEBUG);
+        Logger::writeData('DB parameters', $parameters, Logger::LEVEL_DEBUG);
         $stmt = $this->handler->getPdo()->prepare($sql);
         $stmt->execute($parameters);
 
         return $stmt;
     }
 
-    public function getPdoHandler(): PdoHandler
+    final public function getPdoHandler(): PdoHandler
     {
         return $this->handler;
     }

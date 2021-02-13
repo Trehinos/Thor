@@ -17,7 +17,7 @@ final class PdoCollection
         $this->handlers[$connectionName] = $handler;
     }
 
-    public function get(string $connectionName): ?PdoHandler
+    public function get(string $connectionName = 'default'): ?PdoHandler
     {
         return $this->handlers[$connectionName] ?? null;
     }

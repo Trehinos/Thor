@@ -3,6 +3,7 @@
 namespace Thor\Database\PdoExtension\Attributes;
 
 use Attribute;
+use JetBrains\PhpStorm\Pure;
 
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
 class PdoColumn
@@ -23,11 +24,17 @@ class PdoColumn
         private string $sqlType,
         private string $phpType,
         private bool $nullable = true,
+        private mixed $defaultValue = null,
         ?callable $toSqlValue = null,
         ?callable $toPhpValue = null
     ) {
         $this->toSqlValue = $toSqlValue;
         $this->toPhpValue = $toPhpValue;
+    }
+
+    public function getDefault(): mixed
+    {
+        return $this->defaultValue;
     }
 
     public function toPhp(mixed $sqlValue): mixed
@@ -57,6 +64,13 @@ class PdoColumn
     public function getPhpType(): string
     {
         return $this->phpType;
+    }
+
+    #[Pure] public function getSql(): string
+    {
+        $nullStr = $this->nullable ? '' : 'NOT NULL';
+        $defaultStr = ($this->getDefault() === null) ? '' : "DEFAULT {$this->getDefault()}";
+        return "{$this->getName()} {$this->getSqlType()} $nullStr $defaultStr";
     }
 
 }
