@@ -70,9 +70,12 @@ trait AdvancedPdoRow
     #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     private static function getTD(): array
     {
-        return static::$tableDefinition ??= (new PdoAttributesReader(static::class))->getAttributes();
+        return static::$tableDefinition ??= PdoAttributesReader::pdoRowInfo(static::class);
     }
 
+    /**
+     * @return PdoRow[]
+     */
     final public static function getPdoColumnsDefinitions(): array
     {
         return array_combine(

@@ -10,7 +10,7 @@ final class PdoAttributesReader
 {
 
     #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
-    private ?array $classInfos = null;
+    private static array $classInfos = [];
 
     public function __construct(private string $classname)
     {
@@ -79,7 +79,13 @@ final class PdoAttributesReader
     #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     public function getAttributes(): array
     {
-        return $this->classInfos ??= self::parseAttributes(new ReflectionClass($this->classname));
+        return self::$classInfos[$this->classname] ??= self::parseAttributes(new ReflectionClass($this->classname));
+    }
+
+    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
+    public static function pdoRowInfo(string $className): array
+    {
+        return (new self($className))->getAttributes();
     }
 
 }

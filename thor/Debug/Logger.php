@@ -119,7 +119,7 @@ final class Logger
         int $level = self::LEVEL_DEV,
         int $severity = self::SEVERITY_NOTICE
     ): void {
-        $message = "DATA:\{$dataName} : " . json_encode($data);
+        $message = "DATA:$dataName= " . json_encode($data);
         self::getDefaultLogger()->log($message, $level, $severity);
     }
 
