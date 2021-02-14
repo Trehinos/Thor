@@ -4,16 +4,18 @@ namespace Thor\Cli;
 
 use DateInterval;
 use DateTime;
+use JetBrains\PhpStorm\ArrayShape;
+use Thor\KernelInterface;
 
-abstract class Daemon extends Command
+abstract class Daemon implements KernelInterface
 {
 
     public function __construct(
+        protected string $name,
         protected int $periodicityInSeconds,
         protected string $startHis = '000000',
         protected string $endHis = '235959'
     ) {
-        parent::__construct("", []);
     }
 
     public function isNowRunnable(?DateTime $lastTime = null): bool
@@ -30,12 +32,17 @@ abstract class Daemon extends Command
             ($lastTime->add(new DateInterval("PT{$this->periodicityInSeconds}S"))) > $now;
     }
 
-    abstract protected function execute(): void;
-
-    final public function executeIfRunnable(): void
+    final public function executeIfRunnable(DaemonState $state, ?DateTime $lastTime = null): void
     {
-        if ($this->isNowRunnable()) {
-            $this->execute();
+        if ($this->isNowRunnable($lastTime)) {
+            $state->load();
+            if (!$state->isRunning()) {
+                $state->setRunning(true);
+                $state->write();
+                $this->execute();
+                $state->setRunning(false);
+                $state->write();
+            }
         }
     }
 
@@ -49,6 +56,19 @@ abstract class Daemon extends Command
     {
         $now = new DateTime();
         return DateTime::createFromFormat('YmdHis', "{$now->format('Ymd')}{$this->endHis}");
+    }
+
+    final public static function instantiate(
+        #[ArrayShape([
+            'name' => 'string',
+            'class' => 'string',
+            'periodicity' => 'int',
+            'start' => 'string',
+            'end' => 'string'
+        ])]
+        array $info
+    ): Daemon {
+        return new ($info['class'])($info['name'], $info['periodicity'], $info['start'], $info['end']);
     }
 
 }

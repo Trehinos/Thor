@@ -190,7 +190,7 @@ final class CliKernel implements KernelInterface
         $commandObject->$commandAction();
     }
 
-    public static function create(): self
+    public static function guardCli(): void
     {
         if ('cli' !== php_sapi_name()) {
             Logger::write(
@@ -200,6 +200,11 @@ final class CliKernel implements KernelInterface
             );
             exit;
         }
+    }
+
+    public static function create(): self
+    {
+        self::guardCli();
         Logger::write('Start CLI context');
         return new self(Thor::getInstance()->getConsoleConfiguration());
     }

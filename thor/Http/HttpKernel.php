@@ -123,7 +123,7 @@ final class HttpKernel implements KernelInterface
                 )
             ),
             [
-                'cache' => Globals::CODE_DIR . ($twig_config['cache_dir'] ?? ''),
+                'cache' => Globals::VAR_DIR . ($twig_config['cache_dir'] ?? ''),
                 'debug' => Thor::isDev()
             ]
         );

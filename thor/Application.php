@@ -4,6 +4,7 @@ namespace Thor;
 
 use JetBrains\PhpStorm\ExpectedValues;
 use Thor\Cli\CliKernel;
+use Thor\Cli\DaemonScheduler;
 use Thor\Debug\Logger;
 use Thor\Http\HttpKernel;
 use Throwable;
@@ -20,19 +21,19 @@ final class Application implements KernelInterface
         $this->kernel?->execute();
     }
 
-    public static function init(
+    public static function setLoggerLevel(
         #[ExpectedValues(['dev', 'debug', 'verbose', 'prod'])]
         string $thor_env,
         string $logPath
     ): void {
-        Logger::getDefaultLogger($thor_env, Globals::CODE_DIR . $logPath);
+        Logger::getDefaultLogger($thor_env, $logPath);
 
-        if ('prod' === $thor_env) {
-            ini_set('display_errors', 0);
+        if ('dev' === $thor_env) {
+            ini_set('display_errors', E_ALL);
         } elseif ('debug' === $thor_env) {
             ini_set('display_errors', E_ERROR | E_WARNING | E_PARSE);
         } else {
-            ini_set('display_errors', E_ALL);
+            ini_set('display_errors', 0);
         }
         ini_set('date.timezone', $config['timezone'] ?? 'Europe/Paris');
     }
@@ -49,6 +50,10 @@ final class Application implements KernelInterface
 
                 case 'cli':
                     $kernel = CliKernel::create();
+                    break;
+
+                case 'daemon':
+                    $kernel = DaemonScheduler::create();
                     break;
 
                 default:

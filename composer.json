@@ -25,6 +25,7 @@
         "ext-pdo": "*",
         "symfony/yaml": "5.*",
         "symfony/var-dumper": "5.*",
-        "twig/twig": "3.*"
+        "twig/twig": "3.*",
+        "ext-pcntl": "*"
     }
 }

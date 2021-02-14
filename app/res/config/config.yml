@@ -1,12 +1,12 @@
-# [fr]/en
+# [fr] | en
 lang: fr
 
-# [dev]/debug/prod
+# [dev] | debug | verbose | prod
 env: dev
 
 app_name: "Thor"
 
 timezone: Europe/Paris
 
-# [engine/]
-log_path: var/logs/
+# [thor/thor/] | thor/var/{log_path}
+log_path: logs/
