@@ -18,6 +18,11 @@ abstract class Daemon implements KernelInterface
     ) {
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function isNowRunnable(?DateTime $lastTime = null): bool
     {
         $now = new DateTime();

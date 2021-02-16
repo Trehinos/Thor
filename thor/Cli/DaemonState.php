@@ -18,7 +18,7 @@ final class DaemonState
 
     public function getFileName(): string
     {
-        return Globals::VAR_DIR . "daemons/{$this->daemon}.yml";
+        return Globals::VAR_DIR . "daemons/{$this->daemon->getName()}.yml";
     }
 
     public function load(): void

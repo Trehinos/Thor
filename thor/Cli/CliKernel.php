@@ -208,4 +208,23 @@ final class CliKernel implements KernelInterface
         Logger::write('Start CLI context');
         return new self(Thor::getInstance()->getConsoleConfiguration());
     }
+
+    public static function executeBackgroundProgram(string $cmd): void
+    {
+        if (substr(php_uname(), 0, 7) === "Windows") {
+            pclose(popen("start /B $cmd", "r"));
+        } else {
+            exec("$cmd > /dev/null &");
+        }
+    }
+
+    public static function executeProgram(string $cmd): void
+    {
+        if (substr(php_uname(), 0, 7) === "Windows") {
+            pclose(popen($cmd, "r"));
+        } else {
+            exec($cmd);
+        }
+    }
+
 }
