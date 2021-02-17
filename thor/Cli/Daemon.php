@@ -37,9 +37,9 @@ abstract class Daemon implements KernelInterface
             ($lastTime->add(new DateInterval("PT{$this->periodicityInSeconds}S"))) > $now;
     }
 
-    final public function executeIfRunnable(DaemonState $state, ?DateTime $lastTime = null): void
+    final public function executeIfRunnable(DaemonState $state): void
     {
-        if ($this->isNowRunnable($lastTime)) {
+        if ($this->isNowRunnable($state->getLastRun())) {
             $state->load();
             if (!$state->isRunning()) {
                 $state->setRunning(true);

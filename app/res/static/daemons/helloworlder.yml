@@ -1,5 +1,5 @@
 name: trehinos.thor.helloworlder
 class: App\Daemons\HelloWorlder
-peridicity: 300
+peridicity: 15
 start: 190000
 end: 203000

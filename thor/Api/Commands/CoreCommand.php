@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands;
+namespace Thor\Api\Commands;
 
 use App\Managers\UserManager;
 use Symfony\Component\Yaml\Yaml;

@@ -9,6 +9,8 @@ use Thor\Globals;
 final class DaemonState
 {
 
+    public const DATE_FORMAT = 'Y-m-d H:i:s';
+
     private ?bool $isRunning = null;
     private ?DateTime $lastRun = null;
 
@@ -29,7 +31,7 @@ final class DaemonState
 
         $lr = null;
         ['isRunning' => $this->isRunning, 'lastRun' => $lr] * Yaml::parseFile($this->getFileName());
-        $this->lastRun = ($lr === null ? $lr : DateTime::createFromFormat('Y-m-d H:i:s', $lr));
+        $this->lastRun = ($lr === null ? $lr : DateTime::createFromFormat(self::DATE_FORMAT, $lr));
 
     }
 
@@ -41,7 +43,7 @@ final class DaemonState
                 [
                     'daemon' => ($this->daemon)::class,
                     'isRunning' => $this->isRunning(),
-                    'lastRun' => $this->getLastRun()?->format('Y-m-d H:i:s')
+                    'lastRun' => $this->getLastRun()?->format(self::DATE_FORMAT)
                 ]
             )
         );

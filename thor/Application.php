@@ -26,7 +26,7 @@ final class Application implements KernelInterface
         string $thor_env,
         string $logPath
     ): void {
-        Logger::getDefaultLogger($thor_env, $logPath);
+        Logger::setDefaultLogger($thor_env, $logPath);
 
         if ('dev' === $thor_env) {
             ini_set('display_errors', E_ALL);

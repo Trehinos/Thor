@@ -44,7 +44,7 @@ user/delete:
       description: user's PID. Needed to identify the user in DB
 
 route/set:
-  class: App\Commands\CoreCommand
+  class: Thor\Api\Commands\CoreCommand
   command: routeSet
   description: add a route in app/res/routes.yml
   arguments:
@@ -65,11 +65,31 @@ route/set:
       description: the controller method
 
 route/list:
-  class: App\Commands\CoreCommand
+  class: Thor\Api\Commands\CoreCommand
   command: routeList
   description: list all routes in app/res/routes/yml
 
 core/setup:
-  class: App\Commands\CoreCommand
+  class: Thor\Api\Commands\CoreCommand
   command: setup
   description: create 'user' class and admin user
+
+daemon/start:
+  class: ''
+  command: ''
+  description: start a daemon TODO
+
+daemon/stop:
+  class: ''
+  command: ''
+  description: stop a daemon TODO
+
+daemon/status:
+  class: ''
+  command: ''
+  description: get the status of a daemon TODO
+
+clear/cache:
+  class: ''
+  command: ''
+  description:

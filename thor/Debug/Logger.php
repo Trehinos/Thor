@@ -82,6 +82,15 @@ final class Logger
         return self::$logger ??= new self($env, $basePath, $dateFormat);
     }
 
+    public static function setDefaultLogger(
+        #[ExpectedValues(['dev', 'debug', 'verbose', 'prod'])]
+        string $env = 'dev',
+        string $basePath = __DIR__ . '/../',
+        string $dateFormat = 'Y-m-d H:i:s.v'
+    ): self {
+        return self::$logger = new self($env, $basePath, $dateFormat);
+    }
+
     public static function logThrowable(\Throwable $e): string
     {
         $pad = str_repeat(' ', 37);
