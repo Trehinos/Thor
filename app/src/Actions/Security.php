@@ -5,12 +5,9 @@ namespace App\Actions;
 use Exception;
 
 use App\Managers\UserManager;
-use Thor\Controller\BaseController;
 use Thor\Database\CrudHelper;
-use Thor\Database\PdoExtension\Attributes\PdoAttributesReader;
-use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\SchemaHelper;
 use Thor\Debug\Logger;
+use Thor\Http\BaseController;
 use Thor\Http\Response;
 use Thor\Http\Server;
 use Thor\Security\Entities\User;

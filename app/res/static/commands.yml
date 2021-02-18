@@ -75,19 +75,32 @@ core/setup:
   description: create 'user' class and admin user
 
 daemon/start:
-  class: ''
-  command: ''
-  description: start a daemon TODO
+  class: Thor\Api\Commands\DaemonCommand
+  command: daemonStart
+  description: start a daemon
+  arguments:
+    name:
+      hasValue: true
+      description: the daemon name
+
 
 daemon/stop:
-  class: ''
-  command: ''
-  description: stop a daemon TODO
+  class: Thor\Api\Commands\DaemonCommand
+  command: daemonStop
+  description: stop a daemon
+  arguments:
+    name:
+      hasValue: true
+      description: the daemon name
 
 daemon/status:
-  class: ''
-  command: ''
-  description: get the status of a daemon TODO
+  class: Thor\Api\Commands\DaemonCommand
+  command: daemonStatus
+  description: get the status of a daemon
+  arguments:
+    name:
+      hasValue: true
+      description: the daemon name
 
 clear/cache:
   class: ''

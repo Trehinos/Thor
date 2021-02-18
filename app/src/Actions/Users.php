@@ -5,9 +5,9 @@ namespace App\Actions;
 use Exception;
 
 use App\Managers\UserManager;
-use Thor\Controller\BaseController;
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
+use Thor\Http\BaseController;
 use Thor\Http\Response;
 use Thor\Http\Server;
 

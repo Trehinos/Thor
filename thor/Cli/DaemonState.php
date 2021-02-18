@@ -4,12 +4,13 @@ namespace Thor\Cli;
 
 use DateTime;
 use Symfony\Component\Yaml\Yaml;
+use Thor\Debug\Logger;
 use Thor\Globals;
 
 final class DaemonState
 {
 
-    public const DATE_FORMAT = 'Y-m-d H:i:s';
+    public const DATE_FORMAT = 'YmdHis';
 
     private ?bool $isRunning = null;
     private ?DateTime $lastRun = null;
@@ -30,9 +31,8 @@ final class DaemonState
         }
 
         $lr = null;
-        ['isRunning' => $this->isRunning, 'lastRun' => $lr] * Yaml::parseFile($this->getFileName());
-        $this->lastRun = ($lr === null ? $lr : DateTime::createFromFormat(self::DATE_FORMAT, $lr));
-
+        ['isRunning' => $this->isRunning, 'lastRun' => $lr] = Yaml::parseFile($this->getFileName());
+        $this->lastRun = (($lr === null) ? null : DateTime::createFromFormat(self::DATE_FORMAT, $lr));
     }
 
     public function write(): void
@@ -41,7 +41,6 @@ final class DaemonState
             $this->getFileName(),
             Yaml::dump(
                 [
-                    'daemon' => ($this->daemon)::class,
                     'isRunning' => $this->isRunning(),
                     'lastRun' => $this->getLastRun()?->format(self::DATE_FORMAT)
                 ]
@@ -51,7 +50,12 @@ final class DaemonState
 
     public function setRunning(bool $running): void
     {
-        $this->lastRun = new DateTime();
+        if ($running) {
+            $lr = new DateTime();
+            $delta = ltrim($lr->format('i'), '0') % $this->daemon->getPeriodicity();
+            $lr->sub(new \DateInterval("PT{$delta}M"));
+            $this->lastRun = DateTime::createFromFormat(self::DATE_FORMAT, $lr->format('YmdHi') . '00');
+        }
         $this->isRunning = $running;
     }
 

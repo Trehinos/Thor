@@ -5,6 +5,7 @@ namespace Thor\Cli;
 use DateInterval;
 use DateTime;
 use JetBrains\PhpStorm\ArrayShape;
+use Thor\Debug\Logger;
 use Thor\KernelInterface;
 
 abstract class Daemon implements KernelInterface
@@ -12,9 +13,10 @@ abstract class Daemon implements KernelInterface
 
     public function __construct(
         protected string $name,
-        protected int $periodicityInSeconds,
+        protected int $periodicityInMinutes,
         protected string $startHis = '000000',
-        protected string $endHis = '235959'
+        protected string $endHis = '235959',
+        protected bool $enabled = false
     ) {
     }
 
@@ -23,8 +25,21 @@ abstract class Daemon implements KernelInterface
         return $this->name;
     }
 
+    /**
+     * @return int in minutes
+     */
+    public function getPeriodicity(): int
+    {
+        return $this->periodicityInMinutes;
+    }
+
+
     public function isNowRunnable(?DateTime $lastTime = null): bool
     {
+        if (!$this->enabled) {
+            return false;
+        }
+
         $now = new DateTime();
         $start = $this->getStartToday();
         $end = $this->getEndToday();
@@ -33,14 +48,18 @@ abstract class Daemon implements KernelInterface
             return false;
         }
 
-        return null === $lastTime ||
-            ($lastTime->add(new DateInterval("PT{$this->periodicityInSeconds}S"))) > $now;
+        if (null === $lastTime) {
+            return true;
+        }
+
+        $next = clone $lastTime;
+        $next->add(new DateInterval("PT{$this->periodicityInMinutes}M"));
+        return $next <= $now;
     }
 
     final public function executeIfRunnable(DaemonState $state): void
     {
         if ($this->isNowRunnable($state->getLastRun())) {
-            $state->load();
             if (!$state->isRunning()) {
                 $state->setRunning(true);
                 $state->write();
@@ -69,11 +88,14 @@ abstract class Daemon implements KernelInterface
             'class' => 'string',
             'periodicity' => 'int',
             'start' => 'string',
-            'end' => 'string'
+            'end' => 'string',
+            'enabled' => 'bool'
         ])]
         array $info
     ): Daemon {
-        return new ($info['class'])($info['name'], $info['periodicity'], $info['start'], $info['end']);
+        return new ($info['class'])(
+            $info['name'], $info['periodicity'], $info['start'], $info['end'], $info['enabled']
+        );
     }
 
 }

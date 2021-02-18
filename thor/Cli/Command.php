@@ -52,20 +52,18 @@ abstract class Command
         bool $displayUsage = false,
         bool $displayHelp = false
     ): void {
-        if (Thor::isDev()) {
-            $this->console->fColor(Console::COLOR_RED)->writeln('ERROR')->mode();
-            $this->console->fColor(Console::COLOR_YELLOW)->write($title)
-                ->fColor()->writeln($message)
-                ->mode();
+        $this->console->fColor(Console::COLOR_RED)->writeln('ERROR')->mode();
+        $this->console->fColor(Console::COLOR_YELLOW)->write($title)
+            ->fColor()->writeln($message)
+            ->mode();
 
-            if ($displayUsage) {
-                $this->console->writeln();
-                $this->usage();
-            }
-            if ($displayHelp) {
-                $this->console->writeln();
-                $this->help();
-            }
+        if ($displayUsage) {
+            $this->console->writeln();
+            $this->usage();
+        }
+        if ($displayHelp) {
+            $this->console->writeln();
+            $this->help();
         }
         exit;
     }

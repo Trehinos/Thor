@@ -1,5 +1,6 @@
-name: trehinos.thor.helloworlder
+name: helloworlder
 class: App\Daemons\HelloWorlder
-peridicity: 15
-start: 190000
-end: 203000
+periodicity: 4
+start: '000000'
+end: '030000'
+enabled: false

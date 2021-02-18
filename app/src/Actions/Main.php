@@ -4,12 +4,9 @@ namespace App\Actions;
 
 use Symfony\Component\Yaml\Yaml;
 
-use Thor\Database\PdoExtension\Attributes\PdoAttributesReader;
-use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\SchemaHelper;
+use Thor\Http\BaseController;
 use Thor\Security\Entities\User;
 use App\Managers\UserManager;
-use Thor\Controller\BaseController;
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Globals;
@@ -74,6 +71,20 @@ final class Main extends BaseController
     public function legal(): Response
     {
         return $this->view('pages/legal.html.twig');
+    }
+
+    /**
+     * POST /framework/create/admin
+     *
+     * @return Response
+     */
+    public function createAdmin(): Response
+    {
+        $userManager = new UserManager(new CrudHelper(User::class, $this->getServer()->getRequester()));
+        $pid = $userManager->createUser('admin', 'password');
+
+        Logger::write("Admin $pid created.", Logger::LEVEL_VERBOSE);
+        return new Response();
     }
 
     /**
