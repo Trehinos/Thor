@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Security\Entities;
+namespace Thor\Api\Entities;
 
 use Thor\Database\PdoExtension\AdvancedPdoRow;
 use Thor\Database\PdoExtension\Attributes\PdoRow;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Managers;
+namespace Thor\Api\Managers;
 
 use Exception;
 
-use Thor\Security\Entities\User;
+use Thor\Api\Entities\User;
 use Thor\Database\CrudHelper;
 use Thor\Database\Sql\Criteria;
 use Thor\Debug\Logger;

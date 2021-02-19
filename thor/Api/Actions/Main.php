@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Actions;
+namespace Thor\Api\Actions;
 
 use Symfony\Component\Yaml\Yaml;
 
 use Thor\Http\BaseController;
-use Thor\Security\Entities\User;
-use App\Managers\UserManager;
+use Thor\Api\Entities\User;
+use Thor\Api\Managers\UserManager;
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Globals;

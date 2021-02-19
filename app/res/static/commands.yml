@@ -1,5 +1,5 @@
 user/create:
-  class: App\Commands\UserCommand
+  class: Thor\Api\Commands\UserCommand
   command: createUser
   description: create a new user in DB
   arguments:
@@ -11,7 +11,7 @@ user/create:
       description: user's clear password. Will be hashed before insertion
 
 user/list:
-  class: App\Commands\UserCommand
+  class: Thor\Api\Commands\UserCommand
   command: listUsers
   description: list all users in DB
   arguments:
@@ -20,7 +20,7 @@ user/list:
       description: User login search request
 
 user/edit:
-  class: App\Commands\UserCommand
+  class: Thor\Api\Commands\UserCommand
   command: editUser
   description: create a new user in DB
   arguments:
@@ -35,7 +35,7 @@ user/edit:
       description: user's new clear password. Will be hashed before insertion
 
 user/delete:
-  class: App\Commands\UserCommand
+  class: Thor\Api\Commands\UserCommand
   command: deleteUser
   description: delete an existing user in DB
   arguments:
@@ -46,7 +46,7 @@ user/delete:
 route/set:
   class: Thor\Api\Commands\CoreCommand
   command: routeSet
-  description: add a route in app/res/routes.yml
+  description: add a route in Thor\Api/res/routes.yml
   arguments:
     name:
       hasValue: true
@@ -67,7 +67,7 @@ route/set:
 route/list:
   class: Thor\Api\Commands\CoreCommand
   command: routeList
-  description: list all routes in app/res/routes/yml
+  description: list all routes in Thor\Api/res/routes/yml
 
 core/setup:
   class: Thor\Api\Commands\CoreCommand

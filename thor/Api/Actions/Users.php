@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Actions;
+namespace Thor\Api\Actions;
 
 use Exception;
 
-use App\Managers\UserManager;
+use Thor\Api\Managers\UserManager;
 use Thor\Database\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Http\BaseController;
 use Thor\Http\Response;
 use Thor\Http\Server;
 
-use Thor\Security\Entities\User;
+use Thor\Api\Entities\User;
 use Thor\Validation\Filters\PostVarRegex;
 
 final class Users extends BaseController

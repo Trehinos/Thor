@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Commands;
+namespace Thor\Api\Commands;
 
 use Exception;
-use App\Managers\UserManager;
+use Thor\Api\Managers\UserManager;
 use Thor\Cli\CliKernel;
 use Thor\Cli\Command;
 use Thor\Cli\Console;
 use Thor\Database\CrudHelper;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\Sql\Criteria;
-use Thor\Security\Entities\User;
+use Thor\Api\Entities\User;
 
 final class UserCommand extends Command
 {
@@ -50,7 +50,7 @@ final class UserCommand extends Command
     }
 
     /**
-     * App user/create -username USERNAME -password CLEAR_PASSWORD
+     * Thor\Api user/create -username USERNAME -password CLEAR_PASSWORD
      *
      * @throws Exception
      */
@@ -71,7 +71,7 @@ final class UserCommand extends Command
     }
 
     /**
-     * App user/create -pid PID [-username NEW_USERNAME] [-password NEW_CLEAR_PASSWORD]
+     * Thor\Api user/create -pid PID [-username NEW_USERNAME] [-password NEW_CLEAR_PASSWORD]
      *
      * @throws Exception
      */
@@ -94,7 +94,7 @@ final class UserCommand extends Command
     }
 
     /**
-     * App user/delete -pid PID
+     * Thor\Api user/delete -pid PID
      *
      * @throws Exception
      */
@@ -109,7 +109,7 @@ final class UserCommand extends Command
     }
 
     /**
-     * App user/list [-search SEARCH_STRING]
+     * Thor\Api user/list [-search SEARCH_STRING]
      *
      * @throws Exception
      */

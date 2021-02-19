@@ -2,7 +2,7 @@
 
 namespace Thor\Api\Commands;
 
-use App\Managers\UserManager;
+use Thor\Api\Managers\UserManager;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\CliKernel;
 use Thor\Cli\Command;
@@ -15,7 +15,7 @@ use Thor\Debug\Logger;
 use Thor\Globals;
 use Thor\Http\HttpKernel;
 use Thor\Http\Routing\Route;
-use Thor\Security\Entities\User;
+use Thor\Api\Entities\User;
 use Thor\Thor;
 
 final class CoreCommand extends Command
