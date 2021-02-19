@@ -11,7 +11,7 @@ final class HelloWorlder extends Daemon
     public function execute(): void
     {
         $now = (new DateTime())->format('Ymd His');
-        echo "\n$now Hello world\n";
+        echo "$now Hello world\n";
     }
 
 }

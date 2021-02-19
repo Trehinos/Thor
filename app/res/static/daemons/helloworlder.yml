@@ -1,6 +1,6 @@
 name: helloworlder
 class: App\Daemons\HelloWorlder
-periodicity: 4
-start: '080000'
-end: '090000'
+periodicity: 2
+start: '000000'
+end: '070000'
 enabled: false

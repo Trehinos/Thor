@@ -52,7 +52,7 @@ final class DaemonState
     {
         if ($running) {
             $lr = new DateTime();
-            $delta = ltrim($lr->format('i'), '0') % $this->daemon->getPeriodicity();
+            $delta = intval($lr->format('i')) % $this->daemon->getPeriodicity();
             $lr->sub(new \DateInterval("PT{$delta}M"));
             $this->lastRun = DateTime::createFromFormat(self::DATE_FORMAT, $lr->format('YmdHi') . '00');
         }
