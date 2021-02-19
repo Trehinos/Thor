@@ -52,9 +52,12 @@ final class DaemonState
     {
         if ($running) {
             $lr = new DateTime();
-            $delta = intval($lr->format('i')) % $this->daemon->getPeriodicity();
-            $lr->sub(new \DateInterval("PT{$delta}M"));
-            $this->lastRun = DateTime::createFromFormat(self::DATE_FORMAT, $lr->format('YmdHi') . '00');
+            $diff = $lr->diff($this->daemon->getStartToday())?->i ?? 0;
+            $delta = $diff % $this->daemon->getPeriodicity();
+            $diff = $diff - $delta;
+            $lastRun = $this->daemon->getStartToday();
+            $lastRun->add(new \DateInterval("PT{$diff}M"));
+            $this->lastRun = DateTime::createFromFormat(self::DATE_FORMAT, $lastRun->format('YmdHi') . '00');
         }
         $this->isRunning = $running;
     }

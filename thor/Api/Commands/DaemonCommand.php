@@ -5,7 +5,9 @@ namespace Thor\Api\Commands;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\CliKernel;
 use Thor\Cli\Command;
+use Thor\Cli\Console;
 use Thor\Cli\Daemon;
+use Thor\Cli\DaemonScheduler;
 use Thor\Cli\DaemonState;
 use Thor\Globals;
 
@@ -32,13 +34,59 @@ final class DaemonCommand extends Command
     public function daemonStatus()
     {
         $daemonName = $this->get('name');
-        if (null === $daemonName) {
+        $all = $this->get('all') ?? false;
+        if (!$all && null === $daemonName) {
             $this->error("Usage error\n", 'Daemon name is required.', true);
         }
-        $daemonInfo = $this->loadDaemon($daemonName);
-        $state = new DaemonState(Daemon::instantiate($daemonInfo));
-        $state->load();
-        dump($state);
+
+        if (!$all) {
+            $daemonInfo = $this->loadDaemon($daemonName);
+            $state = new DaemonState(Daemon::instantiate($daemonInfo));
+            $state->load();
+            dump($state);
+            return;
+        }
+        $daemons = DaemonScheduler::getDaemonsFromConfig();
+        foreach ($daemons as $daemon) {
+            $state = new DaemonState($daemon);
+            $state->load();
+            $this->console
+                ->writeFix('Is running ? ', 16, STR_PAD_LEFT)
+                ->writeFix('Daemon', 32)
+                ->writeFix('Status', 10)
+                ->writeln('Last run');
+            $this->console->fColor(
+                $state->isRunning() ?
+                    Console::COLOR_GREEN :
+                    Console::COLOR_YELLOW
+            )
+                ->writeFix(
+                    $state->isRunning() ?
+                        "yes ➤  " :
+                        "no ⊡  ",
+                    18,
+                    STR_PAD_LEFT
+                )
+                ->mode()
+                ->writeFix("{$daemon->getName()}", 32)
+                ->fColor(
+                    $daemon->isActive() ?
+                        Console::COLOR_CYAN :
+                        ($daemon->isEnabled() ?
+                            Console::COLOR_GREEN :
+                            Console::COLOR_RED)
+                )->writeFix(
+                    $daemon->isActive() ?
+                        'ACTIVE' :
+                        ($daemon->isEnabled() ?
+                            'ENABLED' :
+                            'DISABLED'
+                        ),
+                    10
+                )
+                ->mode()
+                ->writeln($state->getLastRun()?->format('Y-m-d H:i') ?? 'never');
+        }
     }
 
     private function daemonEnable(?string $daemonName, bool $enable = true)

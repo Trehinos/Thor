@@ -101,6 +101,9 @@ daemon/status:
     name:
       hasValue: true
       description: the daemon name
+    all:
+      hasValue: false
+      description: if present, display all daemons status
 
 clear/cache:
   class: ''

@@ -209,12 +209,12 @@ final class CliKernel implements KernelInterface
         return new self(Thor::getInstance()->getConsoleConfiguration());
     }
 
-    public static function executeBackgroundProgram(string $cmd, string|false $outputFile = false): void
+    public static function executeBackgroundProgram(string $cmd, ?string $outputFile = null): void
     {
         if (substr(php_uname(), 0, 7) === "Windows") {
             pclose(popen("start /B $cmd", "r"));
         } else {
-            $outputFile = $outputFile ?? '/dev/null';
+            $outputFile ??= '/dev/null';
             exec("$cmd >> $outputFile &");
         }
     }

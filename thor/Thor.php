@@ -3,6 +3,7 @@
 namespace Thor;
 
 use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\ExpectedValues;
 use Symfony\Component\Yaml\Yaml;
 
 final class Thor
@@ -17,6 +18,7 @@ final class Thor
     {
     }
 
+    #[ExpectedValues(['dev', 'debug', 'verbose', 'prod'])]
     public function getEnv(): string
     {
         return $this->loadConfig('config')['env'] ?? 'dev';

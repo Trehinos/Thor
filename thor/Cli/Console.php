@@ -189,6 +189,22 @@ class Console
     }
 
     /**
+     * Print a text on the screen.
+     *
+     * @param string $text
+     * @param int $minSize
+     * @param int $direction
+     *
+     * @return Console
+     */
+    public function writeFix(string $text, int $minSize, int $direction = STR_PAD_RIGHT): self
+    {
+        echo str_pad($text, $minSize, ' ', $direction);
+
+        return $this;
+    }
+
+    /**
      * Print a text on the screen. And locate the cursor at the beginning of the same line.
      *
      * @param string $text

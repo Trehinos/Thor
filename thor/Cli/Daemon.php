@@ -33,10 +33,19 @@ abstract class Daemon implements KernelInterface
         return $this->periodicityInMinutes;
     }
 
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isNowRunnable();
+    }
 
     public function isNowRunnable(?DateTime $lastTime = null): bool
     {
-        if (!$this->enabled) {
+        if (!$this->isEnabled()) {
             return false;
         }
 

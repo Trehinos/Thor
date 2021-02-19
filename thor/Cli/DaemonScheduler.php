@@ -49,13 +49,21 @@ final class DaemonScheduler implements KernelInterface
     public static function create(): self
     {
         CliKernel::guardCli();
+        return new self(self::getDaemonsFromConfig());
+    }
+
+    /**
+     * @return Daemon[]
+     */
+    public static function getDaemonsFromConfig(): array
+    {
         $files = glob(Globals::STATIC_DIR . 'daemons/*.yml');
         $daemons = [];
         foreach ($files as $file) {
             $info = Yaml::parseFile($file);
             $daemons[] = Daemon::instantiate($info);
         }
-        return new self($daemons);
+        return $daemons;
     }
 
 }
