@@ -47,28 +47,24 @@ final class DaemonCommand extends Command
             return;
         }
         $daemons = DaemonScheduler::getDaemonsFromConfig();
+        if (empty($daemons)) {
+            return;
+        }
+
+        $this->console
+            ->fColor(Console::COLOR_BLACK)
+            ->bColor(Console::COLOR_GRAY)
+            ->writeFix('Status', 10)
+            ->writeFix('Last start', 17)
+            ->writeFix('', 4, STR_PAD_LEFT)
+            ->writeFix('Daemon', 24)
+            ->writeFix('Active period', 25)
+            ->mode()
+            ->writeln();
         foreach ($daemons as $daemon) {
             $state = new DaemonState($daemon);
             $state->load();
             $this->console
-                ->writeFix('Is running ? ', 16, STR_PAD_LEFT)
-                ->writeFix('Daemon', 32)
-                ->writeFix('Status', 10)
-                ->writeln('Last run');
-            $this->console->fColor(
-                $state->isRunning() ?
-                    Console::COLOR_GREEN :
-                    Console::COLOR_YELLOW
-            )
-                ->writeFix(
-                    $state->isRunning() ?
-                        "yes ➤  " :
-                        "no ⊡  ",
-                    18,
-                    STR_PAD_LEFT
-                )
-                ->mode()
-                ->writeFix("{$daemon->getName()}", 32)
                 ->fColor(
                     $daemon->isActive() ?
                         Console::COLOR_CYAN :
@@ -85,8 +81,25 @@ final class DaemonCommand extends Command
                     10
                 )
                 ->mode()
-                ->writeln($state->getLastRun()?->format('Y-m-d H:i') ?? 'never');
+                ->writeFix($state->getLastRun()?->format('Y-m-d H:i') ?? 'never', 17)->fColor(
+                    $state->isRunning() ?
+                        Console::COLOR_GREEN :
+                        Console::COLOR_YELLOW
+                )
+                ->writeFix(
+                    $state->isRunning() ?
+                        " ➤  " :
+                        " ⊡  ",
+                    6,
+                    STR_PAD_LEFT
+                )
+                ->writeFix(substr("{$daemon->getName()}", 0 , 24), 24)
+                ->mode()
+                ->writeFix("[{$daemon->getStartToday()->format('H:i')} - {$daemon->getEndToday()->format('H:i')}]", 15)
+                ->writeln(" / {$daemon->getPeriodicity()} min")
+            ;
         }
+        $this->console->writeln();
     }
 
     private function daemonEnable(?string $daemonName, bool $enable = true)

@@ -7,6 +7,20 @@ simplified.**
 
 &copy; 2020-2021 Trehinos
 
+## Key features
+* Complete but lightweight framework :
+  * Smart databases utility classes (PdoExtension, PdoRow (with **PHP attributes**))
+  * Http cycle handling : Router and controllers (with **PHP attributes** or YAML)
+  * CLI commands handling
+  * Static logger and configuration
+  * Twig template system
+* Base web application to develop a business work :
+  * Index, legal, about and changelog pages
+  * User management (create/edit/change password/delete), login, logout
+* Console commands to control application
+* Daemons and daemons control (e.g. ```thor/status -all``` command) :  
+![](docs/images/daemons.png)
+
 ## Dependencies
 ### Environment
 * Pdo compatible DBMS

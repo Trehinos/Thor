@@ -52,12 +52,16 @@ final class DaemonState
     {
         if ($running) {
             $lr = new DateTime();
-            $diff = $lr->diff($this->daemon->getStartToday())?->i ?? 0;
+            $diff = intval(($lr->format('U') - $this->daemon->getStartToday()->format('U')) / 60);
+            Logger::write($diff);
             $delta = $diff % $this->daemon->getPeriodicity();
             $diff = $diff - $delta;
             $lastRun = $this->daemon->getStartToday();
             $lastRun->add(new \DateInterval("PT{$diff}M"));
-            $this->lastRun = DateTime::createFromFormat(self::DATE_FORMAT, $lastRun->format('YmdHi') . '00');
+            $this->lastRun = DateTime::createFromFormat(
+                self::DATE_FORMAT,
+                $lastRun->format('YmdHi') . '00'
+            );
         }
         $this->isRunning = $running;
     }
