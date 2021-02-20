@@ -1,6 +1,6 @@
 name: dummy
 class: App\Daemons\Dummy
-periodicity: 2
-start: '193000'
+periodicity: 10
+start: '012000'
 end: '230000'
 enabled: true

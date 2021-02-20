@@ -1,6 +1,6 @@
 name: donothing
 class: App\Daemons\DoNothing
-periodicity: 18
-start: '235800'
-end: '235900'
-enabled: true
+periodicity: 1
+start: '000000'
+end: '235959'
+enabled: false
