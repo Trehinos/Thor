@@ -15,6 +15,7 @@ final class DaemonState
     private ?bool $isRunning = null;
     private ?DateTime $lastRun = null;
     private ?string $error = null;
+    private ?string $pid = null;
 
     public function __construct(private Daemon $daemon)
     {
@@ -25,15 +26,34 @@ final class DaemonState
         return Globals::VAR_DIR . "daemons/{$this->daemon->getName()}.yml";
     }
 
+    /**
+     * @return string|null
+     */
+    public function getPid(): ?string
+    {
+        return $this->pid;
+    }
+
+    /**
+     * @param string|null $pid
+     */
+    public function setPid(?string $pid): void
+    {
+        $this->pid = $pid;
+    }
+
+
     public function load(): void
     {
         if (!file_exists($this->getFileName())) {
             $this->write();
         }
 
-        $lr = null;
-        ['isRunning' => $this->isRunning, 'lastRun' => $lr, 'error' => $this->error] =
-            Yaml::parseFile($this->getFileName());
+        $data = Yaml::parseFile($this->getFileName());
+        $this->isRunning = $data['isRunning'] ?? false;
+        $lr = $data['lastRun'] ?? null;
+        $this->error = $data['error'] ?? null;
+        $this->pid = $data['pid'] ?? null;
 
         $this->lastRun = (($lr === null) ? null : DateTime::createFromFormat(self::DATE_FORMAT, $lr));
     }
@@ -46,7 +66,8 @@ final class DaemonState
                 [
                     'isRunning' => $this->isRunning(),
                     'lastRun' => $this->getLastRun()?->format(self::DATE_FORMAT),
-                    'error' => $this->error
+                    'error' => $this->error,
+                    'pid' => $this->pid
                 ]
             )
         );

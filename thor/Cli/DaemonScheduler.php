@@ -29,13 +29,10 @@ final class DaemonScheduler implements KernelInterface
 
         foreach ($this->daemons as $daemon) {
             $state = new DaemonState($daemon);
-            echo "D:{$daemon->getName()} ";
             $state->load();
             if (!$state->isRunning() && $daemon->isNowRunnable($state->getLastRun())) {
                 $logPath = Globals::VAR_DIR . (Thor::getInstance()->loadConfig('config')['log_path'] ?? '');
                 if (null === $execute) {
-                    echo "START !\n";
-                    echo 'php ' . Globals::BIN_DIR . "daemon.php {$daemon->getName()}";
                     CliKernel::executeBackgroundProgram(
                         'php ' . Globals::BIN_DIR . "daemon.php {$daemon->getName()}",
                         "$logPath{$daemon->getName()}/output.log"

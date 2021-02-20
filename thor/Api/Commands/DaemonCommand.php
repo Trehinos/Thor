@@ -113,11 +113,20 @@ final class DaemonCommand extends Command
                     ->mode();
                 continue;
             }
-
-            $this->console
-                ->mode()
-                ->writeFix("[{$daemon->getStartToday()->format('H:i')} - {$daemon->getEndToday()->format('H:i')}]", 15)
-                ->writeln(" / {$daemon->getPeriodicity()} min");
+            if ($state->isRunning()) {
+                $this->console
+                    ->fColor(Console::COLOR_CYAN)
+                    ->writeln("PID : {$state->getPid()}")
+                    ->mode();
+            } else {
+                $this->console
+                    ->mode()
+                    ->writeFix(
+                        "[{$daemon->getStartToday()->format('H:i')} - {$daemon->getEndToday()->format('H:i')}]",
+                        15
+                    )
+                    ->writeln(" / {$daemon->getPeriodicity()} min");
+            }
         }
         $this->console->writeln();
     }
@@ -148,6 +157,27 @@ final class DaemonCommand extends Command
         $state->write();
         $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
         file_put_contents($daemonFile, Yaml::dump($daemonInfo));
+    }
+
+    public function daemonKill()
+    {
+        $daemonName = $this->get('name');
+        if (null === $daemonName) {
+            $this->error("Usage error\n", 'Daemon name is required.', true);
+        }
+
+        $daemonInfo = $this->loadDaemon($daemonName);
+        $state = new DaemonState(Daemon::instantiate($daemonInfo));
+        $state->load();
+        if (!$state->isRunning()) {
+            $this->error("Not running\n", 'Daemon is not running', false);
+        }
+        $pid = $state->getPid();
+        $state->setPid(null);
+        CliKernel::executeProgram("kill -15 $pid");
+        $state->error('KILLED BY USER');
+        $state->setRunning(false);
+        $state->write();
     }
 
     private function loadDaemon(string $daemonName): array

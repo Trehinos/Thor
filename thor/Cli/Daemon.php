@@ -72,14 +72,16 @@ abstract class Daemon implements KernelInterface
         if ($this->isNowRunnable($state->getLastRun())) {
             if (!$state->isRunning()) {
                 $state->setRunning(true);
+                $state->setPid(getmypid());
+                $state->error(null);
                 $state->write();
                 try {
-                    $state->error(null);
                     $this->execute();
                 } catch (Throwable $e) {
                     $state->error($e->getMessage());
                     Logger::logThrowable($e);
                 }
+                $state->setPid(null);
                 $state->setRunning(false);
                 $state->write();
             }

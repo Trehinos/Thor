@@ -114,6 +114,15 @@ daemon/reset:
       hasValue: true
       description: the daemon name
 
+daemon/kill:
+  class: Thor\Api\Commands\DaemonCommand
+  command: daemonKill
+  description: stop the daemon immediately
+  arguments:
+    name:
+      hasValue: true
+      description: the daemon name
+
 clear/cache:
   class: ''
   command: ''
