@@ -7,6 +7,7 @@ use DateTime;
 use JetBrains\PhpStorm\ArrayShape;
 use Thor\Debug\Logger;
 use Thor\KernelInterface;
+use Throwable;
 
 abstract class Daemon implements KernelInterface
 {
@@ -72,7 +73,13 @@ abstract class Daemon implements KernelInterface
             if (!$state->isRunning()) {
                 $state->setRunning(true);
                 $state->write();
-                $this->execute();
+                try {
+                    $state->error(null);
+                    $this->execute();
+                } catch (Throwable $e) {
+                    $state->error($e->getMessage());
+                    Logger::logThrowable($e);
+                }
                 $state->setRunning(false);
                 $state->write();
             }

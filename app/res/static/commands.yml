@@ -105,6 +105,15 @@ daemon/status:
       hasValue: false
       description: if present, display all daemons status
 
+daemon/reset:
+  class: Thor\Api\Commands\DaemonCommand
+  command: daemonReset
+  description: reset the daemon state
+  arguments:
+    name:
+      hasValue: true
+      description: the daemon name
+
 clear/cache:
   class: ''
   command: ''

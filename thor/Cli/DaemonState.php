@@ -14,6 +14,7 @@ final class DaemonState
 
     private ?bool $isRunning = null;
     private ?DateTime $lastRun = null;
+    private ?string $error = null;
 
     public function __construct(private Daemon $daemon)
     {
@@ -31,7 +32,9 @@ final class DaemonState
         }
 
         $lr = null;
-        ['isRunning' => $this->isRunning, 'lastRun' => $lr] = Yaml::parseFile($this->getFileName());
+        ['isRunning' => $this->isRunning, 'lastRun' => $lr, 'error' => $this->error] =
+            Yaml::parseFile($this->getFileName());
+
         $this->lastRun = (($lr === null) ? null : DateTime::createFromFormat(self::DATE_FORMAT, $lr));
     }
 
@@ -42,10 +45,21 @@ final class DaemonState
             Yaml::dump(
                 [
                     'isRunning' => $this->isRunning(),
-                    'lastRun' => $this->getLastRun()?->format(self::DATE_FORMAT)
+                    'lastRun' => $this->getLastRun()?->format(self::DATE_FORMAT),
+                    'error' => $this->error
                 ]
             )
         );
+    }
+
+    public function error(?string $errorMessage): void
+    {
+        $this->error = $errorMessage;
+    }
+
+    public function getError(): ?string
+    {
+        return $this->error;
     }
 
     public function setRunning(bool $running): void
@@ -74,6 +88,11 @@ final class DaemonState
     public function getLastRun(): ?DateTime
     {
         return $this->lastRun;
+    }
+
+    public function setLastRun(?DateTime $lastRun): void
+    {
+        $this->lastRun = $lastRun;
     }
 
 }

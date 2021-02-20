@@ -25,6 +25,12 @@ final class DaemonCommand extends Command
         $this->daemonEnable($daemonName);
     }
 
+    public function daemonReset()
+    {
+        $daemonName = $this->get('name');
+        $this->daemonResetState($daemonName);
+    }
+
     public function daemonStop()
     {
         $daemonName = $this->get('name');
@@ -58,46 +64,60 @@ final class DaemonCommand extends Command
             ->writeFix('Last start', 17)
             ->writeFix('', 4, STR_PAD_LEFT)
             ->writeFix('Daemon', 24)
-            ->writeFix('Active period', 25)
+            ->writeFix('Info', 32)
             ->mode()
             ->writeln();
         foreach ($daemons as $daemon) {
             $state = new DaemonState($daemon);
             $state->load();
+
+            $status_color = Console::COLOR_YELLOW;
+            $status = 'DISABLED';
+            if ($state->getError() !== null) {
+                $status_color = Console::COLOR_RED;
+                $status = 'ERROR';
+            } elseif ($daemon->isActive()) {
+                $status_color = Console::COLOR_CYAN;
+                $status = 'ACTIVE';
+            } elseif ($daemon->isEnabled()) {
+                $status_color = Console::COLOR_GREEN;
+                $status = 'ENABLED';
+            }
+
             $this->console
-                ->fColor(
-                    $daemon->isActive() ?
-                        Console::COLOR_CYAN :
-                        ($daemon->isEnabled() ?
-                            Console::COLOR_GREEN :
-                            Console::COLOR_RED)
-                )->writeFix(
-                    $daemon->isActive() ?
-                        'ACTIVE' :
-                        ($daemon->isEnabled() ?
-                            'ENABLED' :
-                            'DISABLED'
-                        ),
-                    10
-                )
+                ->fColor($status_color)
+                ->writeFix($status, 10)
                 ->mode()
                 ->writeFix($state->getLastRun()?->format('Y-m-d H:i') ?? 'never', 17)->fColor(
-                    $state->isRunning() ?
-                        Console::COLOR_GREEN :
-                        Console::COLOR_YELLOW
+                    $state->getError() ? Console::COLOR_RED :
+                    ($state->isRunning() ?
+                        Console::COLOR_CYAN :
+                        Console::COLOR_YELLOW)
                 )
                 ->writeFix(
-                    $state->isRunning() ?
-                        " ➤  " :
-                        " ⊡  ",
-                    6,
+                    $state->getError() ? " E  " :
+                        (
+                        $state->isRunning() ?
+                            " ➤  " :
+                            "    "
+                        ),
+                    4,
                     STR_PAD_LEFT
                 )
-                ->writeFix(substr("{$daemon->getName()}", 0 , 24), 24)
+                ->writeFix(substr("{$daemon->getName()}", 0, 24), 24);
+
+            if ($state->getError() ?? false) {
+                $this->console
+                    ->fColor(Console::COLOR_RED)
+                    ->writeln(substr($state->getError(), 0, 32))
+                    ->mode();
+                continue;
+            }
+
+            $this->console
                 ->mode()
                 ->writeFix("[{$daemon->getStartToday()->format('H:i')} - {$daemon->getEndToday()->format('H:i')}]", 15)
-                ->writeln(" / {$daemon->getPeriodicity()} min")
-            ;
+                ->writeln(" / {$daemon->getPeriodicity()} min");
         }
         $this->console->writeln();
     }
@@ -110,6 +130,22 @@ final class DaemonCommand extends Command
 
         $daemonInfo = $this->loadDaemon($daemonName);
         $daemonInfo['enabled'] = $enable;
+        $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
+        file_put_contents($daemonFile, Yaml::dump($daemonInfo));
+    }
+
+    private function daemonResetState(?string $daemonName)
+    {
+        if (null === $daemonName) {
+            $this->error("Usage error\n", 'Daemon name is required.', true);
+        }
+
+        $daemonInfo = $this->loadDaemon($daemonName);
+        $state = new DaemonState(Daemon::instantiate($daemonInfo));
+        $state->load();
+        $state->setLastRun(null);
+        $state->error(null);
+        $state->write();
         $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
         file_put_contents($daemonFile, Yaml::dump($daemonInfo));
     }

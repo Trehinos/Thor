@@ -11,14 +11,17 @@ simplified.**
 * Complete but lightweight framework :
   * Smart databases utility classes (PdoExtension, PdoRow (with **PHP attributes**))
   * Http cycle handling : Router and controllers (with **PHP attributes** or YAML)
-  * CLI commands handling
+  * CLI commands handling, console color/formatting utility
   * Static logger and configuration
   * Twig template system
 * Base web application to develop a business work :
   * Index, legal, about and changelog pages
   * User management (create/edit/change password/delete), login, logout
 * Console commands to control application
-* Daemons and daemons control (e.g. ```thor/status -all``` command) :  
+  * ```user/``` : ```create``` / ```edit``` / ```delete``` / ```list```
+  * ```core/``` : ```setup```
+  * ```route/``` : ```set``` / ```list```
+* Daemons and daemons control (e.g. ```daemon/status -all``` command) :  
 ![](docs/images/daemons.png)
 
 ## Dependencies
