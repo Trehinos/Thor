@@ -23,6 +23,8 @@ simplified.**
   * ```route/``` : ```set``` / ```list```
 * Daemons and daemons control (e.g. ```daemon/status -all``` command) :  
 ![](docs/images/daemons.png)
+  * start/stop
+  * kill/reset
 
 ## Dependencies
 ### Environment
