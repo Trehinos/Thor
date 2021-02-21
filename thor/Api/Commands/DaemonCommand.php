@@ -64,7 +64,7 @@ final class DaemonCommand extends Command
             ->writeFix('Last start', 17)
             ->writeFix('', 4, STR_PAD_LEFT)
             ->writeFix('Daemon', 24)
-            ->writeFix('Info', 32)
+            ->writeFix('Active period / Info', 32)
             ->mode()
             ->writeln();
         foreach ($daemons as $daemon) {
