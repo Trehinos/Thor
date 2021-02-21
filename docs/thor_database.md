@@ -4,8 +4,8 @@
 
 ### Database configuration
 
-The database configuration file is ```thor/app/res/config/database.yml```. This file contains all DB connections
-information as DSN, user and password.
+The database configuration file is ```thor/app/res/config/database.yml```.  
+This file contains all DB connections information as DSN, user and password.
 
 For each DB connection, add an entry :
 

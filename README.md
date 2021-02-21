@@ -3,7 +3,7 @@
 **Thor** is designed as a PHP *framework* as well as a web *software*.  
 This project's goal is to provide a base project for **PHP developers** to develop corporate projects.
 
-**This project is still in development.**  
+**This project is still in active development** : public API may change, but it is usable as is.  
 **In further releases, the installation process will be simplified.**
 
 &copy; 2020-2021 Trehinos
