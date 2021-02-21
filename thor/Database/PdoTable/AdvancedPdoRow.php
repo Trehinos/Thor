@@ -2,12 +2,10 @@
 
 namespace Thor\Database\PdoTable;
 
-use Exception;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
 use Thor\Database\PdoTable\Attributes\PdoColumn;
-use Thor\Database\PdoTable\Attributes\PdoIndex;
 use Thor\Database\PdoTable\Attributes\PdoRow;
 
 /**
@@ -20,16 +18,13 @@ use Thor\Database\PdoTable\Attributes\PdoRow;
  * @copyright Author
  * @license MIT
  */
-#[PdoColumn('public_id', 'VARCHAR(255)', 'string')]
-#[PdoIndex(['public_id'], true)]
 trait AdvancedPdoRow
 {
 
     private static ?array $tableDefinition = null;
 
     public function __construct(
-        private ?string $public_id = null,
-        private array $primaries = []
+        protected array $primaries = []
     ) {
     }
 
@@ -46,27 +41,6 @@ trait AdvancedPdoRow
         return self::getTD()['indexes'];
     }
 
-    /**
-     * @throws Exception
-     */
-    final public function getPublicId(): ?string
-    {
-        return $this->public_id;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function generatePublicId(): void
-    {
-        $this->public_id = bin2hex(random_bytes(2)) .
-            '-' . bin2hex(random_bytes(2)) .
-            '-' . bin2hex(random_bytes(2)) .
-            '-' . bin2hex(random_bytes(2)) .
-            '-' . bin2hex(random_bytes(4)) .
-            '-' . bin2hex(random_bytes(4));
-    }
-
     #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     private static function getTD(): array
     {
@@ -74,7 +48,7 @@ trait AdvancedPdoRow
     }
 
     /**
-     * @return PdoRow[]
+     * @return PdoColumn[]
      */
     final public static function getPdoColumnsDefinitions(): array
     {
@@ -92,9 +66,6 @@ trait AdvancedPdoRow
     final public function toPdoArray(): array
     {
         $pdoArray = [];
-        /**
-         * @var PdoColumn $pdoColumn
-         */
         foreach (self::getPdoColumnsDefinitions() as $columnName => $pdoColumn) {
             if (in_array($columnName, static::getPrimaryKeys())) {
                 $pdoArray[$columnName] = $pdoColumn->toSql($this->primaries[$columnName] ?? null);
@@ -110,10 +81,10 @@ trait AdvancedPdoRow
         $this->primaries = [];
         foreach ($pdoArray as $columnName => $columnSqlValue) {
             if (in_array($columnName, static::getPrimaryKeys())) {
-                $this->primaries[$columnName] = self::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
+                $this->primaries[$columnName] = static::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
                 continue;
             }
-            $this->$columnName = self::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
+            $this->$columnName = static::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
         }
     }
 

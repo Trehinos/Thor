@@ -1,0 +1,44 @@
+<?php
+
+namespace Thor\Database\PdoTable;
+
+use Exception;
+use Thor\Database\PdoTable\Attributes\PdoColumn;
+use Thor\Database\PdoTable\Attributes\PdoIndex;
+
+#[PdoColumn('public_id', 'VARCHAR(255)', 'string')]
+#[PdoIndex(['public_id'], true)]
+abstract class AbstractPdoRow implements PdoRowInterface
+{
+
+    use AdvancedPdoRow {
+        AdvancedPdoRow::__construct as private adwConstruct;
+    }
+
+    public function __construct(protected ?string $public_id = null, array $primaries = [])
+    {
+        $this->adwConstruct($primaries);
+    }
+
+    /**
+     * @throws Exception
+     */
+    final public function getPublicId(): ?string
+    {
+        return $this->public_id;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function generatePublicId(): void
+    {
+        $this->public_id = bin2hex(random_bytes(2)) .
+            '-' . bin2hex(random_bytes(2)) .
+            '-' . bin2hex(random_bytes(2)) .
+            '-' . bin2hex(random_bytes(2)) .
+            '-' . bin2hex(random_bytes(4)) .
+            '-' . bin2hex(random_bytes(4));
+    }
+
+}

@@ -5,16 +5,31 @@ The **database** module is divided in 2 submodules :
 * ```PdoExtension``` which provides a way to easily connect and request a database.
 * ```PdoTable``` which is analog as a light ORM.
 
-## Pdo extension classes
+## Pdo extension submodule
+
+This submodule goal is to provide a stable API to connect a database and send SQL queries easily.
 
 ### PdoExtension public API
 
-#### PdoHandler
+#### PdoHandler ```class``` ```final```
+
+This class goal is to handle a PDO constructor parameters set and construct it on demand.
 
 * ```__construct(string $dsn, ?string $user = null, ?string $password = null, int $defaultCase = PDO::CASE_NATURAL)```
 * ```getPdo(): PDO```
 
-#### PdoCollection
+The PDO object is created with these options :
+```php
+[
+    PDO::ATTR_CASE => $this->defaultCase,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+]
+```
+
+#### PdoCollection ```class``` ```final```
+
+This class is a collection of ```PdoHandler```. It can be constructed from ```tho/app/res/config/database.yml```.
 
 * ```__construct()```
 * ```static createFromConfiguration(array $dbConfig): PdoCollection```
@@ -22,7 +37,9 @@ The **database** module is divided in 2 submodules :
 * ```get(string $connectionName = 'default'): ?PdoHandler```
 * ```all(): array```
 
-#### PdoRequester
+#### PdoRequester ```class```
+
+This class executes a request or performs a request and returns a result as a native ```PDOStatement```.
 
 * ```__construct(PdoHandler $handler)```
 * ```getPdoHandler(): PdoHandler```
@@ -30,7 +47,9 @@ The **database** module is divided in 2 submodules :
 * ```executeMultiple(string $sql, array $parameters): bool```
 * ```request(string $sql, array $parameters): PDOStatement```
 
-#### PdoTransaction ```extends PdoRequester```
+#### PdoTransaction ```class``` ```final``` ```extends PdoRequester```
+
+Can replace a ```PdoRequester``` anywhere to send queries as an SQL Transaction if the used driver supports it.
 
 * ```__construct(PdoHandler $handler, bool $autoTransaction = true)```
 * ```__destruct()```
@@ -86,18 +105,31 @@ $pdoHandler = $this->cli->pdos->get('db-connection-identifier');
 $requester = new PdoRequester($pdoHandler);
 ```
 
-### AdvancedPdoRow : bind a table to a class with PHP attributes
+## PdoTable submodule
 
-```#[PdoRow]``` ```#[PdoColumn]``` ```#[PdoIndex]```
+### PdoTable public API
 
-#### PdoColumn
+#### PdoRowInterface ```interface```
 
-#### PdoIndex
+#### AdvancedPdoRow ```trait``` ```implements PdoRowInterface```
 
-## Sql generation
+#### AbstractPdoRow ```class``` ```abstract``` ```implements PdoRowInterface```
 
-### CrudHelper and Criteria
+Bind a table to a class with PHP attributes
 
-### SchemaHelper
+#### Attributes
 
-## Example : Create a User class linked to a table in DB
+* ```#[PdoRow]```
+* ```#[PdoColumn]```
+* ```#[PdoIndex]```
+* ```#[PdoForeignKey]```
+
+#### PdoAttributesReader ```class``` ```final```
+
+#### CrudHelper ```class``` ```final```
+
+#### Criteria ```class``` ```final```
+
+#### SchemaHelper ```class``` ```final```
+
+### Example : Create a User class linked to a table in DB

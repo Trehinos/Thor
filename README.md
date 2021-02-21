@@ -11,8 +11,11 @@ This project's goal is to provide a base project for **PHP developers** to devel
 ## Version pre-&gamma; key features
 
 * Complete but lightweight framework :
-    * Smart databases utility classes (**PdoExtension**, PdoTable (```#[PdoRow]```, ```#[PdoIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```))
-    * Http cycle handling : **Router and controllers** (```#[Route]```)
+    * Smart databases utility classes 
+        * **PdoExtension** : Connection handler, requester, transaction, 
+        * **PdoTable** : CrudHelper, SchemaHelper
+            * attributes ```#[PdoRow]```, ```#[PdoIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```
+    * Http cycle handling : **Router and controllers** (attribute ```#[Route]```)
     * **CLI commands** handling, console color/formatting utility
     * Static **logger** and **configuration**
     * **Twig** template system

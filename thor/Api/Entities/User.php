@@ -2,11 +2,10 @@
 
 namespace Thor\Api\Entities;
 
-use Thor\Database\PdoTable\AdvancedPdoRow;
+use Thor\Database\PdoTable\AbstractPdoRow;
 use Thor\Database\PdoTable\Attributes\PdoColumn;
 use Thor\Database\PdoTable\Attributes\PdoIndex;
 use Thor\Database\PdoTable\Attributes\PdoRow;
-use Thor\Database\PdoTable\PdoRowInterface;
 use Thor\Security\PasswordHasher;
 use Thor\Security\UserInterface;
 
@@ -15,24 +14,20 @@ use Thor\Security\UserInterface;
 #[PdoColumn('username', 'VARCHAR(255)', 'string', false)]
 #[PdoIndex(['username'], true)]
 #[PdoColumn('password', 'VARCHAR(255)', 'string', false)]
-class User implements PdoRowInterface, UserInterface
+class User extends AbstractPdoRow implements UserInterface
 {
-
-    use AdvancedPdoRow {
-        AdvancedPdoRow::__construct as private adwConstruct;
-    }
 
     private static ?PasswordHasher $hashMaker = null;
 
-    private string $password;
+    protected string $password;
 
     public function __construct(
-        private string $username = '',
+        protected string $username = '',
         string $clearPassword = '',
         string $public_id = null,
         array $primary = [null]
     ) {
-        $this->adwConstruct($public_id, $primary);
+        parent::__construct($public_id, $primary);
         self::$hashMaker ??= new PasswordHasher();
         $this->password = self::$hashMaker->hash($clearPassword);
     }
