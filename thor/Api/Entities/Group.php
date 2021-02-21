@@ -2,11 +2,11 @@
 
 namespace Thor\Api\Entities;
 
-use Thor\Database\PdoExtension\AdvancedPdoRow;
-use Thor\Database\PdoExtension\Attributes\PdoColumn;
-use Thor\Database\PdoExtension\Attributes\PdoIndex;
-use Thor\Database\PdoExtension\Attributes\PdoRow;
-use Thor\Database\PdoExtension\PdoRowInterface;
+use Thor\Database\PdoTable\AdvancedPdoRow;
+use Thor\Database\PdoTable\Attributes\PdoColumn;
+use Thor\Database\PdoTable\Attributes\PdoIndex;
+use Thor\Database\PdoTable\Attributes\PdoRow;
+use Thor\Database\PdoTable\PdoRowInterface;
 
 #[PdoRow("group", ['id'], 'id')]
 #[PdoColumn('id', 'INTEGER', 'integer', false)]

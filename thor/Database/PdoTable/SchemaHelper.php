@@ -1,10 +1,10 @@
 <?php
 
-namespace Thor\Database;
+namespace Thor\Database\PdoTable;
 
-use Thor\Database\PdoExtension\Attributes\PdoAttributesReader;
-use Thor\Database\PdoExtension\Attributes\PdoColumn;
-use Thor\Database\PdoExtension\Attributes\PdoIndex;
+use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
+use Thor\Database\PdoTable\Attributes\PdoColumn;
+use Thor\Database\PdoTable\Attributes\PdoIndex;
 use Thor\Database\PdoExtension\PdoRequester;
 
 final class SchemaHelper

@@ -5,7 +5,7 @@ namespace Thor\Api\Actions;
 use Exception;
 
 use Thor\Api\Managers\UserManager;
-use Thor\Database\CrudHelper;
+use Thor\Database\PdoTable\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Http\BaseController;
 use Thor\Http\Response;

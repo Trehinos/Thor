@@ -3,10 +3,10 @@
 namespace Thor\Security;
 
 use Exception;
-use Thor\Database\CrudHelper;
+use Thor\Database\PdoTable\CrudHelper;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\Sql\Criteria;
+use Thor\Database\PdoTable\Criteria;
 use Thor\Http\Server;
 
 final class SecurityContext

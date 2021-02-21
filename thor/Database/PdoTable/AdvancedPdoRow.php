@@ -1,14 +1,14 @@
 <?php
 
-namespace Thor\Database\PdoExtension;
+namespace Thor\Database\PdoTable;
 
 use Exception;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
-use Thor\Database\PdoExtension\Attributes\PdoAttributesReader;
-use Thor\Database\PdoExtension\Attributes\PdoColumn;
-use Thor\Database\PdoExtension\Attributes\PdoIndex;
-use Thor\Database\PdoExtension\Attributes\PdoRow;
+use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
+use Thor\Database\PdoTable\Attributes\PdoColumn;
+use Thor\Database\PdoTable\Attributes\PdoIndex;
+use Thor\Database\PdoTable\Attributes\PdoRow;
 
 /**
  * Trait AdvancedPdoRow: implements PdoRowInterface with Pdo Attributes.

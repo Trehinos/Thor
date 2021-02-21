@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Database\PdoExtension\Attributes;
+namespace Thor\Database\PdoTable\Attributes;
 
 use Attribute;
 

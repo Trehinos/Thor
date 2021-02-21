@@ -3,11 +3,9 @@
 namespace Thor\Http;
 
 use JetBrains\PhpStorm\ArrayShape;
-use PDO;
 use ReflectionClass;
 use ReflectionMethod;
 use Thor\Database\PdoExtension\PdoCollection;
-use Thor\Database\PdoExtension\PdoHandler;
 
 use Thor\Debug\Logger;
 use Thor\Factories\TwigFactory;

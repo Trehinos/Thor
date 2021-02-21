@@ -7,9 +7,9 @@ use Thor\Api\Managers\UserManager;
 use Thor\Cli\CliKernel;
 use Thor\Cli\Command;
 use Thor\Cli\Console;
-use Thor\Database\CrudHelper;
+use Thor\Database\PdoTable\CrudHelper;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\Sql\Criteria;
+use Thor\Database\PdoTable\Criteria;
 use Thor\Api\Entities\User;
 
 final class UserCommand extends Command

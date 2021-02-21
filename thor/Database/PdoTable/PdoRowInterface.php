@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Database\PdoExtension;
+namespace Thor\Database\PdoTable;
 
 use JetBrains\PhpStorm\ArrayShape;
 

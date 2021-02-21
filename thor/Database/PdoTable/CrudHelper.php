@@ -1,13 +1,11 @@
 <?php
 
-namespace Thor\Database;
+namespace Thor\Database\PdoTable;
 
 use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
 use ReflectionException;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoExtension\PdoRowInterface;
-use Thor\Database\Sql\Criteria;
 
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRows.

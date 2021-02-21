@@ -5,8 +5,8 @@ namespace Thor\Api\Managers;
 use Exception;
 
 use Thor\Api\Entities\User;
-use Thor\Database\CrudHelper;
-use Thor\Database\Sql\Criteria;
+use Thor\Database\PdoTable\CrudHelper;
+use Thor\Database\PdoTable\Criteria;
 use Thor\Debug\Logger;
 
 final class UserManager

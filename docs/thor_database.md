@@ -27,7 +27,7 @@
 
 #### PdoTransaction ```extends PdoRequester```
 
-* ```__construct(PdoHandler $handler, private bool $autoTransaction = true)```
+* ```__construct(PdoHandler $handler, bool $autoTransaction = true)```
 * ```__destruct()```
 * ```begin(): void```
 * ```commit(): void```
