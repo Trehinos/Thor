@@ -1,6 +1,6 @@
 name: donothing
 class: App\Daemons\DoNothing
 periodicity: 1
-start: '000000'
-end: '235959'
+start: '0000'
+end: '2359'
 enabled: false

@@ -9,22 +9,26 @@ simplified.**
 
 ## Key features
 * Complete but lightweight framework :
-  * Smart databases utility classes (PdoExtension, PdoRow (with **PHP attributes**))
-  * Http cycle handling : Router and controllers (with **PHP attributes** or YAML)
-  * CLI commands handling, console color/formatting utility
-  * Static logger and configuration
-  * Twig template system
-* Base web application to develop a business work :
+  * Smart databases utility classes (**PdoExtension**, PdoRow (with **PHP attributes**))
+  * Http cycle handling : **Router and controllers** (with **PHP attributes** or YAML)
+  * **CLI commands** handling, console color/formatting utility
+  * Static **logger** and **configuration**
+  * **Twig** template system
+* Base **web application** to develop a business work :
   * Index, legal, about and changelog pages
-  * User management (create/edit/change password/delete), login, logout
-* Console commands to control application
+  * **Menu** system with icons
+  * Page loading in **AJAX** (reduced payload)
+  * **Users** management (create/edit/change password/delete), login, logout
+* Console commands to **control the application**
   * ```user/``` : ```create``` / ```edit``` / ```delete``` / ```list```
   * ```core/``` : ```setup```
   * ```route/``` : ```set``` / ```list```
 * Daemons and daemons control (e.g. ```daemon/status -all``` command) :  
-![](docs/images/daemons.png)
-  * start/stop
-  * kill/reset
+![Daemons status illustration](docs/images/daemons.png)
+  * ```start``` / ```stop``` : enable or disable a damon
+  * ```kill``` / ```reset``` : stop execution or reset state
+
+*more to come in new versions*
 
 ## Dependencies
 ### Environment

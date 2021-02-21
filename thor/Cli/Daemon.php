@@ -15,8 +15,8 @@ abstract class Daemon implements KernelInterface
     public function __construct(
         protected string $name,
         protected int $periodicityInMinutes,
-        protected string $startHis = '000000',
-        protected string $endHis = '235959',
+        protected string $startHi = '000000',
+        protected string $endHi = '235959',
         protected bool $enabled = false
     ) {
     }
@@ -91,13 +91,13 @@ abstract class Daemon implements KernelInterface
     final public function getStartToday(): DateTime
     {
         $now = new DateTime();
-        return DateTime::createFromFormat('YmdHis', "{$now->format('Ymd')}{$this->startHis}");
+        return DateTime::createFromFormat('YmdHis', "{$now->format('Ymd')}{$this->startHi}00");
     }
 
     final public function getEndToday(): DateTime
     {
         $now = new DateTime();
-        return DateTime::createFromFormat('YmdHis', "{$now->format('Ymd')}{$this->endHis}");
+        return DateTime::createFromFormat('YmdHis', "{$now->format('Ymd')}{$this->endHi}59");
     }
 
     final public static function instantiate(
