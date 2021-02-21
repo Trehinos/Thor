@@ -46,7 +46,7 @@ user/delete:
 route/set:
   class: Thor\Api\Commands\CoreCommand
   command: routeSet
-  description: add a route in Thor\Api/res/routes.yml
+  description: add or edit a route in app/res/static/routes.yml
   arguments:
     name:
       hasValue: true
@@ -67,12 +67,12 @@ route/set:
 route/list:
   class: Thor\Api\Commands\CoreCommand
   command: routeList
-  description: list all routes in Thor\Api/res/routes/yml
+  description: list all routes in app/res/static/routes.yml
 
 core/setup:
   class: Thor\Api\Commands\CoreCommand
   command: setup
-  description: create 'user' class and admin user
+  description: create the 'user' table and admin user
 
 daemon/start:
   class: Thor\Api\Commands\DaemonCommand
