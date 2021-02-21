@@ -9,7 +9,7 @@ final class ErrorTest extends Daemon
 
     public function execute(): void
     {
-        throw new \Exception('Error example...');
+        throw new \Exception('Thrown Exception message');
     }
 
 }

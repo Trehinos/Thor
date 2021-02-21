@@ -1,9 +1,10 @@
 # Thor
 
 **Thor** is designed as a PHP *framework* as well as a web *software*.  
-This project's goal is to provide a base project for business projects.
+This project's goal is to provide a base project for **PHP developers** to develop corporate projects.
 
-**This project is still in development. Further releases installation process will be simplified.**
+**This project is still in development.**  
+**In further releases, the installation process will be simplified.**
 
 &copy; 2020-2021 Trehinos
 
@@ -16,12 +17,12 @@ This project's goal is to provide a base project for business projects.
     * Static **logger** and **configuration**
     * **Twig** template system
     * **Multilingual** static strings
-* Base **web application** to develop a business work :
+* Base **web application** to develop a corporate work :
     * Index, legal, about and changelog pages
     * **Menu** system with icons
     * Page loading in **AJAX** (reduced payload)
     * **Users** management (create/edit/change password/delete), login, logout
-* Console commands to **control the application**
+* Console commands to **control the application** :
     * ```user/``` : ```create``` / ```edit``` / ```delete``` / ```list```
     * ```core/``` : ```setup```
     * ```route/``` : ```set``` / ```list```
@@ -36,9 +37,10 @@ This project's goal is to provide a base project for business projects.
 
 ### Environment
 
-* Pdo compatible DBMS
+* GNU/Linux system for daemons (not tested on Windows). Works on VMs.
+* PHP 8.0 + PDO + DBMS PDO drivers
+* PDO compatible DBMS
 * HTTP server
-* PHP 8.0 / Pdo / DBMS PHP drivers
 * Composer
 
 ### Server-side vendors
