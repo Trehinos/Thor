@@ -6,32 +6,32 @@
 
 #### PdoHandler
 
-* ```PdoHandler::__construct(string $dsn, ?string $user = null, ?string $password = null, int $defaultCase = PDO::CASE_NATURAL)```
-* ```PdoHandler::getPdo(): PDO```
+* ```__construct(string $dsn, ?string $user = null, ?string $password = null, int $defaultCase = PDO::CASE_NATURAL)```
+* ```getPdo(): PDO```
 
 #### PdoCollection
 
-* ```PdoCollection::__construct()```
-* ```static PdoCollection::createFromConfiguration(array $dbConfig): PdoCollection```
-* ```PdoCollection::add(string $connectionName, PdoHandler $handler): void```
-* ```PdoCollection::get(string $connectionName = 'default'): ?PdoHandler```
-* ```PdoCollection::all(): array```
+* ```__construct()```
+* ```static createFromConfiguration(array $dbConfig): PdoCollection```
+* ```add(string $connectionName, PdoHandler $handler): void```
+* ```get(string $connectionName = 'default'): ?PdoHandler```
+* ```all(): array```
 
 #### PdoRequester
 
-* ```PdoRequester::__construct(PdoHandler $handler)```
-* ```PdoRequester::getPdoHandler(): PdoHandler```
-* ```PdoRequester::execute(string $sql, array $parameters): bool```
-* ```PdoRequester::executeMultiple(string $sql, array $parameters): bool```
-* ```PdoRequester::request(string $sql, array $parameters): PDOStatement```
+* ```__construct(PdoHandler $handler)```
+* ```getPdoHandler(): PdoHandler```
+* ```execute(string $sql, array $parameters): bool```
+* ```executeMultiple(string $sql, array $parameters): bool```
+* ```request(string $sql, array $parameters): PDOStatement```
 
 #### PdoTransaction ```extends PdoRequester```
 
-* ```PdoTransaction::__construct(PdoHandler $handler, private bool $autoTransaction = true)```
-* ```PdoTransaction::__destruct()```
-* ```PdoTransaction::begin(): void```
-* ```PdoTransaction::commit(): void```
-* ```PdoTransaction::rollback(): void```
+* ```__construct(PdoHandler $handler, private bool $autoTransaction = true)```
+* ```__destruct()```
+* ```begin(): void```
+* ```commit(): void```
+* ```rollback(): void```
 
 ### Database configuration
 
