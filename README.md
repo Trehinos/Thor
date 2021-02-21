@@ -55,17 +55,17 @@ There is no client side's dependency manager bundled with **Thor**,
 so neither are these libraries.
 
 ## Thor setup
-1. Download the project and unzip it. Say it has been unzipped in ```thor/```.
-2. Go to ```thor/``` in a terminal and type ```composer update```.
-3. **Database initialisation** :
-   * Create the database or retrieve db infos,
+1. **Download** the project and unzip it. Say it has been unzipped in ```thor/```.
+2. Go to ```thor/``` in a terminal and type ```composer update``` to **install dependencies**.
+3. **Initialize database** :
+   * Create the database or retrieve DB infos,
    * edit ```thor/app/res/config/database.yml```, then :
    * run ```php thor/bin/thor.php core/setup``` in a terminal.
-4. ```thor/var/cache``` and ```thor/var/logs``` are to be writable to the user who runs **PHP**
-   (usually ```www-data```).
-5. Set configuration in```thor/app/res/config/``` and ```thor/app/res/static/```.
-6. Create a virtualhost which has ```thor/web/``` as *DocumentRoot*.
-7. Download and copy web vendors :
+4. **Edit permissions** : ```thor/var/cache``` and ```thor/var/logs``` have to be writable and ```thor/web``` readable
+   for the user who runs **PHP** (usually ```www-data```).
+5. Set **configuration** in```thor/app/res/config/``` and ```thor/app/res/static/```.
+6. Create a **virtualhost** which has ```thor/web/``` as *DocumentRoot*.
+7. Download and copy **web vendors** :
    * Fontawesome ```all.min.js``` in ```thor/web/assets/fontawesome/js/all.min.js```
    * ```bootstrap.min.js``` in ```thor/web/assets/bootstrap/js/bootstrap.min.js```
    * ```bootstrap.min.css``` in ```thor/web/assets/bootstrap/css/bootstrap.min.css```
