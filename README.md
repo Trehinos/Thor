@@ -26,7 +26,7 @@ simplified.**
   * ```route/``` : ```set``` / ```list```
 * Daemons and daemons control (e.g. ```daemon/status -all``` command) :  
 ![Daemons status illustration](docs/images/daemons.png)
-  * ```start``` / ```stop``` : enable or disable a damon
+  * ```start``` / ```stop``` : enable or disable a daemon
   * ```kill``` / ```reset``` : stop execution or reset state
 
 *more to come in new versions*
