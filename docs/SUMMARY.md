@@ -3,6 +3,7 @@
 ## Thor
 
 - [Cli module](thor_cli.md)
+  - [Create a daemon](thor_cli.md#example--create-a-daemon-and-cron-daemonscheduler)
 - [Database](thor_database.md)
 - Debug utilities
 - Factories

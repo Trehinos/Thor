@@ -76,8 +76,8 @@ a **DaemonScheduler** as a *background task* during its *active period*.
             sleep(60);
         }
     }
-    
     ```
+   > This daemon will output "Hello World" in ```thor/var/logs/my_daemon/output.log``` then wait 60 seconds then end.
 2. In ```thor/app/res/static/daemons``` create the file ```my_daemon.yml``` :
     ```yaml
     name: my_daemon
