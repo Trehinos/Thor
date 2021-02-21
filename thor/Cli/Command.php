@@ -4,7 +4,6 @@ namespace Thor\Cli;
 
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\NoReturn;
-use Thor\Thor;
 
 abstract class Command
 {

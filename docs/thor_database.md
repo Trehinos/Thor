@@ -1,5 +1,10 @@
 # Thor database module
 
+The **database** module is divided in 2 submodules :
+
+* ```PdoExtension``` which provides a way to easily connect and request a database.
+* ```PdoTable``` which is analog as a light ORM.
+
 ## Pdo extension classes
 
 ### PdoExtension public API

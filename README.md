@@ -3,7 +3,7 @@
 **Thor** is designed as a PHP *framework* as well as a web *software*.  
 This project's goal is to provide a base project for **PHP developers** to develop corporate projects.
 
-**This project is still in active development** : public API may change, but it is usable as is.  
+**This project is still in active development** : public API may change, but tagged versions are usable as is.  
 **In further releases, the installation process will be simplified.**
 
 &copy; 2020-2021 Trehinos
@@ -11,8 +11,8 @@ This project's goal is to provide a base project for **PHP developers** to devel
 ## Version pre-&gamma; key features
 
 * Complete but lightweight framework :
-    * Smart databases utility classes (**PdoExtension**, PdoRow (with **PHP attributes**))
-    * Http cycle handling : **Router and controllers** (with **PHP attributes** or YAML)
+    * Smart databases utility classes (**PdoExtension**, PdoTable (```#[PdoRow]```, ```#[PdoIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```))
+    * Http cycle handling : **Router and controllers** (```#[Route]```)
     * **CLI commands** handling, console color/formatting utility
     * Static **logger** and **configuration**
     * **Twig** template system
