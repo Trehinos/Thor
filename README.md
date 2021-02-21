@@ -1,4 +1,4 @@
-# THOR &gamma;-dev
+# THOR 
 **Thor** is designed as a PHP *framework* as well as a web *software*.  
 This project's goal is to provide a base project for business projects.
 
@@ -7,13 +7,14 @@ simplified.**
 
 &copy; 2020-2021 Trehinos
 
-## Key features
+## Version &gamma;-dev key features
 * Complete but lightweight framework :
   * Smart databases utility classes (**PdoExtension**, PdoRow (with **PHP attributes**))
   * Http cycle handling : **Router and controllers** (with **PHP attributes** or YAML)
   * **CLI commands** handling, console color/formatting utility
   * Static **logger** and **configuration**
   * **Twig** template system
+  * **Multilingual** static strings
 * Base **web application** to develop a business work :
   * Index, legal, about and changelog pages
   * **Menu** system with icons
@@ -38,15 +39,20 @@ simplified.**
 * Composer
 
 ### Vendors
-*Installed with ```composer update```* :
+#### Installed with ```composer update```
 * Symfony/VarDumper 5
 * Symfony/Yaml 5
 * Twig 3
 
-*To download and set up separately* :
+#### To download and set up separately*
 * Fontawesome PRO icons (min version 5.13.1)  
   *You can use the free version, but some icons are not going to work without modifications*.
-* Bootstrap 4.5
+* Bootstrap 4.5 minimum
+
+*These libraries are to be downloaded **separately** manually or with your
+preferred client side's dependency manager.  
+There is no client side's dependency manager bundled with **Thor**,
+so neither are these libraries.
 
 ## THOR setup
 1. Download the project and unzip it. Say it has been unzipped in ```thor/```.
