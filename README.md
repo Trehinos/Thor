@@ -45,9 +45,9 @@ simplified.**
 * Twig 3
 
 #### To download and set up separately*
-* Fontawesome PRO icons (min version 5.13.1)  
+* [Fontawesome](https://fontawesome.com/) PRO icons (min version 5.13.1)  
   *You can use the free version, but some icons are not going to work without modifications*.
-* Bootstrap 4.5 minimum
+* [Bootstrap](https://getbootstrap.com/docs/4.6/getting-started/introduction/) 4.5 minimum
 
 *These libraries are to be downloaded **separately** manually or with your
 preferred client side's dependency manager.  
