@@ -1,4 +1,4 @@
-# THOR 
+# Thor 
 **Thor** is designed as a PHP *framework* as well as a web *software*.  
 This project's goal is to provide a base project for business projects.
 
@@ -54,16 +54,21 @@ preferred client side's dependency manager.
 There is no client side's dependency manager bundled with **Thor**,
 so neither are these libraries.
 
-## THOR setup
+## Thor setup
 1. Download the project and unzip it. Say it has been unzipped in ```thor/```.
 2. Go to ```thor/``` in a terminal and type ```composer update```.
-3. Launch ```thor/engine/sql/setup.sql``` in an SQL environment to set up Thor DB (**mimir**) and edit ```thor/engine/config/database.yml```.
-4. Create a virtualhost which has ```thor/web/``` as *DocumentRoot*.
-5. Copy fontawesome ```all.min.js``` in ```thor/web/assets/fontawesome/js/all.min.js```
-6. Copy ```bootstrap.min.js``` in ```thor/web/assets/bootstrap/js/bootstrap.min.js```
-7. Copy ```bootstrap.min.css``` in ```thor/web/assets/bootstrap/css/bootstrap.min.css```
-8. The user who runs PHP has to be allowed to write in ```thor/var/``` folder.
-9. Set configuration in```thor/app/res/config/``` and ```thor/app/res/static/```.
+3. **Database initialisation** :
+   * Create the database or retrieve db infos,
+   * edit ```thor/app/res/config/database.yml```, then :
+   * run ```php thor/bin/thor.php core/setup``` in a terminal.
+4. ```thor/var/cache``` and ```thor/var/logs``` are to be writable to the user who runs **PHP**
+   (usually ```www-data```).
+5. Set configuration in```thor/app/res/config/``` and ```thor/app/res/static/```.
+6. Create a virtualhost which has ```thor/web/``` as *DocumentRoot*.
+7. Download and copy web vendors :
+   * Fontawesome ```all.min.js``` in ```thor/web/assets/fontawesome/js/all.min.js```
+   * ```bootstrap.min.js``` in ```thor/web/assets/bootstrap/js/bootstrap.min.js```
+   * ```bootstrap.min.css``` in ```thor/web/assets/bootstrap/css/bootstrap.min.css```
 
 ## Documentation
 Link : [Documentation](docs/SUMMARY.md)
