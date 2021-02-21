@@ -3,6 +3,7 @@
 namespace Thor\Cli;
 
 use JetBrains\PhpStorm\ArrayShape;
+use PDO;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Debug\Logger;
@@ -26,28 +27,10 @@ final class CliKernel implements KernelInterface
         #[ArrayShape(['database' => 'array', 'commands' => 'array'])]
         array $configuration
     ) {
-        $this->pdos = self::createDatabasesFromConfiguration($configuration['database'] ?? []);
+        $this->pdos = PdoCollection::createFromConfiguration($configuration['database'] ?? []);
         $this->console = new Console();
         $this->commands = $configuration['commands'];
         Logger::write('Instantiate CliKernel');
-    }
-
-    private static function createDatabasesFromConfiguration(array $db_config): PdoCollection
-    {
-        $pdos = new PdoCollection();
-
-        foreach ($db_config as $connectionName => $config) {
-            $pdos->add(
-                $connectionName,
-                new PdoHandler(
-                    $config['dsn'] ?? '',
-                    $config['user'] ?? '',
-                    $config['password'] ?? ''
-                )
-            );
-        }
-
-        return $pdos;
     }
 
     /**

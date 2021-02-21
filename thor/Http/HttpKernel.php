@@ -3,6 +3,7 @@
 namespace Thor\Http;
 
 use JetBrains\PhpStorm\ArrayShape;
+use PDO;
 use ReflectionClass;
 use ReflectionMethod;
 use Thor\Database\PdoExtension\PdoCollection;
@@ -38,7 +39,7 @@ final class HttpKernel implements KernelInterface
     ) {
         $router = self::createRouterFromConfiguration($configuration['routes'] ?? []);
         $twig = self::createTwigFromConfiguration($configuration['twig'] ?? []);
-        $pdos = self::createDatabasesFromConfiguration($configuration['database'] ?? []);
+        $pdos = PdoCollection::createFromConfiguration($configuration['database'] ?? []);
 
         Logger::write('Instantiate HttpKernel');
         $this->server = new Server(
@@ -52,24 +53,6 @@ final class HttpKernel implements KernelInterface
 
         $twigFactory = new TwigFactory($this->server, $router, $twig);
         $twigFactory->addDefaults();
-    }
-
-    private static function createDatabasesFromConfiguration(array $db_config): PdoCollection
-    {
-        $pdos = new PdoCollection();
-
-        foreach ($db_config as $connectionName => $config) {
-            $pdos->add(
-                $connectionName,
-                new PdoHandler(
-                    $config['dsn'] ?? '',
-                    $config['user'] ?? '',
-                    $config['password'] ?? ''
-                )
-            );
-        }
-
-        return $pdos;
     }
 
     private static function loadRouteAttr(array $routesObj, array $pathsList): array

@@ -13,7 +13,7 @@ final class PdoHandler
         private string $dsn,
         private ?string $user = null,
         private ?string $password = null,
-        private int $defaultCase = PDO::CASE_LOWER
+        private int $defaultCase = PDO::CASE_NATURAL
     ) {
     }
 
