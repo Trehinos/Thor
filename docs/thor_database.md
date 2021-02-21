@@ -2,6 +2,37 @@
 
 ## Pdo extension classes
 
+### PdoExtension public API
+
+#### PdoHandler
+
+* ```PdoHandler::__construct(string $dsn, ?string $user = null, ?string $password = null, int $defaultCase = PDO::CASE_NATURAL)```
+* ```PdoHandler::getPdo(): PDO```
+
+#### PdoCollection
+
+* ```PdoCollection::__construct()```
+* ```static PdoCollection::createFromConfiguration(array $dbConfig): PdoCollection```
+* ```PdoCollection::add(string $connectionName, PdoHandler $handler): void```
+* ```PdoCollection::get(string $connectionName = 'default'): ?PdoHandler```
+* ```PdoCollection::all(): array```
+
+#### PdoRequester
+
+* ```PdoRequester::__construct(PdoHandler $handler)```
+* ```PdoRequester::getPdoHandler(): PdoHandler```
+* ```PdoRequester::execute(string $sql, array $parameters): bool```
+* ```PdoRequester::executeMultiple(string $sql, array $parameters): bool```
+* ```PdoRequester::request(string $sql, array $parameters): PDOStatement```
+
+#### PdoTransaction ```extends PdoRequester```
+
+* ```PdoTransaction::__construct(PdoHandler $handler, private bool $autoTransaction = true)```
+* ```PdoTransaction::__destruct()```
+* ```PdoTransaction::begin(): void```
+* ```PdoTransaction::commit(): void```
+* ```PdoTransaction::rollback(): void```
+
 ### Database configuration
 
 The database configuration file is ```thor/app/res/config/database.yml```.  
