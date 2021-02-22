@@ -29,7 +29,7 @@ The PDO object is created with these options :
 
 #### PdoCollection ```class``` ```final```
 
-This class is a collection of ```PdoHandler```. It can be constructed from ```tho/app/res/config/database.yml```.
+This class is a collection of ```PdoHandler```. It can be constructed from ```thor/app/res/config/database.yml```.
 
 * ```__construct()```
 * ```static createFromConfiguration(array $dbConfig): PdoCollection```
