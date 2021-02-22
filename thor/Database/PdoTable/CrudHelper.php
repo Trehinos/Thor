@@ -2,6 +2,7 @@
 
 namespace Thor\Database\PdoTable;
 
+use Exception;
 use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
 use ReflectionException;
@@ -64,15 +65,28 @@ final class CrudHelper
      * @param PdoRowInterface $row
      *
      * @return string the public_id
+     *
+     * @throws Exception
      */
     public function createOne(PdoRowInterface $row): string
     {
         [$columns, $marks, $values] = self::compileRowValues($row);
         $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $values);
 
-        return $row->getPublicId();
+        if ($row instanceof AbstractPdoRow) {
+            return $row->getPublicId();
+        }
+
+        return $row->getPrimaryString();
     }
 
+    /**
+     * @param PdoRowInterface[] $rows
+     *
+     * @return bool
+     *
+     * @throws Exception
+     */
     public function createMultiple(array $rows): bool
     {
         $allValues = [];
@@ -90,9 +104,18 @@ final class CrudHelper
         return $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $allValues);
     }
 
+    /**
+     * @param PdoRowInterface $row
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
     private static function compileRowValues(PdoRowInterface $row): array
     {
-        $row->generatePublicId();
+        if ($row instanceof AbstractPdoRow) {
+            $row->generatePublicId();
+        }
         $pdoArray = $row->toPdoArray();
         unset($pdoArray['id']);
 

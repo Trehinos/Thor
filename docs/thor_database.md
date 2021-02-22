@@ -107,15 +107,22 @@ $requester = new PdoRequester($pdoHandler);
 
 ## PdoTable submodule
 
+This submodule goal is to provide a stable API for MySql/MariaDB only (for now).  
+With these classes, you can define [Data Access Objects](https://en.wikipedia.org/wiki/Data_access_object) easily.
+
 ### PdoTable public API
 
 #### PdoRowInterface ```interface```
 
+Define a PdoRow class contract.
+
 #### AdvancedPdoRow ```trait``` ```implements PdoRowInterface```
 
-#### AbstractPdoRow ```class``` ```abstract``` ```implements PdoRowInterface```
+Bind a table to a class with PHP attributes.
 
-Bind a table to a class with PHP attributes
+#### AbstractPdoRow ```class``` ```abstract``` ```use AdvancedPdoRow```
+
+Defines a ```public_id``` column.
 
 #### Attributes
 

@@ -38,11 +38,4 @@ interface PdoRowInterface
      */
     public function getPrimaryString(): string;
 
-    /**
-     * @return string|null returns the public_id. Generally null if created and generatePublicId() not called yet.
-     */
-    public function getPublicId(): ?string;
-
-    public function generatePublicId(): void;
-
 }
