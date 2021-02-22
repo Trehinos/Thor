@@ -4,6 +4,7 @@ namespace Thor\Debug;
 
 use JetBrains\PhpStorm\ExpectedValues;
 use JetBrains\PhpStorm\Pure;
+use Thor\FileSystem\Folder;
 
 final class Logger
 {
@@ -62,9 +63,7 @@ final class Logger
                 $this->filename = "{$this->basePath}{$this->env}_{$nowFileName}.log";
             }
 
-            if (!file_exists(dirname($this->filename))) {
-                mkdir(dirname($this->filename));
-            }
+            Folder::createIfNotExists(dirname($this->filename));
             file_put_contents($this->filename, "$message\n", FILE_APPEND);
         }
 

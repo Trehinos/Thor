@@ -3,8 +3,10 @@
 namespace Thor\Cli;
 
 use DateTime;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Debug\Logger;
+use Thor\FileSystem\Folder;
 use Thor\Globals;
 
 final class DaemonState
@@ -21,6 +23,7 @@ final class DaemonState
     {
     }
 
+    #[Pure]
     public function getFileName(): string
     {
         return Globals::VAR_DIR . "daemons/{$this->daemon->getName()}.yml";
@@ -60,6 +63,7 @@ final class DaemonState
 
     public function write(): void
     {
+        Folder::createIfNotExists(dirname($this->getFileName()));
         file_put_contents(
             $this->getFileName(),
             Yaml::dump(
