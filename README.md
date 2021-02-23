@@ -40,7 +40,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ### Environment
 
-* GNU/Linux system for daemons (not tested on Windows). Works on VMs.
+* GNU/Linux or Windows system. Works on VMs.
 * PHP 8.0 + PDO + DBMS PDO drivers
 * PDO compatible DBMS
 * HTTP server
