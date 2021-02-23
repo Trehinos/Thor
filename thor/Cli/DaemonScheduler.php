@@ -32,7 +32,8 @@ final class DaemonScheduler implements KernelInterface
         $execute = $argv[1] ?? null;
 
         Logger::write("Executing DaemonScheduler...");
-        if (null !== $execute && $this->executeDaemon($this->daemons[$execute] ?? null)) {
+        if (null !== $execute) {
+            $this->executeDaemon($this->daemons[$execute] ?? null);
             return;
         }
 
@@ -43,6 +44,7 @@ final class DaemonScheduler implements KernelInterface
 
     private function cycleDaemonIfRunnable(Daemon $daemon): void
     {
+        Logger::write("Cycle {$daemon->getName()}");
         $state = new DaemonState($daemon);
         $state->load();
         if (!$state->isRunning() && $daemon->isNowRunnable($state->getLastRun())) {
@@ -66,6 +68,7 @@ final class DaemonScheduler implements KernelInterface
             return false;
         }
 
+        Logger::write("DaemonScheduler execute-> {$daemon->getName()}");
         $state = new DaemonState($daemon);
         $state->load();
 
@@ -92,7 +95,7 @@ final class DaemonScheduler implements KernelInterface
         $daemons = [];
         foreach ($files as $file) {
             $info = Yaml::parseFile($file);
-            $daemons[] = Daemon::instantiate($info);
+            $daemons[$info['name'] ?? ''] = Daemon::instantiate($info);
         }
         return $daemons;
     }
