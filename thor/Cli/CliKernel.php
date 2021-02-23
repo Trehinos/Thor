@@ -195,7 +195,9 @@ final class CliKernel implements KernelInterface
     public static function executeBackgroundProgram(string $cmd, ?string $outputFile = null): void
     {
         if (substr(php_uname(), 0, 7) === "Windows") {
-            pclose(popen("start /B $cmd", "r"));
+            $cmd = preg_replace('/^php/', 'php-win', $cmd);
+            $outputFile = $outputFile ? ">> $outputFile" : '';
+            pclose(popen("start /B $cmd $outputFile", "r"));
         } else {
             $outputFile ??= '/dev/null';
             exec("$cmd >> $outputFile &");

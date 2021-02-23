@@ -5,7 +5,6 @@ namespace Thor\Cli;
 use DateTime;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Debug\Logger;
 use Thor\FileSystem\Folder;
 use Thor\Globals;
 
@@ -92,7 +91,6 @@ final class DaemonState
         if ($running) {
             $lr = new DateTime();
             $diff = intval(($lr->format('U') - $this->daemon->getStartToday()->format('U')) / 60);
-            Logger::write($diff);
             $delta = $diff % $this->daemon->getPeriodicity();
             $diff = $diff - $delta;
             $lastRun = $this->daemon->getStartToday();

@@ -95,7 +95,7 @@ final class DaemonScheduler implements KernelInterface
         $daemons = [];
         foreach ($files as $file) {
             $info = Yaml::parseFile($file);
-            $daemons[$info['name'] ?? ''] = Daemon::instantiate($info);
+            $daemons[$info['name']] = Daemon::instantiate($info);
         }
         return $daemons;
     }

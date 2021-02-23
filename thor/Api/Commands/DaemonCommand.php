@@ -153,6 +153,7 @@ final class DaemonCommand extends Command
         $state = new DaemonState(Daemon::instantiate($daemonInfo));
         $state->load();
         $state->setLastRun(null);
+        $state->setRunning(false);
         $state->error(null);
         $state->write();
         $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
@@ -174,7 +175,11 @@ final class DaemonCommand extends Command
         }
         $pid = $state->getPid();
         $state->setPid(null);
-        CliKernel::executeProgram("kill -15 $pid");
+        if (substr(php_uname(), 0, 7) === "Windows") {
+            CliKernel::executeProgram("taskkill /F /PID $pid");
+        } else {
+            CliKernel::executeProgram("kill -15 $pid");
+        }
         $state->error('KILLED BY USER');
         $state->setRunning(false);
         $state->write();
