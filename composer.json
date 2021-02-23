@@ -2,7 +2,7 @@
     "name": "trehinos/thor",
     "description": "Thor PHP framework witch provides HTTP/CLI modules, Pdo smart encapsulation and other tools",
     "minimum-stability": "stable",
-    "version": "0.3-dev",
+    "version": "0.3",
     "license": "MIT - (c) 2020-2021 Sébastien GELDREICH",
     "authors": [
         {

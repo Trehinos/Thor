@@ -9,8 +9,8 @@ use Symfony\Component\Yaml\Yaml;
 final class Thor
 {
 
-    public const VERSION = '0.2.1';
-    public const VERSION_NAME = 'pre-γ';
+    public const VERSION = '0.3';
+    public const VERSION_NAME = 'γ';
 
     private static ?self $defaultInstance = null;
 

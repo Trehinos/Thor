@@ -2,5 +2,5 @@ name: helloworlder
 class: App\Daemons\HelloWorlder
 periodicity: 5
 start: '1600'
-end: '2044'
+end: '2359'
 enabled: true

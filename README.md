@@ -8,7 +8,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 &copy; 2020-2021 Trehinos
 
-## Version pre-&gamma; key features
+## Version &gamma; key features
 
 * Complete but lightweight framework :
     * Smart databases utility classes 
