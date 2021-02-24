@@ -5,6 +5,7 @@ namespace Thor\Http;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionClass;
 use ReflectionMethod;
+use Thor\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;
 
 use Thor\Debug\Logger;
@@ -105,7 +106,7 @@ final class HttpKernel implements KernelInterface
             ),
             [
                 'cache' => Globals::VAR_DIR . ($twig_config['cache_dir'] ?? ''),
-                'debug' => Thor::isDev()
+                'debug' => Configuration::isDev()
             ]
         );
     }
@@ -118,7 +119,7 @@ final class HttpKernel implements KernelInterface
         $response = $this->server->handle($request);
         Logger::write("HTTP Response generated (code : {$response->getStatus()}).", Logger::LEVEL_VERBOSE);
 
-        if (Thor::getInstance()->getEnv() === 'prod') {
+        if (Thor::getConfiguration()->getEnv() === 'prod') {
             ob_clean(); // Prevent accidental echoes or var_dump from controller in prod
         }
 
@@ -155,7 +156,7 @@ final class HttpKernel implements KernelInterface
         }
         Logger::write('Start HTTP context');
 
-        return new self(Thor::getInstance()->getHttpConfiguration());
+        return new self(Thor::getConfiguration()->getHttpConfiguration());
     }
 
 }

@@ -21,6 +21,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
     * **Twig** template system
     * **Multilingual** static strings
 * Base **web application** to develop a corporate work :
+  ![Thor web UI illustration](docs/images/ui.png)
     * Index, legal, about and changelog pages
     * **Menu** system with icons
     * Page loading in **AJAX** (reduced payload)

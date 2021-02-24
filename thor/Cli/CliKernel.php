@@ -189,7 +189,7 @@ final class CliKernel implements KernelInterface
     {
         self::guardCli();
         Logger::write('Start CLI context');
-        return new self(Thor::getInstance()->getConsoleConfiguration());
+        return new self(Thor::getConfiguration()->getConsoleConfiguration());
     }
 
     public static function executeBackgroundProgram(string $cmd, ?string $outputFile = null): void

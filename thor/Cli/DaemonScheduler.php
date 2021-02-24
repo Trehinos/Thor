@@ -48,7 +48,7 @@ final class DaemonScheduler implements KernelInterface
         $state = new DaemonState($daemon);
         $state->load();
         if (!$state->isRunning() && $daemon->isNowRunnable($state->getLastRun())) {
-            $logPath = Globals::VAR_DIR . (Thor::getInstance()->loadConfig('config')['log_path'] ?? '');
+            $logPath = Globals::VAR_DIR . (Thor::config('config')['log_path'] ?? '');
             Folder::createIfNotExists($logPath . $daemon->getName());
             CliKernel::executeBackgroundProgram(
                 'php ' . Globals::BIN_DIR . "daemon.php {$daemon->getName()}",
@@ -72,8 +72,8 @@ final class DaemonScheduler implements KernelInterface
         $state = new DaemonState($daemon);
         $state->load();
 
-        $logPath = Globals::VAR_DIR . (Thor::getInstance()->loadConfig('config')['log_path'] ?? '');
-        Application::setLoggerLevel(Thor::getInstance()->getEnv(), "$logPath{$daemon->getName()}/");
+        $logPath = Globals::VAR_DIR . (Thor::config('config')['log_path'] ?? '');
+        Application::setLoggerLevel(Thor::getConfiguration()->getEnv(), "$logPath{$daemon->getName()}/");
         Logger::write("Start {$daemon->getName()} daemon");
 
         $daemon->executeIfRunnable($state);

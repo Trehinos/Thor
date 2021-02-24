@@ -14,7 +14,7 @@ use Thor\Database\PdoTable\Attributes\PdoRow;
  *
  * @since 2020-10
  * @version 1.0
- * @author Sébastien Geldreich
+ * @author Trehinos
  * @copyright Author
  * @license MIT
  */

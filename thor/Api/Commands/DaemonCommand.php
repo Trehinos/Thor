@@ -61,7 +61,7 @@ final class DaemonCommand extends Command
             ->fColor(Console::COLOR_BLACK)
             ->bColor(Console::COLOR_GRAY)
             ->writeFix('Status', 10)
-            ->writeFix('Last start', 17)
+            ->writeFix('Last period run', 17)
             ->writeFix('', 4, STR_PAD_LEFT)
             ->writeFix('Daemon', 24)
             ->writeFix('Active period / Info', 32)
@@ -95,11 +95,11 @@ final class DaemonCommand extends Command
                         Console::COLOR_YELLOW)
                 )
                 ->writeFix(
-                    $state->getError() ? " E  " :
+                    $state->getError() ? "  E " :
                         (
                         $state->isRunning() ?
-                            " ➤  " :
-                            "    "
+                            "  > " :
+                            "  • "
                         ),
                     4,
                     STR_PAD_LEFT

@@ -69,7 +69,7 @@ final class Application implements KernelInterface
         } catch (Throwable $e) {
             $logString = Logger::logThrowable($e);
             echo "UNRECOVERABLE ERROR THROWN\n";
-            if (Thor::isDev()) {
+            if (Configuration::isDev()) {
                 $message = " : {$e->getMessage()}";
                 echo ('http' === $thor_kernel) ? "<strong style='font-family: monospace;'>$message</strong><br>" : "$message\n";
                 echo ('http' === $thor_kernel) ? "<pre>$logString</pre>" : $logString;

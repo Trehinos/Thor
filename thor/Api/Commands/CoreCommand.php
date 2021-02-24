@@ -28,7 +28,7 @@ final class CoreCommand extends Command
         parent::__construct($command, $args, $kernel);
         $this->routes =
             HttpKernel::createRouterFromConfiguration(
-                Thor::getInstance()->loadConfig('routes', true)
+                Thor::config('routes', true)
             )->getRoutes();
     }
 

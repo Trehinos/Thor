@@ -7,7 +7,7 @@
  *  INPUT
  *  $thor_kernel : has to be set by the entry point (HTTP:index.php/CLI:thor.php)
  *
- * @author Sébastien GELDREICH
+ * @author Trehinos
  * @version 0.3
  * @since 2021-01
  */
@@ -19,7 +19,7 @@ use Thor\Thor;
 use Thor\Application;
 use Thor\Debug\Logger;
 
-$config = Thor::getInstance()->loadConfig('config');
+$config = Thor::config('config');
 
 Application::setLoggerLevel(
     in_array(

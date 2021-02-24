@@ -49,6 +49,7 @@ $static = Thor::getInstance()->loadConfig('static file key', true);
 * ```twig``` contains Twig library configuration.
 
 #### Static files  (keys of ```loadConfig(, true)```)
+* ```daemons/{daemonName}``` config of a daemon.
 * ```langs/{lang}``` contains static strings in a specific language.
 * ```commands``` contains command information.
 * ```icons``` contains FontAwesome icon suffixes by categories.
