@@ -143,7 +143,7 @@ final class HttpKernel implements KernelInterface
         }
     }
 
-    public static function create(): self
+    public static function create(): static
     {
         if ('cli' === php_sapi_name()) {
             Logger::write(

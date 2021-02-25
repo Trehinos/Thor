@@ -67,6 +67,11 @@ abstract class Daemon implements Executable
         return $next <= $now;
     }
 
+    /**
+     * @param DaemonState $state
+     *
+     * @throws Throwable
+     */
     final public function executeIfRunnable(DaemonState $state): void
     {
         if ($this->isNowRunnable($state->getLastRun())) {
@@ -79,7 +84,6 @@ abstract class Daemon implements Executable
                     $this->execute();
                 } catch (Throwable $e) {
                     $state->error($e->getMessage());
-                    Logger::logThrowable($e);
                     $state->setPid(null);
                     $state->setRunning(false);
                     $state->write();

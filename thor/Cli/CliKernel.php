@@ -183,7 +183,7 @@ final class CliKernel implements KernelInterface
         }
     }
 
-    public static function create(): self
+    public static function create(): static
     {
         self::guardCli();
         Logger::write('Start CLI context');

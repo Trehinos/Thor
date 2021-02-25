@@ -3,10 +3,7 @@
 namespace Thor;
 
 use JetBrains\PhpStorm\ExpectedValues;
-use Thor\Cli\CliKernel;
-use Thor\Cli\DaemonScheduler;
 use Thor\Debug\Logger;
-use Thor\Http\HttpKernel;
 use Throwable;
 
 final class Application implements KernelInterface
@@ -63,32 +60,23 @@ final class Application implements KernelInterface
         $kernel = null;
 
         // STATIC KERNELS HERE
-        switch ($thor_kernel ?? null) {
-            case 'http':
-                $kernel = HttpKernel::create();
-                break;
-
-            case 'cli':
-                $kernel = CliKernel::create();
-                break;
-
-            case 'daemon':
-                $kernel = DaemonScheduler::create();
-                break;
-
-            default:
-                $thor_kernel ??= '(null)';
-                Logger::write(
-                    "PANIC ABORT : kernel $thor_kernel not defined.",
-                    Logger::LEVEL_PROD,
-                    Logger::SEVERITY_ERROR
-                );
-                echo "Error :\nKernel not selected.\n";
-                exit;
+        if (null !== ($thor_kernel ?? null)) {
+            foreach (Thor::config('kernels', true) as $kernelName => $kernelClass) {
+                if ($kernelName === $thor_kernel) {
+                    $kernel = $kernelClass::create();
+                    break;
+                }
+            }
         }
 
-
         return $kernel;
+    }
+
+    public static function create(): static
+    {
+        global $thor_kernel;
+        $config = Thor::config('config');
+        return self::createFromConfiguration(['thor_kernel' => $thor_kernel] + $config);
     }
 
     public static function createFromConfiguration(array $config = []): static
@@ -101,8 +89,7 @@ final class Application implements KernelInterface
             Globals::VAR_DIR . ($config['log_path'] ?? '')
         );
 
-        global $thor_kernel;
-        return new self(Application::getKernel($thor_kernel ?? ''));
+        return new self(Application::getKernel($config['thor_kernel'] ?? ''));
     }
 
 }

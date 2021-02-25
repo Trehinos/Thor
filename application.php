@@ -14,13 +14,10 @@
 
 require_once __DIR__ . '/vendors/autoload.php';
 
-use Thor\Thor;
 use Thor\Application;
 use Thor\Debug\Logger;
 
-$config = Thor::config('config');
-
-$application = Application::createFromConfiguration($config);
+$application = Application::create();
 Logger::write('Execute application');
 $application->execute();
 Logger::write('Application executed !');

@@ -9,6 +9,7 @@ use Thor\FileSystem\Folder;
 use Thor\Globals;
 use Thor\KernelInterface;
 use Thor\Thor;
+use Throwable;
 
 final class DaemonScheduler implements KernelInterface
 {
@@ -25,6 +26,8 @@ final class DaemonScheduler implements KernelInterface
      * Executed by the entry point thor/bin/daemons.php.
      *
      * Usage : php thor/bin/daemons.php [daemonName]
+     *
+     * @throws Throwable
      */
     public function execute(): void
     {
@@ -61,6 +64,8 @@ final class DaemonScheduler implements KernelInterface
      * @param Daemon|null $daemon
      *
      * @return bool false if ($daemon === null)
+     *
+     * @throws Throwable
      */
     private function executeDaemon(?Daemon $daemon): bool
     {
@@ -85,7 +90,7 @@ final class DaemonScheduler implements KernelInterface
         return $this->daemons;
     }
 
-    public static function create(): self
+    public static function create(): static
     {
         CliKernel::guardCli();
         return self::createFromConfiguration(Configuration::getDaemonsConfig());
