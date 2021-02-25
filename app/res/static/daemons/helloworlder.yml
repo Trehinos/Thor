@@ -3,4 +3,4 @@ class: App\Daemons\HelloWorlder
 periodicity: 5
 start: '0000'
 end: '0400'
-enabled: true
+enabled: false

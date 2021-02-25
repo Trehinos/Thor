@@ -6,10 +6,10 @@ use DateInterval;
 use DateTime;
 use JetBrains\PhpStorm\ArrayShape;
 use Thor\Debug\Logger;
-use Thor\KernelInterface;
+use Thor\Executable;
 use Throwable;
 
-abstract class Daemon implements KernelInterface
+abstract class Daemon implements Executable
 {
 
     public function __construct(
@@ -80,6 +80,10 @@ abstract class Daemon implements KernelInterface
                 } catch (Throwable $e) {
                     $state->error($e->getMessage());
                     Logger::logThrowable($e);
+                    $state->setPid(null);
+                    $state->setRunning(false);
+                    $state->write();
+                    throw $e;
                 }
                 $state->setPid(null);
                 $state->setRunning(false);

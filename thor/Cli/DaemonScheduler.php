@@ -2,8 +2,8 @@
 
 namespace Thor\Cli;
 
-use Symfony\Component\Yaml\Yaml;
 use Thor\Application;
+use Thor\Configuration;
 use Thor\Debug\Logger;
 use Thor\FileSystem\Folder;
 use Thor\Globals;
@@ -73,31 +73,30 @@ final class DaemonScheduler implements KernelInterface
         $state->load();
 
         $logPath = Globals::VAR_DIR . (Thor::config('config')['log_path'] ?? '');
-        Application::setLoggerLevel(Thor::getConfiguration()->getEnv(), "$logPath{$daemon->getName()}/");
+        Application::setLoggerLevel(Thor::getEnv(), "$logPath{$daemon->getName()}/");
         Logger::write("Start {$daemon->getName()} daemon");
 
         $daemon->executeIfRunnable($state);
         return true;
     }
 
+    public function getDaemons(): array
+    {
+        return $this->daemons;
+    }
+
     public static function create(): self
     {
         CliKernel::guardCli();
-        return new self(self::getDaemonsFromConfig());
+        return self::createFromConfiguration(Configuration::getDaemonsConfig());
     }
 
-    /**
-     * @return Daemon[]
-     */
-    public static function getDaemonsFromConfig(): array
+    public static function createFromConfiguration(array $config = []): static
     {
-        $files = glob(Globals::STATIC_DIR . 'daemons/*.yml');
         $daemons = [];
-        foreach ($files as $file) {
-            $info = Yaml::parseFile($file);
+        foreach ($config as $info) {
             $daemons[$info['name']] = Daemon::instantiate($info);
         }
-        return $daemons;
+        return new self($daemons);
     }
-
 }

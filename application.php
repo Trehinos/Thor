@@ -14,22 +14,13 @@
 
 require_once __DIR__ . '/vendors/autoload.php';
 
-use Thor\Globals;
 use Thor\Thor;
 use Thor\Application;
 use Thor\Debug\Logger;
 
 $config = Thor::config('config');
 
-Application::setLoggerLevel(
-    in_array(
-        $env = strtolower($config['env'] ?? ''),
-        ['dev', 'debug', 'verbose', 'prod']
-    ) ? $env : 'debug',
-    Globals::VAR_DIR . ($config['log_path'] ?? '')
-);
-
-$application = new Application(Application::getKernel($thor_kernel ?? ''));
+$application = Application::createFromConfiguration($config);
 Logger::write('Execute application');
 $application->execute();
 Logger::write('Application executed !');

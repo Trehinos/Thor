@@ -9,6 +9,7 @@ use Thor\Cli\Console;
 use Thor\Cli\Daemon;
 use Thor\Cli\DaemonScheduler;
 use Thor\Cli\DaemonState;
+use Thor\Configuration;
 use Thor\Globals;
 
 final class DaemonCommand extends Command
@@ -52,9 +53,9 @@ final class DaemonCommand extends Command
             dump($state);
             return;
         }
-        $daemons = DaemonScheduler::getDaemonsFromConfig();
+        $daemons = DaemonScheduler::createFromConfiguration(Configuration::getDaemonsConfig())->getDaemons();
         if (empty($daemons)) {
-            return;
+            $this->error('No daemon found', ' : Verify the static files in ' . Globals::STATIC_DIR . 'daemons/');
         }
 
         $this->console
@@ -90,9 +91,9 @@ final class DaemonCommand extends Command
                 ->mode()
                 ->writeFix($state->getLastRun()?->format('Y-m-d H:i') ?? 'never', 17)->fColor(
                     $state->getError() ? Console::COLOR_RED :
-                    ($state->isRunning() ?
-                        Console::COLOR_CYAN :
-                        Console::COLOR_YELLOW)
+                        ($state->isRunning() ?
+                            Console::COLOR_CYAN :
+                            Console::COLOR_YELLOW)
                 )
                 ->writeFix(
                     $state->getError() ? "  E " :

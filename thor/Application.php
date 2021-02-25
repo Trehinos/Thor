@@ -18,7 +18,26 @@ final class Application implements KernelInterface
 
     public function execute(): void
     {
-        $this->kernel?->execute();
+        try {
+            $this->kernel?->execute();
+        } catch (Throwable $e) {
+            Logger::logThrowable($e);
+            echo "UNRECOVERABLE ERROR THROWN";
+            global $thor_kernel;
+            $message = " : {$e->getMessage()}";
+            echo ('http' === $thor_kernel) ? "<strong style='font-family: monospace;'>$message</strong><br>" : "$message\n";
+            if (in_array(Thor::getEnv(), ['dev', 'debug'])) {
+                $traceStr = '';
+                foreach ($e->getTrace() as $trace) {
+                    $traceLine = " • Location : {$trace['file']}:{$trace['line']}\n   -> Function : {$trace['function']}\n";
+                    if ('http' === $thor_kernel) {
+                        $traceLine = nl2br($traceLine);
+                    }
+                    $traceStr .= $traceLine;
+                }
+                echo $traceStr;
+            }
+        }
     }
 
     public static function setLoggerLevel(
@@ -41,42 +60,49 @@ final class Application implements KernelInterface
     public static function getKernel(
         ?string $thor_kernel = null
     ): ?KernelInterface {
-        try {
-            $kernel = null;
-            switch ($thor_kernel ?? null) {
-                case 'http':
-                    $kernel = HttpKernel::create();
-                    break;
+        $kernel = null;
 
-                case 'cli':
-                    $kernel = CliKernel::create();
-                    break;
+        // STATIC KERNELS HERE
+        switch ($thor_kernel ?? null) {
+            case 'http':
+                $kernel = HttpKernel::create();
+                break;
 
-                case 'daemon':
-                    $kernel = DaemonScheduler::create();
-                    break;
+            case 'cli':
+                $kernel = CliKernel::create();
+                break;
 
-                default:
-                    $thor_kernel ??= '(null)';
-                    Logger::write(
-                        "PANIC ABORT : kernel $thor_kernel not defined.",
-                        Logger::LEVEL_PROD,
-                        Logger::SEVERITY_ERROR
-                    );
-                    echo "Error :\nKernel not selected.\n";
-                    exit;
-            }
-        } catch (Throwable $e) {
-            $logString = Logger::logThrowable($e);
-            echo "UNRECOVERABLE ERROR THROWN\n";
-            if (Configuration::isDev()) {
-                $message = " : {$e->getMessage()}";
-                echo ('http' === $thor_kernel) ? "<strong style='font-family: monospace;'>$message</strong><br>" : "$message\n";
-                echo ('http' === $thor_kernel) ? "<pre>$logString</pre>" : $logString;
-            }
+            case 'daemon':
+                $kernel = DaemonScheduler::create();
+                break;
+
+            default:
+                $thor_kernel ??= '(null)';
+                Logger::write(
+                    "PANIC ABORT : kernel $thor_kernel not defined.",
+                    Logger::LEVEL_PROD,
+                    Logger::SEVERITY_ERROR
+                );
+                echo "Error :\nKernel not selected.\n";
+                exit;
         }
 
+
         return $kernel;
+    }
+
+    public static function createFromConfiguration(array $config = []): static
+    {
+        Application::setLoggerLevel(
+            in_array(
+                $env = strtolower($config['env'] ?? ''),
+                ['dev', 'debug', 'verbose', 'prod']
+            ) ? $env : 'debug',
+            Globals::VAR_DIR . ($config['log_path'] ?? '')
+        );
+
+        global $thor_kernel;
+        return new self(Application::getKernel($thor_kernel ?? ''));
     }
 
 }

@@ -3,7 +3,6 @@
 namespace Thor;
 
 use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\ExpectedValues;
 use Symfony\Component\Yaml\Yaml;
 
 final class Configuration
@@ -13,17 +12,6 @@ final class Configuration
 
     public function __construct(private array $configurations = [])
     {
-    }
-
-    #[ExpectedValues(['dev', 'debug', 'verbose', 'prod'])]
-    public function getEnv(): string
-    {
-        return $this->loadConfig('config')['env'] ?? 'dev';
-    }
-
-    public static function isDev(): bool
-    {
-        return self::getInstance()->getEnv() === 'dev';
     }
 
     #[ArrayShape([
@@ -77,6 +65,20 @@ final class Configuration
                     Globals::STATIC_DIR . "langs/{$this->configurations['config']['lang']}.yml"
                 )
             ];
+    }
+
+    public static function getDaemonsConfig(?string $fileName = null): array
+    {
+        $files = glob(Globals::STATIC_DIR . 'daemons/*.yml');
+        $config = [];
+        foreach ($files as $file) {
+            if ($fileName && $file === $fileName) {
+                $config[] = Yaml::parseFile($fileName);
+            } elseif (null === $fileName) {
+                $config[] = Yaml::parseFile($file);
+            }
+        }
+        return $config;
     }
 
     public function loadConfig(string $configName, bool $typeStatic = false): array

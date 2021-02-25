@@ -3,9 +3,7 @@
 namespace Thor\Cli;
 
 use JetBrains\PhpStorm\ArrayShape;
-use PDO;
 use Thor\Database\PdoExtension\PdoCollection;
-use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Debug\Logger;
 use Thor\KernelInterface;
 use Thor\Thor;
@@ -189,7 +187,7 @@ final class CliKernel implements KernelInterface
     {
         self::guardCli();
         Logger::write('Start CLI context');
-        return new self(Thor::getConfiguration()->getConsoleConfiguration());
+        return self::createFromConfiguration(Thor::getConfiguration()->getConsoleConfiguration());
     }
 
     public static function executeBackgroundProgram(string $cmd, ?string $outputFile = null): void
@@ -213,4 +211,8 @@ final class CliKernel implements KernelInterface
         }
     }
 
+    public static function createFromConfiguration(array $config = []): static
+    {
+        return new self($config);
+    }
 }

@@ -2,9 +2,7 @@
 
 namespace Thor;
 
-use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\ExpectedValues;
-use Symfony\Component\Yaml\Yaml;
 
 final class Thor
 {
@@ -27,6 +25,18 @@ final class Thor
     {
         return self::getConfiguration()->loadConfig($name, $staticResource);
     }
+
+    #[ExpectedValues(['dev', 'debug', 'verbose', 'prod'])]
+    public static function getEnv(): string
+    {
+        return self::config('config')['env'] ?? 'dev';
+    }
+
+    public static function isDev(): bool
+    {
+        return self::getEnv() === 'dev';
+    }
+
 
 
 }

@@ -2,9 +2,9 @@
 
 namespace Thor;
 
-interface KernelInterface
+interface KernelInterface extends Executable
 {
 
-    public function execute(): void;
+    public static function createFromConfiguration(array $config = []): static;
 
 }
