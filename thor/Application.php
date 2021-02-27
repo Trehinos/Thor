@@ -59,10 +59,12 @@ final class Application implements KernelInterface
     ): ?KernelInterface {
         $kernel = null;
 
-        // STATIC KERNELS HERE
         if (null !== ($thor_kernel ?? null)) {
             foreach (Thor::config('kernels', true) as $kernelName => $kernelClass) {
                 if ($kernelName === $thor_kernel) {
+                    if (!class_exists($kernelClass)) {
+                        return null;
+                    }
                     $kernel = $kernelClass::create();
                     break;
                 }

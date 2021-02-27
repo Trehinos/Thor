@@ -2,19 +2,18 @@
 
 namespace Thor\Http;
 
+use Twig\Environment;
+use Thor\Debug\Logger;
+use Twig\Error\LoaderError;
+use Twig\Error\SyntaxError;
 use JetBrains\PhpStorm\Pure;
-use Thor\Database\PdoExtension\PdoCollection;
+use Twig\Error\RuntimeError;
+use Thor\Http\Routing\Router;
+use Thor\Security\UserInterface;
+use Thor\Security\SecurityContext;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoExtension\PdoRequester;
-
-use Thor\Debug\Logger;
-use Thor\Http\Routing\Router;
-use Thor\Security\SecurityContext;
-use Thor\Security\UserInterface;
-use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Thor\Database\PdoExtension\PdoCollection;
 
 class Server
 {
@@ -31,9 +30,86 @@ class Server
     ) {
     }
 
-    public function getSecurity(): ?SecurityContext
+    #[Pure] public static function post(
+        string $name,
+        string|array|null $default = null,
+        ?int $filter = null,
+        array $filter_options = [],
+
+    ): string|array|null {
+        if (null !== $filter) {
+            return (false === ($filtered = filter_input(INPUT_POST, $name, $filter, $filter_options)))
+                ? $default
+                : $filtered;
+        }
+
+        return $_POST[$name] ?? $default;
+    }
+
+    #[Pure] public static function get(
+        string $name,
+        string|array|null $default = null,
+        ?int $filter = null,
+        array $filter_options = []
+    ): string|array|null {
+        if (null !== $filter) {
+            return (false === ($filtered = filter_input(INPUT_GET, $name, $filter, $filter_options)))
+                ? $default
+                : $filtered;
+        }
+
+        return $_GET[$name] ?? $default;
+    }
+
+    #[Pure] public static function readCookie(
+        string $name,
+        string $default = '',
+        ?int $filter = null,
+        array $filter_options = []
+    ): string {
+        if (null !== $filter) {
+            return (false === ($filtered = filter_input(INPUT_COOKIE, $name, $filter, $filter_options)))
+                ? $default
+                : $filtered;
+        }
+
+        return $_COOKIE[$name] ?? $default;
+    }
+
+    public static function writeCookieArray(string $name, array $value): void
     {
-        return $this->security;
+        foreach ($value as $key => $v) {
+            self::writeCookie("$name[$key]", $v);
+        }
+    }
+
+    public static function writeCookie(string $name, string $value): void
+    {
+        setcookie($name, $value);
+    }
+
+    public static function readSession(string $name, $default = null, ?int $filter = null): mixed
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        if (null !== $filter) {
+            return (false === ($filtered = filter_var($_SESSION[$name], $filter)))
+                ? $default
+                : $filtered;
+        }
+
+        return $_SESSION[$name] ?? $default;
+    }
+
+    public static function writeSession(string $name, mixed $value): void
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        $_SESSION[$name] = $value;
     }
 
     public function getAppName(): string
@@ -44,6 +120,11 @@ class Server
     public function getUser(): UserInterface
     {
         return $this->getSecurity()->getUser($this->getSecurity()->getCurrentUsername());
+    }
+
+    public function getSecurity(): ?SecurityContext
+    {
+        return $this->security;
     }
 
     /**
@@ -86,7 +167,9 @@ class Server
 
         if (null === $route) {
             Logger::write(' -> No route matched', Logger::LEVEL_DEBUG, Logger::SEVERITY_WARNING);
-            return new Response404($this->twig->render('errors/404.html.twig'));
+            if ($this->twig) {
+                return new Response404($this->twig?->render('errors/404.html.twig') ?? 'Not found...');
+            }
         }
         if (false === $route) {
             Logger::write(
@@ -114,6 +197,25 @@ class Server
         return $controller->$cMethod(...array_values($params));
     }
 
+    public function redirect(string $routeName, array $params = [], string $queryString = ''): Response
+    {
+        return new Response('', 302, ['Location' => $this->generateUrl($routeName, $params, $queryString)]);
+    }
+
+    public function generateUrl(string $routeName, array $params = [], string $queryString = ''): string
+    {
+        if (!$route = $this->getRouter()->getRoute($routeName)) {
+            return '#generate-url-error';
+        }
+
+        return $this->getRouter()->getUrl($routeName, $params, $queryString);
+    }
+
+    public function getRouter(): ?Router
+    {
+        return $this->router;
+    }
+
     public function getCurrentRouteName(): string
     {
         return $this->current_routeName ?? '';
@@ -122,12 +224,6 @@ class Server
     public function getTwig(): ?Environment
     {
         return $this->twig;
-    }
-
-    public function getHandler(string $connectionName = 'default'): ?PdoHandler
-    {
-        Logger::write("Loading handler $connectionName", Logger::LEVEL_DEBUG);
-        return $this->databases->get($connectionName);
     }
 
     public function getRequester(string $connectionName = 'default'): ?PdoRequester
@@ -140,109 +236,14 @@ class Server
         return new PdoRequester($handler);
     }
 
-    public function getRouter(): ?Router
+    public function getHandler(string $connectionName = 'default'): ?PdoHandler
     {
-        return $this->router;
+        Logger::write("Loading handler $connectionName", Logger::LEVEL_DEBUG);
+        return $this->databases->get($connectionName);
     }
 
     public function getLanguage(): array
     {
         return $this->language;
-    }
-
-    #[Pure] public static function post(
-        string $name,
-        string|array|null $default = null,
-        ?int $filter = null,
-        array $filter_options = [],
-
-    ): string|array|null {
-        if (null !== $filter) {
-            return (false === ($filtered = filter_input(INPUT_POST, $name, $filter, $filter_options)))
-                ? $default
-                : $filtered;
-        }
-
-        return $_POST[$name] ?? $default;
-    }
-
-    #[Pure] public static function get(
-        string $name,
-        string|array|null $default = null,
-        ?int $filter = null,
-        array $filter_options = []
-    ): string|array|null {
-        if (null !== $filter) {
-            return (false === ($filtered = filter_input(INPUT_GET, $name, $filter, $filter_options)))
-                ? $default
-                : $filtered;
-        }
-
-        return $_GET[$name] ?? $default;
-    }
-
-    #[Pure] public static function readCookie(
-        string $name,
-        string $default = '',
-        ?int $filter = null,
-        array $filter_options = []
-    ) :string {
-        if (null !== $filter) {
-            return (false === ($filtered = filter_input(INPUT_COOKIE, $name, $filter, $filter_options)))
-                ? $default
-                : $filtered;
-        }
-
-        return $_COOKIE[$name] ?? $default;
-    }
-
-    public static function writeCookie(string $name, string $value): void
-    {
-        setcookie($name, $value);
-    }
-
-    public static function writeCookieArray(string $name, array $value): void
-    {
-        foreach ($value as $key => $v) {
-            self::writeCookie("$name[$key]", $v);
-        }
-    }
-
-    public static function readSession(string $name, $default = null, ?int $filter = null): mixed
-    {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-
-        if (null !== $filter) {
-            return (false === ($filtered = filter_var($_SESSION[$name], $filter)))
-                ? $default
-                : $filtered;
-        }
-
-        return $_SESSION[$name] ?? $default;
-    }
-
-    public static function writeSession(string $name, mixed $value): void
-    {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-
-        $_SESSION[$name] = $value;
-    }
-
-    public function generateUrl(string $routeName, array $params = [], string $queryString = ''): string
-    {
-        if (!$route = $this->getRouter()->getRoute($routeName)) {
-            return '#generate-url-error';
-        }
-
-        return $this->getRouter()->getUrl($routeName, $params, $queryString);
-    }
-
-    public function redirect(string $routeName, array $params = [], string $queryString = ''): Response
-    {
-        return new Response('', 302, ['Location' => $this->generateUrl($routeName, $params, $queryString)]);
     }
 }

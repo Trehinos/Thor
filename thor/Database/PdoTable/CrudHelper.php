@@ -4,7 +4,6 @@ namespace Thor\Database\PdoTable;
 
 use Exception;
 use JetBrains\PhpStorm\Pure;
-use ReflectionClass;
 use ReflectionException;
 use Thor\Database\PdoExtension\PdoRequester;
 
@@ -33,10 +32,10 @@ final class CrudHelper
         private string $className,
         private PdoRequester $requester
     ) {
-        $rc = new ReflectionClass($this->className);
-        $this->tableName = $rc->getMethod('getTableDefinition')->invoke(null)->getTableName();
-        $this->primary = $rc->getMethod('getPrimaryKeys')->invoke(null);
-        $this->indexes = $rc->getMethod('getIndexes')->invoke(null);
+        if (!class_exists($this->className) || !($this->className instanceof PdoRowInterface))
+            $this->tableName = ($this->className)::getTableDefinition()->getTableName();
+        $this->primary = ($this->className)::getPrimaryKeys();
+        $this->indexes = ($this->className)::getIndexes();
     }
 
     #[Pure]
@@ -128,12 +127,14 @@ final class CrudHelper
     #[Pure]
     private function primaryArrayToCriteria(array $primaries): Criteria
     {
-        return new Criteria(
-            array_combine(
-                $this->primary,
-                $primaries
-            )
-        );
+        $criteria = [];
+        foreach ($primaries as $pKey => $pValue) {
+            if (in_array($pKey, $this->primary)) {
+                $criteria[$pKey] = $pValue;
+            }
+        }
+
+        return new Criteria($criteria);
     }
 
     public function readOne(array $primaries): mixed

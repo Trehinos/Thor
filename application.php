@@ -18,10 +18,8 @@ use Thor\Application;
 use Thor\Debug\Logger;
 
 $application = Application::create();
-Logger::write('Execute application');
+Logger::write('#APP:START#');
 $application->execute();
-Logger::write('Application executed !');
-
-Logger::write('END ### END', Logger::LEVEL_DEV);
+Logger::write('#APP:END#');
 
 exit; // make sure this script can't be included with further actions

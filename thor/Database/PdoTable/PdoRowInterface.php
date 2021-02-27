@@ -2,7 +2,7 @@
 
 namespace Thor\Database\PdoTable;
 
-use JetBrains\PhpStorm\ArrayShape;
+use Thor\Database\PdoTable\Attributes\PdoRow;
 
 interface PdoRowInterface
 {
@@ -37,5 +37,7 @@ interface PdoRowInterface
      * @return string get primary keys in a concatenated string.
      */
     public function getPrimaryString(): string;
+
+    public static function getTableDefinition(): PdoRow;
 
 }

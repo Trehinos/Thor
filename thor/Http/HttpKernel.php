@@ -2,22 +2,20 @@
 
 namespace Thor\Http;
 
-use JetBrains\PhpStorm\ArrayShape;
+use Thor\Thor;
+use Thor\Globals;
 use ReflectionClass;
 use ReflectionMethod;
-use Thor\Database\PdoExtension\PdoCollection;
-
+use Twig\Environment;
 use Thor\Debug\Logger;
-use Thor\Factories\TwigFactory;
-use Thor\Globals;
+use Thor\KernelInterface;
 use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
-use Thor\KernelInterface;
-
-use Thor\Security\SecurityContext;
-use Thor\Thor;
-use Twig\Environment;
+use Thor\Factories\TwigFactory;
 use Twig\Loader\FilesystemLoader;
+use JetBrains\PhpStorm\ArrayShape;
+use Thor\Security\SecurityContext;
+use Thor\Database\PdoExtension\PdoCollection;
 
 final class HttpKernel implements KernelInterface
 {
@@ -31,7 +29,7 @@ final class HttpKernel implements KernelInterface
             'routes' => 'array',
             'twig' => 'array',
             'security' => 'array',
-            'language' => 'array|null'
+            'language' => 'array|null',
         ])]
         array $configuration
     ) {
@@ -51,24 +49,6 @@ final class HttpKernel implements KernelInterface
 
         $twigFactory = new TwigFactory($this->server, $router, $twig);
         $twigFactory->addDefaults();
-    }
-
-    private static function loadRouteAttr(array $routesObj, array $pathsList): array
-    {
-        foreach ($pathsList as $loadPath) {
-            $rc = new ReflectionClass($loadPath);
-            foreach ($rc->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-                if (!empty($routeAttrs = $method->getAttributes(Route::class))) {
-                    foreach ($routeAttrs as $routeAttr) {
-                        $route = $routeAttr->newInstance();
-                        $route->setControllerClass($loadPath);
-                        $route->setControllerMethod($method->getName());
-                        $routesObj[$route->getRouteName()] = $route;
-                    }
-                }
-            }
-        }
-        return $routesObj;
     }
 
     public static function createRouterFromConfiguration(array $routes): Router
@@ -105,9 +85,52 @@ final class HttpKernel implements KernelInterface
             ),
             [
                 'cache' => Globals::VAR_DIR . ($twig_config['cache_dir'] ?? ''),
-                'debug' => Thor::isDev()
+                'debug' => Thor::isDev(),
             ]
         );
+    }
+
+    private static function loadRouteAttr(array $routesObj, array $pathsList): array
+    {
+        foreach ($pathsList as $loadPath) {
+            $rc = new ReflectionClass($loadPath);
+            foreach ($rc->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+                if (!empty($routeAttrs = $method->getAttributes(Route::class))) {
+                    foreach ($routeAttrs as $routeAttr) {
+                        $route = $routeAttr->newInstance();
+                        $route->setControllerClass($loadPath);
+                        $route->setControllerMethod($method->getName());
+                        $routesObj[$route->getRouteName()] = $route;
+                    }
+                }
+            }
+        }
+        return $routesObj;
+    }
+
+    final public static function guardHttp(): void
+    {
+        if ('cli' === php_sapi_name()) {
+            Logger::write(
+                "PANIC ABORT : HTTP kernel tried to be executed from CLI context.",
+                Logger::LEVEL_PROD,
+                Logger::SEVERITY_ERROR
+            );
+            exit;
+        }
+    }
+
+    public static function create(): static
+    {
+        self::guardHttp();
+        Logger::write('Start HTTP context');
+
+        return self::createFromConfiguration(Thor::getConfiguration()->getHttpConfiguration());
+    }
+
+    public static function createFromConfiguration(array $config = []): static
+    {
+        return new self($config);
     }
 
     public function execute(): void
@@ -141,26 +164,6 @@ final class HttpKernel implements KernelInterface
             Logger::write("Send body", Logger::LEVEL_DEV);
             echo $body;                                                             // Print body
         }
-    }
-
-    public static function create(): static
-    {
-        if ('cli' === php_sapi_name()) {
-            Logger::write(
-                "PANIC ABORT : HTTP kernel tried to be executed from CLI context.",
-                Logger::LEVEL_PROD,
-                Logger::SEVERITY_ERROR
-            );
-            exit;
-        }
-        Logger::write('Start HTTP context');
-
-        return self::createFromConfiguration(Thor::getConfiguration()->getHttpConfiguration());
-    }
-
-    public static function createFromConfiguration(array $config = []): static
-    {
-        return new self($config);
     }
 
 }
