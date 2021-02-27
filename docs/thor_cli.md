@@ -86,8 +86,7 @@ a **DaemonScheduler** as a *background task* during its *active period*.
 Run a command with ```php bin/thor.php [command]``` :
 
 * ```daemon/start -name [daemonName]``` : enables the daemon (can now be executed during its **active period**).
-* ```daemon/stop -name [daemonName]``` : disables the daemon (not executed even during its **active period**). Doesn't
-  kill the daemon if it is running.
+* ```daemon/stop -name [daemonName]``` : disables the daemon. It doesn't kill the daemon if it is running.
 * ```daemon/status -name [daemonName]``` : displays the complete state of a daemon.
 * ```daemon/status -all``` : displays every daemons status in a table.
 * ```daemon/kill -name [daemonName]``` : kills a running daemon.
@@ -128,5 +127,8 @@ Run a command with ```php bin/thor.php [command]``` :
    time. The daemon will be executed the next time the DaemonScheduler is executed and the daemon is **not running**.
 
 3. CRON **every minute** the command ```php thor/bin/daemon.php``` which executes the **DaemonScheduler**.
+    - On **GNU/Linux**, run ```crontab -e``` and edit the file ([Cron](https://en.wikipedia.org/wiki/Cron)).
+    - On **Windows**, type "Task Scheduler" in the start menu ([Windows Task Scheduler](https://en.wikipedia.org/wiki/Windows_Task_Scheduler)).  
+    Be warned that on Windows, you may have to declare 5 trigger to have a 1 minute granularity.
 
 4. In a terminal, run ```php thor/bin/thor.php daemon/start -name my_daemon``` to enable the daemon.
