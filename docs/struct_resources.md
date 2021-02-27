@@ -52,6 +52,7 @@ $static = Thor::getInstance()->loadConfig('static file key', true);
 * ```daemons/{daemonName}``` config of a daemon.
 * ```langs/{lang}``` contains static strings in a specific language.
 * ```commands``` contains command information.
+* ```kernels``` contains kernels that can be executed by the application.
 * ```icons``` contains FontAwesome icon suffixes by categories.
 * ```menu``` contains the menu displayed by the application with Thor theme.
 * ```routes``` contains the routes of HTTP applications.

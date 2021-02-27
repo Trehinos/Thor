@@ -51,13 +51,48 @@ A command to be executed by the CLI kernel **has to** expand the class ```Thor\C
 In **Thor**, a daemon is defined as a piece of PHP code, embedded by the framework, which is *periodically* executed by
 a **DaemonScheduler** as a *background task* during its *active period*.
 
-### Daemon commands :
+### Daemon public API
+
+#### Daemon ```class``` ```abstract```
+
+* ```__construct(string $name, int $periodicityInMinutes, string $startHi = '000000', string $endHi = '235959', bool $enabled = false)```
+* ```getName(): string```
+* ```getPeriodicity(): int```
+* ```isEnabled(): bool```
+* ```isActive(): bool```
+* ```isNowRunnable(?DateTime $lastTime = null): bool```
+* ```final executeIfRunnable(DaemonState $state): void```
+* ```final getStartToday(): DateTime```
+* ```final getEndToday(): DateTime```
+* ```final static instantiate(array $info): Daemon```
+
+#### DaemonState ```class``` ```final```
+
+* ```__construct(Daemon $daemon)```
+* ```load(): void```
+* ```write(): void```
+* ```getFileName(): string```
+* ```getPid(): ?string```
+* ```setPid(?string $pid): void```
+* ```error(?string $errorMessage): void```
+* ```getError(): ?string```
+* ```setRunning(bool $running): void```
+* ```isRunning(): bool```
+* ```getLastRun(): ?DateTime```
+* ```setLastRun(?DateTime $lastRun): void```
+
+### Daemon CLI commands :
+
+Run a command with ```php bin/thor.php [command]``` :
+
 * ```daemon/start -name [daemonName]``` : enables the daemon (can now be executed during its **active period**).
-* ```daemon/stop -name [daemonName]``` : disables the daemon (not executed even during its **active period**). Doesn't kill the daemon if it is running.
+* ```daemon/stop -name [daemonName]``` : disables the daemon (not executed even during its **active period**). Doesn't
+  kill the daemon if it is running.
 * ```daemon/status -name [daemonName]``` : displays the complete state of a daemon.
 * ```daemon/status -all``` : displays every daemons status in a table.
 * ```daemon/kill -name [daemonName]``` : kills a running daemon.
-* ```daemon/reset -name [daemonName]``` : resets the state of a daemon. Sets ```lastRun``` and ```error``` to ```null```.
+* ```daemon/reset -name [daemonName]``` : resets the state of a daemon. Sets ```lastRun``` and ```error``` to ```null```
+  .
   **The daemon will be executed the next minute.**
 
 ### Example : Create a daemon and CRON DaemonScheduler
@@ -89,8 +124,8 @@ a **DaemonScheduler** as a *background task* during its *active period*.
     ```
    > This daemon will be executed **every 5 minutes** between 08:00:00 and 20:00:59.
 
-   **WARNING** : If the daemon run for more than 5 minutes, the DaemonScheduler will not execute the daemon a
-   second time. The daemon will be executed the next time the DaemonScheduler is executed and the daemon is **not running**.
+   **WARNING** : If the daemon run for more than 5 minutes, the DaemonScheduler will not execute the daemon a second
+   time. The daemon will be executed the next time the DaemonScheduler is executed and the daemon is **not running**.
 
 3. CRON **every minute** the command ```php thor/bin/daemon.php``` which executes the **DaemonScheduler**.
 

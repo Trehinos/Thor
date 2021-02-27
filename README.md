@@ -82,7 +82,7 @@ There is no client side's dependency manager bundled with **Thor**, so neither a
     * run ```php thor/bin/thor.php core/setup``` in a terminal.
 4. **Edit permissions** : ```thor/var/cache``` and ```thor/var/logs``` have to be writable and ```thor/web``` readable
    for the user who runs **PHP** (usually ```www-data```).
-5. **Set configuration** in```thor/app/res/config/``` and ```thor/app/res/static/```.
+5. **Set configuration** in```thor/app/res/config/config.yml```.
 6. **Create a virtualhost** which has ```thor/web/``` as *DocumentRoot*.
 7. **Download** and copy **web vendors** :
     * Fontawesome ```all.min.js``` in ```thor/web/assets/fontawesome/js/all.min.js```
