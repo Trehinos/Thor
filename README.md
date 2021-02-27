@@ -11,29 +11,30 @@ This project's goal is to provide a base project for **PHP developers** to devel
 ## Version &gamma; key features
 
 * Complete but lightweight framework :
-    * Smart databases utility classes 
-        * **PdoExtension** : Connection handler, requester, transaction, 
-        * **PdoTable** : CrudHelper, SchemaHelper
-            * attributes ```#[PdoRow]```, ```#[PdoIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```
-    * Http cycle handling : **Router and controllers** (attribute ```#[Route]```)
-    * **CLI commands** handling, console color/formatting utility
-    * Static **logger** and **configuration**
-    * **Twig** template system
-    * **Multilingual** static strings
+    * Smart databases utility classes :
+        * **PdoExtension** : Connection handler, requester, transaction.
+        * **PdoTable** : CrudHelper, SchemaHelper :
+            * attributes ```#[PdoRow]```, ```#[PdoIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```.
+    * Http cycle handling : **Router and controllers** (attribute ```#[Route]```).
+    * **CLI commands** handling, console color/formatting utility.
+    * Static **logger** and **configuration**.
+    * **Twig** template system.
+    * **Multilingual** static and **dynamic** strings (```_``` global Twig variable and ```|DICT()``` filter).
+    * Extensible application with **kernels**.
 * Base **web application** to develop a corporate work :
   ![Thor web UI illustration](docs/images/ui.png)
-    * Index, legal, about and changelog pages
-    * **Menu** system with icons
-    * Page loading in **AJAX** (reduced payload)
-    * **Users** management (create/edit/change password/delete), login, logout
+    * Index, legal, about and changelog pages.
+    * **Menu** system with icons.
+    * Page loading in **AJAX** (reduced payload).
+    * **Users** management (create/edit/change password/delete), login, logout.
 * Console commands to **control the application** :
-    * ```user/``` : ```create``` / ```edit``` / ```delete``` / ```list```
-    * ```core/``` : ```setup```
-    * ```route/``` : ```set``` / ```list```
+    * ```user/``` : ```create``` / ```edit``` / ```delete``` / ```list```.
+    * ```core/``` : ```setup```.
+    * ```route/``` : ```set``` / ```list```.
 * Daemons and daemons control (e.g. ```daemon/status -all``` command) :  
   ![Daemons status illustration](docs/images/daemons.png)
-    * ```start``` / ```stop``` : enable or disable a daemon
-    * ```kill``` / ```reset``` : stop execution or reset state
+    * ```start``` / ```stop``` : enable or disable a daemon.
+    * ```kill``` / ```reset``` : stop execution or reset state.
 
 *more to come in new versions*
 

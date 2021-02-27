@@ -4,6 +4,9 @@ general:
     remove: "Remove"
     id: "ID"
     public_id: "Public ID"
+    show: "Show"
+    hide: "Hide"
+    clean_fields: "Clean fields"
 
 menu:
     index: "Index"
@@ -25,6 +28,7 @@ index:
 
 users:
     title: "Users"
+    user: "User"
     create_user: "Create user"
     edit_user: "Edit user"
     username: "Username"
@@ -33,17 +37,23 @@ users:
     show_password: "Show password"
     password_warning: "The password will never be shown again. Keep it safe !<br>Max length : 255 characters<br>Allowed characters : ALL"
     new_password: "New password"
+    confirm_password: "Confirm password"
     change_password: "Change password"
+    generated_password: "Generated password"
+    min_size: "min. 16 characters"
+    connect: "Sign in"
+
+users.login.connect: "Sign in <strong>%s</strong>"
 
 changelog:
     title: "Changelog"
     legend: "Legend"
 about:
     title: "About"
-    description: |-
+about.body: |-
         <strong>Thor</strong> is a PHP framework.<br>
-        <strong>Author</strong> : Sébastien GELDREICH<br>
-        <strong>Version</strong> : &alpha; - 0.1
+        <strong>Current version :</strong> %s<br>
+        <strong>License</strong> : MIT (&copy; Sébastien GELDREICH)<br>
 legal:
     title: "Legal"
     description: |-

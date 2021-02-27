@@ -86,11 +86,17 @@ final class TwigFactory
                 fn($value) => substr($value, strrpos($value, '\\') + 1)
             )
         );
-        $this->twig->addFilter( // TRANSLATE
+        $this->twig->addFilter(
             new TwigFilter(
-                't',
-                fn(string $str) => $server->getLanguage()[$str] ?? $str,
-                ['is_safe' => ['html']]
+                'DICT', // DICTIONARY
+                function (string $str, array $arguments = []) use ($server) {
+                    $foundStr = $server->getLanguage()[$str] ?? null;
+                    if ($foundStr && !empty($arguments)) {
+                        $foundStr = sprintf($foundStr, ...$arguments);
+                    }
+                    return $foundStr ?? $str;
+                },
+                ['is_safe' => ['html'], 'is_variadic' => true]
             )
         );
 

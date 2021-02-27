@@ -3,6 +3,5 @@
 {% block titlebar %}{{ icon('info-square', 'fas', true) }} {{ _.about.title }}{% endblock %}
 
 {% block page %}
-    <strong>Version</strong> : {{ version }}<br><br>
-    {{ _.about.description|raw }}
+    {{ "about.body"|DICT(version) }}
 {% endblock %}

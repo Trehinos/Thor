@@ -5,10 +5,10 @@
  *      Main : instantiate Application and execute Kernel.
  *
  *  INPUT
- *  $thor_kernel : has to be set by the entry point (HTTP:index.php/CLI:thor.php)
+ *  $thor_kernel : has to be set by the entry point (HTTP:index.php / CLI:thor.php,daemon.php)
  *
  * @author Trehinos
- * @version 0.3
+ * @version 0.4
  * @since 2021-01
  */
 
