@@ -19,6 +19,7 @@ This class goal is to handle a PDO constructor parameters set and construct it o
 * ```getPdo(): PDO```
 
 The PDO object is created with these options :
+
 ```php
 [
     PDO::ATTR_CASE => $this->defaultCase,
@@ -66,10 +67,10 @@ For each DB connection, add an entry :
 
 ```yaml
 db-connection-identifier:
-  dsn: "driver:dsn"
-  user: db-user
-  password: db-password
-  case: upper | lower | [natural]
+    dsn: "driver:dsn"
+    user: db-user
+    password: db-password
+    case: upper | lower | [natural]
 ```
 
 ### Handle configuration and request DB
@@ -116,27 +117,101 @@ With these classes, you can define [Data Access Objects](https://en.wikipedia.or
 
 Define a PdoRow class contract.
 
+* ```static getTableDefinition(): PdoRow```
+* ```static getPdoColumnsDefinitions(): array```
+* ```static getPrimaryKeys(): array```
+* ```static getIndexes(): array```
+* ```toPdoArray(): array```
+* ```fromPdoArray(array $pdoArray): void```
+* ```getPrimary(): array```
+* ```getPrimaryString(): string```
+
 #### AdvancedPdoRow ```trait``` ```implements PdoRowInterface```
 
 Bind a table to a class with PHP attributes.
+
+* ```__construct(array $primaries = [])```
+* ```final static getTableDefinition(): PdoRow```
+* ```final static getPdoColumnsDefinitions(): array```
+* ```final static getPrimaryKeys(): array```
+* ```final static getIndexes(): array```
+* ```final toPdoArray(): array```
+* ```final fromPdoArray(array $pdoArray): void```
+* ```final getPrimary(): array```
+* ```final getPrimaryString(): string```
 
 #### AbstractPdoRow ```class``` ```abstract``` ```use AdvancedPdoRow```
 
 Defines a ```public_id``` column.
 
+* ```__construct(?string $public_id = null, array $primaries = [])```
+* ```getPublicId(): ?string```
+* ```generatePublicId(): void```
+
 #### Attributes
 
 * ```#[PdoRow]```
+    * ```?string $tableName = null```
+    * ```array $primary = []```
+    * ```?string $auto = null```
 * ```#[PdoColumn]```
+    * ```string $name```
+    * ```string $sqlType```
+    * ```string $phpType```
+    * ```bool $nullable = true```
+    * ```mixed $defaultValue = null```
+    * ```?callable $toSqlValue = null```
+    * ```?callable $toPhpValue = null```
 * ```#[PdoIndex]```
+    * ```array $columnNames```
+    * ```bool $isUnique = false```
+    * ```?string $name = null```
 * ```#[PdoForeignKey]```
+    * ```string $className```
+    * ```array $targetColumns```
+    * ```array $localColumns```
+    * ```?string $name = null```
 
 #### PdoAttributesReader ```class``` ```final```
 
+* ```__construct(private string $classname)```
+* ```static pdoRowInfo(string $className): array```  
+  ```#[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])```
+* ```getAttributes(): array```  
+  ```#[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])```
+  
 #### CrudHelper ```class``` ```final```
+
+Performs SQL queries with a ```PdoRequester``` on a specified class implementing ```PdoRowInterface```.
+
+* ```__construct(string $className, PdoRequester $requester)```
+* ```static instantiateFromRow(string $className, array $row): mixed```
+* ```table(): string```
+* ```listAll(): array```
+* ```createOne(PdoRowInterface $row): string```
+* ```createMultiple(array $rows): bool```
+* ```readOne(array $primaries): mixed```
+* ```readOneBy(Criteria $criteria): mixed```
+* ```readOneFromPid(string $pid): mixed```
+* ```readMultipleBy(Criteria $criteria): array```
+* ```updateOne(PdoRowInterface $row): bool```
+* ```deleteOne(PdoRowInterface $row): bool```
 
 #### Criteria ```class``` ```final```
 
+* ```const GLUE_AND = true```
+* ```const GLUE_OR = false```
+* ```__construct(array $criteria = [], bool $glue = self::GLUE_AND)```
+* ```static compile(array $criteria, bool $glue = self::GLUE_AND): array```  
+  ```#[ArrayShape(['sql' => "string", 'params' => "array"])]```
+* ```static getWhere(Criteria $criteria): string```
+* ```getSql(): string```
+* ```getParams(): array```
+
 #### SchemaHelper ```class``` ```final```
+
+* ```__construct(PdoRequester $requester, PdoAttributesReader $reader)```
+* ```createTable(): bool```
+* ```dropTable(): bool```
 
 ### Example : Create a User class linked to a table in DB

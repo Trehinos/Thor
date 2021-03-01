@@ -129,6 +129,6 @@ Run a command with ```php bin/thor.php [command]``` :
 3. CRON **every minute** the command ```php thor/bin/daemon.php``` which executes the **DaemonScheduler**.
     - On **GNU/Linux**, run ```crontab -e``` and edit the file ([Cron](https://en.wikipedia.org/wiki/Cron)).
     - On **Windows**, type "Task Scheduler" in the start menu ([Windows Task Scheduler](https://en.wikipedia.org/wiki/Windows_Task_Scheduler)).  
-    Be warned that on Windows, you may have to declare 5 triggers to have a 1 minute granularity.
+    Be warned that on Windows, you may have to declare 5 triggers  to have a 1 minute granularity.
 
 4. In a terminal, run ```php thor/bin/thor.php daemon/start -name my_daemon``` to enable the daemon.

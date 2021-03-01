@@ -3,8 +3,8 @@
 namespace Thor\Database\PdoTable;
 
 use Exception;
+use TypeError;
 use JetBrains\PhpStorm\Pure;
-use ReflectionException;
 use Thor\Database\PdoExtension\PdoRequester;
 
 /**
@@ -23,25 +23,19 @@ final class CrudHelper
      * CrudHelper constructor.
      * Creates a new CRUD requester to manage PdoRows
      *
-     * @param string $className which implements PdoRowInterface and use AdvancedPdoRow trait.
+     * @param string       $className which implements PdoRowInterface and use AdvancedPdoRow trait.
      * @param PdoRequester $requester
-     *
-     * @throws ReflectionException
      */
     public function __construct(
         private string $className,
         private PdoRequester $requester
     ) {
-        if (!class_exists($this->className) || !($this->className instanceof PdoRowInterface))
-            $this->tableName = ($this->className)::getTableDefinition()->getTableName();
+        if (!class_exists($this->className) || !in_array(PdoRowInterface::class, class_implements($this->className))) {
+            throw new TypeError("{$this->className} class not found or not implementing PdoRowInterface...");
+        }
+        $this->tableName = ($this->className)::getTableDefinition()->getTableName();
         $this->primary = ($this->className)::getPrimaryKeys();
         $this->indexes = ($this->className)::getIndexes();
-    }
-
-    #[Pure]
-    public function table(): string
-    {
-        return $this->tableName;
     }
 
     public function listAll(): array
@@ -58,6 +52,19 @@ final class CrudHelper
         }
 
         return $rowsObjs;
+    }
+
+    #[Pure]
+    public function table(): string
+    {
+        return $this->tableName;
+    }
+
+    public static function instantiateFromRow(string $className, array $row): mixed
+    {
+        $rowObj = new $className();
+        $rowObj->fromPdoArray($row);
+        return $rowObj;
     }
 
     /**
@@ -77,6 +84,27 @@ final class CrudHelper
         }
 
         return $row->getPrimaryString();
+    }
+
+    /**
+     * @param PdoRowInterface $row
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    private static function compileRowValues(PdoRowInterface $row): array
+    {
+        if ($row instanceof AbstractPdoRow) {
+            $row->generatePublicId();
+        }
+        $pdoArray = $row->toPdoArray();
+        unset($pdoArray['id']);
+
+        $columns = implode(', ', array_keys($pdoArray));
+        $values = implode(', ', array_fill(0, count($pdoArray), '?'));
+
+        return [$columns, $values, array_values($pdoArray)];
     }
 
     /**
@@ -103,48 +131,9 @@ final class CrudHelper
         return $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $allValues);
     }
 
-    /**
-     * @param PdoRowInterface $row
-     *
-     * @return array
-     *
-     * @throws Exception
-     */
-    private static function compileRowValues(PdoRowInterface $row): array
-    {
-        if ($row instanceof AbstractPdoRow) {
-            $row->generatePublicId();
-        }
-        $pdoArray = $row->toPdoArray();
-        unset($pdoArray['id']);
-
-        $columns = implode(', ', array_keys($pdoArray));
-        $values = implode(', ', array_fill(0, count($pdoArray), '?'));
-
-        return [$columns, $values, array_values($pdoArray)];
-    }
-
-    #[Pure]
-    private function primaryArrayToCriteria(array $primaries): Criteria
-    {
-        $criteria = [];
-        foreach ($primaries as $pKey => $pValue) {
-            if (in_array($pKey, $this->primary)) {
-                $criteria[$pKey] = $pValue;
-            }
-        }
-
-        return new Criteria($criteria);
-    }
-
     public function readOne(array $primaries): mixed
     {
         return $this->readOneBy($this->primaryArrayToCriteria($primaries));
-    }
-
-    public function readOneFromPid(string $pid): mixed
-    {
-        return $this->readOneBy(new Criteria(['public_id' => $pid]));
     }
 
     public function readOneBy(Criteria $criteria): mixed
@@ -160,6 +149,25 @@ final class CrudHelper
         }
 
         return self::instantiateFromRow($this->className, $row);
+    }
+
+    #[Pure]
+    private function primaryArrayToCriteria(
+        array $primaries
+    ): Criteria {
+        $criteria = [];
+        foreach ($primaries as $pKey => $pValue) {
+            if (in_array($pKey, $this->primary)) {
+                $criteria[$pKey] = $pValue;
+            }
+        }
+
+        return new Criteria($criteria);
+    }
+
+    public function readOneFromPid(string $pid): mixed
+    {
+        return $this->readOneBy(new Criteria(['public_id' => $pid]));
     }
 
     /**
@@ -209,13 +217,6 @@ final class CrudHelper
             "DELETE FROM {$this->table()} " . Criteria::getWhere($criteria),
             $criteria->getParams()
         );
-    }
-
-    public static function instantiateFromRow(string $className, array $row): mixed
-    {
-        $rowObj = new $className();
-        $rowObj->fromPdoArray($row);
-        return $rowObj;
     }
 
 }

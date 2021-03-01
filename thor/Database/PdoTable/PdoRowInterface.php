@@ -9,6 +9,8 @@ interface PdoRowInterface
 
     // <-> SQL Methods
 
+    public static function getTableDefinition(): PdoRow;
+
     /**
      * @return array an array of 'column_name' => 'SQL_COLUMN_TYPE(SIZE)'.
      */
@@ -37,7 +39,5 @@ interface PdoRowInterface
      * @return string get primary keys in a concatenated string.
      */
     public function getPrimaryString(): string;
-
-    public static function getTableDefinition(): PdoRow;
 
 }
