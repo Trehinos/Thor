@@ -35,7 +35,8 @@ module/command:
 namespace App\Commands;
 
 use Thor\Cli\Command;
-use Thor\Cli\Console;use Thor\Cli\CliKernel;
+use Thor\Cli\Console;
+use Thor\Cli\CliKernel;
 
 final class Module extends Command {
     public function __construct(string $command, array $args, CliKernel $kernel)
