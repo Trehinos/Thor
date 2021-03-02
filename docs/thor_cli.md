@@ -14,37 +14,141 @@ This module consist of the CliKernel, the Command base class, the Daemon definit
 2. Read arguments from command line.
 3. Execute the right command or echo error.
 
+#### How to define a command :
+
+1. Declare the command in ```commands.yml``` :
+
+```yml
+module/command:
+    class: App\Commands\Module
+    command: command
+    description: My awesome command
+    arguments:
+        argument:
+            hasValue: true
+            description: an interstesting argument description
+```
+
+2. Create the class ```App\Commands\Module``` :
+
+```php
+namespace App\Commands;
+
+use Thor\Cli\Command;
+use Thor\Cli\Console;use Thor\Cli\CliKernel;
+
+final class Module extends Command {
+    public function __construct(string $command, array $args, CliKernel $kernel)
+    {
+        parent::__construct($command, $args, $kernel);
+    }
+    
+    public function command()
+    {
+        $argument = $this->get('argument');
+        if (null === $argument) {
+            $this->error('Usage error : ', 'argument is required');
+        }
+        
+        $this->console
+                    ->fColor(Console::COLOR_YELLOW)
+                    ->write('My argument is : ')
+                    ->fColor(Console::COLOR_CYAN)
+                    ->writeln($argument)
+                    ->mode()
+        ;
+    }
+}
+```
+
+3. Execute the command :
+   * Execute : ```php bin/thor.php module/command -argument "This is my argument""```
+
+> Type ```php bin/thor.php -help``` to see the commands list.
+
 ## Abstract Command and Console utility class
 
 A command to be executed by the CLI kernel **has to** expand the class ```Thor\Cli\Command```.  
 **One CLI command = one method** (like one route = one method in controllers).
 
-> You can use the ```console``` property to control the terminal output :
-> ```php
-> use Thor\Cli\Console;
->
-> // in a command, use $this->console-> : 
-> 
-> function fColor(int $fc = Console::COLOR_GRAY, ?int $mode = null) {} // Change Foreground color.
-> 
-> function bColor(int $bc = Console::COLOR_BLACK, ?int $mode = null) {} // Change Background color. 
-> 
-> function mode(int $mode = Console::MODE_RESET) {} // Change mode
-> 
-> // Locate the cursor at the specified row ($y) and column ($x).
-> function locate(int $y, int $x) {} 
-> 
-> function clear() {} // Clear the screen
-> 
-> function write(string $text) {} // Write text.
-> 
-> // Write text and places cursor at the begining of the same line.
-> function writeInline(string $text) {}
-> 
-> // Write text and a new line. 
-> function writeln(string $text = '') {}
-> 
-> ```
+### Command ```class``` ```abstract```
+
+* ```__construct(string $name, array $args, CliKernel $cli)```
+* ```set(string $arg, string|bool $value = true): void```
+* ```get(string $arg): string|bool|null```
+* ```usage(?string $name = null): void```
+* ```error(string $title, string $message, bool $displayUsage = false, bool $displayHelp = false): void```
+* ```help(?string $name = null): void```
+* ```php
+    static function getArgs(
+        array $argumentsFromCommandLine,
+        #[ArrayShape([['hasValue' => 'bool|null', 'description' => 'string|null', 'class' => 'string']])]
+        array $argsSpec
+    ): array
+  ```
+
+### Console ```class``` ```final```
+
+```Thor\Cli\Console``` utility class.
+
+* Constants
+
+```php
+ /** COLOR SEQUENCE */
+const COLOR_START = "\033[";
+const COLOR_END = 'm';
+
+/** CURSOR/COLORS STATES */
+const MODE_RESET = 0;
+const MODE_BRIGHT = 1;
+const MODE_DIM = 2;
+const MODE_UNDERSCORE = 3;
+const MODE_BLINK = 5;
+const MODE_REVERSE = 7;
+const MODE_HIDDEN = 8;
+
+/** COLOR MASKS */
+const COLOR_BLACK = 0;
+const COLOR_RED = 1;
+const COLOR_GREEN = 2;
+const COLOR_YELLOW = 3;
+const COLOR_BLUE = 4;
+const COLOR_MAGENTA = 5;
+const COLOR_CYAN = 6;
+const COLOR_GRAY = 7;
+
+/** CLEAR SCREEN SEQUENCE */
+const CLEAR = "\033[H\033[J";
+
+/** CURSOR CONTROL SEQUENCES */
+const CURSOR_HOME = "\033[0K";
+const CURSOR_UP = "\033[yA";
+const CURSOR_DOWN = "\033[yB";
+const CURSOR_RIGHT = "\033[xC";
+const CURSOR_LEFT = "\033[xD";
+const CURSOR_POS = "\033[y;xf";
+const CURSOR_SAVE = "\033[s";
+const CURSOR_UNSAVE = "\033[u";
+const CURSOR_SAVEALL = "\0337"; 
+const CURSOR_RESTORE = "\0338"; 
+```
+
+* ```__construct()```
+* ```__destruct()```
+* ```fColor(int $fc = self::COLOR_GRAY, ?int $mode = null): self```
+* ```bColor(int $bc = self::COLOR_BLACK, ?int $mode = null): self```
+* ```mode(int $mode = self::MODE_RESET): self```
+* ```moveUp(int $y): self```
+* ```moveDown(int $y): self```
+* ```moveLeft(int $x): self```
+* ```moveRight(int $x): self```
+* ```locate(int $y, int $x): self```
+* ```home(): self```
+* ```clear(): self```
+* ```write(string $text): self```
+* ```writeFix(string $text, int $minSize, int $direction = STR_PAD_RIGHT): self```
+* ```writeInline(string $text): self```
+* ```writeln(string $text = ''): self```
 
 ## Daemons
 
@@ -55,7 +159,7 @@ a **DaemonScheduler** as a *background task* during its *active period*.
 
 #### Daemon ```class``` ```abstract```
 
-* ```__construct(string $name, int $periodicityInMinutes, string $startHi = '000000', string $endHi = '235959', bool $enabled = false)```
+* ```__construct(string $name, int $periodicityInMinutes, string $startHi = '0000', string $endHi = '2359', bool $enabled = false)```
 * ```getName(): string```
 * ```getPeriodicity(): int```
 * ```isEnabled(): bool```
@@ -128,7 +232,8 @@ Run a command with ```php bin/thor.php [command]``` :
 
 3. CRON **every minute** the command ```php thor/bin/daemon.php``` which executes the **DaemonScheduler**.
     - On **GNU/Linux**, run ```crontab -e``` and edit the file ([Cron](https://en.wikipedia.org/wiki/Cron)).
-    - On **Windows**, type "Task Scheduler" in the start menu ([Windows Task Scheduler](https://en.wikipedia.org/wiki/Windows_Task_Scheduler)).  
-    Be warned that on Windows, you may have to declare 5 triggers  to have a 1 minute granularity.
+    - On **Windows**, type "Task Scheduler" in the start
+      menu ([Windows Task Scheduler](https://en.wikipedia.org/wiki/Windows_Task_Scheduler)).  
+      Be warned that on Windows, you may have to declare 5 triggers to have a 1 minute granularity.
 
 4. In a terminal, run ```php thor/bin/thor.php daemon/start -name my_daemon``` to enable the daemon.
