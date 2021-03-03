@@ -33,7 +33,7 @@ class Response
         return $this->headers;
     }
 
-    public function setHeader(string $name, array|string $value)
+    public function setHeader(string $name, array|string $value): void
     {
         $this->headers[$name] = $value;
     }

@@ -45,47 +45,6 @@ final class Request
     ) {
     }
 
-    public function getMethod(): string
-    {
-        return $this->type;
-    }
-
-    public function getPathInfo(): string
-    {
-        return $this->pathInfo;
-    }
-
-    public function getHeader(string $name, $default = null)
-    {
-        return $this->headers[$name] ?? $default;
-    }
-
-    public function getHeaders(): array
-    {
-        return $this->headers;
-    }
-
-    public function getBody(): string
-    {
-        return $this->body;
-    }
-
-    #[Pure]
-    public function queryGet(string $name, $default = null): string|array|null
-    {
-        return Server::get($name, $default);
-    }
-
-    #[Pure]
-    public function postVariable(string $name, $default = null): string|array|null
-    {
-        if ($this->type === self::POST) {
-            return Server::post($name, $default);
-        }
-
-        return null;
-    }
-
     public static function createFromServer(): self
     {
         $type = strtoupper($_SERVER['REQUEST_METHOD']);
@@ -123,10 +82,64 @@ final class Request
         $headers = [];
         foreach ($_SERVER as $name => $value) {
             if (substr($name, 0, 5) == 'HTTP_') {
-                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+                $headers[str_replace(
+                    ' ',
+                    '-',
+                    ucwords(
+                        strtolower
+                        (
+                            str_replace('_', ' ', substr($name, 5))
+                        )
+                    )
+                )] = $value;
             }
         }
         return $headers;
+    }
+
+    public function getMethod(): string
+    {
+        return $this->type;
+    }
+
+    public function getPathInfo(): string
+    {
+        return $this->pathInfo;
+    }
+
+    public function getHeader(string $name, $default = null): array|string|null
+    {
+        return $this->headers[$name] ?? $default;
+    }
+
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+
+    #[Pure]
+    public function queryGet(
+        string $name,
+        $default = null
+    ): string|array|null {
+        return Server::get($name, $default);
+    }
+
+    #[Pure]
+    public function postVariable(
+        string $name,
+        $default = null
+    ): string|array|null {
+        if ($this->type === self::POST) {
+            return Server::post($name, $default);
+        }
+
+        return null;
     }
 
 }
