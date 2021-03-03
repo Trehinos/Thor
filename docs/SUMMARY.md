@@ -3,9 +3,11 @@
 ## Thor
 
 - [Cli module](thor_cli.md)
+  - [How to define a command](thor_cli.md#how-to-define-a-command-)
   - [Console utility class](thor_cli.md#console-class-final)
   - [Create a daemon](thor_cli.md#example--create-a-daemon-and-cron-daemonscheduler)
 - [Database](thor_database.md)
+  - [Database configuration](thor_database.md#database-configuration)
   - [PdoExtension](thor_database.md#pdoextension-public-api)
   - [PdoTable](thor_database.md#pdotable-public-api)
 - Debug utilities
@@ -23,10 +25,7 @@
 ## Application
 
 - [Resources](struct_resources.md)
-  - Static data
-  - Configuration
-  - SQL
-  - Views
+  - [How to read a configuration/resource file](struct_resources.md#how-to-read-a-yaml-resource-file-)
 
 ## Variable files
 
