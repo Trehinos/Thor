@@ -24,7 +24,7 @@
 
 ## Application
 
-- [Resources](struct_resources.md)
+- [Resources](struct_resources.md) : static data and views.
   - [How to read a configuration/resource file](struct_resources.md#how-to-read-a-yaml-resource-file-)
 
 ## Variable files
