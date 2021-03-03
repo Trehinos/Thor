@@ -85,14 +85,15 @@ A command to be executed by the CLI kernel **has to** expand the class ```Thor\C
         array $argumentsFromCommandLine,
         #[ArrayShape([['hasValue' => 'bool|null', 'description' => 'string|null', 'class' => 'string']])]
         array $argsSpec
-    ): array
+    ): array;
   ```
 
 ### Console ```class``` ```final```
 
-```Thor\Cli\Console``` utility class.
+```Thor\Cli\Console``` utility class. This class is a fluid interface to get an easy way to write
+in colors and control the location of the printed text.
 
-* Constants
+* Public constants
 
 ```php
  /** COLOR SEQUENCE */

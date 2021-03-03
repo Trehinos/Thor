@@ -5,12 +5,12 @@ managed by a Router.
 ## The HTTP kernel and the HTTP cycle
 
 The ```HttpKernel``` is in charge of ```Thor\Http\Server``` instantiation.  
-It creates a ```Request``` from the environment and make the server handle it. Then the kernel sends the headers,
+It creates a ```Request``` from the environment and makes the server handle it. Then the kernel sends the headers,
 and the body, extracted from a ```Response``` object returned by the controller, to the client.
 
 ### Request ```class``` ```final```
 
-* Constants :  
+* Public constants :  
 ```php
 // HTTP 1.1
 const GET = 'GET';
@@ -40,7 +40,7 @@ bool $responseHasBody;
 bool $safe;
 bool $idempotent;
 bool $cache;
-bool $html
+bool $html;
 ```
 
 * ```static createFromServer(): self```

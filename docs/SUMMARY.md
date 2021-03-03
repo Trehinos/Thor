@@ -3,8 +3,11 @@
 ## Thor
 
 - [Cli module](thor_cli.md)
+  - [Console utility class](thor_cli.md#console-class-final)
   - [Create a daemon](thor_cli.md#example--create-a-daemon-and-cron-daemonscheduler)
 - [Database](thor_database.md)
+  - [PdoExtension](thor_database.md#pdoextension-public-api)
+  - [PdoTable](thor_database.md#pdotable-public-api)
 - Debug utilities
 - Factories
 - Html utilities
