@@ -50,7 +50,7 @@ changelog:
     legend: "Légende"
 about:
     title: "A propos"
-about.description: |-
+about.body: |-
         <strong>Thor</strong> est un framework PHP.<br>
         <strong>Version courante :</strong> %s<br>
         <strong>License</strong> : MIT (&copy; Sébastien GELDREICH)<br>
@@ -58,7 +58,7 @@ about.description: |-
 legal:
     title: "Mentions légales"
     description: |-
-        <i class="far fa-copyright"></i> 2020 Sébastien GELDREICH<br>
+        <i class="far fa-copyright"></i> 2021 Sébastien GELDREICH<br>
         License : MIT
 
 # ######################################################################################################################

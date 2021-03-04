@@ -79,14 +79,13 @@ db-connection-identifier:
 // Retrieve all connection information
 use Thor\Thor;
 use Thor\Database\PdoExtension\PdoCollection;
-$pdoCollection = PdoCollection::createFromConfiguration(
-    Thor::getInstance()->loadConfig('database')
-);
+$pdoCollection = PdoCollection::createFromConfiguration(Thor::config('database'));
 
 // Send a query to the DBMS :
 use Thor\Database\PdoExtension\PdoRequester;
 $pdoHandler = $pdoCollection->get('db-connection-identifier');
-$requester = new PdoRequester($pdoHandler);
+$requester = new PdoRequester($pdoHandler); // Use PdoTransaction instead of PdoRequester to perform
+                                            // the queries in a transaction.
 $result = $requester->request('SELECT * FROM User WHERE id=?', ['1'])->fetchAll();
 ```
 
