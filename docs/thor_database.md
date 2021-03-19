@@ -178,7 +178,7 @@ Defines a ```public_id``` column.
   ```#[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])```
 * ```getAttributes(): array```  
   ```#[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])```
-  
+
 #### CrudHelper ```class``` ```final```
 
 Performs SQL queries with a ```PdoRequester``` on a specified class implementing ```PdoRowInterface```.
@@ -214,3 +214,76 @@ Performs SQL queries with a ```PdoRequester``` on a specified class implementing
 * ```dropTable(): bool```
 
 ### Example : Create a User class linked to a table in DB
+
+1. Create the table in Db :
+
+```mysql
+CREATE TABLE user
+(
+    id        INT          NOT NULL AUTO_INCREMENT,
+    public_id VARCHAR(255) NOT NULL,
+    username  VARCHAR(255) NOT NULL,
+    password  VARCHAR(255) NOT NULL
+)
+```
+
+2. Create a class extending ```AdvancedPdoRow``` :
+
+```php
+
+namespace MyApp;
+
+use Thor\Database\PdoTable\AbstractPdoRow;
+use Thor\Database\PdoTable\Attributes\PdoRow;
+use Thor\Database\PdoTable\Attributes\PdoColumn;
+use Thor\Database\PdoTable\Attributes\PdoIndex;
+
+/**
+ * Class User
+ *  + AbstractPdoRow:: #[PdoColumn('public_id', 'VARCHAR(255)', false)]
+ *  + AbstractPdoRow:: #[PdoIndex(['public_id'], true)]
+ * 
+ * a convention : primary key columns, then indexes, with their columns, then the other columns
+ * 
+ */
+#[PdoRow('user', ['id'], 'id')]
+#[PdoColumn('id', 'INT', false)]
+#[PdoIndex(['username', true])]
+#[PdoColumn('username', 'VARCHAR(255)', false)]
+#[PdoColumn('password', 'VARCHAR(255)', false)]
+class User extends AbstractPdoRow {
+
+    public function __construct(
+        protected string $username,
+         
+    ) {
+        parent::__construct(null, [null]);
+    }
+    
+    // add getters, setters, methods, etc.
+    
+}
+```
+
+3. Use it !
+
+```php
+
+use MyApp\User;
+use Thor\Database\PdoTable\CrudHelper;
+use Thor\Http\BaseController;
+
+class Anywhere extends BaseController {
+    public function doSomething(): void
+    {
+        $crud = new CrudHelper(User::class, $this->getServer()->getRequester());
+        
+        // here $myUser->getPublidId() === null && $myUser->getPrimaryString() === ''
+        $pid = $crud->createOne($myUser = new User(null, [null]));
+        
+        // here $myUser->getPublidId() === 'a random string'
+        //   && $myUser->getPrimaryString() === '1' (the auto_increment value)
+        $myUser = $crud->readOneFromPid($pid);
+    }
+}
+```

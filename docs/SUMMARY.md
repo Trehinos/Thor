@@ -3,13 +3,14 @@
 ## Thor
 
 - [Cli module](thor_cli.md)
-  - [How to define a command](thor_cli.md#how-to-define-a-command-)
-  - [Console utility class](thor_cli.md#console-class-final)
-  - [Create a daemon](thor_cli.md#example--create-a-daemon-and-cron-daemonscheduler)
+    - [How to define a command](thor_cli.md#how-to-define-a-command-)
+    - [Console utility class](thor_cli.md#console-class-final)
+    - [Create a daemon](thor_cli.md#example--create-a-daemon-and-cron-daemonscheduler)
 - [Database](thor_database.md)
-  - [Database configuration](thor_database.md#database-configuration)
-  - [PdoExtension](thor_database.md#pdoextension-public-api)
-  - [PdoTable](thor_database.md#pdotable-public-api)
+    - [Database configuration](thor_database.md#database-configuration)
+    - [PdoExtension](thor_database.md#pdoextension-public-api)
+    - [PdoTable](thor_database.md#pdotable-public-api)
+    - [ⓘ How to : create an user DAO](thor_database.md#example--create-a-user-class-linked-to-a-table-in-db)
 - Debug utilities
 - Factories
 - Html utilities
@@ -25,7 +26,7 @@
 ## Application
 
 - [Resources](struct_resources.md) : static data and views.
-  - [How to read a configuration/resource file](struct_resources.md#how-to-read-a-yaml-resource-file-)
+    - [ⓘ How to : read a configuration/resource file](struct_resources.md#how-to-read-a-yaml-resource-file-)
 
 ## Variable files
 
