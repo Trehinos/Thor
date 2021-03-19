@@ -250,17 +250,45 @@ use Thor\Database\PdoTable\Attributes\PdoIndex;
 #[PdoColumn('id', 'INT', false)]
 #[PdoIndex(['username', true])]
 #[PdoColumn('username', 'VARCHAR(255)', false)]
-#[PdoColumn('password', 'VARCHAR(255)', false)]
-class User extends AbstractPdoRow {
+#[PdoColumn('password', 'VARCHAR(255)', false)] // the hashed password
+class User extends AbstractPdoRow
+{
 
     public function __construct(
         protected string $username,
-         
+        protected string $password
     ) {
         parent::__construct(null, [null]);
     }
     
-    // add getters, setters, methods, etc.
+    public function setPassword(string $clearPassword): void
+    {
+        $this->password = password_hash($clearPassword, PASSWORD_DEFAULT);
+    }
+    
+    /**
+     * @return string
+     */
+    public  function getPassword(): string
+    {
+        return $this->password;
+    }   
+    
+    /**
+     * @param string $username
+     */
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
     
 }
 ```
