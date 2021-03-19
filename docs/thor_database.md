@@ -223,7 +223,11 @@ CREATE TABLE user
     id        INT          NOT NULL AUTO_INCREMENT,
     public_id VARCHAR(255) NOT NULL,
     username  VARCHAR(255) NOT NULL,
-    password  VARCHAR(255) NOT NULL
+    password  VARCHAR(255) NOT NULL,
+    
+    PRIMARY KEY (id),
+    UNIQUE INDEX (public_id),
+    UNIQUE INDEX (username)
 )
 ```
 
