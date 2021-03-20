@@ -113,8 +113,7 @@ This class is a facade of a Http server.
         array $filter_options = [],
     ): string
   ```
-* ```static writeCookieArray(string $name, array $value): void```
-* ```static writeCookie(string $name, string $value): void```
+* ```static writeCookie(string $name, array|string $value): void```
 * ```static readSession(string $name, $default = null, ?int $filter = null): mixed```
 * ```static writeSession(string $name, mixed $value): void```
 * ```getAppName(): string```

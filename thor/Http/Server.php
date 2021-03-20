@@ -76,15 +76,14 @@ class Server
         return $_COOKIE[$name] ?? $default;
     }
 
-    public static function writeCookieArray(string $name, array $value): void
+    public static function writeCookie(string $name, array|string $value): void
     {
-        foreach ($value as $key => $v) {
-            self::writeCookie("$name[$key]", $v);
+        if (is_array($value)) {
+            foreach ($value as $key => $v) {
+                self::writeCookie("$name[$key]", $v);
+            }
+            return;
         }
-    }
-
-    public static function writeCookie(string $name, string $value): void
-    {
         setcookie($name, $value);
     }
 
@@ -160,7 +159,8 @@ class Server
                         $this->security->logoutRoute,
                         $this->security->checkRoute,
                     ]
-                )) {
+                )
+            ) {
                 return $this->redirect($this->security?->loginRoute ?? 'login');
             }
         }
