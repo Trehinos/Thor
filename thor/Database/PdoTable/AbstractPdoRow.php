@@ -6,7 +6,7 @@ use Exception;
 use Thor\Database\PdoTable\Attributes\PdoColumn;
 use Thor\Database\PdoTable\Attributes\PdoIndex;
 
-#[PdoColumn('public_id', 'VARCHAR(255)', 'string')]
+#[PdoColumn('public_id', 'VARCHAR(255)', 'string', false)]
 #[PdoIndex(['public_id'], true)]
 abstract class AbstractPdoRow implements PdoRowInterface
 {

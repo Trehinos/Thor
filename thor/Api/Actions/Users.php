@@ -129,6 +129,8 @@ final class Users extends BaseController
      * @param string $public_id
      *
      * @return Response
+     *
+     * @throws Exception
      */
     public function passwordForm(string $public_id): Response
     {
@@ -137,7 +139,7 @@ final class Users extends BaseController
         return $this->view(
             'pages/users_modals/change-password.html.twig',
             [
-                'user' => $user,
+                'user'              => $user,
                 'generatedPassword' => UserManager::generatePassword()
             ]
         );

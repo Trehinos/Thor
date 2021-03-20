@@ -215,23 +215,7 @@ Performs SQL queries with a ```PdoRequester``` on a specified class implementing
 
 ### Example : Create a User class linked to a table in DB
 
-1. Create the table in Db :
-
-```mysql
-CREATE TABLE user
-(
-    id        INT          NOT NULL AUTO_INCREMENT,
-    public_id VARCHAR(255) NOT NULL,
-    username  VARCHAR(255) NOT NULL,
-    password  VARCHAR(255) NOT NULL,
-    
-    PRIMARY KEY (id),
-    UNIQUE INDEX (public_id),
-    UNIQUE INDEX (username)
-)
-```
-
-2. Create a class extending ```AdvancedPdoRow``` :
+1. Create a class extending ```AdvancedPdoRow``` :
 
 ```php
 
@@ -251,10 +235,10 @@ use Thor\Database\PdoTable\Attributes\PdoIndex;
  * 
  */
 #[PdoRow('user', ['id'], 'id')]
-#[PdoColumn('id', 'INT', false)]
-#[PdoIndex(['username', true])]
-#[PdoColumn('username', 'VARCHAR(255)', false)]
-#[PdoColumn('password', 'VARCHAR(255)', false)] // the hashed password
+#[PdoColumn('id', 'INT', 'integer', false)]
+#[PdoIndex(['username'], true)]
+#[PdoColumn('username', 'VARCHAR(255)', 'string', false)]
+#[PdoColumn('password', 'VARCHAR(255)', 'string', false)] // the hashed password
 class User extends AbstractPdoRow
 {
 
@@ -295,6 +279,34 @@ class User extends AbstractPdoRow
     }
     
 }
+```
+
+2. Create the table :
+
+```php
+
+use MyApp\User;
+use Thor\Database\PdoTable\SchemaHelper;
+use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
+
+$schema = new SchemaHelper($this->getServer()->getRequester(), new PdoAttributesReader(User::class));
+$schema->createTable(); // execute the CREATE TABLE query in DB.
+```
+
+```$schema->createTable()``` performs this SQL query :
+
+```mysql
+CREATE TABLE user
+(
+    id        INTEGER      NOT NULL AUTO_INCREMENT,
+    public_id VARCHAR(255) NOT NULL,
+    username  VARCHAR(255) NOT NULL,
+    password  VARCHAR(255) NOT NULL,
+
+    PRIMARY KEY (id),
+    CONSTRAINT UNIQUE INDEX uniq_public_id (public_id),
+    CONSTRAINT UNIQUE INDEX uniq_username (username)
+)
 ```
 
 3. Use it !

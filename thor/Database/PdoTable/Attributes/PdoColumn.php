@@ -68,9 +68,9 @@ class PdoColumn
 
     #[Pure] public function getSql(): string
     {
-        $nullStr = $this->nullable ? '' : 'NOT NULL';
-        $defaultStr = ($this->getDefault() === null) ? '' : "DEFAULT {$this->getDefault()}";
-        return "{$this->getName()} {$this->getSqlType()} $nullStr $defaultStr";
+        $nullStr = $this->nullable ? '' : ' NOT NULL';
+        $defaultStr = ($this->getDefault() === null) ? '' : " DEFAULT {$this->getDefault()}";
+        return "{$this->getName()} {$this->getSqlType()}$nullStr$defaultStr";
     }
 
 }

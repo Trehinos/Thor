@@ -35,12 +35,12 @@ class PdoIndex
         return $this->isUnique;
     }
 
-    #[Pure] public function getSql(string $tableName): string
+    #[Pure] public function getSql(): string
     {
-        $unq = $this->isUnique() ? 'UNIQUE' : '';
+        $unq = $this->isUnique() ? ' UNIQUE' : '';
         $cols = implode(', ', $this->getColumnNames());
 
-        return "CREATE $unq INDEX {$this->getName()} ON $tableName ($cols)";
+        return "CONSTRAINT$unq INDEX {$this->getName()} ($cols)";
     }
 
 
