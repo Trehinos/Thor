@@ -108,13 +108,13 @@ This class is a facade of a Http server.
 * ```php
     static readCookie(
         string $name,
-        string $default = null,
+        string $default = '',
         ?int $filter = null,
-        array $filter_options = [],
+        array $filter_options = []
     ): string
   ```
 * ```static writeCookie(string $name, array|string $value): void```
-* ```static readSession(string $name, $default = null, ?int $filter = null): mixed```
+* ```static readSession(string $name, mixed $default = null, ?int $filter = null): mixed```
 * ```static writeSession(string $name, mixed $value): void```
 * ```getAppName(): string```
 * ```getSecurity(): ?SecurityContext```

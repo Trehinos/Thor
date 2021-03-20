@@ -32,11 +32,11 @@ class Server
 
     #[Pure] public static function post(
         string $name,
-        string|array|null $default = null,
+        array|string|null $default = null,
         ?int $filter = null,
         array $filter_options = [],
 
-    ): string|array|null {
+    ): array|string|null {
         if (null !== $filter) {
             return (false === ($filtered = filter_input(INPUT_POST, $name, $filter, $filter_options)))
                 ? $default
@@ -48,10 +48,10 @@ class Server
 
     #[Pure] public static function get(
         string $name,
-        string|array|null $default = null,
+        array|string|null $default = null,
         ?int $filter = null,
         array $filter_options = []
-    ): string|array|null {
+    ): array|string|null {
         if (null !== $filter) {
             return (false === ($filtered = filter_input(INPUT_GET, $name, $filter, $filter_options)))
                 ? $default
@@ -87,7 +87,7 @@ class Server
         setcookie($name, $value);
     }
 
-    public static function readSession(string $name, $default = null, ?int $filter = null): mixed
+    public static function readSession(string $name, mixed $default = null, ?int $filter = null): mixed
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
