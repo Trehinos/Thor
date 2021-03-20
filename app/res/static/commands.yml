@@ -124,6 +124,15 @@ daemon/kill:
       description: the daemon name
 
 clear/cache:
-  class: ''
-  command: ''
-  description:
+  class: Thor\Api\Commands\CoreCommand
+  command: clearCache
+  description: clear the cache
+
+clear/logs:
+  class: Thor\Api\Commands\CoreCommand
+  command: clearLogs
+  description: clear all logs
+  arguments:
+    env:
+      hasValue: true
+      description: "prod|verbose|debug|[dev] : the environment to clear"

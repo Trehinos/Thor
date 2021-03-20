@@ -11,14 +11,16 @@ final class Request
 
     // HTTP 1.1
     public const GET = 'GET';
-    public const HEAD = 'HEAD';
     public const POST = 'POST';
+
     public const PUT = 'PUT';
+    public const PATCH = 'PATCH';
     public const DELETE = 'DELETE';
+
+    public const HEAD = 'HEAD';
+    public const TRACE = 'TRACE';
     public const CONNECT = 'CONNECT';
     public const OPTIONS = 'OPTIONS';
-    public const TRACE = 'TRACE';
-    public const PATCH = 'PATCH';
 
     // WEBDAV
     /** @see http://www.webdav.org/specs/rfc4918.html */

@@ -29,7 +29,8 @@ final class CoreCommand extends Command
         $this->routes =
             HttpKernel::createRouterFromConfiguration(
                 Thor::config('routes', true)
-            )->getRoutes();
+            )->getRoutes()
+        ;
     }
 
     public function routeSet()
@@ -45,10 +46,10 @@ final class CoreCommand extends Command
         }
 
         $this->routes[$name] = [
-            'path' => $path,
+            'path'   => $path,
             'method' => $method,
             'action' => [
-                'class' => $cClass,
+                'class'  => $cClass,
                 'method' => $cMethod
             ]
         ];
@@ -57,7 +58,8 @@ final class CoreCommand extends Command
         $this->console
             ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
             ->writeln("Done.")
-            ->mode();
+            ->mode()
+        ;
     }
 
     public function setup()
@@ -82,7 +84,8 @@ final class CoreCommand extends Command
             $this->console
                 ->fColor(Console::COLOR_YELLOW, Console::MODE_BRIGHT)
                 ->write("$routeName : ")
-                ->mode();
+                ->mode()
+            ;
 
             $c = $route->getControllerClass();
             $m = $route->getControllerMethod();
@@ -93,7 +96,8 @@ final class CoreCommand extends Command
                 ->write('::')
                 ->fColor(Console::COLOR_BLUE, Console::MODE_RESET)
                 ->write($m . '()')
-                ->mode();
+                ->mode()
+            ;
 
             $path = $route->getPath();
             if (null !== $path) {
@@ -112,10 +116,63 @@ final class CoreCommand extends Command
                     ->write(' ' . $path ?? '')
                     ->fColor(Console::COLOR_GRAY, Console::MODE_DIM)
                     ->write(']')
-                    ->mode();
+                    ->mode()
+                ;
             }
             $this->console->writeln();
         }
+    }
+
+    public function clearCache(): void
+    {
+        $this->console->fColor(Console::COLOR_CYAN)
+                      ->writeln('Clearing the cache...')
+                      ->mode()
+        ;
+        self::removeTree(Globals::VAR_DIR . 'cache', removeFirst: false);
+
+        $this->console->writeln(" -> Done");
+    }
+
+    private static function removeTree(string $path, string|false $mask = false, bool $removeFirst = true): bool
+    {
+        $files = scandir($path);
+
+        $ret = true;
+        foreach ($files as $file) {
+            if (in_array($file, ['.', '..'])) {
+                continue;
+            }
+            if ($mask !== false && preg_match("#^$mask$#", $file) === 0) {
+                continue;
+            }
+            if (is_dir("$path/$file")) {
+                $ret = $ret && self::removeTree("$path/$file", $mask);
+                continue;
+            }
+            $ret = $ret && unlink("$path/$file");
+            echo "$path/$file deleted\n";
+        }
+
+        if ($removeFirst) {
+            $ret = $ret && rmdir("$path");
+            echo "$path deleted\n";
+        }
+        return $ret;
+    }
+
+    public function clearLogs(): void
+    {
+        $env = $this->get('env') ?? 'dev';
+
+        $this->console->fColor(Console::COLOR_CYAN)
+                      ->writeln("Clearing the $env logs...")
+                      ->mode()
+        ;
+        self::removeTree(Globals::VAR_DIR . 'logs', "{$env}_.*[.]log", false);
+
+        Logger::write("Log cleared");
+        $this->console->writeln(" -> Done");
     }
 
 }
