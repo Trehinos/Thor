@@ -30,6 +30,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 * Console commands to **control the application** :
     * ```user/``` : ```create``` / ```edit``` / ```delete``` / ```list```.
     * ```core/``` : ```setup```.
+    * ```clear/``` : ```cache``` / ```logs```.
     * ```route/``` : ```set``` / ```list```.
 * Daemons and daemons control (e.g. ```daemon/status -all``` command) :  
   ![Daemons status illustration](docs/images/daemons.png)
