@@ -3,9 +3,9 @@
 ## Thor
 
 - [Cli module](thor_cli.md)
-    - [How to define a command](thor_cli.md#how-to-define-a-command-)
     - [Console utility class](thor_cli.md#console-class-final)
     - [Create a daemon](thor_cli.md#example--create-a-daemon-and-cron-daemonscheduler)
+    - [ⓘ How to : define a command](thor_cli.md#how-to-define-a-command-)
 - [Database](thor_database.md)
     - [Database configuration](thor_database.md#database-configuration)
     - [PdoExtension](thor_database.md#pdoextension-public-api)
