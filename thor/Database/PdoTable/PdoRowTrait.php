@@ -9,7 +9,7 @@ use Thor\Database\PdoTable\Attributes\PdoColumn;
 use Thor\Database\PdoTable\Attributes\PdoRow;
 
 /**
- * Trait AdvancedPdoRow: implements PdoRowInterface with Pdo Attributes.
+ * Trait PdoRowTrait: implements PdoRowInterface with Pdo Attributes.
  * @package Thor\Database\PdoExtension
  *
  * @since 2020-10
@@ -18,7 +18,7 @@ use Thor\Database\PdoTable\Attributes\PdoRow;
  * @copyright Author
  * @license MIT
  */
-trait AdvancedPdoRow
+trait PdoRowTrait
 {
 
     private static ?array $tableDefinition = null;

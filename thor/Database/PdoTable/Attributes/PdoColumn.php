@@ -66,6 +66,11 @@ class PdoColumn
         return $this->phpType;
     }
 
+    public function isNullable(): bool
+    {
+        return $this->nullable;
+    }
+
     #[Pure] public function getSql(): string
     {
         $nullStr = $this->nullable ? '' : ' NOT NULL';

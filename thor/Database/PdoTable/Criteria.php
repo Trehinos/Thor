@@ -17,13 +17,37 @@ final class Criteria
     }
 
     /**
-     * @param array $criteria
-     *      'fieldName' =>  ''  -> DIRECT VALUE
-     *                      []  -> IN
-     *      'and' => [...]
-     *      'or' => [...]
+     * @param Criteria $criteria
      *
-     * @param bool $glue
+     * @return string SQL with 'WHERE' if there is any criteria or ''.
+     */
+    public static function getWhere(Criteria $criteria): string
+    {
+        return (($t_sql = $criteria->getSql()) === '') ? '' : "WHERE $t_sql";
+    }
+
+    public function getSql(): string
+    {
+        if ($this->sql === null) {
+            $this->make();
+        }
+
+        return $this->sql;
+    }
+
+    private function make(): void
+    {
+        ['sql' => $this->sql, 'params' => $this->params] = self::compile($this->criteria, $this->glue);
+    }
+
+    /**
+     * @param array $criteria
+     *                      'fieldName' =>  ''  -> DIRECT VALUE
+     *                      []  -> IN
+     *                      'and' => [...]
+     *                      'or' => [...]
+     *
+     * @param bool  $glue
      *
      * @return array
      */
@@ -63,42 +87,9 @@ final class Criteria
         }
 
         return [
-            'sql' => implode($glue ? ' AND ' : ' OR ', $sqlArray),
+            'sql'    => implode($glue ? ' AND ' : ' OR ', $sqlArray),
             'params' => $params
         ];
-    }
-
-    /**
-     * @param Criteria $criteria
-     *
-     * @return string SQL with 'WHERE' if there is any criteria or ''.
-     */
-    public static function getWhere(Criteria $criteria): string
-    {
-        return (($t_sql = $criteria->getSql()) === '') ? '' : "WHERE $t_sql";
-    }
-
-    public function getSql(): string
-    {
-        if ($this->sql === null) {
-            $this->make();
-        }
-
-        return $this->sql;
-    }
-
-    public function getParams(): array
-    {
-        if ($this->params === null) {
-            $this->make();
-        }
-
-        return $this->params;
-    }
-
-    private function make(): void
-    {
-        ['sql' => $this->sql, 'params' => $this->params] = self::compile($this->criteria, $this->glue);
     }
 
     #[ArrayShape(['op' => "false|string", 'value' => "false|null|string"])]
@@ -117,17 +108,17 @@ final class Criteria
 
             case '%*':
                 $op = 'LIKE';
-                $value = substr("%$value", 2);
+                $value = '%' . substr($value, 2);
                 break;
 
             case '*%':
                 $op = 'LIKE';
-                $value = substr("$value%", 2);
+                $value = substr($value, 2) . '%';
                 break;
 
             case '!%';
                 $op = 'NOT LIKE';
-                $value = substr("%$value%", 2);
+                $value = '%' . substr($value, 2) . '%';
                 break;
 
             default:
@@ -141,7 +132,7 @@ final class Criteria
 
                     case '%':
                         $op = 'LIKE';
-                        $value = substr("%$value%", 1);
+                        $value = '%' . substr($value, 1) . '%';
                         break;
 
                     case '!':
@@ -157,9 +148,18 @@ final class Criteria
         }
 
         return [
-            'op' => $op,
+            'op'    => $op,
             'value' => $value
         ];
+    }
+
+    public function getParams(): array
+    {
+        if ($this->params === null) {
+            $this->make();
+        }
+
+        return $this->params;
     }
 
 }

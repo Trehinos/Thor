@@ -2,7 +2,7 @@
 
 namespace Thor\Api\Entities;
 
-use Thor\Database\PdoTable\AdvancedPdoRow;
+use Thor\Database\PdoTable\PdoRowTrait;
 use Thor\Database\PdoTable\Attributes\PdoColumn;
 use Thor\Database\PdoTable\Attributes\PdoIndex;
 use Thor\Database\PdoTable\Attributes\PdoRow;
@@ -15,8 +15,8 @@ use Thor\Database\PdoTable\PdoRowInterface;
 class Group implements PdoRowInterface
 {
 
-    use AdvancedPdoRow {
-        AdvancedPdoRow::__construct as private adwConstruct;
+    use PdoRowTrait {
+        PdoRowTrait::__construct as private adwConstruct;
     }
 
     public function __construct(?string $public_id = null, array $primaries = [])

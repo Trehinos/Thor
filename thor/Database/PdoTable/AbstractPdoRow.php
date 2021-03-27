@@ -8,16 +8,12 @@ use Thor\Database\PdoTable\Attributes\PdoIndex;
 
 #[PdoColumn('public_id', 'VARCHAR(255)', 'string', false)]
 #[PdoIndex(['public_id'], true)]
-abstract class AbstractPdoRow implements PdoRowInterface
+abstract class AbstractPdoRow extends BasePdoRow
 {
-
-    use AdvancedPdoRow {
-        AdvancedPdoRow::__construct as private adwConstruct;
-    }
 
     public function __construct(protected ?string $public_id = null, array $primaries = [])
     {
-        $this->adwConstruct($primaries);
+        parent::__construct($primaries);
     }
 
     /**

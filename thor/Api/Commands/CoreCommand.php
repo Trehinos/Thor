@@ -143,11 +143,11 @@ final class CoreCommand extends Command
             if (in_array($file, ['.', '..'])) {
                 continue;
             }
-            if ($mask !== false && preg_match("#^$mask$#", $file) === 0) {
+            if (is_dir("$path/$file")) {
+                $ret = $ret && self::removeTree("$path/$file", $mask, $removeFirst);
                 continue;
             }
-            if (is_dir("$path/$file")) {
-                $ret = $ret && self::removeTree("$path/$file", $mask);
+            if ($mask !== false && preg_match("#^$mask$#", $file) === 0) {
                 continue;
             }
             $ret = $ret && unlink("$path/$file");
