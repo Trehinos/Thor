@@ -13,7 +13,7 @@ final class SchemaHelper
     public function __construct(
         private PdoRequester $requester,
         private PdoAttributesReader $reader,
-        private bool $isDebug
+        private bool $isDebug = false
     ) {
     }
 
