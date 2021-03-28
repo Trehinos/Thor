@@ -13,7 +13,10 @@ This project's goal is to provide a base project for **PHP developers** to devel
 * Complete but lightweight framework :
     * Smart databases utility classes :
         * **PdoExtension** : Connection handler, requester, transaction.
-        * **PdoTable** : CrudHelper, SchemaHelper :
+        * **PdoTable** :
+            * ```CrudHelper``` : performs CRUD operations on DB,
+            *```SchemaHelper``` : performs DQL operations on DB,
+            * ```BasePdoRow``` : defines a DAO with :
             * attributes ```#[PdoRow]```, ```#[PdoIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```.
     * Http cycle handling : **Router and controllers** (attribute ```#[Route]```).
     * **CLI commands** handling, console color/formatting utility.
@@ -87,9 +90,9 @@ There is no client side's dependency manager bundled with **Thor**, so neither a
 
 ### If you use Thor as a web application :
 
-5. **Edit permissions** : ```thor/var/cache``` and ```thor/var/logs``` have to be writable and ```thor/web``` readable
+5. **Create a virtualhost** which has ```thor/web/``` as *DocumentRoot*.
+6. **Edit permissions** : ```thor/var/cache``` and ```thor/var/logs``` have to be writable and ```thor/web``` readable
    for the user who runs **PHP** (usually ```www-data```).
-6. **Create a virtualhost** which has ```thor/web/``` as *DocumentRoot*.
 7. **Download** and copy **web vendors** :
     * Fontawesome ```all.min.js``` in ```thor/web/assets/fontawesome/js/all.min.js```
     * ```bootstrap.min.js``` in ```thor/web/assets/bootstrap/js/bootstrap.min.js```

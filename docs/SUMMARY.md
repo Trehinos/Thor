@@ -4,12 +4,16 @@
 
 - [Entry points, Kernel and application](struct_entries.md)
   - [ⓘ How to : create a custom kernel](struct_entries.md#custom-kernels)
-  - [CLI commands entry point](struct_entries.md#cli-entry-point)
-  - [CLI daemons entry point](struct_entries.md#the-daemonscheduler)
-  - [HTTP entry point](struct_entries.md#the-http-entry-point)
+  - [CLI commands entry point](struct_entries.md#cli-entry-point) (todo)
+  - [CLI daemons entry point](struct_entries.md#the-daemonscheduler) (todo)
+  - [HTTP entry point](struct_entries.md#the-http-entry-point) (todo)
 
-- [Resources](struct_resources.md) : static data and views.
+- [Resources](struct_resources.md) : configuration, static data and views.
   - [ⓘ How to : read a configuration/resource file](struct_resources.md#how-to-read-a-yaml-resource-file-)
+  
+- Variable files (todo)
+  - Cache (todo)
+  - Logs (todo)
 
 ## Thor libraries
 
@@ -23,13 +27,7 @@
     - [Console utility class](thor_cli.md#console-class-final)
     - [Create a daemon](thor_cli.md#example--create-a-daemon-and-cron-daemonscheduler)
     - [ⓘ How to : define a command](thor_cli.md#how-to-define-a-command-)
-- Logger
-- Extend Twig and Html utilities
-- Security
-- Validation utilities
-
-
-## Variable files
-
-- Cache
-- Logs
+- Logger (todo)
+- Extend Twig and Html utilities (todo)
+- Security (todo)
+- Validation utilities (todo)
