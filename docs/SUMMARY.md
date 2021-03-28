@@ -2,13 +2,14 @@
 
 ## Application
 
+- [Entry points, Kernel and application](struct_entries.md)
+  - [ⓘ How to : create a custom kernel](struct_entries.md#custom-kernels)
+  - [CLI commands entry point](struct_entries.md#cli-entry-point)
+  - [CLI daemons entry point](struct_entries.md#the-daemonscheduler)
+  - [HTTP entry point](struct_entries.md#the-http-entry-point)
+
 - [Resources](struct_resources.md) : static data and views.
   - [ⓘ How to : read a configuration/resource file](struct_resources.md#how-to-read-a-yaml-resource-file-)
-
-## [Entry points, Kernel and application](struct_entries.md)
-
-- [HTTP entry point : Routing & Controllers](struct_entries.md#the-http-entry-point)
-- [CLI entry point : CliKernel & Commands](struct_entries.md#cli-entry-point)
 
 ## Thor libraries
 
