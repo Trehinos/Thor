@@ -77,7 +77,7 @@ There is no client side's dependency manager bundled with **Thor**, so neither a
 
 ### Base installation :
 
-1. **Download** the project and unzip it. Say it has been unzipped in ```thor/```.
+1. **Download** and unzip or **clone** the project. Say it has been copied in ```thor/```.
 2. Go to ```thor/``` in a terminal and type ```composer update``` to **install dependencies**.
 3. **Initialize database** :
     * Create the database or retrieve DB infos,
