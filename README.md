@@ -79,10 +79,10 @@ There is no client side's dependency manager bundled with **Thor**, so neither a
 
 1. **Download** and unzip or **clone** the project. Say it has been copied in ```thor/```.
 2. Go to ```thor/``` in a terminal and type ```composer update``` to **install dependencies**.
-3. **Initialize database** :
-    * Create the database or retrieve DB infos,
-    * edit ```thor/app/res/config/database.yml```, then :
-    * run ```php thor/bin/thor.php core/setup``` in a terminal.
+3. **Initialize the database** :
+    * **Create the database** or retrieve DB infos,
+    * **edit** ```thor/app/res/config/database.yml```, then :
+    * **run** ```php thor/bin/thor.php core/setup``` in a terminal.
 4. **Set configuration** in```thor/app/res/config/config.yml```.
 
 ### If you use Thor as a web application :
