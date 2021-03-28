@@ -4,7 +4,10 @@ namespace Thor\Api\Actions;
 
 use Exception;
 
+use Thor\Http\Request;
 use Thor\Api\Managers\UserManager;
+use Thor\Html\PdoMatrix\PdoMatrix;
+use Thor\Html\PdoMatrix\MatrixColumn;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Debug\Logger;
 use Thor\Http\BaseController;
@@ -32,7 +35,14 @@ final class Users extends BaseController
         return $this->view(
             'pages/users.html.twig',
             [
-                'users' => $this->manager->getUserCrud()->listAll()
+                'users'      => $this->manager->getUserCrud()->listAll(),
+                'user_table' => (new PdoMatrix(User::class, $this->getServer()->getRequester()))->getTableHtml(
+                    Request::createFromServer(),
+                    [
+                        'public_id' => new MatrixColumn('Public ID'),
+                        'username'  => new MatrixColumn('User name'),
+                    ]
+                )
             ]
         );
     }

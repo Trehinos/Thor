@@ -53,7 +53,7 @@ class CustomKernel implements KernelInterface
     
     public static function create() : static
     {
-        return self::createFromConfiguration(['name' => 'world']);
+        return static::createFromConfiguration(['name' => 'world']);
     }
 
 }

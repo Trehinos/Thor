@@ -13,15 +13,15 @@ class MatrixColumn
      * MatrixColumn constructor.
      *
      * @param string        $label
+     * @param string        $htmlClass
      * @param callable|null $fromDatabase fn (string): string
      * @param callable|null $toDatabase   fn (string): string
-     * @param string        $htmlClass
      */
     public function __construct(
         public string $label,
+        public string $htmlClass = '',
         ?callable $fromDatabase = null,
         ?callable $toDatabase = null,
-        public string $htmlClass = ''
     ) {
         $this->fromDatabase = $fromDatabase;
         $this->toDatabase = $toDatabase;
@@ -29,11 +29,17 @@ class MatrixColumn
 
     public function fromDb(string $dbValue): string
     {
+        if (null === $this->fromDatabase) {
+            return $dbValue;
+        }
         return ($this->fromDatabase)($dbValue);
     }
 
     public function toDb(string $phpValue): string
     {
+        if (null === $this->toDatabase) {
+            return $phpValue;
+        }
         return ($this->toDatabase)($phpValue);
     }
 

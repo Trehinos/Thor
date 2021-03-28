@@ -2,7 +2,7 @@
 lang: fr
 
 # [dev] | debug | verbose | prod
-env: dev
+env: debug
 
 app_name: "Thor"
 

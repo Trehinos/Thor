@@ -23,15 +23,21 @@ class HtmlTag implements HtmlInterface
      * @param bool        $autoClose
      * @param array       $attrs
      * @param string|null $id
-     *
-     * @throws Exception
      */
     public function __construct(string $tag, private bool $autoClose = true, array $attrs = [], ?string $id = null)
     {
         $this->tag = strtolower($tag);
-        $this->attrs = $attrs + [
-                'id' => $id ?? bin2hex(random_bytes(8)),
-            ];
+        try {
+            $this->attrs = $attrs + [
+                    'id' => $id ?? bin2hex(random_bytes(8)),
+                ];
+        } catch (Exception) {
+            if ($id !== null) {
+                $this->attrs = $attrs + ['id' => $id];
+            } else {
+                $this->attrs = $attrs;
+            }
+        }
     }
 
     public function setAttr(string $name, $value): void
@@ -82,12 +88,29 @@ class HtmlTag implements HtmlInterface
             return '';
         }
 
-        return $this->textContent ?? implode($this->getChildren());
+        return $this->textContent ?? implode(array_map(
+                    fn(HtmlTag $child) => $child->toHtml(),
+                    $this->getChildren()
+                )
+            );
     }
 
     public function getChildren(): array
     {
         return $this->children;
+    }
+
+    /**
+     * @param HtmlInterface[] $children
+     */
+    public function setChildren(array $children): void
+    {
+        if ($this->autoClose) {
+            return;
+        }
+
+        $this->textContent = null;
+        $this->children = $children;
     }
 
     public function setContent(string $content): void
@@ -108,18 +131,5 @@ class HtmlTag implements HtmlInterface
 
         $this->textContent = null;
         $this->children[] = $child;
-    }
-
-    /**
-     * @param HtmlInterface[] $children
-     */
-    public function setChildren(array $children): void
-    {
-        if ($this->autoClose) {
-            return;
-        }
-
-        $this->textContent = null;
-        $this->children = $children;
     }
 }

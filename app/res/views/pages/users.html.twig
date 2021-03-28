@@ -12,6 +12,8 @@
 {% endblock %}
 
 {% block page %}
+    {{ user_table|raw }}
+    <hr>
     <div class="d-flex flex-wrap justify-content-around" id="users">
         {% for user in users %}
             <div class="m-1 p-4 user">
