@@ -85,7 +85,7 @@ There is no client side's dependency manager bundled with **Thor**, so neither a
     * run ```php thor/bin/thor.php core/setup``` in a terminal.
 4. **Set configuration** in```thor/app/res/config/config.yml```.
 
-### Optionally, if you use Thor as a web server :
+### If you use Thor as a web application :
 
 5. **Edit permissions** : ```thor/var/cache``` and ```thor/var/logs``` have to be writable and ```thor/web``` readable
    for the user who runs **PHP** (usually ```www-data```).
