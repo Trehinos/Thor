@@ -1,6 +1,16 @@
 # Thor documentation
 
-## Thor
+## Application
+
+- [Resources](struct_resources.md) : static data and views.
+  - [ⓘ How to : read a configuration/resource file](struct_resources.md#how-to-read-a-yaml-resource-file-)
+
+## [Entry points, Kernel and application](struct_entries.md)
+
+- [HTTP entry point : Routing & Controllers](struct_entries.md#the-http-entry-point)
+- [CLI entry point : CliKernel & Commands](struct_entries.md#cli-entry-point)
+
+## Thor libraries
 
 - [Database](thor_database.md)
   - [Database configuration](thor_database.md#database-configuration)
@@ -17,15 +27,6 @@
 - Security
 - Validation utilities
 
-## Entry points, Kernel and application
-
-- HTTP entry point : Routing & Controllers
-- CLI entry point : CliKernel & Commands
-
-## Application
-
-- [Resources](struct_resources.md) : static data and views.
-    - [ⓘ How to : read a configuration/resource file](struct_resources.md#how-to-read-a-yaml-resource-file-)
 
 ## Variable files
 
