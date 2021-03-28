@@ -75,7 +75,7 @@ There is no client side's dependency manager bundled with **Thor**, so neither a
 
 ## Thor setup
 
-### Base installation
+### Base installation :
 
 1. **Download** the project and unzip it. Say it has been unzipped in ```thor/```.
 2. Go to ```thor/``` in a terminal and type ```composer update``` to **install dependencies**.
