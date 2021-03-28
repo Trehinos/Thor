@@ -3,7 +3,6 @@
 namespace Thor\Html;
 
 use Exception;
-use JetBrains\PhpStorm\ArrayShape;
 
 class HtmlTag implements HtmlInterface
 {
@@ -20,17 +19,18 @@ class HtmlTag implements HtmlInterface
     /**
      * FormType constructor.
      *
-     * @param string $tag
-     * @param bool $autoClose
-     * @param array $attrs
+     * @param string      $tag
+     * @param bool        $autoClose
+     * @param array       $attrs
+     * @param string|null $id
      *
      * @throws Exception
      */
-    public function __construct(string $tag, private bool $autoClose = true, array $attrs = [])
+    public function __construct(string $tag, private bool $autoClose = true, array $attrs = [], ?string $id = null)
     {
         $this->tag = strtolower($tag);
         $this->attrs = $attrs + [
-                'id' => bin2hex(random_bytes(8)),
+                'id' => $id ?? bin2hex(random_bytes(8)),
             ];
     }
 
@@ -42,6 +42,20 @@ class HtmlTag implements HtmlInterface
     public function getAttr(string $name): mixed
     {
         return $this->attrs[$name] ?? null;
+    }
+
+    public function toHtml(): string
+    {
+        $closeTag = ($this->autoClose && $this->tag !== '') ? '' : "</{$this->tag}>";
+        $attrs = empty($this->attrs) ? '' : " {$this->htmlAttrs()}";
+        $openTag = '';
+        if ($this->tag !== '') {
+            $openTag = "<{$this->tag}{$attrs}>";
+        }
+
+        $content = $this->getContent();
+
+        return "{$openTag}{$content}{$closeTag}";
     }
 
     private function htmlAttrs(): string
@@ -62,29 +76,13 @@ class HtmlTag implements HtmlInterface
         );
     }
 
-    public function toHtml(): string
-    {
-        $closeTag = ($this->autoClose && $this->tag !== '') ? '' : "</{$this->tag}>";
-        $attrs = empty($this->attrs) ? '' : " {$this->htmlAttrs()}";
-        $openTag = '';
-        if ($this->tag !== '') {
-            $openTag = "<{$this->tag}{$attrs}>";
-        }
-
-        $content = $this->getContent();
-
-        return "{$openTag}{$content}{$closeTag}";
-    }
-
     public function getContent(): string
     {
-        return $this->textContent ?? implode($this->getChildren());
-    }
+        if ($this->autoClose) {
+            return '';
+        }
 
-    public function setContent(string $content): void
-    {
-        $this->children = [];
-        $this->textContent = $content;
+        return $this->textContent ?? implode($this->getChildren());
     }
 
     public function getChildren(): array
@@ -92,8 +90,22 @@ class HtmlTag implements HtmlInterface
         return $this->children;
     }
 
+    public function setContent(string $content): void
+    {
+        if ($this->autoClose) {
+            return;
+        }
+
+        $this->children = [];
+        $this->textContent = $content;
+    }
+
     public function addChild(HtmlInterface $child): void
     {
+        if ($this->autoClose) {
+            return;
+        }
+
         $this->textContent = null;
         $this->children[] = $child;
     }
@@ -103,6 +115,10 @@ class HtmlTag implements HtmlInterface
      */
     public function setChildren(array $children): void
     {
+        if ($this->autoClose) {
+            return;
+        }
+
         $this->textContent = null;
         $this->children = $children;
     }

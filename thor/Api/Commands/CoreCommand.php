@@ -130,8 +130,10 @@ final class CoreCommand extends Command
                       ->writeln('Clearing the cache...')
                       ->mode()
         ;
-        Folder::removeTree(Globals::VAR_DIR . 'cache', removeFirst: false);
-
+        $deleted = Folder::removeTree(Globals::VAR_DIR . 'cache', removeFirst: false);
+        foreach ($deleted as $file) {
+            $this->console->writeln(" - $file deleted.");
+        }
         $this->console->writeln(" -> Done");
     }
 
@@ -143,8 +145,10 @@ final class CoreCommand extends Command
                       ->writeln("Clearing the $env logs...")
                       ->mode()
         ;
-        Folder::removeTree(Globals::VAR_DIR . 'logs', "{$env}_.*[.]log", false);
-
+        $deleted = Folder::removeTree(Globals::VAR_DIR . 'logs', "{$env}_.*[.]log", false, false);
+        foreach ($deleted as $file) {
+            $this->console->writeln(" - $file deleted.");
+        }
         Logger::write("Log cleared");
         $this->console->writeln(" -> Done");
     }

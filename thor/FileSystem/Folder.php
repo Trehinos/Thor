@@ -12,29 +12,33 @@ final class Folder
         }
     }
 
-    public static function removeTree(string $path, string|false $mask = false, bool $removeFirst = true): bool
+    public static function removeTree(string $path, string|false $mask = false, bool $removeDirs = true, bool $removeFirst = true): array
     {
         $files = scandir($path);
 
-        $ret = true;
+        $ret = [];
         foreach ($files as $file) {
             if (in_array($file, ['.', '..'])) {
                 continue;
             }
             if (is_dir("$path/$file")) {
-                $ret = $ret && self::removeTree("$path/$file", $mask, $removeFirst);
+                $ret = array_merge($ret, self::removeTree("$path/$file", $mask, $removeDirs));
                 continue;
             }
             if ($mask !== false && preg_match("#^$mask$#", $file) === 0) {
                 continue;
             }
-            $ret = $ret && unlink("$path/$file");
-            echo "$path/$file deleted\n";
+            $result = unlink("$path/$file");
+            if ($result) {
+                $ret[] = "$path/$file";
+            }
         }
 
-        if ($removeFirst) {
-            $ret = $ret && rmdir("$path");
-            echo "$path deleted\n";
+        if ($removeDirs && $removeFirst) {
+            $result = rmdir("$path");
+            if ($result) {
+                $ret[] = "$path";
+            }
         }
         return $ret;
     }
