@@ -23,9 +23,9 @@
     "require": {
         "php": "^8.0",
         "ext-pdo": "*",
+        "ext-pcntl": "*",
         "symfony/yaml": "5.*",
         "symfony/var-dumper": "5.*",
-        "twig/twig": "3.*",
-        "ext-pcntl": "*"
+        "twig/twig": "3.*"
     }
 }
