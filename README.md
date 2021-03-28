@@ -15,7 +15,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
         * **PdoExtension** : Connection handler, requester, transaction.
         * **PdoTable** :
             * ```CrudHelper``` : performs CRUD operations on DB,
-            *```SchemaHelper``` : performs DQL operations on DB,
+            * ```SchemaHelper``` : performs DQL operations on DB,
             * ```BasePdoRow``` : defines a DAO with :
             * attributes ```#[PdoRow]```, ```#[PdoIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```.
     * Http cycle handling : **Router and controllers** (attribute ```#[Route]```).
