@@ -110,4 +110,11 @@ trait PdoRowTrait
         return implode('-', $this->primaries);
     }
 
+    public static function instantiateFromRow(string $className, array $row, mixed ...$constructorArguments): mixed
+    {
+        $rowObj = new $className(...$constructorArguments);
+        $rowObj->fromPdoArray($row);
+        return $rowObj;
+    }
+
 }

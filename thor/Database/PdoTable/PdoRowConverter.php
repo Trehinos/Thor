@@ -1,0 +1,33 @@
+<?php
+
+namespace Thor\Database\PdoTable;
+
+final class PdoRowConverter
+{
+
+    public function __construct(
+        private PdoRowInterface $pdoRow
+    ) {
+    }
+
+    public static function fromJson(string $className, string $json, mixed ...$constructorArguments): self
+    {
+        return new self(PdoRowTrait::instantiateFromRow($className, json_decode($json), ...$constructorArguments));
+    }
+
+    public function get(): PdoRowInterface
+    {
+        return $this->pdoRow;
+    }
+
+    public function toJson(): string
+    {
+        return json_encode($this->toArray());
+    }
+
+    public function toArray(): array
+    {
+        return $this->pdoRow->toPdoArray();
+    }
+
+}

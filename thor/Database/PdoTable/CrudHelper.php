@@ -47,7 +47,7 @@ final class CrudHelper
 
         $rowsObjs = [];
         foreach ($rows as $row) {
-            $rowObj = self::instantiateFromRow($this->className, $row);
+            $rowObj = PdoRowTrait::instantiateFromRow($this->className, $row);
             $rowsObjs[] = $rowObj;
         }
 
@@ -58,13 +58,6 @@ final class CrudHelper
     public function table(): string
     {
         return $this->tableName;
-    }
-
-    public static function instantiateFromRow(string $className, array $row): mixed
-    {
-        $rowObj = new $className();
-        $rowObj->fromPdoArray($row);
-        return $rowObj;
     }
 
     /**
@@ -148,7 +141,7 @@ final class CrudHelper
             return null;
         }
 
-        return self::instantiateFromRow($this->className, $row);
+        return PdoRowTrait::instantiateFromRow($this->className, $row);
     }
 
     #[Pure]
@@ -191,7 +184,7 @@ final class CrudHelper
 
         $objs = [];
         foreach ($rows as $row) {
-            $objs[] = self::instantiateFromRow($this->className, $row);
+            $objs[] = PdoRowTrait::instantiateFromRow($this->className, $row);
         }
 
         return $objs;
