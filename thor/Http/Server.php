@@ -204,7 +204,7 @@ class Server
 
     public function generateUrl(string $routeName, array $params = [], string $queryString = ''): string
     {
-        if (!$route = $this->getRouter()->getRoute($routeName)) {
+        if ($this->getRouter()->getRoute($routeName) === null) {
             return '#generate-url-error';
         }
 
@@ -228,12 +228,12 @@ class Server
 
     public function getRequester(string $connectionName = 'default'): ?PdoRequester
     {
-        $handler = $this->getHandler($connectionName);
-        if (null === $handler) {
+        $handler[$connectionName] = $this->getHandler($connectionName);
+        if (null === $handler[$connectionName]) {
             return null;
         }
 
-        return new PdoRequester($handler);
+        return new PdoRequester($handler[$connectionName]);
     }
 
     public function getHandler(string $connectionName = 'default'): ?PdoHandler
