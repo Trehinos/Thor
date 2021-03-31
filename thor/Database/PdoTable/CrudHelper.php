@@ -144,19 +144,16 @@ final class CrudHelper
         return PdoRowTrait::instantiateFromRow($this->className, $row);
     }
 
-    #[Pure]
-    private function primaryArrayToCriteria(
-        array $primaries
-    ): Criteria {
+    private function primaryArrayToCriteria(array $primaries): Criteria
+    {
         $criteria = [];
-        foreach ($primaries as $pKey => $pValue) {
-            if (in_array($pKey, $this->primary)) {
-                $criteria[$pKey] = $pValue;
-            }
+        foreach ($this->primary as $primaryKey) {
+            $criteria[$primaryKey] = array_shift($primaries);
         }
 
         return new Criteria($criteria);
     }
+
 
     public function readOneFromPid(string $pid): mixed
     {
