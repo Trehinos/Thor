@@ -21,7 +21,7 @@ use Thor\Database\PdoTable\Attributes\PdoRow;
 trait PdoRowTrait
 {
 
-    private static ?array $tableDefinition = null;
+    private static array $tableDefinition = [];
 
     public function __construct(
         protected array $primaries = []
@@ -33,18 +33,18 @@ trait PdoRowTrait
      */
     final public static function getPrimaryKeys(): array
     {
-        return self::getTableDefinition()->getPrimaryKeys();
+        return static::getTableDefinition()->getPrimaryKeys();
     }
 
     final public static function getIndexes(): array
     {
-        return self::getTD()['indexes'];
+        return static::getTD()['indexes'];
     }
 
     #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
-    private static function getTD(): array
+    protected static function getTD(): array
     {
-        return static::$tableDefinition ??= PdoAttributesReader::pdoRowInfo(static::class);
+        return static::$tableDefinition[static::class] ??= PdoAttributesReader::pdoRowInfo(static::class);
     }
 
     /**
@@ -53,25 +53,26 @@ trait PdoRowTrait
     final public static function getPdoColumnsDefinitions(): array
     {
         return array_combine(
-            array_map(fn(PdoColumn $column) => $column->getName(), self::getTD()['columns']),
-            array_values(self::getTD()['columns'])
+            array_map(fn(PdoColumn $column) => $column->getName(), static::getTD()['columns']),
+            array_values(static::getTD()['columns'])
         );
     }
 
     final public static function getTableDefinition(): PdoRow
     {
-        return self::getTD()['row'];
+        return static::getTD()['row'];
     }
 
     final public function toPdoArray(): array
     {
         $pdoArray = [];
-        foreach (self::getPdoColumnsDefinitions() as $columnName => $pdoColumn) {
+        foreach (static::getPdoColumnsDefinitions() as $columnName => $pdoColumn) {
             if (in_array($columnName, static::getPrimaryKeys())) {
                 $pdoArray[$columnName] = $pdoColumn->toSql($this->primaries[$columnName] ?? null);
                 continue;
             }
-            $pdoArray[$columnName] = $pdoColumn->toSql($this->$columnName ?? null);
+            $propertyName = str_replace(' ', '_', $columnName);
+            $pdoArray[$columnName] = $pdoColumn->toSql($this->$propertyName ?? null);
         }
         return $pdoArray;
     }
@@ -84,7 +85,8 @@ trait PdoRowTrait
                 $this->primaries[$columnName] = static::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
                 continue;
             }
-            $this->$columnName = static::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
+            $propertyName = str_replace(' ', '_', $columnName);
+            $this->$propertyName = static::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
         }
     }
 
