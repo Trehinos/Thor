@@ -228,12 +228,12 @@ class Server
 
     public function getRequester(string $connectionName = 'default'): ?PdoRequester
     {
-        $handler[$connectionName] = $this->getHandler($connectionName);
-        if (null === $handler[$connectionName]) {
+        $handler = $this->getHandler($connectionName);
+        if (null === $handler) {
             return null;
         }
 
-        return new PdoRequester($handler[$connectionName]);
+        return new PdoRequester($handler);
     }
 
     public function getHandler(string $connectionName = 'default'): ?PdoHandler
