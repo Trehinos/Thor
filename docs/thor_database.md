@@ -5,7 +5,7 @@ The **database** module is divided in 2 submodules :
 * ```PdoExtension``` which provides a way to easily connect and request a database.
 * ```PdoTable``` which is analog as a light ORM.
 
-![Database module](docs/graphs/ClassModelDescription.png)
+![Database module](graphs/ClassModelDescription.png)
 
 ## Pdo extension submodule
 
