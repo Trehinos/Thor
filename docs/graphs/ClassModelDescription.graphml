@@ -28,7 +28,7 @@
     <node id="n1">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="29.75423999999998" width="275.30304" x="-177.22202000000004" y="28.258534748802163"/>
+          <y:Geometry height="29.75423999999998" width="275.30304" x="-177.22202000000004" y="39.148261889310106"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="76.708984375" x="99.2970278125" xml:space="preserve" y="5.526534062499991">BasePdoRow<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -50,7 +50,7 @@
     <node id="n3">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="29.75423999999998" width="122.65152" x="157.75533550068587" y="-28.799289938698195"/>
+          <y:Geometry height="29.75423999999998" width="122.65152" x="157.75533550068587" y="-17.90956279819025"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="73.357421875" x="24.647049062500002" xml:space="preserve" y="5.526534062499991">PdoRowTrait<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -324,7 +324,7 @@ database.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
-              <y:Geometry height="443.95840603566523" width="731.9964622222218" x="-184.4370360768175" y="-114.10499462619856"/>
+              <y:Geometry height="443.95840603566523" width="731.9964622222219" x="-184.4370360768175" y="-114.10499462619856"/>
               <y:Fill hasColor="false" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed_dotted" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="24" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="106.73828125" x="4.0" xml:space="preserve" y="-37.40234375">PdoTable<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="-0.5" labelRatioY="0.5" nodeRatioX="-0.5" nodeRatioY="-0.5" offsetX="4.0" offsetY="-4.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -370,7 +370,7 @@ database.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
     <node id="n18">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="29.75423999999998" width="83.09834161865564" x="428.55830000000003" y="-32.668934001198636"/>
+          <y:Geometry height="29.75423999999998" width="83.09834161865564" x="428.55830000000003" y="-21.779206860690692"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="79.6015625" x="1.7483895593278476" xml:space="preserve" y="3.076338749999991">PdoHelper<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -393,7 +393,7 @@ database.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
     <node id="n20">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="29.75423999999998" width="144.69347676268848" x="392.69058323731144" y="75.31240710841205"/>
+          <y:Geometry height="29.75423999999998" width="144.69347676268848" x="236.0600416186557" y="101.38032513179125"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.1513671875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="133.96484375" x="5.364316506344267" xml:space="preserve" y="4.301436406249991">PdoAttributesReader<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -404,7 +404,7 @@ database.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
     <node id="n21">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="29.75423999999998" width="83.09834161865564" x="454.28571838134417" y="20.743702264662033"/>
+          <y:Geometry height="29.75423999999998" width="83.09834161865564" x="454.28571838134417" y="101.38032513179125"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="83.37109375" x="-0.13637606567215244" xml:space="preserve" y="5.526534062499991">SchemaHelper<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -415,7 +415,7 @@ database.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
     <node id="n22">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="29.75423999999998" width="136.73543352537712" x="240.03906323731138" y="129.30307766321738"/>
+          <y:Geometry height="29.75423999999998" width="136.73543352537712" x="349.1519016186556" y="41.7353811668005"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.1513671875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="118.3857421875" x="9.17484566893856" xml:space="preserve" y="4.301436406249991">PdoRowConverter<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -553,7 +553,7 @@ database.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
       <data key="d9"/>
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
-          <y:Path sx="80.30478161865574" sy="-43.38970230151142" tx="0.0" ty="0.0"/>
+          <y:Path sx="-76.32576000000006" sy="-46.39868952038694" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="3.0"/>
           <y:Arrows source="standard" target="none"/>
         </y:GenericEdge>
@@ -608,18 +608,7 @@ database.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
         </y:GenericEdge>
       </data>
     </edge>
-    <edge id="e19" source="n20" target="n22">
-      <data key="d10">
-        <y:GenericEdge configuration="com.yworks.edge.framed">
-          <y:Path sx="-44.39869944017562" sy="-1.4698668831300523" tx="0.0" ty="0.0">
-            <y:Point x="420.6386221784801" y="144.18019766321737"/>
-          </y:Path>
-          <y:LineStyle color="#000000" type="line" width="3.0"/>
-          <y:Arrows source="standard" target="none"/>
-        </y:GenericEdge>
-      </data>
-    </edge>
-    <edge id="e20" source="n20" target="n21">
+    <edge id="e19" source="n20" target="n21">
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
           <y:Path sx="30.797567572016305" sy="-0.2645111664773907" tx="0.0" ty="0.0"/>
@@ -628,7 +617,7 @@ database.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
         </y:GenericEdge>
       </data>
     </edge>
-    <edge id="e21" source="n1" target="n0">
+    <edge id="e20" source="n1" target="n0">
       <data key="d10">
         <y:QuadCurveEdge straightness="0.1">
           <y:Path sx="0.0" sy="0.0" tx="-91.16291775034296" ty="-0.0062651520314034315"/>
@@ -637,22 +626,33 @@ database.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
         </y:QuadCurveEdge>
       </data>
     </edge>
-    <edge id="e22" source="n1" target="n3">
+    <edge id="e21" source="n1" target="n3">
       <data key="d10">
         <y:QuadCurveEdge straightness="0.1">
           <y:Path sx="137.65152" sy="0.0" tx="-27.723513388050208" ty="2.6964153124996244">
-            <y:Point x="156.11035028821868" y="43.13565474880215"/>
+            <y:Point x="156.11035028821868" y="54.0253818893101"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
         </y:QuadCurveEdge>
       </data>
     </edge>
-    <edge id="e23" source="n20" target="n3">
+    <edge id="e22" source="n20" target="n3">
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
-          <y:Path sx="-45.33897681740552" sy="1.2679771737146126" tx="0.0" ty="0.0">
-            <y:Point x="419.6983448012502" y="-13.922169938698204"/>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+            <y:Point x="308.4067799999999" y="43.01680893997164"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="3.0"/>
+          <y:Arrows source="standard" target="none"/>
+        </y:GenericEdge>
+      </data>
+    </edge>
+    <edge id="e23" source="n0" target="n22">
+      <data key="d10">
+        <y:GenericEdge configuration="com.yworks.edge.framed">
+          <y:Path sx="191.48664584377428" sy="-1.5387534922235773" tx="-34.60099374470292" ty="0.5938976614867215">
+            <y:Point x="382.9186246366412" y="-3.03244279819026"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="3.0"/>
           <y:Arrows source="standard" target="none"/>
