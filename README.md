@@ -16,7 +16,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
         * **PdoTable** :
             * ```CrudHelper``` : performs CRUD operations on DB,
             * ```SchemaHelper``` : performs DQL operations on DB,
-            * ```BasePdoRow```/```PdoRowTrait```/```PdoRowInterface``` : models for a DAO with :
+            * ```BasePdoRow```/```PdoRowTrait```/```PdoRowInterface``` : models to create DAOs with CrudHelper :
             * attributes ```#[PdoRow]```, ```#[PdoIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```.
     * Http cycle handling : **Router and controllers** (attribute ```#[Route]```).
     * **CLI commands** handling, console color/formatting utility.

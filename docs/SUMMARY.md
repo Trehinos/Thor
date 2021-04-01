@@ -21,7 +21,8 @@
   - [Database configuration](thor_database.md#database-configuration)
   - [PdoExtension](thor_database.md#pdoextension-public-api)
   - [PdoTable](thor_database.md#pdotable-public-api)
-  - [ⓘ How to : create an user DAO](thor_database.md#example--create-a-user-class-linked-to-a-table-in-db)
+  - [ⓘ How to : create an user class linked to a table](thor_database.md#example--create-a-user-class-linked-to-a-table-in-db)  
+    > Use ```CrudHelper``` to create a DAO easily.
 - [Http module](thor_http.md) and [routing](thor_routing.md)
 - [Cli module](thor_cli.md)
     - [Console utility class](thor_cli.md#console-class-final)
