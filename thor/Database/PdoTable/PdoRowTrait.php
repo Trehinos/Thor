@@ -63,7 +63,7 @@ trait PdoRowTrait
         return static::getTD()['row'];
     }
 
-    final public function toPdoArray(): array
+    public function toPdoArray(): array
     {
         $pdoArray = [];
         foreach (static::getPdoColumnsDefinitions() as $columnName => $pdoColumn) {
@@ -77,7 +77,7 @@ trait PdoRowTrait
         return $pdoArray;
     }
 
-    final public function fromPdoArray(array $pdoArray): void
+    public function fromPdoArray(array $pdoArray): void
     {
         $this->primaries = [];
         foreach ($pdoArray as $columnName => $columnSqlValue) {

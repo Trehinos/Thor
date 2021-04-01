@@ -68,21 +68,19 @@ final class Criteria
                 }
                 $sqlArray[] = "($t_sql)";
                 $params = array_merge($params, $t_params);
+            } elseif (is_array($value)) {
+                $params = array_merge($params, $value);
+                $marks = implode(',', array_fill(0, count($value), '?'));
+                $sqlArray[] = '"' . $key . '" IN (' . $marks . ')';
             } else {
-                if (is_array($value)) {
-                    $params = array_merge($params, $value);
-                    $marks = implode(',', array_fill(0, count($value), '?'));
-                    $sqlArray[] = '"' . $key . '" IN (' . $marks . ')';
-                } else {
-                    ['op' => $op, 'value' => $value] = self::parseValue($value);
+                ['op' => $op, 'value' => $value] = self::parseValue($value);
 
-                    if ($value === null) {
-                        $mark = 'NULL';
-                    }
-
-                    $params[] = $value;
-                    $sqlArray[] = "$key $op ?";
+                if ($value === null) {
+                    $mark = 'NULL';
                 }
+
+                $params[] = $value;
+                $sqlArray[] = "$key $op ?";
             }
         }
 
