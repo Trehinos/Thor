@@ -1,4 +1,7 @@
 # Thor documentation
+(WORK IN PROGRESS)
+
+![Database module](graphs/ClassModelDescription-Complete.png)
 
 ## Application
 
