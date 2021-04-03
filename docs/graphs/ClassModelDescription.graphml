@@ -637,7 +637,7 @@ VARCHAR(255)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="29.75423999999998" width="129.69347676268865" x="1137.3782846587785" y="-304.9662084374994"/>
-              <y:Fill color="#FFFF99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#FFCBA7" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="60.6953125" x="34.49908213134427" xml:space="preserve" y="5.526534062499991">HttpKernel<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -648,7 +648,7 @@ VARCHAR(255)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="29.75423999999998" width="122.65152" x="679.4237246587786" y="-304.9662084374994"/>
-              <y:Fill color="#FFFF99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#FFCBA7" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="51.125" x="35.763259999999946" xml:space="preserve" y="3.076338749999991">Server<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -659,7 +659,7 @@ VARCHAR(255)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="29.75423999999998" width="122.65152" x="832.0752446587785" y="-193.35631151598832"/>
-              <y:Fill color="#FFFF99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#FFCBA7" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="48.6953125" x="36.978103749999946" xml:space="preserve" y="5.526534062499991">Request<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -670,7 +670,7 @@ VARCHAR(255)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="29.75423999999998" width="122.65152" x="984.2687214214673" y="-279.10353124999926"/>
-              <y:Fill color="#FFFF99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#FFCBA7" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="dashed" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="109.828125" x="6.411697500000059" xml:space="preserve" y="3.076338749999991">BaseController<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -681,7 +681,7 @@ VARCHAR(255)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="29.75423999999998" width="122.65152" x="1140.8992630401226" y="-193.35631151598832"/>
-              <y:Fill color="#FFFF99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#FFCBA7" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="58.03515625" x="32.308181874999946" xml:space="preserve" y="5.526534062499991">Response<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -692,7 +692,7 @@ VARCHAR(255)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="29.75423999999998" width="129.69347676268865" x="982.9662754681062" y="-193.35631151598832"/>
-              <y:Fill color="#FFFF99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#FFCBA7" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="3.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="122.72265625" x="3.4854102563442666" xml:space="preserve" y="5.526534062499991">User controller class<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -760,7 +760,7 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
               <data key="d6">
                 <y:ShapeNode>
                   <y:Geometry height="29.75423999999998" width="122.65152" x="679.4237246587784" y="-203.14186870348848"/>
-                  <y:Fill color="#FFFF99" color2="#99CCFF" transparent="false"/>
+                  <y:Fill color="#FFCBA7" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
                   <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="40.017578125" x="41.316970937499946" xml:space="preserve" y="5.526534062499991">Router<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
                   <y:Shape type="rectangle"/>
@@ -771,7 +771,7 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
               <data key="d6">
                 <y:ShapeNode>
                   <y:Geometry height="29.75423999999998" width="122.65152" x="679.4237246587784" y="-154.7265458909886"/>
-                  <y:Fill color="#FFFF99" color2="#99CCFF" transparent="false"/>
+                  <y:Fill color="#FFCBA7" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
                   <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="49.36328125" x="36.644119374999946" xml:space="preserve" y="5.526534062499991">#[Route]<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
                   <y:Shape type="rectangle"/>
@@ -838,7 +838,7 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="275.3030399999999" x="688.1737246587784" y="158.09242024339835"/>
-              <y:Fill color="#FFCC99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#B6E6CE" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="103.392578125" x="85.95523093749989" xml:space="preserve" y="5.6494140625">DaemonScheduler<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -850,7 +850,7 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="122.65151999999978" x="835.5962230401229" y="55.09242024339835"/>
-              <y:Fill color="#FFCC99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#B6E6CE" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="dashed" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="59.353515625" x="31.649002187499832" xml:space="preserve" y="5.6494140625">Command<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -862,7 +862,7 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="278.82401838134433" x="679.4237246587784" y="-6.486269201796404"/>
-              <y:Fill color="#FFCC99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#B6E6CE" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="52.685546875" x="113.06923575317217" xml:space="preserve" y="5.6494140625">CliKernel<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -874,7 +874,7 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="122.65151999999978" x="844.3462230401229" y="218.09242024339835"/>
-              <y:Fill color="#FFCC99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#B6E6CE" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="dashed" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="64.4765625" x="29.087478749999832" xml:space="preserve" y="3.19921875">Daemon<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -886,7 +886,7 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="122.65152" x="688.1737246587784" y="218.09242024339835"/>
-              <y:Fill color="#FFCC99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#B6E6CE" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="77.376953125" x="22.637283437499946" xml:space="preserve" y="5.6494140625">DaemonState<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -898,7 +898,7 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="122.65152" x="681.9490245927639" y="55.09242024339835"/>
-              <y:Fill color="#FFCC99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#B6E6CE" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="62.703125" x="29.974197499999946" xml:space="preserve" y="3.19921875">Console<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -910,7 +910,7 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="122.65152" x="844.3462230401228" y="277.3823081733798"/>
-              <y:Fill color="#FFCC99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#B6E6CE" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="3.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="80.025390625" x="21.313064687499946" xml:space="preserve" y="5.6494140625">User daemon<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -921,8 +921,8 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
           <data key="d4" xml:space="preserve"/>
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="30.0" width="122.65152" x="682.9447030401229" y="106.59242024339835"/>
-              <y:Fill color="#FFCC99" color2="#99CCFF" transparent="false"/>
+              <y:Geometry height="30.0" width="122.65152" x="988.2477430401227" y="55.09242024339835"/>
+              <y:Fill color="#B6E6CE" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="3.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="90.6953125" x="15.978103749999946" xml:space="preserve" y="5.6494140625">User command<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -932,10 +932,11 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
         <node id="n9::n8">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-              <y:Geometry height="30.0" width="195.61151999999993" x="804.600544592764" y="106.59242024339835"/>
+              <y:Geometry height="30.0" width="122.65151999999978" x="988.2477430401227" y="85.09242024339835"/>
               <y:Fill color="#FFFFFFE6" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="184.0703125" x="5.770603749999964" xml:space="preserve" y="5.6494140625">Describes a set of CLI commands<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="100.041015625" x="11.305252187499946" xml:space="preserve" y="-1.701171875">Describes a set of
+CLI commands<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:StyleProperties>
                 <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
                 <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4cc"/>
@@ -1302,7 +1303,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="130.0" x="675.7494846587786" y="-417.297824323707"/>
-              <y:Fill color="#FFFF99" color2="#99CCFF" transparent="false"/>
+              <y:Fill color="#FFCBA7" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="91.125" x="19.4375" xml:space="preserve" y="3.19921875">TwigFactory<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -1434,7 +1435,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="106.0" x="1671.2937916089681" y="-648.6777173974145"/>
-              <y:Fill color="#FFCC99" transparent="false"/>
+              <y:Fill color="#FFCC66" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="41.365234375" x="32.3173828125" xml:space="preserve" y="5.6494140625">Logger<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
@@ -1446,7 +1447,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
     <node id="n19">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-          <y:Geometry height="28.671428571428592" width="18.24545454545456" x="542.1730881293641" y="159.42099167196977"/>
+          <y:Geometry height="28.671428571428592" width="18.24545454545456" x="542.1730881293641" y="158.75670595768406"/>
           <y:Fill color="#FFFFFFE6" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="right" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="182.078125" x="-186.078125" xml:space="preserve" y="4.0">thor/app/res/static/daemons/*.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.5" labelRatioY="-0.5" nodeRatioX="-0.5" nodeRatioY="-0.5" offsetX="-4.0" offsetY="4.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1881,10 +1882,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
     <edge id="n9::e6" source="n9::n7" target="n9::n1">
       <data key="d10">
         <y:QuadCurveEdge straightness="0.1">
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
-            <y:Point x="744.2704630401229" y="96.95670460565816"/>
-            <y:Point x="896.9219830401228" y="96.95670460565816"/>
-          </y:Path>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
         </y:QuadCurveEdge>
@@ -2111,7 +2109,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
           <y:Path sx="0.0" sy="0.0" tx="27.627077008743754" ty="-0.7501369568419705">
-            <y:Point x="1047.8130138494505" y="-228.8232253943414"/>
+            <y:Point x="1047.8130138494505" y="-229.34929124999925"/>
             <y:Point x="768.3765616675223" y="-229.34929124999925"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="3.0"/>
