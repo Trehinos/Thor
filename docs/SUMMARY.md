@@ -1,9 +1,9 @@
 # Thor documentation
 (WORK IN PROGRESS)
 
-![Database module](graphs/ClassModelDescription-Complete.png)
-
 ## Application
+
+![Database module](graphs/ApiModelDescription.png)
 
 - [Entry points, Kernel and application](struct_entries.md)
   - [ⓘ How to : create a custom kernel](struct_entries.md#custom-kernels)
@@ -19,6 +19,8 @@
   - Logs (todo)
 
 ## Thor libraries
+
+![Database module](graphs/ClassModelDescription-Complete.png)
 
 - [Database](thor_database.md)
   - [Database configuration](thor_database.md#database-configuration)
