@@ -3,8 +3,6 @@
 
 ## Application
 
-![Database module](graphs/ApiModelDescription.png)
-
 - [Entry points, Kernel and application](struct_entries.md)
   - [ⓘ How to : create a custom kernel](struct_entries.md#custom-kernels)
   - [CLI commands entry point](struct_entries.md#cli-entry-point) (todo)
@@ -37,3 +35,7 @@
 - Extend Twig and Html utilities (todo)
 - Security (todo)
 - Validation utilities (todo)
+
+## Thor API
+
+![Database module](graphs/ApiModelDescription.png)
