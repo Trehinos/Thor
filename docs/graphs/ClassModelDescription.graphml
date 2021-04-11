@@ -576,7 +576,7 @@ VARCHAR(255)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
-              <y:Geometry height="228.91590254651064" width="632.6480367626889" x="649.4237246587784" y="-320.3035312499992"/>
+              <y:Geometry height="293.1967283581646" width="632.6480367626889" x="649.4237246587784" y="-384.5843570616531"/>
               <y:Fill hasColor="false" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed_dotted" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="24" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="48.015625" x="4.0" xml:space="preserve" y="-37.40234375">Http<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="-0.5" labelRatioY="0.5" nodeRatioX="-0.5" nodeRatioY="-0.5" offsetX="4.0" offsetY="-4.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -589,7 +589,7 @@ VARCHAR(255)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
               </y:StyleProperties>
               <y:State autoResize="true" closed="false" closedHeight="80.0" closedWidth="100.0"/>
               <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
-              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.33732281249979224"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="4" rightF="3.5209783813447757" top="0" topF="0.0"/>
             </y:GenericGroupNode>
             <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
               <y:Geometry height="80.0" width="100.0" x="562.4230500797323" y="-300.75335999999993"/>
@@ -614,10 +614,10 @@ VARCHAR(255)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
         <node id="n5::n0">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="29.75423999999998" width="129.69347676268865" x="1137.3782846587785" y="-304.9662084374994"/>
+              <y:Geometry height="29.75423999999998" width="129.69347676268865" x="784.7462662303611" y="-369.5843570616531"/>
               <y:Fill color="#FFCBA7" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="60.6953125" x="34.49908213134427" xml:space="preserve" y="5.526534062499991">HttpKernel<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="60.6953125" x="34.49908213134438" xml:space="preserve" y="5.526534062499991">HttpKernel<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:Shape type="rectangle"/>
             </y:ShapeNode>
           </data>
@@ -763,7 +763,7 @@ HTTP actions<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
     <node id="n6">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="29.75423999999998" width="85.00000000000006" x="520.5979646587784" y="-417.174944323707"/>
+          <y:Geometry height="29.75423999999998" width="85.00000000000006" x="436.5137249822852" y="-439.5961827050611"/>
           <y:Fill color="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dubai Medium" fontSize="14" fontStyle="bolditalic" hasBackgroundColor="false" hasLineColor="false" height="27.63189697265625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="37.753875732421875" x="23.623062133789062" xml:space="preserve" y="1.0611715136718658">TWIG<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1116,7 +1116,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
     <node id="n10">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-          <y:Geometry height="34.97999999999998" width="22.25999999999999" x="365.5480500797323" y="-375.2493481355649"/>
+          <y:Geometry height="34.97999999999998" width="22.25999999999999" x="365.5480500797323" y="-354.94620843749937"/>
           <y:Fill color="#FFFFFFE6" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="right" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="178.099609375" x="26.25999999999999" xml:space="preserve" y="12.278828125000018">thor/app/res/config/database.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="-0.5" labelRatioY="0.5" nodeRatioX="0.5" nodeRatioY="0.5" offsetX="4.0" offsetY="-4.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1235,7 +1235,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
-              <y:Geometry height="60.0" width="171.32576000000017" x="649.4237246587784" y="-432.297824323707"/>
+              <y:Geometry height="65.52452960172229" width="171.32576000000017" x="387.68796498228505" y="-531.4234773974147"/>
               <y:Fill hasColor="false" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed_dotted" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="24" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="102.6953125" x="4.0" xml:space="preserve" y="-37.40234375">Factories<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="-0.5" labelRatioY="0.5" nodeRatioX="-0.5" nodeRatioY="-0.5" offsetX="4.0" offsetY="-4.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1248,7 +1248,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
               </y:StyleProperties>
               <y:State autoResize="true" closed="false" closedHeight="80.0" closedWidth="100.0"/>
               <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
-              <y:BorderInsets bottom="0" bottomF="0.0" left="11" leftF="11.325760000000173" right="0" rightF="0.0" top="0" topF="0.0"/>
+              <y:BorderInsets bottom="6" bottomF="5.524529601722293" left="11" leftF="11.325760000000173" right="0" rightF="0.0" top="0" topF="0.0"/>
             </y:GenericGroupNode>
             <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
               <y:Geometry height="80.0" width="100.0" x="1491.468031608968" y="-436.9678738498506"/>
@@ -1274,7 +1274,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
           <data key="d4" xml:space="preserve"/>
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="30.0" width="130.0" x="675.7494846587786" y="-417.297824323707"/>
+              <y:Geometry height="30.0" width="130.0" x="414.0137249822852" y="-516.4234773974147"/>
               <y:Fill color="#FFCBA7" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="91.125" x="19.4375" xml:space="preserve" y="3.19921875">TwigFactory<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1713,7 +1713,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
-              <y:Geometry height="281.27565662380056" width="306.7027934248124" x="1485.5909981841558" y="-320.3035312499992"/>
+              <y:Geometry height="169.4513168897897" width="306.7027934248124" x="1485.5909981841558" y="-208.47919151598833"/>
               <y:Fill hasColor="false" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed_dotted" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="24" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="90.6953125" x="3.9999999999997726" xml:space="preserve" y="-37.40234375">Security<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="-0.5" labelRatioY="0.5" nodeRatioX="-0.5" nodeRatioY="-0.5" offsetX="4.0" offsetY="-4.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1726,7 +1726,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
               </y:StyleProperties>
               <y:State autoResize="true" closed="false" closedHeight="80.0" closedWidth="100.0"/>
               <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
-              <y:BorderInsets bottom="15" bottomF="15.199999999999932" left="0" leftF="0.0" right="0" rightF="0.0" top="26" topF="26.077119999999923"/>
+              <y:BorderInsets bottom="15" bottomF="15.199999999999932" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
             </y:GenericGroupNode>
             <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
               <y:Geometry height="80.0" width="100.0" x="1460.969773227624" y="-311.2527323625385"/>
@@ -1751,18 +1751,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
         <node id="n22::n0">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="30.0" width="106.0" x="1500.5909981841558" y="-279.2264112499993"/>
-              <y:Fill color="#CCFFFF" transparent="false"/>
-              <y:BorderStyle color="#000000" raised="false" type="dotted" width="2.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="94.041015625" x="5.9794921875" xml:space="preserve" y="5.6494140625">SecurityInterface<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
-              <y:Shape type="rectangle"/>
-            </y:ShapeNode>
-          </data>
-        </node>
-        <node id="n22::n1">
-          <data key="d6">
-            <y:ShapeNode>
-              <y:Geometry height="30.0" width="106.0" x="1671.2937916089681" y="-279.2264112499993"/>
+              <y:Geometry height="30.0" width="106.0" x="1671.2937916089681" y="-193.47919151598833"/>
               <y:Fill color="#CCFFFF" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="dotted" width="2.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="76.029296875" x="14.9853515625" xml:space="preserve" y="5.6494140625">UserInterface<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -1770,7 +1759,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
             </y:ShapeNode>
           </data>
         </node>
-        <node id="n22::n2">
+        <node id="n22::n1">
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="106.0" x="1500.5909981841558" y="-99.22787462619857"/>
@@ -1781,18 +1770,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
             </y:ShapeNode>
           </data>
         </node>
-        <node id="n22::n3">
-          <data key="d6">
-            <y:ShapeNode>
-              <y:Geometry height="30.0" width="106.0" x="1500.5909981841558" y="-189.22714293809892"/>
-              <y:Fill color="#CCFFFF" transparent="false"/>
-              <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="10" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="16.2509765625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="99.60546875" x="3.197265625" xml:space="preserve" y="6.87451171875">SecurityConfiguration<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
-              <y:Shape type="rectangle"/>
-            </y:ShapeNode>
-          </data>
-        </node>
-        <node id="n22::n4">
+        <node id="n22::n2">
           <data key="d6">
             <y:ShapeNode>
               <y:Geometry height="30.0" width="106.0" x="1671.2937916089681" y="-99.22787462619857"/>
@@ -1804,6 +1782,57 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
           </data>
         </node>
       </graph>
+    </node>
+    <node id="n23">
+      <data key="d6">
+        <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
+          <y:Geometry height="28.671428571428592" width="18.24545454545456" x="1485.5909981841558" y="-304.4248027232137"/>
+          <y:Fill color="#FFFFFFE6" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="170.06640625" x="22.245454545454777" xml:space="preserve" y="4.985128348214289">thor/app/res/config/security.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="-0.5" labelRatioY="0.0" nodeRatioX="0.5" nodeRatioY="-2.220446049250313E-16" offsetX="4.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4cc"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffffe6"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ARTIFACT_TYPE_DATA_OBJECT"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.DataObjectTypeEnum" name="com.yworks.bpmn.dataObjectType" value="DATA_OBJECT_TYPE_PLAIN"/>
+          </y:StyleProperties>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n24">
+      <data key="d6">
+        <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
+          <y:Geometry height="34.97999999999998" width="22.25999999999999" x="540.5620578342364" y="-407.0796779041999"/>
+          <y:Fill color="#FFFFFFE6" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="right" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0625" x="-154.0625" xml:space="preserve" y="8.139414062500009">thor/app/res/config/twig.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.5" labelRatioY="0.0" nodeRatioX="-0.5" nodeRatioY="5.551115123125783E-16" offsetX="-4.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4cc"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffffe6"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ARTIFACT_TYPE_DATA_OBJECT"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.DataObjectTypeEnum" name="com.yworks.bpmn.dataObjectType" value="DATA_OBJECT_TYPE_PLAIN"/>
+          </y:StyleProperties>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n25">
+      <data key="d6">
+        <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
+          <y:Geometry height="34.97999999999998" width="22.25999999999999" x="1500.5909981841558" y="-776.5586719042059"/>
+          <y:Fill color="#FFFFFFE6" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="right" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="160.744140625" x="26.25999999999999" xml:space="preserve" y="8.139414062500009">thor/app/res/config/config.yml<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="-0.5" labelRatioY="0.0" nodeRatioX="0.5" nodeRatioY="5.551115123125783E-16" offsetX="4.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4cc"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffffe6"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ARTIFACT_TYPE_DATA_OBJECT"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.DataObjectTypeEnum" name="com.yworks.bpmn.dataObjectType" value="DATA_OBJECT_TYPE_PLAIN"/>
+          </y:StyleProperties>
+        </y:GenericNode>
+      </data>
     </node>
     <edge id="e0" source="n1" target="n21">
       <data key="d10">
@@ -2038,7 +2067,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
     <edge id="n5::e0" source="n5::n1" target="n5::n0">
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="53.77138509364363" sy="4.967598663548415" tx="-55.072134859283324" ty="0.5291272661736457"/>
           <y:LineStyle color="#000000" type="line" width="3.0"/>
           <y:Arrows source="standard" target="none"/>
         </y:GenericEdge>
@@ -2074,7 +2103,9 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
     <edge id="e7" source="n5::n0" target="n4::n3">
       <data key="d10">
         <y:QuadCurveEdge straightness="0.1">
-          <y:Path sx="-2.4042818623482183E-13" sy="-14.849482462501499" tx="0.0" ty="0.0"/>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+            <y:Point x="1205.746001421467" y="-354.70723706165313"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
         </y:QuadCurveEdge>
@@ -2410,7 +2441,10 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
     <edge id="e19" source="n14::n0" target="n5::n1">
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="39.97123088423814" sy="2.4067118156333436" tx="0.0" ty="0.0">
+            <y:Point x="518.9849558665234" y="-452.05826396714195"/>
+            <y:Point x="740.7494846587786" y="-452.05826396714195"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="3.0"/>
           <y:Arrows source="standard" target="none"/>
         </y:GenericEdge>
@@ -2645,7 +2679,7 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
         </y:GenericEdge>
       </data>
     </edge>
-    <edge id="e26" source="n3::n6" target="n22::n2">
+    <edge id="e26" source="n3::n6" target="n22::n1">
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -2654,19 +2688,57 @@ in thor/web/index.php : $thor_kernel = 'http'<y:LabelModel><y:SmartNodeLabelMode
         </y:GenericEdge>
       </data>
     </edge>
-    <edge id="n22::e0" source="n22::n3" target="n22::n0">
-      <data key="d10">
-        <y:QuadCurveEdge straightness="0.1">
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-        </y:QuadCurveEdge>
-      </data>
-    </edge>
     <edge id="n19::e3" source="n19::n1::n3" target="n19::n0::n0">
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="3.0"/>
+          <y:Arrows source="standard" target="none"/>
+        </y:GenericEdge>
+      </data>
+    </edge>
+    <edge id="e27" source="n22::n1" target="n5::n1">
+      <data key="d10">
+        <y:GenericEdge configuration="com.yworks.edge.framed">
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+            <y:Point x="1553.5909981841558" y="-131.75644779332669"/>
+            <y:Point x="1411.9706759956948" y="-131.06588159311138"/>
+            <y:Point x="1411.9706759956948" y="-290.0890884374994"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="3.0"/>
+          <y:Arrows source="standard" target="none"/>
+        </y:GenericEdge>
+      </data>
+    </edge>
+    <edge id="e28" source="n23" target="n5::n1">
+      <data key="d10">
+        <y:GenericEdge configuration="com.yworks.edge.framed">
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+            <y:Point x="1411.9706759956948" y="-290.0890884374994"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="3.0"/>
+          <y:Arrows source="standard" target="none"/>
+        </y:GenericEdge>
+      </data>
+    </edge>
+    <edge id="e29" source="n24" target="n5::n1">
+      <data key="d10">
+        <y:GenericEdge configuration="com.yworks.edge.framed">
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+            <y:Point x="551.6920578342364" y="-452.05826396714195"/>
+            <y:Point x="740.7494846587786" y="-452.05826396714195"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="3.0"/>
+          <y:Arrows source="standard" target="none"/>
+        </y:GenericEdge>
+      </data>
+    </edge>
+    <edge id="e30" source="n25" target="n4::n4">
+      <data key="d10">
+        <y:GenericEdge configuration="com.yworks.edge.framed">
+          <y:Path sx="0.0" sy="0.0" tx="33.994355681059915" ty="-14.874773514857111">
+            <y:Point x="1239.740357102527" y="-759.0686719042059"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="3.0"/>
           <y:Arrows source="standard" target="none"/>
         </y:GenericEdge>
