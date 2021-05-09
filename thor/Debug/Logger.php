@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Debug
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Debug;
 
 use JetBrains\PhpStorm\ExpectedValues;

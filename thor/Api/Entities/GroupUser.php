@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Api
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Api\Entities;
 
 use Thor\Database\PdoTable\PdoRowTrait;
@@ -7,6 +13,7 @@ use Thor\Database\PdoTable\Attributes\PdoColumn;
 use Thor\Database\PdoTable\Attributes\PdoIndex;
 use Thor\Database\PdoTable\Attributes\PdoRow;
 use Thor\Database\PdoTable\PdoRowInterface;
+use Thor\Database\PdoTable\Attributes\PdoForeignKey;
 
 #[PdoRow("group_user", ['group_id', 'user_id'])]
 #[PdoColumn('group_id', 'INTEGER', 'integer', false)]

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Html
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Html\Form;
 
 use Thor\Html\HtmlTag;

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor;
 
 use JetBrains\PhpStorm\ExpectedValues;
@@ -7,7 +13,7 @@ use JetBrains\PhpStorm\ExpectedValues;
 final class Thor
 {
 
-    public const VERSION = '0.4-dev';
+    public const VERSION = '0.4';
     public const VERSION_NAME = 'δ';
 
     private function __construct()

@@ -1,10 +1,15 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Api
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Api\Actions;
 
-use Exception;
-
 use Thor\Http\Request;
+use Thor\Http\Routing\Route;
 use Thor\Api\Managers\UserManager;
 use Thor\Html\PdoMatrix\PdoMatrix;
 use Thor\Html\PdoMatrix\MatrixColumn;
@@ -30,6 +35,7 @@ final class Users extends BaseController
         $this->usernameFilter = new PostVarRegex('/^[A-Za-z0-9]{2,255}$/');
     }
 
+    #[Route('users', '/users', Request::GET)]
     public function usersInterface(): Response
     {
         return $this->view(
@@ -47,13 +53,7 @@ final class Users extends BaseController
         );
     }
 
-    /**
-     * GET /users/create/form
-     *
-     * @return Response
-     *
-     * @throws Exception
-     */
+    #[Route('users-create-form', '/users/create/form', Request::GET)]
     public function createForm(): Response
     {
         return $this->view(
@@ -64,11 +64,7 @@ final class Users extends BaseController
         );
     }
 
-    /**
-     * POST /users/create/action
-     *
-     * @return Response
-     */
+    #[Route('users-create-action', '/users/create/action', Request::POST)]
     public function createAction(): Response
     {
         $username = $this->usernameFilter->filter('username');
@@ -89,15 +85,12 @@ final class Users extends BaseController
         return $this->redirect('index', queryString: 'menuItem=users');
     }
 
-    /**
-     * GET /users/$public_id/edit/form
-     *
-     * @param string $public_id
-     *
-     * @return Response
-     */
-    public function editForm(string $public_id): Response
-    {
+    #[Route('users-edit-form', '/users/$public_id/edit/form', Request::GET, [
+        'public_id' => ['regex' => '[A-Za-z0-9-]+']
+    ])]
+    public function editForm(
+        string $public_id
+    ): Response {
         $user = $this->manager->getUserCrud()->readOneFromPid($public_id);
 
         return $this->view(
@@ -108,15 +101,12 @@ final class Users extends BaseController
         );
     }
 
-    /**
-     * POST /users/$public_id/edit/action
-     *
-     * @param string $public_id
-     *
-     * @return Response
-     */
-    public function editAction(string $public_id): Response
-    {
+    #[Route('users-edit-action', '/users/$public_id/edit/action', Request::POST, [
+        'public_id' => ['regex' => '[A-Za-z0-9-]+']
+    ])]
+    public function editAction(
+        string $public_id
+    ): Response {
         $username = $this->usernameFilter->filter('username');
 
         $errors = [];
@@ -133,17 +123,12 @@ final class Users extends BaseController
         return $this->redirect('index', queryString: 'menuItem=users');
     }
 
-    /**
-     * GET /users/$public_id/change-password/form
-     *
-     * @param string $public_id
-     *
-     * @return Response
-     *
-     * @throws Exception
-     */
-    public function passwordForm(string $public_id): Response
-    {
+    #[Route('users-change-password-form', '/users/$public_id/change-password/form', Request::GET, [
+        'public_id' => ['regex' => '[A-Za-z0-9-]+']
+    ])]
+    public function passwordForm(
+        string $public_id
+    ): Response {
         $user = $this->manager->getUserCrud()->readOneFromPid($public_id);
 
         return $this->view(
@@ -155,15 +140,12 @@ final class Users extends BaseController
         );
     }
 
-    /**
-     * POST /users/$public_id/change-password/action
-     *
-     * @param string $public_id
-     *
-     * @return Response
-     */
-    public function passwordAction(string $public_id): Response
-    {
+    #[Route('users-change-password-action', '/users/$public_id/change-password/action', Request::POST, [
+        'public_id' => ['regex' => '[A-Za-z0-9-]+']
+    ])]
+    public function passwordAction(
+        string $public_id
+    ): Response {
         $password = Server::post('password');
         $confirmPassword = Server::post('confirm-password');
 
@@ -182,15 +164,12 @@ final class Users extends BaseController
         return $this->redirect('index', queryString: 'menuItem=users');
     }
 
-    /**
-     * POST /users/$public_id/delete/action
-     *
-     * @param string $public_id
-     *
-     * @return Response
-     */
-    public function deleteAction(string $public_id): Response
-    {
+    #[Route('users-delete-action', '/users/$public_id/delete/action', Request::POST, [
+        'public_id' => ['regex' => '[A-Za-z0-9-]+']
+    ])]
+    public function deleteAction(
+        string $public_id
+    ): Response {
         $this->manager->deleteOne($public_id);
 
         return $this->redirect('index', queryString: 'menuItem=users');

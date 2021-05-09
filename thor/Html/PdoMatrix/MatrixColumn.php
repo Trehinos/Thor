@@ -1,7 +1,12 @@
 <?php
 
-namespace Thor\Html\PdoMatrix;
+/**
+ * @package Trehinos/Thor/Html
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
 
+namespace Thor\Html\PdoMatrix;
 
 class MatrixColumn
 {

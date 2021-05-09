@@ -1,35 +1,29 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Api
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Api\Actions;
 
-use Exception;
-
-use Thor\Api\Managers\UserManager;
-use Thor\Database\PdoTable\CrudHelper;
 use Thor\Debug\Logger;
+use Thor\Http\Request;
+use Thor\Http\Routing\Route;
 use Thor\Http\BaseController;
 use Thor\Http\Response;
 use Thor\Http\Server;
-use Thor\Api\Entities\User;
 
 final class Security extends BaseController
 {
 
-    private UserManager $manager;
-
     public function __construct(Server $server)
     {
         parent::__construct($server);
-        $this->manager = new UserManager(new CrudHelper(User::class, $this->getServer()->getRequester()));
     }
 
-    /**
-     * GET /login
-     *
-     * @return Response
-     *
-     * @throws Exception
-     */
+    #[Route('login', '/login', Request::GET)]
     public function login(): Response
     {
         return $this->view(
@@ -38,13 +32,7 @@ final class Security extends BaseController
         );
     }
 
-    /**
-     * POST /security/login/action
-     *
-     * @return Response
-     *
-     * @throws Exception
-     */
+    #[Route('check', '/security/login/action', Request::POST)]
     public function check(): Response
     {
         $username = Server::post('username');
@@ -60,13 +48,7 @@ final class Security extends BaseController
         return $this->redirect($this->getServer()->getSecurity()?->loginRoute ?? 'login');
     }
 
-    /**
-     * POST /logout
-     *
-     * @return Response
-     *
-     * @throws Exception
-     */
+    #[Route('logout', '/logout', Request::GET)]
     public function logout(): Response
     {
         $this->getServer()->getSecurity()?->deleteToken();

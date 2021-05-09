@@ -7,7 +7,8 @@
  *  INPUT
  *  $thor_kernel : has to be set by the entry point (HTTP:index.php / CLI:thor.php,daemon.php)
  *
- * @author Trehinos
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
  * @version 0.4
  * @since 2021-01
  */

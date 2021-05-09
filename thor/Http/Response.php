@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Http
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Http;
 
 class Response

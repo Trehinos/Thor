@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Factories
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Factories;
 
 use Symfony\Component\VarDumper\VarDumper;

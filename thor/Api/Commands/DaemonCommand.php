@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Api
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Api\Commands;
 
 use Symfony\Component\Yaml\Yaml;

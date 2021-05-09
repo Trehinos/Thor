@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Security
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Security;
 
 interface UserInterface

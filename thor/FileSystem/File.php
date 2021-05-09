@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/FileSystem
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\FileSystem;
 
 final class File

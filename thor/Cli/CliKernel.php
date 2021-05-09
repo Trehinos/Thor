@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Cli
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Cli;
 
 use JetBrains\PhpStorm\ArrayShape;

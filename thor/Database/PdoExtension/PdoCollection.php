@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Database/PdoExtension
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Database\PdoExtension;
 
 use PDO;

@@ -9,6 +9,8 @@
 
 load:
     - Thor\Api\Actions\Main
+    - Thor\Api\Actions\Users
+    - Thor\Api\Actions\Security
 
 generate-url:
     path: "/framework/generate-url"
@@ -16,96 +18,3 @@ generate-url:
     action:
         class: Thor\Api\Actions\Main
         method: generateUrlResponse
-
-# users routes
-users:
-    path: "/users"
-    method: GET
-    action:
-        class: Thor\Api\Actions\Users
-        method: usersInterface
-
-users-create-form:
-    path: "/users/create/form"
-    method: GET
-    action:
-        class: Thor\Api\Actions\Users
-        method: createForm
-
-users-create-action:
-    path: "/users/create/action"
-    method: POST
-    action:
-        class: Thor\Api\Actions\Users
-        method: createAction
-
-users-edit-form:
-    path: "/users/$public_id/edit/form"
-    method: GET
-    parameters:
-        public_id:
-            regex: "[A-Za-z0-9-]+"
-    action:
-        class: Thor\Api\Actions\Users
-        method: editForm
-
-users-edit-action:
-    path: "/users/$public_id/edit/action"
-    method: POST
-    parameters:
-        public_id:
-            regex: "[A-Za-z0-9-]+"
-    action:
-        class: Thor\Api\Actions\Users
-        method: editAction
-
-users-change-password-form:
-    path: "/users/$public_id/change-password/form"
-    method: GET
-    parameters:
-        public_id:
-            regex: "[A-Za-z0-9-]+"
-    action:
-        class: Thor\Api\Actions\Users
-        method: passwordForm
-
-users-change-password-action:
-    path: "/users/$public_id/change-password/action"
-    method: POST
-    parameters:
-        public_id:
-            regex: "[A-Za-z0-9-]+"
-    action:
-        class: Thor\Api\Actions\Users
-        method: passwordAction
-
-users-delete-action:
-    path: "/users/$public_id/delete/action"
-    method: POST
-    parameters:
-        public_id:
-            regex: "[A-Za-z0-9-]+"
-    action:
-        class: Thor\Api\Actions\Users
-        method: deleteAction
-
-login:
-    path: "/login"
-    method: GET
-    action:
-        class: Thor\Api\Actions\Security
-        method: login
-
-check:
-    path: "/security/login/action"
-    method: POST
-    action:
-        class: Thor\Api\Actions\Security
-        method: check
-
-logout:
-    path: "/logout"
-    method: GET
-    action:
-        class: Thor\Api\Actions\Security
-        method: logout

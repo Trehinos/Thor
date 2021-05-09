@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Api
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Api\Managers;
 
 use Exception;
@@ -24,6 +30,8 @@ final class UserManager
      * @param string $clearPassword
      *
      * @return string public_id
+     *
+     * @throws Exception
      */
     public function createUser(string $username, string $clearPassword): string
     {

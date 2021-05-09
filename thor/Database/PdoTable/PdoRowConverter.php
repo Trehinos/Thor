@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Trehinos/Thor/Database/PdoTable
+ * @copyright (2021) Sébastien GELDREICH
+ * @license MIT
+ */
+
 namespace Thor\Database\PdoTable;
 
 final class PdoRowConverter
