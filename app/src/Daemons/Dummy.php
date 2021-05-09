@@ -2,7 +2,7 @@
 
 /**
  * @package Trehinos/Thor/Examples
- * @copyright (2021) Sébastien GELDREICH
+ * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
 
