@@ -33,7 +33,7 @@ final class SecurityContext
 
     public function __construct(array $config, PdoCollection $pdoCollection)
     {
-        $this->active = !empty($config);
+        $this->active = !(empty($config) || !($config['configuration']['active'] ?? true));
         if ($this->active) {
             $this->userClass = $config['userPdoRow']['pdoRowClass'] ?? '';
             $this->passwordMethod = $config['userPdoRow']['passwordCompareMethod'] ?? '';
