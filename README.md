@@ -107,20 +107,20 @@ Link : [Documentation](docs/SUMMARY.md)
 * **0.4** ```Framework``` : ```Thor\Thor``` class
 * **0.4** ```Framework``` : Custom kernels
 * **0.4** ```Framework``` : Dynamic lang strings
-* **0.4** ```Cli``` : ```clear/cache``` and ```clear/logs``` commands 
+* **0.4** ```API/Cli``` : ```clear/cache``` and ```clear/logs``` commands 
 * **0.3** ```Framework``` : PdoTable : CrudHelper and attributes : ```#[PdoRow]```, ```#[PdIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```
 * **0.3** ```Framework``` : Router attribute : ```#[Route]```
-* **0.3** ```Framework/Web``` : ```page-base.twig.html``` page template 
-* **0.3** ```Cli``` : ```core``` commands (```setup```, ```route/list```, ```route/set```)
-* **0.3** ```Cli``` : daemons (```start```, ```stop```, ```kill```, ```reset```, ```status```)
+* **0.3** ```API/Web``` : ```page-base.twig.html``` page template 
+* **0.3** ```API/Cli``` : ```core``` commands (```setup```, ```route/list```, ```route/set```)
+* **0.3** ```API/Cli``` : daemons (```start```, ```stop```, ```kill```, ```reset```, ```status```)
 * **0.2** ```Framework``` : PHP8.0
 * **0.2** ```Framework``` : Security module
-* **0.2** ```Web interface``` : Ajax page loading and JS ```menuClick()```
-* **0.2** ```Web interface``` : users can change their password
-* **0.2** ```Web interface``` : delete user action
+* **0.2** ```API/Web``` : Ajax page loading and JS ```menuClick()```
+* **0.2** ```API/Web``` : users can change their password
+* **0.2** ```API/Web``` : delete user action
 * **0.1** ```Framework``` : PdoExtension (PdoHandler, PdoRequester)
-* **0.1** ```Web interface``` : user login/logout
-* **0.1** ```Web interface``` : list users, create user, edit user
+* **0.1** ```API/Web``` : user login/logout
+* **0.1** ```API/Web``` : list users, create user, edit user
 
 ## License
 
