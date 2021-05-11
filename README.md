@@ -114,11 +114,15 @@ Link : [Documentation](docs/SUMMARY.md)
 * **0.3** ```API/Cli``` : ```core``` commands (```setup```, ```route/list```, ```route/set```)
 * **0.3** ```API/Cli``` : daemons (```start```, ```stop```, ```kill```, ```reset```, ```status```)
 * **0.2** ```Framework``` : PHP8.0
+* **0.2** ```Framework``` : CliKernel
 * **0.2** ```Framework``` : Security module
 * **0.2** ```API/Web``` : Ajax page loading and JS ```menuClick()```
 * **0.2** ```API/Web``` : users can change their password
 * **0.2** ```API/Web``` : delete user action
+* **0.1** ```Framework``` : Kernels, application, entry points
 * **0.1** ```Framework``` : PdoExtension (PdoHandler, PdoRequester)
+* **0.1** ```Framework``` : HttpKernel
+* **0.1** ```Framework``` : Logger
 * **0.1** ```API/Web``` : user login/logout
 * **0.1** ```API/Web``` : list users, create user, edit user
 
