@@ -49,4 +49,37 @@ final class Folder
         return $ret;
     }
 
+    public static function copyTree(string $path, string $dest): void
+    {
+        $files = scandir($path);
+
+        foreach ($files as $file) {
+            if (in_array($file, ['.', '..'])) {
+                continue;
+            }
+            if (is_dir("$path/$file")) {
+                Folder::createIfNotExists("$dest/$file");
+                self::copyTree("$path/$file", "$dest/$file");
+                continue;
+            }
+            copy("$path/$file", "$dest/$file");
+        }
+    }
+
+    public static function mapFiles(string $path, callable $mappedFunction, mixed ...$functionArguments): void
+    {
+        $files = scandir($path);
+
+        foreach ($files as $file) {
+            if (in_array($file, ['.', '..'])) {
+                continue;
+            }
+            if (is_dir("$path/$file")) {
+                self::mapFiles("$path/$file", $mappedFunction, ...$functionArguments);
+                continue;
+            }
+            $mappedFunction("$path/$file", ...$functionArguments);
+        }
+    }
+
 }

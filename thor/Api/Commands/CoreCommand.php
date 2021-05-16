@@ -1,20 +1,24 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Api
+ * @package          Trehinos/Thor/Api
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Api\Commands;
 
+use Thor\Cli\Daemon;
+use Thor\Cli\DaemonState;
 use Thor\FileSystem\Folder;
 use Thor\Api\Managers\UserManager;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\CliKernel;
 use Thor\Cli\Command;
 use Thor\Cli\Console;
+use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoTable\CrudHelper;
+use Thor\Database\PdoExtension\PdoMigrator;
 use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\PdoTable\SchemaHelper;
@@ -157,6 +161,90 @@ final class CoreCommand extends Command
         }
         Logger::write("Log cleared");
         $this->console->writeln(" -> Done");
+    }
+
+    public function update(): void
+    {
+        $updateConf = Thor::config('update');
+        $source = $updateConf['source'] ?? '';
+        $updateFolder = Globals::VAR_DIR . 'update/';
+        $resourcesBackupFolder = $updateFolder . 'resources/';
+        $target = $updateConf . 'repo/';
+
+        // 1. Copy static files
+        Folder::copyTree(Globals::RESOURCES_DIR, $resourcesBackupFolder);
+
+        // 2. Disable all daemons
+        $daemons = self::loadDaemons();
+        /**
+         * @var Daemon      $daemon
+         * @var DaemonState $state
+         */
+        foreach ($daemons as ['daemon' => $daemon, 'state' => $state]) {
+            $daemonFile = Globals::STATIC_DIR . "daemons/{$daemon->getName()}.yml";
+            $daemonInfo = Yaml::parseFile($daemonFile);
+            $daemonInfo['enabled'] = false;
+            file_put_contents($daemonFile, Yaml::dump($daemonInfo));
+        }
+
+        // 3. Git clone
+        CliKernel::executeProgram("git clone $source $target");
+
+        // 4. Copy last version
+        foreach (
+            [
+                $target . 'thor'    => Globals::CODE_DIR . 'thor',
+                $target . 'bin'     => Globals::CODE_DIR . 'bin',
+                $target . 'docs'    => Globals::CODE_DIR . 'docs',
+                $target . 'app/src' => Globals::CODE_DIR . 'app/src',
+            ] as $sourceFolder => $targetFolder
+        ) {
+            Folder::createIfNotExists($targetFolder);
+            Folder::copyTree($sourceFolder, $targetFolder);
+        }
+
+        // 5. Restore instance files
+        $restoreResource = function (string $file, string $targetPath, string $restorePrefix) {
+            $basename = basename($file);
+            $dirname = substr(trim(dirname($file), '/'), trim(-strlen($targetPath), '/'));
+            $restorePath = "$restorePrefix/$dirname/$basename";
+            $restoreYml = Yaml::parseFile($restorePath);
+            $instanceYml = Yaml::parseFile($file);
+            file_put_contents(
+                $restorePath,
+                Yaml::dump($instanceYml + $restoreYml)
+            );
+        };
+        $configBackup = $resourcesBackupFolder . 'config/';
+        $staticBackup = $resourcesBackupFolder . 'static/';
+        Folder::mapFiles($configBackup, $restoreResource, $configBackup, Globals::CONFIG_DIR);
+        Folder::mapFiles($staticBackup, $restoreResource, $staticBackup, Globals::STATIC_DIR);
+
+        // 6. Migrate DB
+        $migrator = PdoMigrator::createFromConfiguration();
+        $migrator->migrate(null);
+
+        // 7. Run after-update
+
+        // 8. Composer update
+
+        // 9. Clear cache
+
+        // 10. Restore daemons state
+
+        // 11. Clear update folder
+
+    }
+
+    private static function loadDaemons(): array
+    {
+        return array_map(
+            fn(string $daemonFilename) => [
+                'daemon' => $daemon = Daemon::instantiate($daemonFilename),
+                'state'  => new DaemonState($daemon)
+            ],
+            glob(Globals::STATIC_DIR . "daemons/*.yml")
+        );
     }
 
 }

@@ -69,11 +69,6 @@ route/list:
   command: routeList
   description: list all routes in app/res/static/routes.yml
 
-core/setup:
-  class: Thor\Api\Commands\CoreCommand
-  command: setup
-  description: create the 'user' table and admin user
-
 daemon/start:
   class: Thor\Api\Commands\DaemonCommand
   command: daemonStart
@@ -136,3 +131,32 @@ clear/logs:
     env:
       hasValue: true
       description: "prod|verbose|debug|[dev] : the environment to clear"
+
+core/setup:
+  class: Thor\Api\Commands\CoreCommand
+  command: setup
+  description: create the PdoRows tables
+
+core/install:
+  class: Thor\Api\Commands\CoreCommand
+  command: install
+  description: run thor/setup then migrations
+
+core/update:
+  class: Thor\Api\Commands\CoreCommand
+  command: update
+  description: run the update process
+
+core/uninstall:
+  class: Thor\Api\Commands\CoreCommand
+  command: uninstall
+  description: removes all PdoRows in DB
+
+database/migrate:
+  class: Thor\Api\Commands\DatabaseCommand
+  command: migrate
+  description: run a migration file with multiple SQL queries
+  arguments:
+    index:
+      hasValue: true
+      desciption: the new migration index
