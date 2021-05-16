@@ -104,27 +104,48 @@ Link : [Documentation](docs/SUMMARY.md)
 
 ## Releases notes
 
-* **0.4** ```Framework``` : ```Thor\Thor``` class
-* **0.4** ```Framework``` : Custom kernels
-* **0.4** ```Framework``` : Dynamic lang strings
-* **0.4** ```API/Cli``` : ```clear/cache``` and ```clear/logs``` commands 
-* **0.3** ```Framework``` : PdoTable : CrudHelper and attributes : ```#[PdoRow]```, ```#[PdIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```
-* **0.3** ```Framework``` : Router attribute : ```#[Route]```
-* **0.3** ```API/Web``` : ```page-base.twig.html``` page template 
-* **0.3** ```API/Cli``` : ```core``` commands (```setup```, ```route/list```, ```route/set```)
-* **0.3** ```API/Cli``` : daemons (```start```, ```stop```, ```kill```, ```reset```, ```status```)
-* **0.2** ```Framework``` : PHP8.0
-* **0.2** ```Framework``` : CliKernel
-* **0.2** ```Framework``` : Security module
-* **0.2** ```API/Web``` : Ajax page loading and JS ```menuClick()```
-* **0.2** ```API/Web``` : users can change their password
-* **0.2** ```API/Web``` : delete user action
-* **0.1** ```Framework``` : Kernels, application, entry points
-* **0.1** ```Framework``` : PdoExtension (PdoHandler, PdoRequester)
-* **0.1** ```Framework``` : HttpKernel
-* **0.1** ```Framework``` : Logger
-* **0.1** ```API/Web``` : user login/logout
-* **0.1** ```API/Web``` : list users, create user, edit user
+### ```0.4``` DELTA
+#### Framework
+* ```Thor\Thor``` class
+* Custom kernels
+* Dynamic lang strings
+
+#### API/Cli
+* ```clear/cache``` and ```clear/logs``` commands
+  
+### ```0.3``` GAMMA
+#### Framework
+* PdoTable : CrudHelper and attributes : ```#[PdoRow]```, ```#[PdIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```
+* Router attribute : ```#[Route]```
+  
+#### API/Web
+* ```page-base.twig.html``` page template
+  
+#### API/Cli
+* ```core``` commands (```setup```, ```route/list```, ```route/set```)
+* daemons (```start```, ```stop```, ```kill```, ```reset```, ```status```)
+
+### ```0.2``` BETA
+#### Framework
+* PHP8.0
+* CliKernel
+* Security module
+  
+#### API/Web
+* Ajax page loading and JS ```menuClick()```
+* users can change their password
+* delete user action
+
+### ```0.``` ALPHA
+#### Framework
+* Kernels, application, entry points
+* PdoExtension (PdoHandler, PdoRequester)
+* HttpKernel
+* Logger
+  
+#### API/Web
+* user login/logout
+* list users, create user, edit user
 
 ## License
 
