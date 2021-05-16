@@ -136,7 +136,7 @@ Link : [Documentation](docs/SUMMARY.md)
 * users can change their password
 * delete user action
 
-### ```0.``` ALPHA
+### ```0.1``` ALPHA
 #### Framework
 * Kernels, application, entry points
 * PdoExtension (PdoHandler, PdoRequester)
