@@ -136,6 +136,9 @@ Link : [Documentation](docs/SUMMARY.md)
 * users can change their password
 * delete user action
 
+#### API/Web
+* User commands
+
 ### ```0.1``` ALPHA
 #### Framework
 * Kernels, application, entry points

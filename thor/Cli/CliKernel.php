@@ -8,6 +8,7 @@
 
 namespace Thor\Cli;
 
+use Thor\Globals;
 use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Debug\Logger;
@@ -238,6 +239,15 @@ final class CliKernel implements KernelInterface
             );
             exit;
         }
+    }
+
+    public static function executeCommand(string $commandName, array $args = []): void
+    {
+        $command = $commandName;
+        foreach ($args as $argName => $argValue) {
+            $command .= " -$argName \"$argValue\"";
+        }
+        CliKernel::executeProgram('php ' . Globals::BIN_DIR . "thor.php $command");
     }
 
     public static function createFromConfiguration(array $config = []): static

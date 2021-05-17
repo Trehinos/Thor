@@ -16,7 +16,6 @@ use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\CliKernel;
 use Thor\Cli\Command;
 use Thor\Cli\Console;
-use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Database\PdoExtension\PdoMigrator;
 use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
@@ -167,6 +166,7 @@ final class CoreCommand extends Command
     {
         $updateConf = Thor::config('update');
         $source = $updateConf['source'] ?? '';
+        $afterUpdate = $updateConf['after-update'] ?? null;
         $updateFolder = Globals::VAR_DIR . 'update/';
         $resourcesBackupFolder = $updateFolder . 'resources/';
         $target = $updateConf . 'repo/';
@@ -180,9 +180,11 @@ final class CoreCommand extends Command
          * @var Daemon      $daemon
          * @var DaemonState $state
          */
+        $oldStates = [];
         foreach ($daemons as ['daemon' => $daemon, 'state' => $state]) {
             $daemonFile = Globals::STATIC_DIR . "daemons/{$daemon->getName()}.yml";
             $daemonInfo = Yaml::parseFile($daemonFile);
+            $oldStates[$daemon->getName()] = $daemonInfo['enabled'];
             $daemonInfo['enabled'] = false;
             file_put_contents($daemonFile, Yaml::dump($daemonInfo));
         }
@@ -225,14 +227,34 @@ final class CoreCommand extends Command
         $migrator->migrate(null);
 
         // 7. Run after-update
+        if ($afterUpdate !== null) {
+            CliKernel::executeCommand($afterUpdate);
+        }
 
         // 8. Composer update
+        chdir(Globals::CODE_DIR);
+        CliKernel::executeProgram('composer update');
 
         // 9. Clear cache
+        foreach (['dev', 'debug', 'verbose', 'prod'] as $env) {
+            CliKernel::executeCommand('clear/cache', ['env' => $env]);
+        }
 
         // 10. Restore daemons state
+        $daemons = self::loadDaemons();
+        /**
+         * @var Daemon      $daemon
+         * @var DaemonState $state
+         */
+        foreach ($daemons as ['daemon' => $daemon, 'state' => $state]) {
+            $daemonFile = Globals::STATIC_DIR . "daemons/{$daemon->getName()}.yml";
+            $daemonInfo = Yaml::parseFile($daemonFile);
+            $daemonInfo['enabled'] = $oldStates[$daemon->getName()] ?? false;
+            file_put_contents($daemonFile, Yaml::dump($daemonInfo));
+        }
 
         // 11. Clear update folder
+        Folder::removeTree($updateFolder);
 
     }
 
