@@ -37,9 +37,19 @@ interface PdoRowInterface
     // DEFAULT ACCESSORS & METHODS
 
     /**
+     * Copy formerPrimary on primary array
+     */
+    public function reset(): void;
+
+    /**
      * @return array get primary keys in an array of 'column_name' => PHP_value.
      */
     public function getPrimary(): array;
+
+    /**
+     * @return array get primary keys as loaded from DB. Empty if not loaded from DB.
+     */
+    public function getFormerPrimary(): array;
 
     /**
      * @return string get primary keys in a concatenated string.

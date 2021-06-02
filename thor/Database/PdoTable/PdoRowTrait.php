@@ -29,6 +29,8 @@ trait PdoRowTrait
 
     private static array $tableDefinition = [];
 
+    protected array $formerPrimaries = [];
+
     public function __construct(
         protected array $primaries = []
     ) {
@@ -83,16 +85,21 @@ trait PdoRowTrait
         return $pdoArray;
     }
 
-    public function fromPdoArray(array $pdoArray): void
+    public function fromPdoArray(array $pdoArray, bool $fromDb = false): void
     {
         $this->primaries = [];
+        $this->formerPrimaries = [];
         foreach ($pdoArray as $columnName => $columnSqlValue) {
+            $phpValue = static::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
             if (in_array($columnName, static::getPrimaryKeys())) {
-                $this->primaries[$columnName] = static::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
+                $this->primaries[$columnName] = $phpValue;
+                if ($fromDb) {
+                    $this->formerPrimaries[$columnName] = $phpValue;
+                }
                 continue;
             }
             $propertyName = str_replace(' ', '_', $columnName);
-            $this->$propertyName = static::getPdoColumnsDefinitions()[$columnName]->toPhp($columnSqlValue);
+            $this->$propertyName = $phpValue;
         }
     }
 
@@ -104,9 +111,19 @@ trait PdoRowTrait
         return $this->primaries;
     }
 
+    final public function getFormerPrimary(): array
+    {
+        return $this->formerPrimaries;
+    }
+
     final public function setPrimary(array $primary): void
     {
         $this->primaries = $primary;
+    }
+
+    final public function reset(): void
+    {
+        $this->primaries = $this->formerPrimaries;
     }
 
     /**
@@ -118,10 +135,10 @@ trait PdoRowTrait
         return implode('-', $this->primaries);
     }
 
-    public static function instantiateFromRow(string $className, array $row, mixed ...$constructorArguments): mixed
+    public static function instantiateFromRow(string $className, array $row, bool $fromDb = false, mixed ...$constructorArguments): mixed
     {
         $rowObj = new $className(...$constructorArguments);
-        $rowObj->fromPdoArray($row);
+        $rowObj->fromPdoArray($row, $fromDb);
         return $rowObj;
     }
 

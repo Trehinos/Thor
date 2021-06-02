@@ -18,12 +18,12 @@ final class PdoRowConverter
 
     public static function fromJson(string $className, string $json, mixed ...$constructorArguments): self
     {
-        return new self(PdoRowTrait::instantiateFromRow($className, json_decode($json), ...$constructorArguments));
+        return new self(PdoRowTrait::instantiateFromRow($className, json_decode($json), false, ...$constructorArguments));
     }
 
     public static function fromArray(string $className, array $data, mixed ...$constructorArguments): self
     {
-        return new self(PdoRowTrait::instantiateFromRow($className, $data, ...$constructorArguments));
+        return new self(PdoRowTrait::instantiateFromRow($className, $data, false, ...$constructorArguments));
     }
 
     public function get(): PdoRowInterface

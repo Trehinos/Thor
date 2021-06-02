@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Database/PdoTable
+ * @package          Trehinos/Thor/Database/PdoTable
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Database\PdoTable;
@@ -29,7 +29,7 @@ final class CrudHelper
      * CrudHelper constructor.
      * Creates a new CRUD requester to manage PdoRows
      *
-     * @param string       $className which implements PdoRowInterface and use PdoRowTrait trait.
+     * @param string $className which implements PdoRowInterface and use PdoRowTrait trait.
      * @param PdoRequester $requester
      */
     public function __construct(
@@ -53,7 +53,7 @@ final class CrudHelper
 
         $rowsObjs = [];
         foreach ($rows as $row) {
-            $rowObj = PdoRowTrait::instantiateFromRow($this->className, $row);
+            $rowObj = PdoRowTrait::instantiateFromRow($this->className, $row, true);
             $rowsObjs[] = $rowObj;
         }
 
@@ -75,6 +75,11 @@ final class CrudHelper
      */
     public function createOne(PdoRowInterface $row): string
     {
+        if (!empty($row->getFormerPrimary())) {
+            throw new PdoRowException(
+                "PdoRow with primary string '{$row->getPrimaryString()}' cannot be inserted as it has been loaded from DB."
+            );
+        }
         [$columns, $marks, $values] = self::compileRowValues($row);
         $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $values);
 
@@ -98,7 +103,6 @@ final class CrudHelper
             $row->generatePublicId();
         }
         $pdoArray = $row->toPdoArray();
-        unset($pdoArray['id']);
 
         $columns = implode(', ', array_keys($pdoArray));
         $values = implode(', ', array_fill(0, count($pdoArray), '?'));
@@ -120,6 +124,11 @@ final class CrudHelper
         $columns = [];
 
         foreach ($rows as $row) {
+            if (!empty($row->getFormerPrimary())) {
+                throw new PdoRowException(
+                    "PdoRow with primary string '{$row->getPrimaryString()}' cannot be inserted as it has been loaded from DB."
+                );
+            }
             [$columns, $marks, $values] = self::compileRowValues($row);
 
             $allValues = array_merge($allValues, $values);
@@ -147,7 +156,7 @@ final class CrudHelper
             return null;
         }
 
-        return PdoRowTrait::instantiateFromRow($this->className, $row);
+        return PdoRowTrait::instantiateFromRow($this->className, $row, true);
     }
 
     private function primaryArrayToCriteria(array $primaries): Criteria
@@ -187,7 +196,7 @@ final class CrudHelper
 
         $objs = [];
         foreach ($rows as $row) {
-            $objs[] = PdoRowTrait::instantiateFromRow($this->className, $row);
+            $objs[] = PdoRowTrait::instantiateFromRow($this->className, $row, true);
         }
 
         return $objs;
@@ -198,7 +207,7 @@ final class CrudHelper
         $pdoArray = $row->toPdoArray();
         $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($pdoArray)));
 
-        $criteria = $this->primaryArrayToCriteria($row->getPrimary());
+        $criteria = $this->primaryArrayToCriteria($row->getFormerPrimary());
 
         return $this->requester->execute(
             "UPDATE {$this->table()} SET $sets " . Criteria::getWhere($criteria),
@@ -208,7 +217,7 @@ final class CrudHelper
 
     public function deleteOne(PdoRowInterface $row): bool
     {
-        $criteria = $this->primaryArrayToCriteria($row->getPrimary());
+        $criteria = $this->primaryArrayToCriteria($row->getFormerPrimary());
         return $this->requester->execute(
             "DELETE FROM {$this->table()} " . Criteria::getWhere($criteria),
             $criteria->getParams()
