@@ -9,7 +9,6 @@
 namespace Thor\Database\PdoTable;
 
 use Exception;
-use TypeError;
 use JetBrains\PhpStorm\Pure;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\PdoTable\Attributes\PdoIndex;
@@ -147,19 +146,29 @@ final class PdoHelper
             )->fetchAll() ?? [];
     }
 
-    public function updateOne(array $row): bool
+    public function updateOne(array $row, array $excludeColumns = []): bool
     {
-        $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($row)));
+        $pdoArray = $row;
+        if (!empty($excludeColumns)) {
+            $pdoTmp = [];
+            foreach ($row as $key => $item) {
+                if (!in_array($key, $excludeColumns)) {
+                    $pdoTmp[$key] = $item;
+                }
+            }
+            $pdoArray = $pdoTmp;
+        }
+        $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($pdoArray)));
 
         $primaries = [];
         foreach ($this->primary as $primaryColumnName) {
-            $primaries[$primaryColumnName] = $row[$primaryColumnName] ?? null;
+            $primaries[$primaryColumnName] = $pdoArray[$primaryColumnName] ?? null;
         }
         $criteria = $this->primaryArrayToCriteria($primaries);
 
         return $this->requester->execute(
             "UPDATE {$this->table()} SET $sets " . Criteria::getWhere($criteria),
-            array_merge(array_values($row), $criteria->getParams())
+            array_merge(array_values($pdoArray), $criteria->getParams())
         );
     }
 

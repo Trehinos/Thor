@@ -202,9 +202,18 @@ final class CrudHelper
         return $objs;
     }
 
-    public function updateOne(PdoRowInterface $row): bool
+    public function updateOne(PdoRowInterface $row, array $excludeColumns = []): bool
     {
         $pdoArray = $row->toPdoArray();
+        if (!empty($excludeColumns)) {
+            $pdoTmp = [];
+            foreach ($pdoArray as $key => $item) {
+                if (!in_array($key, $excludeColumns)) {
+                    $pdoTmp[$key] = $item;
+                }
+            }
+            $pdoArray = $pdoTmp;
+        }
         $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($pdoArray)));
 
         $criteria = $this->primaryArrayToCriteria($row->getFormerPrimary());
