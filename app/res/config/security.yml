@@ -6,6 +6,4 @@ configuration:
     logout-route: logout
     check-route: check
     session-key: token
-    # token-expire : time in minutes
     token-expire: 60
-    # pdo-handler: default

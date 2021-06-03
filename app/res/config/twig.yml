@@ -1,6 +1,3 @@
-# sub of thor/var/
 cache_dir: cache/twig/
-
-# sub of thor/
 views_dir:
     - app/res/views/

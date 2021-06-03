@@ -1,5 +1,4 @@
-# using PDO
 default:
-    dsn: "mysql:host=localhost;dbname=thor"
+    dsn: 'mysql:host=localhost;dbname=thor'
     user: root
     password: ''

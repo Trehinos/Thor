@@ -1,2 +1,0 @@
-default:
-    - "ALTER TABLE user ADD COLUMN test VARCHAR(255)"
