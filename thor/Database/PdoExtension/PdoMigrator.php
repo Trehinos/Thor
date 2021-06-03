@@ -30,14 +30,14 @@ final class PdoMigrator
                     if ($nextIndex !== null && $migrationIndex > $nextIndex) {
                         continue;
                     }
-                    $lastIndex = max(intval($migrationIndex), $lastIndex);
+                    $lastIndex = max($migrationIndex, $lastIndex);
                     foreach ($migrationQueries as $query) {
                         $requesters[$handlerName]->execute($query, []);
                     }
                 }
             }
         }
-        return $lastIndex;
+        return intval($lastIndex);
     }
 
     public static function createFromConfiguration(): self
