@@ -30,7 +30,7 @@ final class PdoMigrator
                     if ($nextIndex !== null && $migrationIndex > $nextIndex) {
                         continue;
                     }
-                    $lastIndex = max($migrationIndex, $lastIndex);
+                    $lastIndex = max(intval($migrationIndex), $lastIndex);
                     foreach ($migrationQueries as $query) {
                         $requesters[$handlerName]->execute($query, []);
                     }

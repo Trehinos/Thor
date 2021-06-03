@@ -169,12 +169,14 @@ final class CoreCommand extends Command
         $afterUpdate = $updateConf['after-update'] ?? null;
         $updateFolder = Globals::VAR_DIR . 'update/';
         $resourcesBackupFolder = $updateFolder . 'resources/';
-        $target = $updateConf . 'repo/';
+        $target = $updateFolder . 'repo/';
 
         // 1. Copy static files
+        Logger::write('[1/11] Backup resources');
         Folder::copyTree(Globals::RESOURCES_DIR, $resourcesBackupFolder);
 
         // 2. Disable all daemons
+        Logger::write('[2/11] Disable daemons');
         $daemons = self::loadDaemons();
         /**
          * @var Daemon      $daemon
@@ -190,9 +192,11 @@ final class CoreCommand extends Command
         }
 
         // 3. Git clone
+        Logger::write('[3/11] Git clone');
         CliKernel::executeProgram("git clone $source $target");
 
         // 4. Copy last version
+        Logger::write('[4/11] Copy new files');
         foreach (
             [
                 $target . 'thor'    => Globals::CODE_DIR . 'thor',
@@ -206,9 +210,13 @@ final class CoreCommand extends Command
         }
 
         // 5. Restore instance files
+        Logger::write('[5/11] Restore resources');
         $restoreResource = function (string $file, string $targetPath, string $restorePrefix) {
             $basename = basename($file);
-            $dirname = substr(trim(dirname($file), '/'), trim(-strlen($targetPath), '/'));
+            $dirname = '';
+            if (strlen(dirname($file)) > strlen($targetPath)) {
+                $dirname = basename(dirname($file));
+            }
             $restorePath = "$restorePrefix/$dirname/$basename";
             $restoreYml = Yaml::parseFile($restorePath);
             $instanceYml = Yaml::parseFile($file);
@@ -223,24 +231,29 @@ final class CoreCommand extends Command
         Folder::mapFiles($staticBackup, $restoreResource, $staticBackup, Globals::STATIC_DIR);
 
         // 6. Migrate DB
+        Logger::write('[6/11] Migrate database');
         $migrator = PdoMigrator::createFromConfiguration();
         $migrator->migrate(null);
 
         // 7. Run after-update
+        Logger::write('[7/11] Run after-update');
         if ($afterUpdate !== null) {
             CliKernel::executeCommand($afterUpdate);
         }
 
         // 8. Composer update
+        Logger::write('[8/11] Composer update');
         chdir(Globals::CODE_DIR);
         CliKernel::executeProgram('composer update');
 
         // 9. Clear cache
+        Logger::write('[9/11] Composer update');
         foreach (['dev', 'debug', 'verbose', 'prod'] as $env) {
             CliKernel::executeCommand('clear/cache', ['env' => $env]);
         }
 
         // 10. Restore daemons state
+        Logger::write('[10/11] Restore daemons');
         $daemons = self::loadDaemons();
         /**
          * @var Daemon      $daemon
@@ -254,6 +267,7 @@ final class CoreCommand extends Command
         }
 
         // 11. Clear update folder
+        Logger::write('[11/11] Clear update folder');
         Folder::removeTree($updateFolder);
 
     }
@@ -262,7 +276,7 @@ final class CoreCommand extends Command
     {
         return array_map(
             fn(string $daemonFilename) => [
-                'daemon' => $daemon = Daemon::instantiate($daemonFilename),
+                'daemon' => $daemon = Daemon::instantiate(Yaml::parseFile($daemonFilename)),
                 'state'  => new DaemonState($daemon)
             ],
             glob(Globals::STATIC_DIR . "daemons/*.yml")
