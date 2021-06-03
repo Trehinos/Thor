@@ -122,9 +122,13 @@ final class Logger
     public static function write(
         string $message,
         int $level = self::LEVEL_DEV,
-        int $severity = self::SEVERITY_NOTICE
+        int $severity = self::SEVERITY_NOTICE,
+        bool $print = false
     ): void {
         self::getDefaultLogger()->log($message, $level, $severity);
+        if ($print) {
+            echo "$message\n";
+        }
     }
 
     public static function writeData(

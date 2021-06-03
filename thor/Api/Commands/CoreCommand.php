@@ -172,11 +172,11 @@ final class CoreCommand extends Command
         $target = $updateFolder . 'repo/';
 
         // 1. Copy static files
-        Logger::write('[1/11] Backup resources');
+        Logger::write('[1/11] Backup resources', Logger::LEVEL_VERBOSE, print: true);
         Folder::copyTree(Globals::RESOURCES_DIR, $resourcesBackupFolder);
 
         // 2. Disable all daemons
-        Logger::write('[2/11] Disable daemons');
+        Logger::write('[2/11] Disable daemons', Logger::LEVEL_VERBOSE, print: true);
         $daemons = self::loadDaemons();
         /**
          * @var Daemon      $daemon
@@ -192,11 +192,11 @@ final class CoreCommand extends Command
         }
 
         // 3. Git clone
-        Logger::write('[3/11] Git clone');
+        Logger::write('[3/11] Git clone', Logger::LEVEL_VERBOSE, print: true);
         CliKernel::executeProgram("git clone $source $target");
 
         // 4. Copy last version
-        Logger::write('[4/11] Copy new files');
+        Logger::write('[4/11] Copy new files', Logger::LEVEL_VERBOSE, print: true);
         foreach (
             [
                 $target . 'thor'    => Globals::CODE_DIR . 'thor',
@@ -210,7 +210,7 @@ final class CoreCommand extends Command
         }
 
         // 5. Restore instance files
-        Logger::write('[5/11] Restore resources');
+        Logger::write('[5/11] Restore resources', Logger::LEVEL_VERBOSE, print: true);
         $restoreResource = function (string $file, string $targetPath, string $restorePrefix) {
             $basename = basename($file);
             $dirname = '';
@@ -231,29 +231,29 @@ final class CoreCommand extends Command
         Folder::mapFiles($staticBackup, $restoreResource, $staticBackup, Globals::STATIC_DIR);
 
         // 6. Migrate DB
-        Logger::write('[6/11] Migrate database');
+        Logger::write('[6/11] Migrate database', Logger::LEVEL_VERBOSE, print: true);
         $migrator = PdoMigrator::createFromConfiguration();
         $migrator->migrate(null);
 
         // 7. Run after-update
-        Logger::write('[7/11] Run after-update');
+        Logger::write('[7/11] Run after-update', Logger::LEVEL_VERBOSE, print: true);
         if ($afterUpdate !== null) {
             CliKernel::executeCommand($afterUpdate);
         }
 
         // 8. Composer update
-        Logger::write('[8/11] Composer update');
+        Logger::write('[8/11] Composer update', Logger::LEVEL_VERBOSE, print: true);
         chdir(Globals::CODE_DIR);
         CliKernel::executeProgram('composer update');
 
         // 9. Clear cache
-        Logger::write('[9/11] Composer update');
+        Logger::write('[9/11] Composer update', Logger::LEVEL_VERBOSE, print: true);
         foreach (['dev', 'debug', 'verbose', 'prod'] as $env) {
             CliKernel::executeCommand('clear/cache', ['env' => $env]);
         }
 
         // 10. Restore daemons state
-        Logger::write('[10/11] Restore daemons');
+        Logger::write('[10/11] Restore daemons', Logger::LEVEL_VERBOSE, print: true);
         $daemons = self::loadDaemons();
         /**
          * @var Daemon      $daemon
@@ -267,7 +267,7 @@ final class CoreCommand extends Command
         }
 
         // 11. Clear update folder
-        Logger::write('[11/11] Clear update folder');
+        Logger::write('[11/11] Clear update folder', Logger::LEVEL_VERBOSE, print: true);
         Folder::removeTree($updateFolder);
 
     }
