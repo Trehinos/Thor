@@ -1,2 +1,2 @@
 default:
-    - "ALTER TABLE users ADD COLUMN test VARCHAR(255)"
+    - "ALTER TABLE user ADD COLUMN test VARCHAR(255)"
