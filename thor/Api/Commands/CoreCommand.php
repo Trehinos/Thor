@@ -192,6 +192,7 @@ final class CoreCommand extends Command
         }
 
         // 3. Git clone
+        Folder::removeTree($updateFolder);
         Logger::write('[3/11] Git clone', Logger::LEVEL_VERBOSE, print: true);
         CliKernel::executeProgram("git clone $source $target");
 
