@@ -31,7 +31,7 @@ interface PdoRowInterface
 
     public function toPdoArray(): array;
 
-    public function fromPdoArray(array $pdoArray): void;
+    public function fromPdoArray(array $pdoArray, bool $fromDb = false): void;
 
 
     // DEFAULT ACCESSORS & METHODS
