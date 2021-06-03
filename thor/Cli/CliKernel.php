@@ -1,19 +1,19 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Cli
+ * @package          Trehinos/Thor/Cli
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Cli;
 
+use Thor\Thor;
 use Thor\Globals;
-use JetBrains\PhpStorm\ArrayShape;
-use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Debug\Logger;
 use Thor\KernelInterface;
-use Thor\Thor;
+use JetBrains\PhpStorm\ArrayShape;
+use Thor\Database\PdoExtension\PdoCollection;
 
 final class CliKernel implements KernelInterface
 {
@@ -50,6 +50,39 @@ final class CliKernel implements KernelInterface
         }
     }
 
+    public static function create(): static
+    {
+        self::guardCli();
+        Logger::write('Start CLI context');
+        return self::createFromConfiguration(Thor::getConfiguration()->getConsoleConfiguration());
+    }
+
+    public static function guardCli(): void
+    {
+        if ('cli' !== php_sapi_name()) {
+            Logger::write(
+                "PANIC ABORT : CLI kernel tried to be executed from not-CLI context.",
+                Logger::LEVEL_PROD,
+                Logger::SEVERITY_ERROR
+            );
+            exit;
+        }
+    }
+
+    public static function createFromConfiguration(array $config = []): static
+    {
+        return new self($config);
+    }
+
+    public static function executeCommand(string $commandName, array $args = []): void
+    {
+        $command = $commandName;
+        foreach ($args as $argName => $argValue) {
+            $command .= " -$argName \"$argValue\"";
+        }
+        CliKernel::executeProgram('php ' . Globals::BIN_DIR . "thor.php $command");
+    }
+
     public static function executeProgram(string $cmd): void
     {
         if (substr(php_uname(), 0, 7) === "Windows") {
@@ -64,10 +97,10 @@ final class CliKernel implements KernelInterface
         #[ArrayShape(
             [
                 [
-                    'arg'         => 'string',
+                    'arg' => 'string',
                     'description' => 'string',
-                    'hasValue'    => 'boolean'
-                ]
+                    'hasValue' => 'boolean',
+                ],
             ]
         )] array $args = []
     ): self {
@@ -185,14 +218,14 @@ final class CliKernel implements KernelInterface
         #[ArrayShape(
             [
                 [
-                    'arg'         => 'string',
+                    'arg' => 'string',
                     'description' => 'string',
-                    'hasValue'    => 'boolean'
-                ]
+                    'hasValue' => 'boolean',
+                ],
             ]
         )] array $args = []
     ): self {
-        $spanCommand = str_repeat(' ', 16 - strlen($command));
+        $spanCommand = str_repeat(' ', max(16 - strlen($command), 1));
         $span16 = str_repeat(' ', 16);
         $this->console
             ->home()
@@ -205,9 +238,10 @@ final class CliKernel implements KernelInterface
             $argName = "-$argName";
             $spanArg = str_repeat(
                 ' ',
-                20 - strlen(
-                    $argName . ($vSpan = ($arg['hasValue'] ?? false ? ' value' : ''))
-                )
+                max(
+                    20 - strlen(
+                        $argName . ($vSpan = ($arg['hasValue'] ?? false ? ' value' : ''))
+                    ), 1)
             );
             $this->console
                 ->write("\t$span16")
@@ -220,38 +254,5 @@ final class CliKernel implements KernelInterface
         $this->console->writeln();
 
         return $this;
-    }
-
-    public static function create(): static
-    {
-        self::guardCli();
-        Logger::write('Start CLI context');
-        return self::createFromConfiguration(Thor::getConfiguration()->getConsoleConfiguration());
-    }
-
-    public static function guardCli(): void
-    {
-        if ('cli' !== php_sapi_name()) {
-            Logger::write(
-                "PANIC ABORT : CLI kernel tried to be executed from not-CLI context.",
-                Logger::LEVEL_PROD,
-                Logger::SEVERITY_ERROR
-            );
-            exit;
-        }
-    }
-
-    public static function executeCommand(string $commandName, array $args = []): void
-    {
-        $command = $commandName;
-        foreach ($args as $argName => $argValue) {
-            $command .= " -$argName \"$argValue\"";
-        }
-        CliKernel::executeProgram('php ' . Globals::BIN_DIR . "thor.php $command");
-    }
-
-    public static function createFromConfiguration(array $config = []): static
-    {
-        return new self($config);
     }
 }
