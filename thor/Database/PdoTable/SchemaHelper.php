@@ -60,14 +60,7 @@ final class SchemaHelper
             return $sql;
         }
 
-        $result = $this->requester->execute($sql, []);
-
-        /** @var PdoIndex $index */
-        foreach ($this->reader->getAttributes()['indexes'] as $index) {
-            $result = $result && $this->requester->request($index->getSql(), []);
-        }
-
-        return $result;
+        return $this->requester->execute($sql, []);
     }
 
     public function dropTable(): bool|string
