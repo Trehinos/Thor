@@ -46,6 +46,12 @@ class HtmlTag implements HtmlInterface
         }
     }
 
+    public static function icon(string $icon, string $collection = 'fas', bool $fixedWidth = false): string
+    {
+        $fw = $fixedWidth ? 'fa-fw' : '';
+        return "<i class='$collection fa-$icon $fw'></i>";
+    }
+
     public function setAttr(string $name, $value): void
     {
         $this->attrs[$name] = $value;

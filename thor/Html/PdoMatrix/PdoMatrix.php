@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Html
+ * @package          Trehinos/Thor/Html
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Html\PdoMatrix;
@@ -91,6 +91,7 @@ final class PdoMatrix
             $th->setContent($column->label);
             $thead_tr->addChild($th);
         }
+        $thead_tr->addChild(new HtmlTag('th', false));
         $thead->addChild($thead_tr);
 
         $thead_tr = new HtmlTag('tr', false);
@@ -156,6 +157,14 @@ final class PdoMatrix
             $td->setContent($column->fromDb($pdoArray[$columnName] ?? '<em class="text-warning">invalid</em>'));
             $tag->addChild($td);
         }
+        $tdAction = new HtmlTag('td', false);
+        $tdAction->addChild(
+            $this->buttonTag(
+                HtmlTag::icon('') . " ",
+                ''
+            )
+        );
+        $tag->addChild($tdAction);
         return $tag;
     }
 
@@ -170,6 +179,13 @@ final class PdoMatrix
         }
 
         return null;
+    }
+
+    // TODO
+    private function buttonTag(string $buttonLabel, string $action): HtmlTag
+    {
+        $tag = new HtmlTag('button', false, ['onclick' => $action]);
+        return $tag;
     }
 
 }

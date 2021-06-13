@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Database/PdoTable
+ * @package          Trehinos/Thor/Database/PdoTable
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Database\PdoTable;
@@ -12,13 +12,13 @@ use JetBrains\PhpStorm\ArrayShape;
 
 final class Criteria
 {
-    public const GLUE_AND = true;
-    public const GLUE_OR = false;
+    public const GLUE_AND = 'AND';
+    public const GLUE_OR = 'OR';
 
     private ?string $sql = null;
     private ?array $params = null;
 
-    public function __construct(private array $criteria = [], private bool $glue = self::GLUE_AND)
+    public function __construct(private array $criteria = [], private string $glue = self::GLUE_AND)
     {
     }
 
@@ -49,29 +49,25 @@ final class Criteria
     /**
      * @param array $criteria
      *                      'fieldName' =>  ''  -> DIRECT VALUE
-     *                      []  -> IN
-     *                      'and' => [...]
-     *                      'or' => [...]
+     *                      'fieldName' => []  -> IN
+     *                      'and' => [[], []]
+     *                      'or' => [[], []]
      *
-     * @param bool  $glue
+     * @param string  $glue
      *
      * @return array
      */
     #[ArrayShape(['sql' => "string", 'params' => "array"])]
     public static function compile(
         array $criteria,
-        bool $glue = self::GLUE_AND
+        string $glue = self::GLUE_AND
     ): array {
         $sqlArray = [];
         $params = [];
 
         foreach ($criteria as $key => $value) {
-            if (in_array($keyword = strtolower($key), ['and', 'or'])) {
-                if ($keyword === 'and') {
-                    ['sql' => $t_sql, 'params' => $t_params] = self::compile($value, self::GLUE_AND);
-                } else {
-                    ['sql' => $t_sql, 'params' => $t_params] = self::compile($value, self::GLUE_OR);
-                }
+            if (in_array($keyword = strtoupper($key), [self::GLUE_AND, self::GLUE_OR])) {
+                ['sql' => $t_sql, 'params' => $t_params] = self::compile($value, $keyword);
                 $sqlArray[] = "($t_sql)";
                 $params = array_merge($params, $t_params);
             } elseif (is_array($value)) {
@@ -80,23 +76,23 @@ final class Criteria
                 $sqlArray[] = '"' . $key . '" IN (' . $marks . ')';
             } else {
                 ['op' => $op, 'value' => $value] = self::parseValue($value);
-
                 if ($value === null) {
                     $mark = 'NULL';
+                } else {
+                    $mark = '?';
+                    $params[] = $value;
                 }
-
-                $params[] = $value;
-                $sqlArray[] = "$key $op ?";
+                $sqlArray[] = "$key $op $mark";
             }
         }
 
         return [
-            'sql'    => implode($glue ? ' AND ' : ' OR ', $sqlArray),
+            'sql'    => implode($glue, $sqlArray),
             'params' => $params
         ];
     }
 
-    #[ArrayShape(['op' => "false|string", 'value' => "false|null|string"])]
+    #[ArrayShape(['op' => "string", 'value' => "false|null|string"])]
     private static function parseValue(
         ?string $value
     ): array {
@@ -140,13 +136,14 @@ final class Criteria
                         break;
 
                     case '!':
-                        $op = 'NOT';
-                        $value = null;
-                        break;
 
                     default:
                         if ($value === null) {
                             $op = 'IS';
+                        } elseif ($value === '!') {
+                            $op = 'IS NOT';
+                            $value = null;
+                            break;
                         }
                 }
         }
