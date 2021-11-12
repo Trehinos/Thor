@@ -1,0 +1,200 @@
+{% extends "page-base.twig" %}
+
+{% block titlebar %}{{ icon('code-branch', 'fas', true) }} {{ _.changelog.title }}{% endblock %}
+
+{% block page %}
+    <div id="versions" class="d-flex flex-wrap">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {{ _.changelog.legend }}
+                </h5>
+                <div class="card-text">
+                    <ul class="fa-ul">
+                        <li>
+                            <span class="fa-li" style="color: #07b">{{ icon('plus-circle') }}</span>
+                            Added
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #0b7">{{ icon('sync') }}</span>
+                            Modified
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #a40">{{ icon('bug') }}</span>
+                            Bug fixed
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #96f">{{ icon('palette') }}</span>
+                            Style
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #c00">{{ icon('minus-square') }}</span>
+                            Removed
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #888">{{ icon('sticky-note') }}</span>
+                            Notes
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card flex-fill">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Version &epsilon; [0.5] <small class="text-muted">future</small>
+                </h5>
+                <div class="card-text">
+                    <ul class="fa-ul">
+                        <li class="text-muted">
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            Deployment scripts
+                        </li>
+                        <li>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card flex-fill">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Version &delta; [0.4] <small class="text-muted">2021-05-09</small>{# <small class="text-primary">in dev</small> #}
+                </h5>
+                <div class="card-text">
+                    <ul class="fa-ul">
+                        <li>
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            Static kernels
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            Dynamic lang strings
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            <code>clear/cache</code> and <code>clear/logs</code> commands
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            Thor shortcuts class
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #888;">{{ icon('sticky-note') }}</span>
+                            Documentation
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card flex-fill">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Version &gamma; [0.3] <small class="text-muted">2021-02-23</small>
+                </h5>
+                <div class="card-text">
+                    <ul class="fa-ul">
+                        <li>
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            Core commands (setup, routes : list, set)
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            Daemons and daemons control (start, stop, reset, kill, status)
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            PdoAttributes : <code>#[PdoRow], #[PdoIndex], #[PdoColumn], #[PdoForeignKey]</code>
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            RouterAttribute : <code>#[Route]</code>
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            <code class="text-muted">page-base.twig.html</code> page template
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #0b7">{{ icon('sync') }}</span>
+                            Database module factoring + split PdoExtension & PdoTable
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #0b7">{{ icon('sync') }}</span>
+                            PdoRowInterface : 'id' integer replaced by 'primary' array/string
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #96f">{{ icon('palette') }}</span>
+                            Menu style
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #96f">{{ icon('palette') }}</span>
+                            Load spinner on AJAX loading page and modals
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #c00">{{ icon('minus-square') }}</span>
+                            DB definitions (replaced by PdoAttributesReader)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card flex-fill">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Version &beta; [0.2] <small class="text-muted">2021-01-30</small>
+                </h5>
+                <div class="card-text">
+                    <ul class="fa-ul">
+                        <li>
+                            <span class="fa-li" style="color: #07b;">{{ icon('plus-circle') }}</span>
+                            User : Change password
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b">{{ icon('plus-circle') }}</span>
+                            DB definitions
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b">{{ icon('plus-circle') }}</span>
+                            Security module
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #0b7">{{ icon('sync') }}</span>
+                            From Trehinos/Ombre
+                            <ul>
+                                <li>PHP 8.0 rewrite</li>
+                                <li>CliKernel</li>
+                                <li>Improvements</li>
+                                <li>Page AJAX loading</li>
+                                <li>Delete user</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Version &alpha; [0.1] <small class="text-muted">2020-07-14</small>
+                </h5>
+                <div class="card-text">
+                    <ul class="fa-ul">
+                        <li>
+                            <span class="fa-li" style="color: #07b">{{ icon('plus-circle') }}</span>
+                            Kernel, application, HTTP module, PdoExtension, Logger, Validation
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b">{{ icon('plus-circle') }}</span>
+                            Framework structure
+                        </li>
+                        <li>
+                            <span class="fa-li" style="color: #07b">{{ icon('plus-circle') }}</span>
+                            Web user management
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

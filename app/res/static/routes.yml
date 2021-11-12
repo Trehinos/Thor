@@ -1,0 +1,8 @@
+load:
+    - Thor\Api\Actions\Main
+    - Thor\Api\Actions\Users
+    - Thor\Api\Actions\Security
+generate-url:
+    path: /framework/generate-url
+    method: GET
+    action: { class: Thor\Api\Actions\Main, method: generateUrlResponse }

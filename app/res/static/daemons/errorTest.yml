@@ -1,0 +1,6 @@
+name: errorTest
+class: App\Daemons\ErrorTest
+periodicity: 60
+start: '0000'
+end: '2359'
+enabled: true

@@ -1,0 +1,12 @@
+<div class="modal-dialog {% block modal_size %}{% endblock %}">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">{% block modal_title %}{% endblock %}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                {{ icon('times')|raw }}
+            </button>
+        </div>
+        <div class="modal-body">{% block modal_body %}{% endblock %}</div>
+        <div class="modal-footer">{% block modal_footer %}{% endblock %}</div>
+    </div>
+</div>

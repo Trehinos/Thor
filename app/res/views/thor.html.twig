@@ -1,0 +1,91 @@
+{% extends "base.html.twig" %}
+
+{% block head_css %}
+    <link rel="stylesheet" href="/assets/thor/thor-theme.css">
+{% endblock %}
+
+{% block body_html %}
+    <div id="menu">
+        {% block menu %}
+            <h1 class="text-center mt-4 mb-0 " style="color: #bbb;">
+                {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;')|raw }}
+                <br>
+                <span style="color: #fa4">{{ appName|upper }}</span>
+            </h1>
+            <div class="text-center mb-4" style="color: #ddd; font-size: 0.75em;">
+                PHP Tools
+            </div>
+            {{ render('menu') }}
+            <div id="user-box">
+                <div class="float-right mt-1">
+                    <button class="btn btn-outline-info" title="user page"
+                            onclick=""
+                    >
+                        {{ icon('user', 'fas') }}
+                        {{ icon('search', 'fas') }}
+                    </button>
+                    <button class="btn btn-outline-warning" title="change password"
+                            onclick="Modal.load('{{ url('users-change-password-form', {public_id: server.user.publicId}) }}');"
+                    >
+                        {{ icon('lock', 'fas') }}
+                        {{ icon('edit', 'fas') }}
+                    </button>
+                    <a class="btn btn-outline-light" title="logout"
+                       href="{{ url('logout') }}"
+                    >
+                        {{ icon('user', 'fas') }}
+                        {{ icon('sign-out', 'fas') }}
+                    </a>
+                </div>
+                <div class="mt-1">
+                    <i class="fas fa-user fa-lg"></i>
+                    {{ server.user.username }}
+                </div>
+            </div>
+        {% endblock %}
+    </div>
+    <div id="content">{% block body_content %}{% endblock %}</div>
+    <div id="footer" class="pt-2">
+        <div>
+            {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;')|raw }}
+            Trehinos/Thor {{ versionName|raw }} ({{ version }})
+        </div>
+        <div>{{ icon('copyright', 'far fa-lg', true)|raw }} 2021 Sébastien GELDREICH</div>
+        {% block footer %}
+            <div class="mt-1 pt-1 border-top border-secondary" style="font-size: 0.9em;">
+                {{ icon('info-circle', 'fas fa-lg', true)|raw }}
+                <button
+                        id="btn-about"
+                        onclick="menuClick($(this));"
+                        data-url="{{ url('about') }}"
+                        data-item="about">
+                    {{ _.footer.about }}
+                </button>
+                <button
+                        id="btn-legal"
+                        onclick="menuClick($(this));"
+                        data-url="{{ url('legal') }}"
+                        data-item="legal"
+                >
+                    {{ _.footer.legal }}
+                </button>
+                <button
+                        id="btn-changelog"
+                        onclick="menuClick($(this));"
+                        data-url="{{ url('changelog') }}"
+                        data-item="changelog"
+                >
+                    {{ _.footer.changelog }}
+                </button>
+            </div>
+        {% endblock %}
+    </div>
+
+    <div id="modal" class="modal" tabindex="-1" role="dialog">
+        {% include "modal-base.html.twig" %}
+    </div>
+{% endblock %}
+
+{% block body_js %}
+    <script src="/assets/thor/thor-lib.js"></script>
+{% endblock %}

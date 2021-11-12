@@ -1,0 +1,13 @@
+-
+    label: index
+    icon: book
+    route: index-page
+-
+    label: users
+    icon: users
+    route: users
+    group: [{ icon: user-friends, route: index-page, label: users-groups }]
+-
+    label: Documentation
+    icon: books
+    route: index-page

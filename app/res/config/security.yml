@@ -1,0 +1,64 @@
+# OLD
+userPdoRow:
+    pdoRowClass: Thor\Api\Entities\User
+    passwordCompareMethod: hasPwdHashFor
+configuration:
+    login-route: login
+    logout-route: logout
+    check-route: check
+    session-key: token
+    token-expire: 60
+
+# CURRENT |todo : set with no "future" key
+future:
+    security: enable
+    identity-source: database
+    identity-type: username-password
+    authentication: session
+
+    database-pdo-row: Thor\Api\Entities\User
+
+    firewall:
+        -   pattern: /
+            redirect: login
+            login-route: login
+            logout-route: logout
+            check-route: check
+            exclude-path:
+                - '/public'
+
+
+doc:
+    security: enable | [disable]
+    identity-source: database | ldap | file | [internal] # ldap: identity-type=user only
+    identity-type: token | both | [username-password]
+
+    # if identity-source === database
+    database-pdo-row: ~ # implements UserInterface & PdoRowInterface
+
+    # if identity-source === file
+    file-name: ~
+    file-fields: ~
+    file-separator: ~
+    file-php-structure: ~
+
+    # if user-source === ldap
+    ldap-host: ~
+    ldap-user: ~
+    ldap-password: ~
+
+    authentication: '[session] | header_token'
+    # if authentication === header_token
+    authentication-key: ~
+    authentication-expire: ~
+
+    # option : firewall, protect routes
+    firewall:
+        -   pattern: /
+            redirect: ~ # public page to redirect if a status_forbidden is triggered
+            login-route: login
+            logout-route: logout
+            check-route: check
+            exclude-path:
+                - ''
+                - ''

@@ -1,0 +1,4 @@
+default:
+    dsn: 'mysql:host=localhost;dbname=thor'
+    user: thor
+    password: '4e651567a0011fed'

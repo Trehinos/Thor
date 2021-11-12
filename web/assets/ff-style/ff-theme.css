@@ -1,0 +1,48 @@
+@font-face {
+    font-family: "Quicksand";
+    font-style: normal;
+    font-weight: normal;
+    src: url("/assets/ff-style/fonts/Quicksand_Book.otf")
+}
+
+@font-face {
+    font-family: "Quicksand";
+    font-weight: normal;
+    font-style: oblique;
+    src: url("/assets/ff-style/fonts/Quicksand_Book_Oblique.otf")
+}
+
+@font-face {
+    font-family: "Quicksand";
+    font-style: normal;
+    font-weight: bold;
+    src: url("/assets/ff-style/fonts/Quicksand_Bold.otf")
+}
+
+@font-face {
+    font-family: "Quicksand";
+    font-weight: bold;
+    font-style: oblique;
+    src: url("/assets/ff-style/fonts/Quicksand_Bold_Oblique.otf")
+}
+
+@font-face {
+    font-family: "Quicksand";
+    font-style: normal;
+    font-weight: 300;
+    src: url("/assets/ff-style/fonts/Quicksand_Light.otf")
+}
+
+@font-face {
+    font-family: "Quicksand";
+    font-weight: 300;
+    font-style: oblique;
+    src: url("/assets/ff-style/fonts/Quicksand_Light_Oblique.otf")
+}
+
+:root {
+    --ff-primary: rgb(213, 19, 13);
+    --ff-secondary: rgb(255, 120, 10);
+    --ff-third: rgb(254, 209, 112);
+    --ff-darkgray: rgb(65, 55, 52);
+}

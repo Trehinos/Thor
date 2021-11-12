@@ -1,0 +1,53 @@
+general:
+    create: Créer
+    edit: Editer
+    remove: Supprimer
+    id: Identifiant
+    public_id: 'Identifiant public'
+    show: Afficher
+    hide: Cacher
+    clean_fields: 'Vider les champs'
+menu:
+    index: Index
+    users: Utilisateurs
+    users-groups: Groupes
+    users-roles: Rôles
+    users-permissions: Permissions
+footer:
+    about: 'A propos'
+    legal: 'Mentions légales'
+    changelog: 'Notes de versions'
+index:
+    title: Index
+    search_placeholder: 'Rechercher une route...'
+    tip: 'Cette interface permet de tester les routes de l''application. Celles-ci sont définies dans'
+    route: Route
+users:
+    title: Utilisateurs
+    user: Utilisateur
+    create_user: 'Créer un utilisateur'
+    edit_user: 'Editer un utilisateur'
+    username: 'Nom d''utilisateur'
+    password: 'Mot de passe'
+    hide_password: 'Cacher le mot de passe'
+    show_password: 'Montrer le mot de passe'
+    password_warning: 'Le mot de passe ne sera plus jamais affiché. Retenez-le bien !<br>Longueur max : 255 caractères<br>Caractères acceptés : TOUS'
+    new_password: 'Nouveau mot de passe'
+    confirm_password: Confirmer
+    change_password: 'Changer de mot de passe'
+    generated_password: 'Mot de passe généré'
+    min_size: 'min. 16 caractères'
+    connect: 'Se connecter'
+users.login.connect: 'Connexion à <strong>%s</strong>'
+changelog:
+    title: 'Notes de versions'
+    legend: Légende
+about:
+    title: 'A propos'
+about.body: "<strong>Thor</strong> est un framework PHP.<br>\n<strong>Version courante :</strong> %s<br>\n<strong>License</strong> : MIT (&copy; Sébastien GELDREICH)<br>"
+legal:
+    title: 'Mentions légales'
+    description: "<i class=\"far fa-copyright\"></i> 2021 Sébastien GELDREICH<br>\nLicense : MIT"
+errors:
+    too-short-username: 'Nom d''utilisateur trop court (min. 4 car.) ou trop long (max. 255 car.) ou caractères invalides.'
+    too-short-password: 'Mot de passe trop court (min. 16 car.) ou trop long (max. 255 car.).'

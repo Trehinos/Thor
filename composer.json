@@ -1,0 +1,42 @@
+{
+  "name": "trehinos/thor",
+  "version": "0.9",
+  "description": "PSR-compliant framework for PHP-8.1",
+  "license": "Proprietary : (c) 2021 Sébastien GELDREICH",
+  "minimum-stability": "stable",
+  "authors": [
+    {
+      "name": "Sébastien GELDREICH",
+      "email": "trehinos@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Thor\\": "thor/",
+      "DataTables\\": "datatables-ext/",
+      "App\\": "app/src/"
+    }
+  },
+  "config": {
+    "vendor-dir": "vendors/",
+    "bin-dir": "bin/"
+  },
+  "require": {
+    "php": "^8.1",
+    "ext-calendar": "*",
+    "ext-curl": "*",
+    "ext-ftp": "*",
+    "ext-json": "*",
+    "ext-pdo": "*",
+    "ext-ssh2": "*",
+    "ext-zip": "*",
+    "ext-openssl": "*",
+    "ext-ldap": "*",
+    "phpoffice/phpspreadsheet": "1.*",
+    "nusphere/nusoap": "0.9.6",
+    "symfony/var-dumper": "5.*",
+    "symfony/yaml": "5.*",
+    "twig/twig": "3.*",
+    "datatables.net/editor-php": "2.*"
+  }
+}

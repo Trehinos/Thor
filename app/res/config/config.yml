@@ -1,0 +1,5 @@
+lang: fr
+env: dev
+app_name: Thor
+timezone: Europe/Paris
+log_path: logs/

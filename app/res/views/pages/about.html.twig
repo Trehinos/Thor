@@ -1,0 +1,7 @@
+{% extends "page-base.twig" %}
+
+{% block titlebar %}{{ icon('info-square', 'fas', true) }} {{ _.about.title }}{% endblock %}
+
+{% block page %}
+    {{ "about.body"|DICT(version) }}
+{% endblock %}

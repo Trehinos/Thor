@@ -1,0 +1,46 @@
+{% extends "thor.html.twig" %}
+
+{% block menu %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block head_css %}
+    {{ parent() }}
+    <style>
+        #menu {
+            display: none;
+        }
+        #footer {
+            position: fixed;
+            width: 100%;
+            text-align: center;
+            height: 60px;
+        }
+        #content {
+            margin: 0;
+            padding: 16px;
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block body_content %}
+    <div style="width: 400px; margin: auto; text-align: center">
+        <h1 class="mb-4">
+            <i class="fas fa-lg fa-sign-in"></i><br>
+            {{ "users.login.connect"|DICT(appName) }}
+        </h1>
+        <form method="post" action="{{ url('check') }}">
+            <div class="form-group">
+                <label for="username">{{ _.users.user }}</label>
+                <input type="text" id="username" name="username" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">{{ _.users.password }}</label>
+                <input type="password" id="password" name="password" class="form-control">
+            </div>
+            <button class="btn btn-outline-primary">
+                <i class="fas fa-sign-in"></i> {{ _.users.connect }}
+            </button>
+        </form>
+    </div>
+{% endblock %}
