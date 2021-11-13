@@ -36,5 +36,4 @@ class WebKernel extends HttpKernel
         return new self(WebServerFactory::creatWebServerFromConfiguration($config)->produce());
     }
 
-
 }

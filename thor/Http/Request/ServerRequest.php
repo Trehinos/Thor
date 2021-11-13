@@ -2,8 +2,6 @@
 
 namespace Thor\Http\Request;
 
-use Thor\Http\Uri;
-use Thor\Stream\Stream;
 use thor\Http\UriInterface;
 use Thor\Http\ProtocolVersion;
 use Thor\Stream\StreamInterface;
@@ -38,24 +36,6 @@ class ServerRequest extends Request implements ServerRequestInterface
         private array $uploadedFiles = [],
     ) {
         parent::__construct($version, $headers, $body, $method, $target);
-    }
-
-    public static function fromGlobals(): static
-    {
-        $version = explode('/', $_SERVER['SERVER_PROTOCOL'])[1] ?? '1.1';
-
-        return new ServerRequest(
-                           ProtocolVersion::from($version),
-                           getallheaders(),
-                           new Stream(Stream::fileOpen('php://temp', 'r+')),
-                           HttpMethod::from($_SERVER['REQUEST_METHOD'] ?? 'GET'),
-                           Uri::fromGlobals(),
-            cookies:       $_COOKIE,
-            parsedBody:    $_POST,
-            queryParams:   $_GET,
-            serverParams:  $_SERVER,
-            uploadedFiles: UploadedFile::normalizeFiles($_FILES)
-        );
     }
 
     public function getServerParams(): array

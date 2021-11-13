@@ -26,7 +26,7 @@ final class HttpServerFactory extends Factory
         );
     }
 
-    public function produce(): HttpServer
+    public function produce(array $options = []): HttpServer
     {
         return new HttpServer(
             $this->routerFactory->produce(),

@@ -45,7 +45,7 @@ final class TwigFactory
         );
     }
 
-    public function produce(): Environment
+    public function produce(array $options = []): Environment
     {
         return $this->twig;
     }

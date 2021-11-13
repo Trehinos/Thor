@@ -48,6 +48,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 * GNU/Linux or Windows system. Works on VMs/XAMPP.
 * PHP 8.1 + PDO + DBMS PDO drivers
+* PHP-EXT ```calendar``` ```curl``` ```ftp``` ```pdo``` ```ssh2``` ```zip``` ```ldap```
 * PDO compatible DBMS
 * HTTP server
 * Composer
@@ -58,9 +59,10 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 * Symfony/VarDumper 5
 * Symfony/Yaml 5
-* Twig 3
-* nusphere/susoap 0.9
-* datatables.net/editor-php
+* Twig/Twig 3
+* NuSphere/NuSoap 0.9.6
+* Datatables/Editor 2
+* PhpOffice/PhpSpreadsheet 1
 
 ### Client-side vendors (included)
 
@@ -77,7 +79,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 2. Go to ```thor/``` in a terminal and type ```composer update``` to **install dependencies**,
 3. **Set configuration** in```thor/app/res/config/config.yml```.
 
-### Database installation
+### Database installation :
 
 4. **Initialize the database** :
    * **Create the database** or retrieve DB infos,

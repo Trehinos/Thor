@@ -30,7 +30,7 @@ final class WebServerFactory extends Factory
         );
     }
 
-    public function produce(): WebServer
+    public function produce(array $options = []): WebServer
     {
         $router = $this->routerFactory->produce();
         $security = $this->securityFactory->produce();

@@ -11,7 +11,7 @@ final class SecurityFactory extends Factory
 
     }
 
-    public function produce(): Security
+    public function produce(array $options = []): Security
     {
         return Security::createFromConfiguration($this->configuration);
     }

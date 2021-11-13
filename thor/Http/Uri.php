@@ -23,6 +23,37 @@ class Uri implements UriInterface
     ) {
     }
 
+    public static function fromGlobals(): UriInterface
+    {
+        $host = null;
+        $port = null;
+        $queryArguments = [];
+        $path = '';
+        if (isset($_SERVER['HTTP_HOST'])) {
+            [$host, $port] = self::extractHostAndPortFromAuthority($_SERVER['HTTP_HOST']);
+        }
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $requestUriParts = explode('?', $_SERVER['REQUEST_URI'], 2);
+            $path = $requestUriParts[0];
+            if (($requestUriParts[1] ?? '') !== '') {
+                parse_str($requestUriParts[1], $queryArguments);
+            }
+        }
+        if (empty($queryArguments) && isset($_SERVER['QUERY_STRING'])) {
+            parse_str($_SERVER['QUERY_STRING'], $queryArguments);
+        }
+
+        return new self(
+                            !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'
+                                ? self::SCHEME_HTTPS
+                                : self::SCHEME_HTTP,
+                            $host ?? $_SERVER['SERVER_NAME'] ?? $_SERVER['SERVER_ADDR'] ?? 'localhost',
+            port:           $port ?? $_SERVER['SERVER_PORT'] ?? null,
+            path:           $path,
+            queryArguments: $queryArguments
+        );
+    }
+
     private static function extractHostAndPortFromAuthority(string $authority): array
     {
         $uri = self::SCHEME_HTTP . $authority;
@@ -35,53 +66,6 @@ class Uri implements UriInterface
         $port = $parts['port'] ?? null;
 
         return [$host, $port];
-    }
-
-    public static function fromGlobals(): UriInterface
-    {
-        $uri = new Uri('');
-
-        $uri = $uri->withScheme(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? self::SCHEME_HTTPS : self::SCHEME_HTTP);
-
-        $hasPort = false;
-        if (isset($_SERVER['HTTP_HOST'])) {
-            [$host, $port] = self::extractHostAndPortFromAuthority($_SERVER['HTTP_HOST']);
-            if ($host !== null) {
-                $uri = $uri->withHost($host);
-            }
-
-            if ($port !== null) {
-                $hasPort = true;
-                $uri = $uri->withPort($port);
-            }
-        } elseif (isset($_SERVER['SERVER_NAME'])) {
-            $uri = $uri->withHost($_SERVER['SERVER_NAME']);
-        } elseif (isset($_SERVER['SERVER_ADDR'])) {
-            $uri = $uri->withHost($_SERVER['SERVER_ADDR']);
-        }
-
-        if (!$hasPort && isset($_SERVER['SERVER_PORT'])) {
-            $uri = $uri->withPort($_SERVER['SERVER_PORT']);
-        }
-
-        $queryArguments = [];
-        if (isset($_SERVER['REQUEST_URI'])) {
-            $requestUriParts = explode('?', $_SERVER['REQUEST_URI'], 2);
-            $uri = $uri->withPath($requestUriParts[0]);
-            if (($requestUriParts[1] ?? '') !== '') {
-                parse_str($requestUriParts[1], $queryArguments);
-                $uri = $uri->withQuery($queryArguments);
-            }
-        }
-        if (empty($queryArguments) && isset($_SERVER['QUERY_STRING'])) {
-            parse_str($_SERVER['QUERY_STRING'], $queryArguments);
-
-        }
-        if (!empty($queryArguments)) {
-            $uri = $uri->withQuery($queryArguments);
-        }
-
-        return $uri;
     }
 
     public static function create(string $url): self|false
@@ -134,21 +118,6 @@ class Uri implements UriInterface
             $this->host,
             $this->user,
             $this->password,
-            $this->port,
-            $this->path,
-            $this->queryArguments,
-            $this->fragment,
-        );
-    }
-
-    #[Pure]
-    public function withUserInfo(string $user, ?string $password = null): static
-    {
-        return new self(
-            $this->scheme,
-            $this->host,
-            $user,
-            $password,
             $this->port,
             $this->path,
             $this->queryArguments,
@@ -217,6 +186,21 @@ class Uri implements UriInterface
     }
 
     #[Pure]
+    public function withUserInfo(string $user, ?string $password = null): static
+    {
+        return new self(
+            $this->scheme,
+            $this->host,
+            $user,
+            $password,
+            $this->port,
+            $this->path,
+            $this->queryArguments,
+            $this->fragment,
+        );
+    }
+
+    #[Pure]
     public function withFragment(string $fragment): static
     {
         return new self(
@@ -234,9 +218,10 @@ class Uri implements UriInterface
     #[Pure]
     public function __toString(): string
     {
-        $query = self::prefix("?", $this->getQuery());
-        $fragment = self::prefix("#", $this->getFragment());
-        return "{$this->getScheme()}://{$this->getAuthority()}{$this->getPath()}$query$fragment";
+        $query = self::prefix('?', $this->getQuery());
+        $fragment = self::prefix('#', $this->getFragment());
+        $path = self::prefix('/', $this->getPath());
+        return "{$this->getScheme()}://{$this->getAuthority()}$path$query$fragment";
     }
 
     public static function prefix(string $prefix, string $str): string
@@ -255,6 +240,11 @@ class Uri implements UriInterface
     public function getFragment(): string
     {
         return $this->fragment;
+    }
+
+    public function getPath(): string
+    {
+        return $this->path;
     }
 
     public function getScheme(): string
@@ -278,9 +268,10 @@ class Uri implements UriInterface
         return "$str$suffix";
     }
 
+    #[Pure]
     public function getUserInfo(): string
     {
-        return $this->user ?? '' . ($this->password !== null ? ":{$this->password}" : '');
+        return $this->user . self::prefix(':', $this->password);
     }
 
     public function getPort(): ?int
@@ -291,10 +282,5 @@ class Uri implements UriInterface
     public function getHost(): string
     {
         return $this->host;
-    }
-
-    public function getPath(): string
-    {
-        return $this->path;
     }
 }

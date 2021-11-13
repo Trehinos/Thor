@@ -16,6 +16,7 @@ use Thor\KernelInterface;
 use Thor\Http\Server\HttpServer;
 use Thor\Http\Request\ServerRequest;
 use Thor\Factories\HttpServerFactory;
+use Thor\Factories\ServerRequestFactory;
 
 class HttpKernel implements KernelInterface
 {
@@ -53,7 +54,7 @@ class HttpKernel implements KernelInterface
     {
         ob_start();
         Logger::write('Server handle the HTTP request');
-        $request = ServerRequest::fromGlobals();
+        $request = ServerRequestFactory::createFromGlobals();
         $response = $this->server->handle($request);
         $responseStatus = $response->getStatus()->normalized();
         $responseCode = $response->getStatus()->value;
@@ -78,7 +79,7 @@ class HttpKernel implements KernelInterface
             }
         }
 
-        if ($request->getMethod()->responseHasBody() && ($body = $response->getBody()) !== '') {
+        if ($request->getMethod()->responseHasBody() && ($body = $response->getBody()->getContents()) !== '') {
             Logger::write("Send body");
             echo $body;                                                         // Print body
         }

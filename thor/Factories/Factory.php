@@ -4,7 +4,5 @@ namespace Thor\Factories;
 
 abstract class Factory
 {
-
-
-    abstract public function produce(): mixed;
+    abstract public function produce(array $options = []): mixed;
 }

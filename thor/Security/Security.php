@@ -6,9 +6,11 @@ use Exception;
 use Thor\Http\Session;
 use JetBrains\PhpStorm\Pure;
 use Thor\Http\Routing\Router;
-use Thor\Http\Request\Request;
 use Thor\Http\Response\Response;
 use JetBrains\PhpStorm\Immutable;
+use Thor\Http\Response\ResponseInterface;
+use Thor\Http\Request\ServerRequestInterface;
+use Thor\Http\Server\RequestHandlerInterface;
 
 class Security
 {
@@ -117,56 +119,27 @@ class Security
     /**
      * Returns null if no redirect or redirect Response.
      *
-     * @param Request $request
-     * @param Router  $router
+     * @param ServerRequestInterface  $request
+     * @param Router                  $router
+     * @param RequestHandlerInterface $handler
      *
      * @return Response|null
      */
-    public function protect(Request $request, Router $router): ?Response
+    public function protect(ServerRequestInterface $request, Router $router, RequestHandlerInterface $handler): ?ResponseInterface
     {
         if (!$this->isActive()) {
             return null;
         }
-
         foreach ($this->firewalls as $firewall) {
-            if (!str_starts_with($request->getUri()->getPath(), $firewall->pattern)) {
-                // not a pattern of this firewall
-                continue;
-            }
-
-            if (
-                array_reduce(
-                    $firewall->exclude,
-                    fn(bool $carry, string $excludePath) => $carry || str_starts_with(
-                            $request->getUri()->getPath(),
-                            $excludePath
-                        ),
-                    false
-                )
-            ) {
-                // exclude-path -> firewall disabled for this route
-                continue;
-            }
-
-            if (!$this->isAuthenticated($request->getHeaderLine($this->tokenKey))) {
-                if (
-                    !in_array(
-                        $router->getMatchedRouteName(),
-                        [
-                            $firewall->loginRoute,
-                            $firewall->logoutRoute,
-                            $firewall->checkRoute,
-                        ]
-                    )
-                ) {
-                    return Response::create($firewall->redirect);
-                }
-            } else {
-                // TODO is Authenticated, verify authorization
+            $firewall->router = $router;
+            $firewall->isAuthenticated = $this->isAuthenticated($request->getHeaderLine($this->tokenKey));
+            if ($firewall->redirect($request)) {
+                $request->getAttribute("firewall{$firewall->pattern}", 'FIREWALLED');
+                return $firewall->process($request, $handler);
             }
         }
 
-        return null; // TODO
+        return null;
     }
 
     public function isActive(): bool

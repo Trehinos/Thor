@@ -10,6 +10,7 @@ use Thor\Http\UriInterface;
 use Thor\Http\Routing\Router;
 use Thor\Http\Response\Response;
 use Thor\Http\Response\HttpStatus;
+use Thor\Factories\ResponseFactory;
 use Thor\Http\Response\ResponseInterface;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoExtension\PdoRequester;
@@ -35,33 +36,28 @@ class HttpServer implements RequestHandlerInterface
             'path'   => $request->getUri()->getPath(),
         ]);
 
-        if (null === ($route = $this->router->match($request))) {
-            Logger::write(' -> No route matched', LogLevel::DEBUG);
-            return Response::createFromStatus(HttpStatus::NOT_FOUND);
-        }
+        $route = $this->router->match($request);
         if (false === $route) {
-            Logger::write(' -> Method {method} not allowed', LogLevel::DEBUG, ['method' => $request->getMethod()->value]
+            Logger::write(
+                ' -> Method {method} not allowed',
+                LogLevel::DEBUG,
+                ['method' => $request->getMethod()->value]
             );
             return Response::createFromStatus(
                 HttpStatus::METHOD_NOT_ALLOWED,
                 ['Allow' => $this->router->getErrorRoute()->getMethod()->value]
             );
         }
-        if (null !== ($securityRedirect = $this->security?->protect($request, $this->router))) {
-            return $securityRedirect;
+        if (null === $route) {
+            Logger::write(' -> No route matched', LogLevel::DEBUG);
+            return Response::createFromStatus(HttpStatus::NOT_FOUND);
         }
 
-        Logger::write(' -> MATCH {routeName}', LogLevel::DEBUG, ['routeName' => $this->router->getMatchedRouteName()]);
-        $parameters = $route->getFilledParams();
-        $cClass = $route->getControllerClass();
-        $cMethod = $route->getControllerMethod();
-        Logger::write(' -> INSTANTIATE {controller} EXECUTE {method}', LogLevel::DEBUG, [
-            'controller' => $cClass,
-            'method'     => $cMethod,
-        ]);
-
-        $controller = new $cClass($this);
-        return $controller->$cMethod(...array_values($parameters));
+        $controllerHandler = new ControllerHandler($this, $route);
+        if (null !== ($redirect = $this->security->protect($request, $this->router, $controllerHandler))) {
+            return $redirect;
+        }
+        return $controllerHandler->handle($request);
     }
 
     public function getRequester(string $name = 'default'): ?PdoRequester
@@ -84,14 +80,14 @@ class HttpServer implements RequestHandlerInterface
         return $this->language;
     }
 
-    public function redirect(string $routeName, array $params = [], string $queryString = ''): Response
+    public function redirect(string $routeName, array $params = [], string $queryString = ''): ResponseInterface
     {
         return $this->redirectTo($this->generateUrl($routeName, $params, $queryString));
     }
 
-    public function redirectTo(UriInterface $uri): Response
+    public function redirectTo(UriInterface $uri): ResponseInterface
     {
-        return Response::create('', HttpStatus::FOUND, ['Location' => "$uri"]);
+        return ResponseFactory::createRedirection($uri);
     }
 
     public function generateUrl(string $routeName, array $params = [], string $queryString = ''): UriInterface
