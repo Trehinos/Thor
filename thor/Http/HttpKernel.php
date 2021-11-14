@@ -14,9 +14,10 @@ use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
 use Thor\KernelInterface;
 use Thor\Http\Server\HttpServer;
-use Thor\Http\Request\ServerRequest;
 use Thor\Factories\HttpServerFactory;
 use Thor\Factories\ServerRequestFactory;
+use Thor\Http\Response\ResponseInterface;
+use Thor\Http\Request\ServerRequestInterface;
 
 class HttpKernel implements KernelInterface
 {
@@ -47,15 +48,20 @@ class HttpKernel implements KernelInterface
 
     public static function createFromConfiguration(array $config = []): static
     {
-        return new self(HttpServerFactory::createHttpServerFromConfiguration($config)->produce());
+        return new self(HttpServerFactory::createHttpServerFromConfiguration($config));
     }
 
-    public function execute(): void
+    public function handle(ServerRequestInterface $serverRequest): ResponseInterface
+    {
+        return $this->server->handle($serverRequest);
+    }
+
+    final public function execute(): void
     {
         ob_start();
         Logger::write('Server handle the HTTP request');
         $request = ServerRequestFactory::createFromGlobals();
-        $response = $this->server->handle($request);
+        $response = $this->handle($request);
         $responseStatus = $response->getStatus()->normalized();
         $responseCode = $response->getStatus()->value;
         Logger::write("HTTP Response generated ($responseCode : $responseStatus).", LogLevel::DEBUG);

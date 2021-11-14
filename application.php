@@ -15,11 +15,12 @@
 
 require_once __DIR__ . '/vendors/autoload.php';
 
-ini_set('log_errors', E_ALL);
-ini_set('error_log', __DIR__);
-
+use Thor\Globals;
 use Thor\Application;
 use Thor\Debug\Logger;
+
+ini_set('log_errors', E_ALL);
+ini_set('error_log', Globals::VAR_DIR);
 
 $application = Application::create();
 Logger::write('#APP:START#');

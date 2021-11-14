@@ -13,7 +13,6 @@
   "autoload": {
     "psr-4": {
       "Thor\\": "thor/",
-      "DataTables\\": "datatables-ext/",
       "App\\": "app/src/"
     }
   },
@@ -32,7 +31,6 @@
     "ext-zip": "*",
     "ext-openssl": "*",
     "ext-ldap": "*",
-    "phpoffice/phpspreadsheet": "1.*",
     "nusphere/nusoap": "0.9.6",
     "symfony/var-dumper": "5.*",
     "symfony/yaml": "5.*",

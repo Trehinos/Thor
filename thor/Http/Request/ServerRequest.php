@@ -108,7 +108,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     public function getParsedBody(): null|array|object
     {
-        return $this->getParsedBody();
+        return $this->parsedBody;
     }
 
     public function withParsedBody(object|array|null $data): static

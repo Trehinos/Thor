@@ -57,9 +57,9 @@ final class Router
         return $this->routes[$name] ?? null;
     }
 
-    public function match(RequestInterface $request): Route|false|null
+    public function match(RequestInterface $request, string $prefix = ''): Route|false|null
     {
-        $pathInfo = $request->getUri()->getPath();
+        $pathInfo = substr($request->getUri()->getPath(), strlen($prefix));
         $method = $request->getMethod();
 
         /**

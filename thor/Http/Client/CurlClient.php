@@ -6,6 +6,7 @@ use CurlHandle;
 use Thor\Http\Response\Response;
 use Thor\Http\Request\HttpMethod;
 use Thor\Http\Response\HttpStatus;
+use Thor\Factories\ResponseFactory;
 use Thor\Http\Request\RequestInterface;
 use Thor\Http\Response\ResponseInterface;
 
@@ -24,9 +25,20 @@ final class CurlClient implements ClientInterface
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
         return $this
-            ->prepare($request)
-            ->execute()
-        ;
+                ->prepare($request)
+                ->execute() ?? ResponseFactory::notFound();
+    }
+
+    public function execute(): ?ResponseInterface
+    {
+        if ($this->preparedRequest === null) {
+            return null;
+        }
+        $body = curl_exec($this->curl);
+        $status = curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE);
+        $this->preparedRequest = null;
+
+        return Response::create($body, HttpStatus::from($status), $this->responseHeaders);
     }
 
     public function prepare(RequestInterface $request): self
@@ -69,18 +81,6 @@ final class CurlClient implements ClientInterface
         if ($this->curl instanceof CurlHandle) {
             curl_close($this->curl);
         }
-    }
-
-    public function execute(): ?ResponseInterface
-    {
-        if ($this->preparedRequest === null) {
-            return null;
-        }
-        $body = curl_exec($this->curl);
-        $status = curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE);
-        $this->preparedRequest = null;
-
-        return Response::create($body, HttpStatus::from($status), $this->responseHeaders);
     }
 
 }

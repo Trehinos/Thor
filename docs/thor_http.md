@@ -5,46 +5,87 @@ managed by a Router.
 
 ## The HTTP kernel and the HTTP cycle
 
-The ```HttpKernel``` is in charge of ```Thor\Http\Server``` instantiation.  
-It creates a ```Request``` from the environment and makes the server handle it. Then the kernel sends the headers, and
-the body, extracted from a ```Response``` object returned by the controller, to the client.
+### Kernels and entry points
 
-### Request ```class``` ```final```
+* ```HttpKernel``` : instantiate a ```HttpServer```, to create APIs. Entry point : ```web/api.php```
+* ```WebKernel``` : instantiate a ```WebServer```, to create webpages with **Twig**. Entry point : ```web/index.php```
 
-* Public constants :
+It creates a ```ServerRequestInterface``` from the environment and makes the server handle it. Then the kernel sends the headers, and
+the body, extracted from a ```ResponseInterface``` object returned by the controller, to the client.
+
+### Servers
+
+```HttpServer``` and ```WebServer``` are ```RequestHandlerInterface``` :
 
 ```php
-// HTTP 1.1
-const GET = 'GET';
-const HEAD = 'HEAD';
-const POST = 'POST';
-const PUT = 'PUT';
-const DELETE = 'DELETE';
-const CONNECT = 'CONNECT';
-const OPTIONS = 'OPTIONS';
-const TRACE = 'TRACE';
-const PATCH = 'PATCH';
-
-// WEBDAV   
-/** @see http://www.webdav.org/specs/rfc4918.html */
-const MKCOL = 'MKCOL';
-const COPY = 'COPY';
-const MOVE = 'MOVE';
-const PROPFIND = 'PROPFIND';
-const PROPPATCH = 'PROPPATCH';
-const LOCK = 'LOCK';
-const UNLOCK = 'UNLOCK';
+# PSR 15
+interface RequestHandlerInterface
+{
+    public function handle(ServerRequestInterface $request): ResponseInterface;
+}
 ```
 
-* Public properties :
+#### ```HttpServer``` :
 
 ```php
-bool $hasBody;
-bool $responseHasBody;
-bool $safe;
-bool $idempotent;
-bool $cache;
-bool $html;
+public function __construct(
+    private Router $router,
+    private ?Security $security,
+    private PdoCollection $pdoCollection,
+    private array $language
+);
+public function getRequest(): ?ServerRequestInterface;
+public function handle(ServerRequestInterface $request): ResponseInterface;
+public function getRouter(): Router;
+public function getRequester(string $name = 'default'): ?PdoRequester;
+public function getHandler(string $name = 'default'): ?PdoHandler;
+public function getSecurity(): ?Security;
+public function getLanguage(): array;
+public function redirect(string $routeName, array $params = [], string $queryString = ''): ResponseInterface;
+public function redirectTo(UriInterface $uri): ResponseInterface;
+public function generateUrl(string $routeName, array $params = [], string $queryString = ''): UriInterface;
+```
+
+#### ```WebServer``` :
+
+```php
+public function __construct(
+    Router $router,
+    ?Security $security,
+    PdoCollection $pdoCollection,
+    array $language,
+    private Environment $twig
+);
+public function getTwig(): Environment;
+```
+
+### Request
+
+#### ```HttpMethod``` enumeration :
+
+* Cases
+```php
+// HTTP 1.1
+case GET = 'GET';
+case POST = 'POST';
+case PUT = 'PUT';
+case PATCH = 'PATCH';
+case DELETE = 'DELETE';
+case HEAD = 'HEAD';
+case TRACE = 'TRACE';
+case CONNECT = 'CONNECT';
+case OPTIONS = 'OPTIONS';
+```
+
+* Public methods :
+
+```php
+public function hasBody(): bool;
+public function responseHasBody(): bool;
+public function isSafe(): bool;
+public function isIdempotent(): bool;
+public function compatibleWithCache(): bool;
+public function compatibleWithHtml(): bool;
 ```
 
 * ```static createFromServer(): self```

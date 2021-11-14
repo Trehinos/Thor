@@ -71,7 +71,7 @@ class Uri implements UriInterface
     public static function create(string $url): self|false
     {
         $prefix = '';
-        if (preg_match('%^(.*://\[[0-9:a-f]+\])(.*?)$%', $url, $matches)) {
+        if (preg_match('%^(.*://\[[0-9:a-f]+])(.*?)$%', $url, $matches)) {
             /** @var array{0:string, 1:string, 2:string} $matches */
             $prefix = $matches[1];
             $url = $matches[2];
@@ -224,9 +224,9 @@ class Uri implements UriInterface
         return "{$this->getScheme()}://{$this->getAuthority()}$path$query$fragment";
     }
 
-    public static function prefix(string $prefix, string $str): string
+    public static function prefix(string $prefix, ?string $str): string
     {
-        if ($str === '') {
+        if ($str === null || $str === '') {
             return '';
         }
         return "$prefix$str";
@@ -260,9 +260,9 @@ class Uri implements UriInterface
         return "$userInfo{$this->getHost()}$port";
     }
 
-    public static function suffix(string $str, string $suffix): string
+    public static function suffix(?string $str, string $suffix): string
     {
-        if ($str === '') {
+        if ($str === null || $str === '') {
             return '';
         }
         return "$str$suffix";

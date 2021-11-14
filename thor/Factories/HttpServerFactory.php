@@ -16,14 +16,14 @@ final class HttpServerFactory extends Factory
     ) {
     }
 
-    public static function createHttpServerFromConfiguration(array $config): self
+    public static function createHttpServerFromConfiguration(array $config): HttpServer
     {
-        return new self(
+        return (new self(
             new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['routes'])),
             new SecurityFactory($config['security']),
             PdoCollection::createFromConfiguration($config['database']),
             $config['language']
-        );
+        ))->produce();
     }
 
     public function produce(array $options = []): HttpServer

@@ -8,9 +8,8 @@
 
 namespace Thor\Api\Actions;
 
-use Thor\Http\Request\Request;
 use Thor\Debug\LogLevel;
-use Thor\Debug\Severity;
+use Thor\Http\Server\WebServer;
 use Thor\Http\Request\HttpMethod;
 use Thor\Http\Routing\Route;
 use Thor\Api\Managers\UserManager;
@@ -18,22 +17,20 @@ use Thor\Html\PdoMatrix\PdoMatrix;
 use Thor\Html\PdoMatrix\MatrixColumn;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Debug\Logger;
-use Thor\Http\BaseController;
 use Thor\Http\Response\Response;
-use Thor\Http\Server;
-
 use Thor\Api\Entities\User;
+use Thor\Http\Controllers\WebController;
 use Thor\Validation\Filters\PostVarRegex;
 
-final class Users extends BaseController
+final class Users extends WebController
 {
 
     private UserManager $manager;
     private PostVarRegex $usernameFilter;
 
-    public function __construct(Server $server)
+    public function __construct(WebServer $webServer)
     {
-        parent::__construct($server);
+        parent::__construct($webServer);
         $this->manager = new UserManager(new CrudHelper(User::class, $this->getServer()->getRequester()));
         $this->usernameFilter = new PostVarRegex('/^[A-Za-z0-9]{2,255}$/');
     }
@@ -41,7 +38,7 @@ final class Users extends BaseController
     #[Route('users', '/users', HttpMethod::GET)]
     public function usersInterface(): Response
     {
-        return $this->view(
+        return $this->twigResponse(
             'pages/users.html.twig',
             [
                 'users'      => $this->manager->getUserCrud()->listAll(),
@@ -61,7 +58,7 @@ final class Users extends BaseController
     #[Route('users-create-form', '/users/create/form', HttpMethod::GET)]
     public function createForm(): Response
     {
-        return $this->view(
+        return $this->twigResponse(
             'pages/users_modals/create.html.twig',
             [
                 'generatedPassword' => UserManager::generatePassword()
@@ -73,7 +70,7 @@ final class Users extends BaseController
     public function createAction(): Response
     {
         $username = $this->usernameFilter->filter('username');
-        $clearPassword = Server::post('password');
+        $clearPassword = $this->post('password');
 
         $errors = [];
         if (!$username) {
@@ -98,7 +95,7 @@ final class Users extends BaseController
     ): Response {
         $user = $this->manager->getUserCrud()->readOneFromPid($public_id);
 
-        return $this->view(
+        return $this->twigResponse(
             'pages/users_modals/edit.html.twig',
             [
                 'user' => $user
@@ -120,7 +117,7 @@ final class Users extends BaseController
         }
 
         if (!empty($errors)) {
-            Logger::write(print_r($errors, true), LogLevel::DEBUG, Severity::ERROR);
+            Logger::write(print_r($errors, true), LogLevel::DEBUG);
             exit;
         }
         $this->manager->updateUser($public_id, $username);
@@ -136,7 +133,7 @@ final class Users extends BaseController
     ): Response {
         $user = $this->manager->getUserCrud()->readOneFromPid($public_id);
 
-        return $this->view(
+        return $this->twigResponse(
             'pages/users_modals/change-password.html.twig',
             [
                 'user'              => $user,
@@ -151,8 +148,8 @@ final class Users extends BaseController
     public function passwordAction(
         string $public_id
     ): Response {
-        $password = Server::post('password');
-        $confirmPassword = Server::post('confirm-password');
+        $password = $this->post('password');
+        $confirmPassword = $this->post('confirm-password');
 
         $errors = [];
         if ($password !== $confirmPassword || strlen($password) < 16) {
@@ -161,7 +158,7 @@ final class Users extends BaseController
         }
 
         if (!empty($errors)) {
-            Logger::write(print_r($errors, true), LogLevel::DEBUG, Severity::ERROR);
+            Logger::write(print_r($errors, true), LogLevel::DEBUG);
             exit;
         }
         $this->manager->setPassword($public_id, $password);

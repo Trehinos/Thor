@@ -12,22 +12,20 @@ use Thor\Debug\Logger;
 use Twig\Error\SyntaxError;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
-use JetBrains\PhpStorm\Pure;
 use Thor\Http\Server\WebServer;
 use Thor\Http\Response\Response;
 
 abstract class WebController extends HttpController
 {
 
-    #[Pure]
-    public function __construct(protected WebServer $server)
+    public function __construct(protected WebServer $webServer)
     {
-        parent::__construct($server);
+        parent::__construct($webServer);
     }
 
     public function getServer(): WebServer
     {
-        return $this->server;
+        return $this->webServer;
     }
 
     /**
@@ -35,10 +33,10 @@ abstract class WebController extends HttpController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function view(string $fileName, array $params = []): Response
+    public function twigResponse(string $fileName, array $params = []): Response
     {
         Logger::write("     -> Twig : rendering file '$fileName'");
-        return Response::create($this->server->getTwig()->render($fileName, $params));
+        return Response::create($this->webServer->getTwig()->render($fileName, $params));
     }
 
 }

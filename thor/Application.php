@@ -32,7 +32,6 @@ final class Application implements KernelInterface
             LogLevel::fromEnv(Env::tryFrom(strtoupper($config['env']))) ?? LogLevel::DEBUG,
             Globals::VAR_DIR . ($config['log_path'] ?? '')
         );
-
         return new self(Application::getKernel($config['thor_kernel'] ?? ''));
     }
 

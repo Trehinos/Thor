@@ -20,7 +20,7 @@ final class RouterFactory extends Factory
     #[Pure]
     public function produce(array $options = []): Router
     {
-        return new Router($this->routesList);
+        return new Router($options + $this->routesList);
     }
 
     /**

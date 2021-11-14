@@ -13,6 +13,6 @@ final class SecurityFactory extends Factory
 
     public function produce(array $options = []): Security
     {
-        return Security::createFromConfiguration($this->configuration);
+        return Security::createFromConfiguration(empty($options) ? $this->configuration : $options);
     }
 }

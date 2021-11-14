@@ -7,7 +7,9 @@ use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
 use Thor\Security\Security;
 use Thor\Http\UriInterface;
+use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
+use Thor\Http\Request\Request;
 use Thor\Http\Response\Response;
 use Thor\Http\Response\HttpStatus;
 use Thor\Factories\ResponseFactory;
@@ -20,6 +22,8 @@ use Thor\Database\PdoExtension\PdoCollection;
 class HttpServer implements RequestHandlerInterface
 {
 
+    private ?ServerRequestInterface $request = null;
+
     public function __construct(
         private Router $router,
         private ?Security $security,
@@ -28,15 +32,26 @@ class HttpServer implements RequestHandlerInterface
     ) {
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function getRequest(): ?ServerRequestInterface
+    {
+        return $this->request;
+    }
+
+    protected function route(ServerRequestInterface $request): ?Route
     {
         $ip = $request->getServerParams()['REMOTE_ADDR'] ?? 'localhost';
         Logger::write("Routing request [{method} '{path}'] from $ip", context: [
             'method' => $request->getMethod()->value,
-            'path'   => $request->getUri()->getPath(),
+            'path'   => substr($request->getUri()->getPath(), strlen('/api.php')),
         ]);
 
-        $route = $this->router->match($request);
+        return $this->router->match($request, '/api.php');
+    }
+
+    final public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->request = $request;
+        $route = $this->route($request);
         if (false === $route) {
             Logger::write(
                 ' -> Method {method} not allowed',
@@ -58,6 +73,11 @@ class HttpServer implements RequestHandlerInterface
             return $redirect;
         }
         return $controllerHandler->handle($request);
+    }
+
+    public function getRouter(): Router
+    {
+        return $this->router;
     }
 
     public function getRequester(string $name = 'default'): ?PdoRequester

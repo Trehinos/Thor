@@ -3,9 +3,7 @@
 namespace Thor\Factories;
 
 use Thor\Http\Server\WebServer;
-use Thor\Http\Server\HttpServer;
 use Thor\Database\PdoExtension\PdoCollection;
-use PhpOffice\PhpSpreadsheet\Calculation\Web;
 
 final class WebServerFactory extends Factory
 {
@@ -14,32 +12,28 @@ final class WebServerFactory extends Factory
         private RouterFactory $routerFactory,
         private SecurityFactory $securityFactory,
         private PdoCollection $pdoCollection,
-        private array $language,
-        private array $twigConfiguration
+        private array $language
     ) {
     }
 
-    public static function creatWebServerFromConfiguration(array $config): self
+    public static function creatWebServerFromConfiguration(array $config): WebServer
     {
-        return new self(
+        return (new self(
             new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['routes'])),
             new SecurityFactory($config['security']),
             PdoCollection::createFromConfiguration($config['database']),
             $config['language'],
-            $config['twig']
-        );
+
+        ))->produce($config['twig']);
     }
 
     public function produce(array $options = []): WebServer
     {
         $router = $this->routerFactory->produce();
         $security = $this->securityFactory->produce();
-        $twigFactory = new TwigFactory(
-            $router,
-            $twig = TwigFactory::createTwigFromConfiguration($this->twigConfiguration)
-        );
-        $webServer = new WebServer($router, $security, $this->pdoCollection, $this->language, $twig);
-        $twigFactory->addDefaults($webServer);
+        $webServer = new WebServer($router, $security, $this->pdoCollection, $this->language);
+        $twig = TwigFactory::createTwigFromConfiguration($router, $webServer, $options);
+        $webServer->twig = $twig;
 
         return $webServer;
     }

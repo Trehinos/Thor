@@ -12,13 +12,15 @@ use Thor\Thor;
 use Thor\Debug\Logger;
 use Thor\Http\Server\WebServer;
 use Thor\Factories\WebServerFactory;
+use Thor\Http\Response\ResponseInterface;
+use Thor\Http\Request\ServerRequestInterface;
 
 class WebKernel extends HttpKernel
 {
 
-    public function __construct(protected WebServer $server)
+    public function __construct(WebServer $webServer)
     {
-        parent::__construct($this->server);
+        parent::__construct($webServer);
         Logger::write('Instantiate WebKernel');
     }
 
@@ -33,7 +35,12 @@ class WebKernel extends HttpKernel
 
     public static function createFromConfiguration(array $config = []): static
     {
-        return new self(WebServerFactory::creatWebServerFromConfiguration($config)->produce());
+        return new self(WebServerFactory::creatWebServerFromConfiguration($config));
+    }
+
+    public function handle(ServerRequestInterface $serverRequest): ResponseInterface
+    {
+        return $this->server->handle($serverRequest);
     }
 
 }

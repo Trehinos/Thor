@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Factories
+ * @package          Trehinos/Thor/Factories
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Factories;
@@ -29,22 +29,34 @@ final class TwigFactory
     }
 
 
-    public static function createTwigFromConfiguration(array $twig_config): Environment
-    {
-        return new Environment(
-            new FilesystemLoader(
-                array_map(
-                    fn(string $folderName) => Globals::CODE_DIR . $folderName,
-                    $twig_config['views_dir'] ?? ['']
-                )
-            ),
-            [
-                'cache' => Globals::VAR_DIR . ($twig_config['cache_dir'] ?? ''),
-                'debug' => Thor::isDev(),
-            ]
-        );
+    public static function createTwigFromConfiguration(
+        Router $router,
+        WebServer $server,
+        array $twig_config
+    ): Environment {
+        return
+            (new self(
+                $router, new Environment(
+                new FilesystemLoader(
+                    array_map(
+                        fn(string $folderName) => Globals::CODE_DIR . $folderName,
+                        $twig_config['views_dir'] ?? ['']
+                    )
+                ),
+                [
+                    'cache' => Globals::VAR_DIR . ($twig_config['cache_dir'] ?? ''),
+                    'debug' => Thor::isDev(),
+                ]
+            )
+            ))->addDefaults($server)->produce()
+        ;
     }
 
+    /**
+     * @param array $options unused
+     *
+     * @return Environment
+     */
     public function produce(array $options = []): Environment
     {
         return $this->twig;
@@ -52,57 +64,16 @@ final class TwigFactory
 
     public function addDefaults(WebServer $server): self
     {
-        $router = $this->router;
-
         $this->twig->addGlobal('server', $server);
         $this->twig->addGlobal('appName', Thor::appName());
         $this->twig->addGlobal('version', Thor::VERSION);
         $this->twig->addGlobal('versionName', Thor::VERSION_NAME);
         $this->twig->addGlobal('_', $server->getLanguage());
 
-        $this->twig->addFunction(
-            new TwigFunction(
-                'url',
-                function (string $routeName, array $params = [], string $queryString = '') use ($router): string {
-                    return $router->getUrl($routeName, $params, $queryString);
-                },
-                ['is_safe' => ['html']]
-            )
-        );
-        $this->twig->addFunction(
-            new TwigFunction(
-                'icon',
-                function (string $icon, string $prefix = 'fas', bool $fixed = false, string $style = '') {
-                    $fw = $fixed ? 'fa-fw' : '';
-                    $style = ('' !== $style) ? "style='$style'" : '';
-                    return "<i class='$prefix fa-$icon $fw' $style></i>";
-                },
-                ['is_safe' => ['html']]
-            )
-        );
-        $this->twig->addFunction(
-            new TwigFunction(
-                'render',
-                function (string $routeName, array $params = []) use ($server) {
-                    $route = $server->getRouter()->getRoute($routeName);
-                    $cClass = $route->getControllerClass();
-                    $cMethod = $route->getControllerMethod();
-
-                    $controller = new $cClass($server);
-                    return $controller->$cMethod(...$params)->getBody();
-                },
-                ['is_safe' => ['html']]
-            )
-        );
-        $this->twig->addFunction(
-            new TwigFunction(
-                'dump',
-                function ($var) {
-                    return VarDumper::dump($var);
-                },
-                ['is_safe' => ['html']]
-            )
-        );
+        $this->twig->addFunction(self::getUrlFunction($this->router));
+        $this->twig->addFunction(self::getIconFunction());
+        $this->twig->addFunction(self::getRenderFunction($server));
+        $this->twig->addFunction(self::getDumpFunction());
         $this->twig->addFilter(
             new TwigFilter(
                 'classname',
@@ -124,6 +95,58 @@ final class TwigFactory
         );
 
         return $this;
+    }
+
+    public static function getUrlFunction(Router $router): TwigFunction
+    {
+        return new TwigFunction(
+            'url',
+            function (string $routeName, array $params = [], string $queryString = '') use ($router): string {
+                return "{$router->getUrl($routeName, $params, $queryString)}";
+            },
+            ['is_safe' => ['html']]
+        );
+    }
+
+    public static function getIconFunction(): TwigFunction
+    {
+        return new TwigFunction(
+            'icon',
+            function (string $icon, string $prefix = 'fas', bool $fixed = false, string $style = '') {
+                $fw = $fixed ? 'fa-fw' : '';
+                $style = ('' !== $style) ? "style='$style'" : '';
+                return "<i class='$prefix fa-$icon $fw' $style></i>";
+            },
+            ['is_safe' => ['html']]
+        );
+    }
+
+    public static function getRenderFunction(WebServer $server): TwigFunction
+    {
+        return new TwigFunction(
+            'render',
+            function (string $routeName, array $params = []) use ($server) {
+                $route = $server->getRouter()->getRoute($routeName);
+                $cClass = $route->getControllerClass();
+                $cMethod = $route->getControllerMethod();
+
+                $controller = new $cClass($server);
+                return $controller->$cMethod(...$params)->getBody()
+                ;
+            },
+            ['is_safe' => ['html']]
+        );
+    }
+
+    public static function getDumpFunction(): TwigFunction
+    {
+        return new TwigFunction(
+            'dump',
+            function ($var) {
+                return VarDumper::dump($var);
+            },
+            ['is_safe' => ['html']]
+        );
     }
 
 }
