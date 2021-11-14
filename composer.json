@@ -35,6 +35,7 @@
     "symfony/var-dumper": "5.*",
     "symfony/yaml": "5.*",
     "twig/twig": "3.*",
-    "datatables.net/editor-php": "2.*"
+    "datatables.net/editor-php": "2.*",
+    "phpoffice/phpspreadsheet": "^1"
   }
 }
