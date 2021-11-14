@@ -25,7 +25,7 @@ class WebServer extends HttpServer
         parent::__construct($router, $security, $pdoCollection, $language);
     }
 
-    protected function route(ServerRequestInterface $request): ?Route
+    protected function route(ServerRequestInterface $request): Route|false|null
     {
         $ip = $request->getServerParams()['REMOTE_ADDR'] ?? 'localhost';
         Logger::write("Routing request [{method} '{path}'] from $ip", context: [

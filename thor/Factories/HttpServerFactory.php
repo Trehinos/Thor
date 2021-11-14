@@ -19,7 +19,7 @@ final class HttpServerFactory extends Factory
     public static function createHttpServerFromConfiguration(array $config): HttpServer
     {
         return (new self(
-            new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['routes'])),
+            new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['api-routes'])),
             new SecurityFactory($config['security']),
             PdoCollection::createFromConfiguration($config['database']),
             $config['language']

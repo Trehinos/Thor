@@ -16,7 +16,6 @@ use JetBrains\PhpStorm\Pure;
 use Thor\Http\ProtocolVersion;
 use Thor\Stream\StreamInterface;
 
-/** @see https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_73/rzaie/rzaiewebdav.htm */
 class Request extends Message implements RequestInterface
 {
 
@@ -31,8 +30,13 @@ class Request extends Message implements RequestInterface
         parent::__construct($version, $headers, $body);
     }
 
-    public static function create(HttpMethod $method, UriInterface $target, string $data = '', array $headers = [], ProtocolVersion $version = ProtocolVersion::HTTP11): self
-    {
+    public static function create(
+        HttpMethod $method,
+        UriInterface $target,
+        string $data = '',
+        array $headers = [],
+        ProtocolVersion $version = ProtocolVersion::HTTP11
+    ): self {
         return new self($version, $headers, Stream::create($data), $method, $target);
     }
 
@@ -43,7 +47,13 @@ class Request extends Message implements RequestInterface
 
     public function withRequestTarget(string $requestTarget): static
     {
-        return new self($this->getProtocolVersion(), $this->getHeaders(), $this->getBody(), $this->getMethod(), Uri::create($requestTarget));
+        return new self(
+            $this->getProtocolVersion(),
+            $this->getHeaders(),
+            $this->getBody(),
+            $this->getMethod(),
+            Uri::create($requestTarget)
+        );
     }
 
     public function getMethod(): HttpMethod
@@ -63,6 +73,12 @@ class Request extends Message implements RequestInterface
 
     public function withUri(UriInterface $uri, bool $preserveHost = false): static
     {
-        return new self($this->getProtocolVersion(), $this->getHeaders(), $this->getBody(), $this->getMethod(), $uri);
+        return new self(
+            $this->getProtocolVersion(),
+            $this->getHeaders() + ($preserveHost ? [] : ['Host' => $uri->getHost()]),
+            $this->getBody(),
+            $this->getMethod(),
+            $uri
+        );
     }
 }

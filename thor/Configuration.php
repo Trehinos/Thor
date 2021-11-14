@@ -23,12 +23,12 @@ final class Configuration
     #[ArrayShape([
         'config' => "array|mixed",
         'database' => "array|mixed",
-        'routes' => "array|mixed",
+        'api-routes' => "array|mixed",
         'security' => "array|mixed",
         'language' => "array|mixed"
     ])] public function getHttpConfiguration(): array
     {
-        return $this->getConfigurationSet(['config', 'database', 'security'], ['routes']) + [
+        return $this->getConfigurationSet(['config', 'database', 'security'], ['api-routes']) + [
                 'language' => Yaml::parseFile(
                     Globals::STATIC_DIR . "langs/{$this->configurations['config']['lang']}.yml"
                 )
@@ -38,13 +38,13 @@ final class Configuration
     #[ArrayShape([
         'config' => "array|mixed",
         'database' => "array|mixed",
-        'routes' => "array|mixed",
+        'web-routes' => "array|mixed",
         'security' => "array|mixed",
         'twig' => "array|mixed",
         'language' => "array|mixed"
     ])] public function getWebConfiguration(): array
     {
-        return $this->getConfigurationSet(['config', 'database', 'security', 'twig'], ['routes']) + [
+        return $this->getConfigurationSet(['config', 'database', 'security', 'twig'], ['web-routes']) + [
                 'language' => Yaml::parseFile(
                     Globals::STATIC_DIR . "langs/{$this->configurations['config']['lang']}.yml"
                 )

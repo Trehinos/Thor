@@ -19,7 +19,7 @@ final class WebServerFactory extends Factory
     public static function creatWebServerFromConfiguration(array $config): WebServer
     {
         return (new self(
-            new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['routes'])),
+            new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['web-routes'])),
             new SecurityFactory($config['security']),
             PdoCollection::createFromConfiguration($config['database']),
             $config['language'],
