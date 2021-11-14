@@ -10,22 +10,40 @@ managed by a Router.
 * ```HttpKernel``` : instantiate a ```HttpServer```, to create APIs. Entry point : ```web/api.php```
 * ```WebKernel``` : instantiate a ```WebServer```, to create webpages with **Twig**. Entry point : ```web/index.php```
 
-It creates a ```ServerRequestInterface``` from the environment and makes the server handle it. Then the kernel sends the headers, and
-the body, extracted from a ```ResponseInterface``` object returned by the controller, to the client.
+It creates a ```ServerRequestInterface``` from the environment and makes the server handle it. Then the kernel sends the
+headers, and the body, extracted from a ```ResponseInterface``` object returned by the controller, to the client.
 
 ### Servers
 
-```HttpServer``` and ```WebServer``` are ```RequestHandlerInterface``` :
+```HttpServer``` and ```WebServer``` are ```RequestHandlerInterface``` and handles ```ServerRequestInterface``` :
+
+* ```RequestHandlerInterface``` :
 
 ```php
 # PSR 15
-interface RequestHandlerInterface
-{
-    public function handle(ServerRequestInterface $request): ResponseInterface;
-}
+public function handle(ServerRequestInterface $request): ResponseInterface;
 ```
 
-#### ```HttpServer``` :
+* ```ServerRequestInterface``` :
+
+```php
+# PSR 15
+public function getServerParams(): array;
+public function getCookieParams(): array;
+public function withCookieParams(array $cookies): static;
+public function getQueryParams(): array;
+public function withQueryParams(array $query): static;
+public function getUploadedFiles(): array;
+public function withUploadedFiles(array $uploadedFiles): static;
+public function getParsedBody(): null|array|object;
+public function withParsedBody(null|array|object $data): static;
+public function getAttributes(): array;
+public function getAttribute(string $name, mixed $default = null): mixed;
+public function withAttribute(string $name, mixed $value): static;
+public function withoutAttribute(string $name): static;
+```
+
+#### ```HttpServer```
 
 ```php
 public function __construct(
@@ -46,7 +64,7 @@ public function redirectTo(UriInterface $uri): ResponseInterface;
 public function generateUrl(string $routeName, array $params = [], string $queryString = ''): UriInterface;
 ```
 
-#### ```WebServer``` :
+#### ```WebServer```
 
 ```php
 public function __construct(
@@ -61,9 +79,10 @@ public function getTwig(): Environment;
 
 ### Request
 
-#### ```HttpMethod``` enumeration :
+#### ```HttpMethod``` enumeration
 
-* Cases
+* Cases :
+
 ```php
 # HTTP 1.1
 case GET = 'GET';
@@ -88,8 +107,24 @@ public function compatibleWithCache(): bool;
 public function compatibleWithHtml(): bool;
 ```
 
-#### The ```RequestInterface``` ```extends MessageInterface```
+#### The ```MessageInterface```
 
+```php
+# PSR 7
+public function getProtocolVersion(): ProtocolVersion;
+public function withProtocolVersion(ProtocolVersion $version): static;
+public function getHeaders(): array;
+public function hasHeader(string $name): bool;
+public function getHeader(string $name): array;
+public function getHeaderLine(string $name): string;
+public function withHeader(string $name, array|string $value): static;
+public function withAddedHeader(string $name, array|string $value): static;
+public function withoutHeader(string $name): static;
+public function getBody(): StreamInterface;
+public function withBody(StreamInterface $body): static;
+```
+
+#### The ```RequestInterface``` ```extends MessageInterface```
 
 ```php
 # PSR 7
@@ -101,9 +136,15 @@ public function getUri(): UriInterface;
 public function withUri(UriInterface $uri, bool $preserveHost = false) : static;
 ```
 
-### Response ```class```
+### The ```RequestInterface``` ```extends MessageInterface```
 
--
+```php
+# PSR 7
+public function getStatus(): HttpStatus;
+public function getStatusCode(): int;
+public function withStatus(HttpStatus $status): static;
+public function getReasonPhrase(): string;
+```
 
 ### BaseController and controllers
 
@@ -112,11 +153,11 @@ public function withUri(UriInterface $uri, bool $preserveHost = false) : static;
 ```php
 public function __construct(protected HttpServer $httpServer);
 public function attribute(string $name, mixed $default = null): mixed;
-public function get(string $name, array|string|null $default = null):array|string|null;
-public function post(string $name, array|string|null $default = null):array|string|null;
-public function server(string $name, array|string|null $default = null):array|string|null;
-public function cookie(string $name, array|string|null $default = null):array|string|null;
-public function header(string $name, array|string|null $default = null):array|string|null;
+public function get(string $name, array|string|null $default = null): array|string|null;
+public function post(string $name, array|string|null $default = null): array|string|null;
+public function server(string $name, array|string|null $default = null): array|string|null;
+public function cookie(string $name, array|string|null $default = null): array|string|null;
+public function header(string $name, array|string|null $default = null): array|string|null;
 public function file(string $name): ?UploadedFileInterface;
 public function redirect(string $routeName, array $params = [], string $queryString = ''): Response;
 public function getRequest(): ServerRequestInterface;
