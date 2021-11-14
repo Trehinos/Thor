@@ -65,7 +65,7 @@ public function getTwig(): Environment;
 
 * Cases
 ```php
-// HTTP 1.1
+# HTTP 1.1
 case GET = 'GET';
 case POST = 'POST';
 case PUT = 'PUT';
@@ -88,96 +88,48 @@ public function compatibleWithCache(): bool;
 public function compatibleWithHtml(): bool;
 ```
 
-* ```static createFromServer(): self```
-* ```static getAllHeaders(): array```
-* ```getMethod(): string```
-* ```getPathInfo(): string```
-* ```getHeader(string $name, $default = null): array|string|null```
-* ```getHeaders(): array```
-* ```getBody(): string```
-* ```queryGet(string $name, $default = null): string|array|null```
-* ```postVariable(string $name, $default = null): string|array|null```
+#### The ```RequestInterface``` ```extends MessageInterface```
+
+
+```php
+# PSR 7
+public function getRequestTarget(): string;
+public function withRequestTarget(string $requestTarget): static;
+public function getMethod(): HttpMethod;
+public function withMethod( HttpMethod $method): static;
+public function getUri(): UriInterface;
+public function withUri(UriInterface $uri, bool $preserveHost = false) : static;
+```
 
 ### Response ```class```
 
-* Constants :
-
-```php
-const STATUS_SUCCESS = 200;
-const STATUS_REDIRECT = 302;
-const STATUS_FORBIDDEN = 403;
-const STATUS_NOT_FOUND = 404;
-const STATUS_METHOD_NOT_ALLOWED = 405;
-```
-
-* ```__construct(string $body = '', int $status = self::STATUS_SUCCESS, array $headers = [])```
-* ```getBody(): string```
-* ```getStatus(): int```
-* ```getHeaders(): array```
-* ```setHeader(string $name, array|string $value): void```
-
-### The Server class
-
-This class is a facade of a Http server.
-
-* ```php
-    __construct(
-        private array $config,
-        private ?Environment $twig = null,
-        private ?PdoCollection $databases = null,
-        private ?Router $router = null,
-        private ?SecurityContext $security = null,
-        private array $language = []
-    )
-    ```
-* ```php
-    static post(
-        string $name,
-        string|array|null $default = null,
-        ?int $filter = null,
-        array $filter_options = [],
-    ): string|array|null
-  ```
-* ```php
-    static get(
-        string $name,
-        string|array|null $default = null,
-        ?int $filter = null,
-        array $filter_options = [],
-    ): string|array|null
-  ```
-* ```php
-    static readCookie(
-        string $name,
-        string $default = '',
-        ?int $filter = null,
-        array $filter_options = []
-    ): string
-  ```
-* ```static writeCookie(string $name, array|string $value): void```
-* ```static readSession(string $name, mixed $default = null, ?int $filter = null): mixed```
-* ```static writeSession(string $name, mixed $value): void```
-* ```getAppName(): string```
-* ```getSecurity(): ?SecurityContext```
-* ```getUser(): UserInterface```
-* ```handle(Request $request): Response```
-* ```redirect(string $routeName, array $params = [], string $queryString = ''): Response```
-* ```generateUrl(string $routeName, array $params = [], string $queryString = ''): string```
-* ```getRouter(): ?Router```
-* ```getCurrentRouteName(): string```
-* ```getTwig(): ?Environment```
-* ```getRequester(string $connectionName = 'default'): ?PdoRequester```
-* ```getHandler(string $connectionName = 'default'): ?PdoHandler```
-* ```getLanguage(): array```
+-
 
 ### BaseController and controllers
 
-* ```__construct(private Server $server)```
-* ```getServer(): Server```
-* ```view(string $fileName, array $params = []): Response```
-* ```generateUrl(string $routeName, array $params = [], string $queryString = ''): string```
-* ```redirect(string $routeName, array $params = [], string $queryString = ''): Response```
-* ```redirectTo(string $url): Response```
+#### Http controller
+
+```php
+public function __construct(protected HttpServer $httpServer);
+public function attribute(string $name, mixed $default = null): mixed;
+public function get(string $name, array|string|null $default = null):array|string|null;
+public function post(string $name, array|string|null $default = null):array|string|null;
+public function server(string $name, array|string|null $default = null):array|string|null;
+public function cookie(string $name, array|string|null $default = null):array|string|null;
+public function header(string $name, array|string|null $default = null):array|string|null;
+public function file(string $name): ?UploadedFileInterface;
+public function redirect(string $routeName, array $params = [], string $queryString = ''): Response;
+public function getRequest(): ServerRequestInterface;
+public function getServer(): HttpServer;
+```
+
+#### Web controller ```extends HttpController```
+
+```php
+public function __construct(protected WebServer $webServer);
+public function getServer(): WebServer;
+public function twigResponse(string $fileName, array $params = [], HttpStatus $status = HttpStatus::OK, array $headers = []): Response;
+```
 
 #### Routing
 

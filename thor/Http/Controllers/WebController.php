@@ -14,6 +14,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Thor\Http\Server\WebServer;
 use Thor\Http\Response\Response;
+use Thor\Http\Response\HttpStatus;
 
 abstract class WebController extends HttpController
 {
@@ -33,10 +34,10 @@ abstract class WebController extends HttpController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function twigResponse(string $fileName, array $params = []): Response
+    public function twigResponse(string $fileName, array $params = [], HttpStatus $status = HttpStatus::OK, array $headers = []): Response
     {
         Logger::write("     -> Twig : rendering file '$fileName'");
-        return Response::create($this->webServer->getTwig()->render($fileName, $params));
+        return Response::create($this->webServer->getTwig()->render($fileName, $params), $status, $headers);
     }
 
 }
