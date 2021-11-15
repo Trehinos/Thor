@@ -5,10 +5,11 @@ namespace Thor\Structures;
 interface ContainerInterface extends ItemInterface
 {
 
-    public function set(ContainerInterface|ItemInterface $child): static;
-    public function get(string $key): ContainerInterface|ItemInterface|null;
-    public function has(string $key): bool;
-    public function each(callable $operation, ?array $keys = null);
+    public function setItem(ItemInterface $child): static;
+    public function getItem(string $key): ?ItemInterface;
+    public function removeItem(string $key): bool;
+    public function hasItem(string $key): bool;
+    public function eachItem(callable $operation, ?array $keys = null);
     public function copy(ContainerInterface $container): static;
 
 }
