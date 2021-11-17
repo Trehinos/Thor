@@ -28,7 +28,9 @@ class Firewall implements MiddlewareInterface
         #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
         public ?string $checkRoute = null,
         #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
-        public array $exclude = []
+        public array $excludedRoutes = [],
+        #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
+        public array $excludedPaths = []
     ) {
     }
 
@@ -54,7 +56,7 @@ class Firewall implements MiddlewareInterface
     public function pathIsExcluded(ServerRequestInterface $request): bool
     {
         return array_reduce(
-            $this->exclude,
+            $this->excludedPaths,
             fn(bool $carry, string $excludePath) => $carry
                 || str_starts_with($request->getUri()->getPath(), $excludePath),
             false
@@ -69,6 +71,7 @@ class Firewall implements MiddlewareInterface
                 $this->loginRoute,
                 $this->logoutRoute,
                 $this->checkRoute,
+                ...$this->excludedRoutes
             ]
         );
     }

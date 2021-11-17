@@ -31,7 +31,7 @@ final class Security extends WebController
         $username = $this->post('username');
         $password = $this->post('password');
 
-        // TODO GET USER FROM USERNAME -> THEN
+        $user = $this->getServer()->getSecurity()->getUser($this->getServer()->getHandler(), $username);
         $token = $this->getServer()->getSecurity()->authenticate($user, $password);
 
         if ($token) {

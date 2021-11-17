@@ -105,8 +105,15 @@ Link : [Documentation](docs/SUMMARY.md)
 ### ```0.9``` OMEGA (RC) "Thor 2"
 
 * PHP 8.1
-* PSR compliance and
-  implementation ```PSR-12 Code Style``` ```PSR-7 HTTP Message``` ```PSR-5 HTTP Handler``` ```PSR-18 HTTP Client```
+* PSR compliance and implementation :
+  * ```PSR-3``` Logger
+  * ```PSR-4``` Auto-loading (with **composer**)
+  * ```PSR-7``` HTTP Message
+  * ```PSR-12``` Code Style
+  * ~```PSR-11``` Container (is a Composite)
+  * ```PSR-15``` HTTP Handler
+  * ```PSR-16``` SimpleCache (*in memory* implementation)
+  * ```PSR-18``` HTTP Client
 
 #### Framework
 

@@ -3,29 +3,32 @@
 namespace Thor\Security;
 
 use Exception;
-use Thor\Http\Session;
-use JetBrains\PhpStorm\Pure;
-use Thor\Http\Routing\Router;
-use Thor\Http\Response\Response;
 use JetBrains\PhpStorm\Immutable;
-use Thor\Http\Response\ResponseInterface;
+use JetBrains\PhpStorm\Pure;
+use Thor\Database\PdoExtension\PdoHandler;
+use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoTable\Criteria;
+use Thor\Database\PdoTable\CrudHelper;
 use Thor\Http\Request\ServerRequestInterface;
+use Thor\Http\Response\ResponseInterface;
+use Thor\Http\Routing\Router;
 use Thor\Http\Server\RequestHandlerInterface;
+use Thor\Http\Session;
 
 class Security
 {
 
-    public const SOURCE_DB = 'database';
-    public const SOURCE_LDAP = 'ldap';
-    public const SOURCE_FILE = 'file';
-    public const SOURCE_INTERNAL = 'internal';
+    public const SOURCE_DB = 'database';    // DB
+    public const SOURCE_LDAP = 'ldap';      // Active directory
+    public const SOURCE_FILE = 'file';      // File
+    public const SOURCE_INTERNAL = 'internal';  // YML file
 
     public const TYPE_USERPWD = 'username-password';
-    public const TYPE_TOKEN = 'token';
+    public const TYPE_TOKEN = 'login-token';
     public const TYPE_BOTH = 'both';
 
     public const AUTH_SESSION = 'session';
-    public const AUTH_HEADER = 'header_token';
+    public const AUTH_HEADER = 'authentication-token';
 
     /**
      * Security constructor.
@@ -56,6 +59,8 @@ class Security
         #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
         public ?string $pdoRowClass = null,
         #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
+        public ?string $usernameField = null,
+        #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
         public ?string $fileName = null,
         #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
         public ?array $fileFields = null,
@@ -85,12 +90,13 @@ class Security
         $firewalls = [];
         foreach ($config['firewall'] ?? [] as $firewallConfig) {
             $firewalls[] = new Firewall(
-                pattern:     $firewallConfig['pattern'] ?? '/',
-                redirect:    $firewallConfig['redirect'] ?? 'login',
-                loginRoute:  $firewallConfig['login-route'] ?? 'login',
+                pattern: $firewallConfig['pattern'] ?? '/',
+                redirect: $firewallConfig['redirect'] ?? 'login',
+                loginRoute: $firewallConfig['login-route'] ?? 'login',
                 logoutRoute: $firewallConfig['logout-route'] ?? 'logout',
-                checkRoute:  $firewallConfig['check-route'] ?? 'check',
-                exclude:     $firewallConfig['exclude'] ?? [],
+                checkRoute: $firewallConfig['check-route'] ?? 'check',
+                excludedRoutes: $firewallConfig['exclude-route'] ?? [],
+                excludedPaths: $firewallConfig['exclude'] ?? [],
             );
         }
 
@@ -99,21 +105,28 @@ class Security
                 'enable' => true,
                 default  => false
             },
-            identitySource:   $config['identity-source'] ?? self::SOURCE_INTERNAL,
-            identityType:     $config['identity-type'] ?? self::TYPE_USERPWD,
-            pdoRowClass:      $config['database-pdo-row'] ?? null,
-            fileName:         $config['file-name'] ?? null,
-            fileFields:       $config['file-fields'] ?? null,
-            fileSeparator:    $config['file-separator'] ?? null,
+            identitySource: $config['identity-source'] ?? self::SOURCE_INTERNAL,
+            identityType: $config['identity-type'] ?? self::TYPE_USERPWD,
+            pdoRowClass: $config['database-pdo-row'] ?? null,
+            usernameField: $config['database-username'] ?? null,
+            fileName: $config['file-name'] ?? null,
+            fileFields: $config['file-fields'] ?? null,
+            fileSeparator: $config['file-separator'] ?? null,
             filePhpStructure: $config['file-php-structure'] ?? null,
-            ldapHost:         $config['ldap-host'] ?? null,
-            ldapUser:         $config['ldap-user'] ?? null,
-            ldapPassword:     $config['ldap-password'] ?? null,
-            authentication:   $config['authentication'] ?? self::AUTH_SESSION,
-            tokenKey:         $config['authentication-key'] ?? 'token',
-            tokenExpire:      $config['authentication-expire'] ?? 60,
-            firewalls:        $firewalls
+            ldapHost: $config['ldap-host'] ?? null,
+            ldapUser: $config['ldap-user'] ?? null,
+            ldapPassword: $config['ldap-password'] ?? null,
+            authentication: $config['authentication'] ?? self::AUTH_SESSION,
+            tokenKey: $config['authentication-key'] ?? 'token',
+            tokenExpire: $config['authentication-expire'] ?? 60,
+            firewalls: $firewalls
         );
+    }
+
+    public function getUser(PdoHandler $handler, string $username): UserInterface
+    {
+        $userCrud = new CrudHelper($this->pdoRowClass, new PdoRequester($handler));
+        return $userCrud->readOneBy(new Criteria([$this->usernameField => $username]));
     }
 
     /**
@@ -192,11 +205,11 @@ class Security
             return false;
         }
 
-        $this->setUser($user);
+        $this->setCurrentUser($user);
         return $this->writeToken($user->getUsername());
     }
 
-    public function setUser(UserInterface $user): void
+    public function setCurrentUser(UserInterface $user): void
     {
         Session::write("{$this->tokenKey}.user", $user);
     }
@@ -220,7 +233,7 @@ class Security
     }
 
     #[Pure]
-    public function getUser(): ?UserInterface
+    public function getCurrentUser(): ?UserInterface
     {
         return Session::read("{$this->tokenKey}.user");
     }

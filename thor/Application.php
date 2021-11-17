@@ -8,9 +8,9 @@
 
 namespace Thor;
 
-use Throwable;
 use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
+use Throwable;
 
 final class Application implements KernelInterface
 {
@@ -76,7 +76,8 @@ final class Application implements KernelInterface
             echo "UNRECOVERABLE ERROR THROWN";
             global $thor_kernel;
             $message = " : {$e->getMessage()}";
-            echo ('http' === $thor_kernel) ? "<strong style='font-family: monospace;'>$message</strong><br>"
+            echo ($thor_kernel === 'web')
+                ? "<strong style='font-family: monospace;'>$message</strong><br>"
                 : "$message\n";
             if (in_array(Thor::getEnv(), [Env::DEV, Env::DEBUG])) {
                 $traceStr = '';
@@ -88,7 +89,9 @@ final class Application implements KernelInterface
                     }
                     $traceStr .= $traceLine;
                 }
+                echo $thor_kernel === 'web' ? '<pre>' : '';
                 echo $traceStr;
+                echo $thor_kernel === 'web' ? '</pre>' : '';
             }
         }
     }

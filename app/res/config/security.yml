@@ -35,6 +35,7 @@ doc:
 
     # if identity-source === database
     database-pdo-row: ~ # implements UserInterface & PdoRowInterface
+    database-username:
 
     # if identity-source === file
     file-name: ~
