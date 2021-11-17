@@ -1,19 +1,17 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Api
+ * WebController of security actions (login, check, logout).
+ *
+ * @package          Trehinos/Thor/Api
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Api\Actions;
 
-use Thor\Debug\Logger;
-use Thor\Debug\LogLevel;
-use Thor\Http\Request\HttpMethod;
-use Thor\Http\Routing\Route;
-use Thor\Http\Response\Response;
-use Thor\Http\Controllers\WebController;
+use Thor\Debug\{Logger, LogLevel};
+use Thor\Http\{Controllers\WebController, Request\HttpMethod, Response\Response, Routing\Route};
 
 final class Security extends WebController
 {
@@ -33,20 +31,21 @@ final class Security extends WebController
         $username = $this->post('username');
         $password = $this->post('password');
 
-        $token = $this->getServer()->getSecurity()?->authenticate($username, $password);
+        // TODO GET USER FROM USERNAME -> THEN
+        $token = $this->getServer()->getSecurity()->authenticate($user, $password);
 
         if ($token) {
             Logger::write("User $username logged in.", LogLevel::DEBUG);
             return $this->redirect('index');
         }
 
-        return $this->redirect($this->getServer()->getSecurity()?->loginRoute ?? 'login');
+        return $this->redirect($this->getServer()->getSecurity()->loginRoute ?? 'login');
     }
 
     #[Route('logout', '/logout', HttpMethod::GET)]
     public function logout(): Response
     {
-        $this->getServer()->getSecurity()?->deleteToken();
+        $this->getServer()->getSecurity()->deleteToken();
         return $this->redirect('index');
     }
 

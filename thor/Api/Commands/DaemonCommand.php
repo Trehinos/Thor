@@ -1,20 +1,22 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Api
+ * This Command contains all daemons related Thor-Api commands :
+ *  - daemon/start
+ *  - daemon/stop
+ *  - damon/reset
+ *  - daemon/status
+ *  - daemon/kill
+ *
+ * @package          Trehinos/Thor/Api
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Api\Commands;
 
 use Symfony\Component\Yaml\Yaml;
-use Thor\Cli\CliKernel;
-use Thor\Cli\Command;
-use Thor\Cli\Console;
-use Thor\Cli\Daemon;
-use Thor\Cli\DaemonScheduler;
-use Thor\Cli\DaemonState;
+use Thor\Cli\{CliKernel, Command, Console, Daemon, DaemonScheduler, DaemonState};
 use Thor\Configuration;
 use Thor\Globals;
 
@@ -32,10 +34,48 @@ final class DaemonCommand extends Command
         $this->daemonEnable($daemonName);
     }
 
+    private function daemonEnable(?string $daemonName, bool $enable = true)
+    {
+        if (null === $daemonName) {
+            $this->error("Usage error\n", 'Daemon name is required.', true);
+        }
+
+        $daemonInfo = $this->loadDaemon($daemonName);
+        $daemonInfo['enabled'] = $enable;
+        $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
+        file_put_contents($daemonFile, Yaml::dump($daemonInfo));
+    }
+
+    private function loadDaemon(string $daemonName): array
+    {
+        $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
+        if (!file_exists($daemonFile)) {
+            $this->error("File error\n", 'Daemon does not exist.', true);
+        }
+        return Yaml::parseFile($daemonFile);
+    }
+
     public function daemonReset()
     {
         $daemonName = $this->get('name');
         $this->daemonResetState($daemonName);
+    }
+
+    private function daemonResetState(?string $daemonName)
+    {
+        if (null === $daemonName) {
+            $this->error("Usage error\n", 'Daemon name is required.', true);
+        }
+
+        $daemonInfo = $this->loadDaemon($daemonName);
+        $state = new DaemonState(Daemon::instantiate($daemonInfo));
+        $state->load();
+        $state->setLastRun(null);
+        $state->setRunning(false);
+        $state->error(null);
+        $state->write();
+        $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
+        file_put_contents($daemonFile, Yaml::dump($daemonInfo));
     }
 
     public function daemonStop()
@@ -96,16 +136,24 @@ final class DaemonCommand extends Command
                 ->writeFix($status, 10)
                 ->mode()
                 ->writeFix($state->getLastRun()?->format('Y-m-d H:i') ?? 'never', 17)->fColor(
-                    $state->getError() ? Console::COLOR_RED :
-                        ($state->isRunning() ?
-                            Console::COLOR_CYAN :
+                    $state->getError()
+                        ? Console::COLOR_RED
+                        :
+                        ($state->isRunning()
+                            ?
+                            Console::COLOR_CYAN
+                            :
                             Console::COLOR_YELLOW)
                 )
                 ->writeFix(
-                    $state->getError() ? "  E " :
+                    $state->getError()
+                        ? "  E "
+                        :
                         (
-                        $state->isRunning() ?
-                            "  > " :
+                        $state->isRunning()
+                            ?
+                            "  > "
+                            :
                             "  • "
                         ),
                     4,
@@ -138,35 +186,6 @@ final class DaemonCommand extends Command
         $this->console->writeln();
     }
 
-    private function daemonEnable(?string $daemonName, bool $enable = true)
-    {
-        if (null === $daemonName) {
-            $this->error("Usage error\n", 'Daemon name is required.', true);
-        }
-
-        $daemonInfo = $this->loadDaemon($daemonName);
-        $daemonInfo['enabled'] = $enable;
-        $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
-        file_put_contents($daemonFile, Yaml::dump($daemonInfo));
-    }
-
-    private function daemonResetState(?string $daemonName)
-    {
-        if (null === $daemonName) {
-            $this->error("Usage error\n", 'Daemon name is required.', true);
-        }
-
-        $daemonInfo = $this->loadDaemon($daemonName);
-        $state = new DaemonState(Daemon::instantiate($daemonInfo));
-        $state->load();
-        $state->setLastRun(null);
-        $state->setRunning(false);
-        $state->error(null);
-        $state->write();
-        $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
-        file_put_contents($daemonFile, Yaml::dump($daemonInfo));
-    }
-
     public function daemonKill()
     {
         $daemonName = $this->get('name');
@@ -190,15 +209,6 @@ final class DaemonCommand extends Command
         $state->error('KILLED BY USER');
         $state->setRunning(false);
         $state->write();
-    }
-
-    private function loadDaemon(string $daemonName): array
-    {
-        $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
-        if (!file_exists($daemonFile)) {
-            $this->error("File error\n", 'Daemon does not exist.', true);
-        }
-        return Yaml::parseFile($daemonFile);
     }
 
 }

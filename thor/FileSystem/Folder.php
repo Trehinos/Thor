@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package Trehinos/Thor/FileSystem
+ * @package          Trehinos/Thor/FileSystem
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\FileSystem;
@@ -11,24 +11,29 @@ namespace Thor\FileSystem;
 final class Folder
 {
 
-    public static function createIfNotExists(string $name): void
-    {
-        if (!file_exists($name)) {
-            mkdir($name, recursive: true);
-        }
-    }
-
-    public static function removeTree(string $path, string|false $mask = false, bool $removeDirs = true, bool $removeFirst = true): array
-    {
+    /**
+     * @param string       $path
+     * @param string|false $mask
+     * @param bool         $removeDirs
+     * @param bool         $removeFirst ignored if $removeDirs is false
+     *
+     * @return array
+     */
+    public static function removeTree(
+        string $path,
+        string|false $mask = false,
+        bool $removeDirs = true,
+        bool $removeFirst = true
+    ): array {
         $files = scandir($path);
 
         $ret = [];
         foreach ($files as $file) {
-            if (in_array($file, ['.', '..'])) {
+            if (self::isSpecial($file)) {
                 continue;
             }
             if (is_dir("$path/$file")) {
-                $ret = array_merge($ret, self::removeTree("$path/$file", $mask, $removeDirs));
+                $ret = array_merge($ret, self::removeTree("$path/$file", $mask, $removeDirs, $removeDirs));
                 continue;
             }
             if ($mask !== false && preg_match("#^$mask$#", $file) === 0) {
@@ -49,21 +54,20 @@ final class Folder
         return $ret;
     }
 
+    public static function isSpecial(string $file): bool
+    {
+        return in_array($file, ['.', '..']);
+    }
+
     public static function copyTree(string $path, string $dest): void
     {
-        $files = scandir($path);
-
-        foreach ($files as $file) {
-            if (in_array($file, ['.', '..'])) {
-                continue;
-            }
-            if (is_dir("$path/$file")) {
-                Folder::createIfNotExists("$dest/$file");
-                self::copyTree("$path/$file", "$dest/$file");
-                continue;
-            }
-            copy("$path/$file", "$dest/$file");
-        }
+        self::mapFiles(
+            $path,
+            function (string $fileToCopy, string $destPath) {
+                copy($fileToCopy, "$destPath/" . basename($fileToCopy));
+            },
+            $dest
+        );
     }
 
     public static function mapFiles(string $path, callable $mappedFunction, mixed ...$functionArguments): void
@@ -71,7 +75,7 @@ final class Folder
         $files = scandir($path);
 
         foreach ($files as $file) {
-            if (in_array($file, ['.', '..'])) {
+            if (self::isSpecial($file)) {
                 continue;
             }
             if (is_dir("$path/$file")) {
@@ -79,6 +83,13 @@ final class Folder
                 continue;
             }
             $mappedFunction("$path/$file", ...$functionArguments);
+        }
+    }
+
+    public static function createIfNotExists(string $name): void
+    {
+        if (!file_exists($name)) {
+            mkdir($name, recursive: true);
         }
     }
 

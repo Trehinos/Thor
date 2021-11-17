@@ -45,7 +45,7 @@ class HttpServer implements RequestHandlerInterface
             'path'   => substr($request->getUri()->getPath(), strlen('/api.php')),
         ]);
 
-        return $this->router->match($request, '/api.php');
+        return $this->router->match($request, 'api.php');
     }
 
     final public function handle(ServerRequestInterface $request): ResponseInterface
@@ -100,9 +100,9 @@ class HttpServer implements RequestHandlerInterface
         return $this->language;
     }
 
-    public function redirect(string $routeName, array $params = [], string $queryString = ''): ResponseInterface
+    public function redirect(string $routeName, array $params = [], array $query = []): ResponseInterface
     {
-        return $this->redirectTo($this->generateUrl($routeName, $params, $queryString));
+        return $this->redirectTo($this->generateUrl($routeName, $params, $query));
     }
 
     public function redirectTo(UriInterface $uri): ResponseInterface
@@ -110,11 +110,11 @@ class HttpServer implements RequestHandlerInterface
         return ResponseFactory::createRedirection($uri);
     }
 
-    public function generateUrl(string $routeName, array $params = [], string $queryString = ''): UriInterface
+    public function generateUrl(string $routeName, array $params = [], array $query = []): UriInterface
     {
         if ($this->router->getRoute($routeName) === null) {
             return Uri::create("#generate-url-error");
         }
-        return $this->router->getUrl($routeName, $params, $queryString);
+        return $this->router->getUrl($routeName, $params, $query);
     }
 }

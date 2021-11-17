@@ -14,7 +14,6 @@ use Thor\Http\Server\HttpServer;
 use Thor\Http\Response\Response;
 use Thor\Http\Request\HttpMethod;
 use Thor\Factories\ResponseFactory;
-use Thor\Http\Request\UploadedFile;
 use Thor\Http\Request\UploadedFileInterface;
 use Thor\Http\Request\ServerRequestInterface;
 
@@ -44,32 +43,38 @@ abstract class HttpController
         $this->queryAttributes = $this->getRequest()->getAttributes();
     }
 
+    #[Pure]
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->httpServer->getRequest();
+    }
+
     public function attribute(string $name, mixed $default = null): mixed
     {
         return $this->queryAttributes[$name] ?? $default;
     }
 
-    public function get(string $name, array|string|null $default = null):array|string|null
+    public function get(string $name, array|string|null $default = null): array|string|null
     {
         return $this->get[$name] ?? $default;
     }
 
-    public function post(string $name, array|string|null $default = null):array|string|null
+    public function post(string $name, array|string|null $default = null): array|string|null
     {
         return $this->post[$name] ?? $default;
     }
 
-    public function server(string $name, array|string|null $default = null):array|string|null
+    public function server(string $name, array|string|null $default = null): array|string|null
     {
         return $this->server[$name] ?? $default;
     }
 
-    public function cookie(string $name, array|string|null $default = null):array|string|null
+    public function cookie(string $name, array|string|null $default = null): array|string|null
     {
         return $this->cookies[$name] ?? $default;
     }
 
-    public function header(string $name, array|string|null $default = null):array|string|null
+    public function header(string $name, array|string|null $default = null): array|string|null
     {
         return $this->headers[$name] ?? $default;
     }
@@ -79,16 +84,9 @@ abstract class HttpController
         return $this->files[$name] ?? null;
     }
 
-
-    public function redirect(string $routeName, array $params = [], string $queryString = ''): Response
+    public function redirect(string $routeName, array $params = [], array $query = []): Response
     {
-        return ResponseFactory::createRedirection($this->getServer()->generateUrl($routeName, $params, $queryString));
-    }
-
-    #[Pure]
-    public function getRequest(): ServerRequestInterface
-    {
-        return $this->httpServer->getRequest();
+        return ResponseFactory::createRedirection($this->getServer()->generateUrl($routeName, $params, $query));
     }
 
     public function getServer(): HttpServer

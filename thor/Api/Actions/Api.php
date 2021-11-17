@@ -1,18 +1,19 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Api
+ * HttpController to test the api.php entry point.
+ *
+ * @internal
+ *
+ * @package          Trehinos/Thor/Api
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Api\Actions;
 
-use Thor\Http\Request\HttpMethod;
-use Thor\Http\Response\Response;
-use Thor\Http\Routing\Route;
 use Thor\Factories\ResponseFactory;
-use Thor\Http\Controllers\HttpController;
+use Thor\Http\{Controllers\HttpController, Request\HttpMethod, Response\Response, Routing\Route};
 
 final class Api extends HttpController
 {

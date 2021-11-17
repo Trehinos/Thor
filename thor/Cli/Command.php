@@ -9,7 +9,6 @@
 namespace Thor\Cli;
 
 use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\NoReturn;
 
 abstract class Command
 {
@@ -50,13 +49,12 @@ abstract class Command
         $this->cli->displayCommandUsage($name, $commandInfos['arguments']);
     }
 
-    #[NoReturn]
     public function error(
         string $title,
         string $message,
         bool $displayUsage = false,
         bool $displayHelp = false
-    ): void {
+    ): never {
         $this->console->fColor(Console::COLOR_RED)->writeln('ERROR')->mode();
         $this->console->fColor(Console::COLOR_YELLOW)->write($title)
             ->fColor()->writeln($message)

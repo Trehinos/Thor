@@ -1,19 +1,18 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Api
+ * Represent a PdoRow user implementing UserInterface.
+ *
+ * @package          Trehinos/Thor/Api
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Api\Entities;
 
 use Thor\Database\PdoTable\AbstractPdoRow;
-use Thor\Database\PdoTable\Attributes\PdoColumn;
-use Thor\Database\PdoTable\Attributes\PdoIndex;
-use Thor\Database\PdoTable\Attributes\PdoRow;
-use Thor\Security\PasswordHasher;
-use Thor\Security\UserInterface;
+use Thor\Database\PdoTable\Attributes\{PdoColumn, PdoIndex, PdoRow};
+use Thor\Security\{PasswordHasher, UserInterface};
 
 #[PdoRow('user', ['id'], 'id')]
 #[PdoColumn('id', 'INTEGER', 'integer', false)]
@@ -43,14 +42,14 @@ class User extends AbstractPdoRow implements UserInterface
         return $this->username;
     }
 
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
-    }
-
     public function hasPwdHashFor(string $clearPassword): bool
     {
         return PasswordHasher::verify($clearPassword, $this->password);
+    }
+
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
     }
 
     public function setPwdHashFrom(string $clearPassword): void

@@ -1,6 +1,14 @@
 <?php
 
 /**
+ * This Command class Contains main commands of Thor-Api commands :
+ *  - clear/cache
+ *  - clear/logs
+ *  - core/setup
+ *  - core/update
+ *  - route/set
+ *  - route/list
+ *
  * @package          Trehinos/Thor/Api
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
@@ -8,25 +16,16 @@
 
 namespace Thor\Api\Commands;
 
-use Thor\Cli\Daemon;
-use Thor\Debug\LogLevel;
-use Thor\Cli\DaemonState;
-use Thor\FileSystem\Folder;
-use Thor\Api\Managers\UserManager;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Cli\CliKernel;
-use Thor\Cli\Command;
-use Thor\Cli\Console;
-use Thor\Database\PdoTable\CrudHelper;
-use Thor\Database\PdoExtension\PdoMigrator;
-use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
-use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\SchemaHelper;
-use Thor\Debug\Logger;
+use Thor\Api\{Entities\User, Managers\UserManager};
+use Thor\Cli\{CliKernel, Command, Console, Daemon, DaemonState};
+use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
+use Thor\Database\PdoTable\{Attributes\PdoAttributesReader, CrudHelper, SchemaHelper};
+use Thor\Debug\{Logger, LogLevel};
+use Thor\Factories\RouterFactory;
+use Thor\FileSystem\Folder;
 use Thor\Globals;
-use Thor\Http\HttpKernel;
 use Thor\Http\Routing\Route;
-use Thor\Api\Entities\User;
 use Thor\Thor;
 
 final class CoreCommand extends Command
@@ -37,11 +36,7 @@ final class CoreCommand extends Command
     public function __construct(string $command, array $args, CliKernel $kernel)
     {
         parent::__construct($command, $args, $kernel);
-        $this->routes =
-            HttpKernel::createRouterFromConfiguration(
-                Thor::config('routes', true)
-            )->getRoutes()
-        ;
+        $this->routes = RouterFactory::createRoutesFromConfiguration(Thor::config('routes', true));
     }
 
     public function routeSet()
@@ -61,29 +56,28 @@ final class CoreCommand extends Command
             'method' => $method,
             'action' => [
                 'class'  => $cClass,
-                'method' => $cMethod
-            ]
+                'method' => $cMethod,
+            ],
         ];
 
         file_put_contents(Globals::CODE_DIR . 'app/res/routes.yml', Yaml::dump($this->routes));
         $this->console
             ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
             ->writeln("Done.")
-            ->mode()
-        ;
+            ->mode();
     }
 
     public function setup()
     {
         $requester = new PdoRequester($this->cli->pdos->get());
 
-        Logger::write("SETUP : Creating table user...", LogLevel::MAJOR);
+        Logger::write("SETUP : Creating table user...", LogLevel::NOTICE);
         $schema = new SchemaHelper($requester, new PdoAttributesReader(User::class));
         $schema->createTable();
 
         $userManager = new UserManager(new CrudHelper(User::class, $requester));
         $pid = $userManager->createUser('admin', 'password');
-        Logger::write("SETUP : Admin $pid created.", LogLevel::MAJOR);
+        Logger::write("SETUP : Admin $pid created.", LogLevel::NOTICE);
     }
 
     public function routeList()
@@ -95,8 +89,7 @@ final class CoreCommand extends Command
             $this->console
                 ->fColor(Console::COLOR_YELLOW, Console::MODE_BRIGHT)
                 ->write("$routeName : ")
-                ->mode()
-            ;
+                ->mode();
 
             $c = $route->getControllerClass();
             $m = $route->getControllerMethod();
@@ -107,8 +100,7 @@ final class CoreCommand extends Command
                 ->write('::')
                 ->fColor(Console::COLOR_BLUE, Console::MODE_RESET)
                 ->write($m . '()')
-                ->mode()
-            ;
+                ->mode();
 
             $path = $route->getPath();
             if (null !== $path) {
@@ -127,8 +119,7 @@ final class CoreCommand extends Command
                     ->write(' ' . $path ?? '')
                     ->fColor(Console::COLOR_GRAY, Console::MODE_DIM)
                     ->write(']')
-                    ->mode()
-                ;
+                    ->mode();
             }
             $this->console->writeln();
         }
@@ -138,8 +129,7 @@ final class CoreCommand extends Command
     {
         $this->console->fColor(Console::COLOR_CYAN)
                       ->writeln('Clearing the cache...')
-                      ->mode()
-        ;
+                      ->mode();
         $deleted = Folder::removeTree(Globals::VAR_DIR . 'cache', removeFirst: false);
         foreach ($deleted as $file) {
             $this->console->writeln(" - $file deleted.");
@@ -153,8 +143,7 @@ final class CoreCommand extends Command
 
         $this->console->fColor(Console::COLOR_CYAN)
                       ->writeln("Clearing the $env logs...")
-                      ->mode()
-        ;
+                      ->mode();
         $deleted = Folder::removeTree(Globals::VAR_DIR . 'logs', "{$env}_.*[.]log", false, false);
         foreach ($deleted as $file) {
             $this->console->writeln(" - $file deleted.");
@@ -173,11 +162,11 @@ final class CoreCommand extends Command
         $target = $updateFolder . 'repo/';
 
         // 1. Copy static files
-        Logger::write('[1/11] Backup resources', LogLevel::VERBOSE, print: true);
+        Logger::write('[1/11] Backup resources', print: true);
         Folder::copyTree(Globals::RESOURCES_DIR, $resourcesBackupFolder);
 
         // 2. Disable all daemons
-        Logger::write('[2/11] Disable daemons', LogLevel::VERBOSE, print: true);
+        Logger::write('[2/11] Disable daemons', print: true);
         $daemons = self::loadDaemons();
         /**
          * @var Daemon      $daemon
@@ -194,11 +183,11 @@ final class CoreCommand extends Command
 
         // 3. Git clone
         Folder::removeTree($updateFolder);
-        Logger::write('[3/11] Git clone', LogLevel::VERBOSE, print: true);
+        Logger::write('[3/11] Git clone', print: true);
         CliKernel::executeProgram("git clone $source $target");
 
         // 4. Copy last version
-        Logger::write('[4/11] Copy new files', LogLevel::VERBOSE, print: true);
+        Logger::write('[4/11] Copy new files', print: true);
         foreach (
             [
                 $target . 'thor'    => Globals::CODE_DIR . 'thor',
@@ -212,7 +201,7 @@ final class CoreCommand extends Command
         }
 
         // 5. Restore instance files
-        Logger::write('[5/11] Restore resources', LogLevel::VERBOSE, print: true);
+        Logger::write('[5/11] Restore resources', print: true);
         $restoreResource = function (string $file, string $targetPath, string $restorePrefix) {
             $basename = basename($file);
             $dirname = '';
@@ -233,29 +222,29 @@ final class CoreCommand extends Command
         Folder::mapFiles($staticBackup, $restoreResource, $staticBackup, Globals::STATIC_DIR);
 
         // 6. Migrate DB
-        Logger::write('[6/11] Migrate database', LogLevel::VERBOSE, print: true);
+        Logger::write('[6/11] Migrate database', print: true);
         $migrator = PdoMigrator::createFromConfiguration();
         $migrator->migrate(null);
 
         // 7. Run after-update
-        Logger::write('[7/11] Run after-update', LogLevel::VERBOSE, print: true);
+        Logger::write('[7/11] Run after-update', print: true);
         if ($afterUpdate !== null) {
             CliKernel::executeCommand($afterUpdate);
         }
 
         // 8. Composer update
-        Logger::write('[8/11] Composer update', LogLevel::VERBOSE, print: true);
+        Logger::write('[8/11] Composer update', print: true);
         chdir(Globals::CODE_DIR);
         CliKernel::executeProgram('composer update');
 
         // 9. Clear cache
-        Logger::write('[9/11] Composer update', LogLevel::VERBOSE, print: true);
+        Logger::write('[9/11] Composer update', print: true);
         foreach (['dev', 'debug', 'verbose', 'prod'] as $env) {
             CliKernel::executeCommand('clear/cache', ['env' => $env]);
         }
 
         // 10. Restore daemons state
-        Logger::write('[10/11] Restore daemons', LogLevel::VERBOSE, print: true);
+        Logger::write('[10/11] Restore daemons', print: true);
         $daemons = self::loadDaemons();
         /**
          * @var Daemon      $daemon
@@ -269,9 +258,8 @@ final class CoreCommand extends Command
         }
 
         // 11. Clear update folder
-        Logger::write('[11/11] Clear update folder', LogLevel::VERBOSE, print: true);
+        Logger::write('[11/11] Clear update folder', print: true);
         Folder::removeTree($updateFolder);
-
     }
 
     private static function loadDaemons(): array
@@ -279,7 +267,7 @@ final class CoreCommand extends Command
         return array_map(
             fn(string $daemonFilename) => [
                 'daemon' => $daemon = Daemon::instantiate(Yaml::parseFile($daemonFilename)),
-                'state'  => new DaemonState($daemon)
+                'state'  => new DaemonState($daemon),
             ],
             glob(Globals::STATIC_DIR . "daemons/*.yml")
         );

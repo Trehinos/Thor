@@ -8,10 +8,9 @@
 
 namespace Thor\Validation\Filters;
 
-use Thor\Http\Server;
 use Thor\Validation\FilterInterface;
 
-class PostVarRegex implements FilterInterface
+class RegexFilter implements FilterInterface
 {
 
     private string $regExp;
@@ -23,14 +22,7 @@ class PostVarRegex implements FilterInterface
 
     public function filter(mixed $value): array|string|null
     {
-        return Server::post(
-            $value,
-            null,
-            FILTER_VALIDATE_REGEXP,
-            [
-                'options' => ['regexp' => $this->regExp]
-            ]
-        );
+        return filter_var($value, FILTER_VALIDATE_REGEXP, ['regexp' => $this->regExp]);
     }
 
 }

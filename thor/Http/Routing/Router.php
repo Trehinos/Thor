@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Http
+ * @package          Trehinos/Thor/Http
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Http\Routing;
@@ -25,14 +25,13 @@ final class Router
 
     /**
      * @param string $routeName
-     * @param array $params
-     * @param string $queryString without '&'
+     * @param array  $params
+     * @param array  $queryArguments
      *
      * @return UriInterface
      *
-     * @throws RuntimeException
      */
-    public function getUrl(string $routeName, array $params = [], string $queryString = ''): UriInterface
+    public function getUrl(string $routeName, array $params = [], array $queryArguments = []): UriInterface
     {
         $route = $this->getRoute($routeName);
         if (null === $route) {
@@ -43,13 +42,7 @@ final class Router
         foreach ($params as $paramName => $paramValue) {
             $path = str_replace("\$$paramName", "$paramValue", $path);
         }
-        if (substr($path, 0, 1) !== '/') {
-            $path = "/$path";
-            if ('/' === $path) {
-                $path = '';
-            }
-        }
-        return Uri::create("/index.php$path" . ($queryString !== '' ? "?$queryString" : ''));
+        return Uri::fromGlobals()->withPath("index.php$path")->withQuery($queryArguments);
     }
 
     public function getRoute(string $name): ?Route
@@ -59,8 +52,9 @@ final class Router
 
     public function match(RequestInterface $request, string $prefix = ''): Route|false|null
     {
-        $pathInfo = substr($request->getUri()->getPath(), strlen($prefix));
+        $pathInfo = substr($request->getUri()->getPath(), strlen($prefix) + 1);
         $method = $request->getMethod();
+        $pathInfo = str_starts_with($pathInfo, '/') ? $pathInfo : "/$pathInfo";
 
         /**
          * @var Route $route

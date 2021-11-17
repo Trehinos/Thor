@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * TODO ...
+ *
  * @package          Trehinos/Thor/Api
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
@@ -9,12 +11,9 @@
 namespace Thor\Api\Managers;
 
 use Exception;
-
-use Thor\Debug\LogLevel;
 use Thor\Api\Entities\User;
-use Thor\Database\PdoTable\CrudHelper;
-use Thor\Database\PdoTable\Criteria;
-use Thor\Debug\Logger;
+use Thor\Database\PdoTable\{Criteria, CrudHelper};
+use Thor\Debug\{Logger, LogLevel};
 
 final class UserManager
 {
@@ -53,7 +52,7 @@ final class UserManager
         $public_id = $this->userCrud->createOne(
             new User($username, $clearPassword)
         );
-        Logger::write("User $public_id created.", LogLevel::VERBOSE);
+        Logger::write("User $public_id created.", LogLevel::NOTICE);
 
         return $public_id;
     }
@@ -65,7 +64,7 @@ final class UserManager
         if ($user) {
             $user->setUsername($username);
             $state = $this->userCrud->updateOne($user);
-            Logger::write("User $public_id updated !", LogLevel::VERBOSE);
+            Logger::write("User $public_id updated !", LogLevel::NOTICE);
         }
 
         return $state;
@@ -78,7 +77,7 @@ final class UserManager
         if ($user) {
             $user->setPwdHashFrom($password);
             $state = $this->userCrud->updateOne($user);
-            Logger::write("User $public_id updated !", LogLevel::VERBOSE);
+            Logger::write("User $public_id updated !", LogLevel::NOTICE);
         }
 
         return $state;
@@ -90,7 +89,7 @@ final class UserManager
         $user = $this->userCrud->readOneFromPid($public_id);
         if ($user) {
             $state = $this->userCrud->deleteOne($user);
-            Logger::write("User $public_id deleted !", LogLevel::VERBOSE);
+            Logger::write("User $public_id deleted !", LogLevel::NOTICE);
         }
 
         return $state;

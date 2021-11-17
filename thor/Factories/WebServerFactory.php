@@ -22,8 +22,7 @@ final class WebServerFactory extends Factory
             new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['web-routes'])),
             new SecurityFactory($config['security']),
             PdoCollection::createFromConfiguration($config['database']),
-            $config['language'],
-
+            $config['language']
         ))->produce($config['twig']);
     }
 
@@ -32,7 +31,7 @@ final class WebServerFactory extends Factory
         $router = $this->routerFactory->produce();
         $security = $this->securityFactory->produce();
         $webServer = new WebServer($router, $security, $this->pdoCollection, $this->language);
-        $twig = TwigFactory::createTwigFromConfiguration($router, $webServer, $options);
+        $twig = TwigFactory::createTwigFromConfiguration($webServer, $options);
         $webServer->twig = $twig;
 
         return $webServer;

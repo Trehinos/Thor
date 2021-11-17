@@ -1,19 +1,18 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Api
+ * Main WebController to serve the main default routes of Thor.
+ *
+ * @package          Trehinos/Thor/Api
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Api\Actions;
 
-use Thor\Http\Request\HttpMethod;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Globals;
-use Thor\Http\Response\Response;
-use Thor\Http\Routing\Route;
-use Thor\Http\Controllers\WebController;
+use Thor\Http\{Controllers\WebController, Request\HttpMethod, Response\Response, Routing\Route};
 
 final class Main extends WebController
 {
@@ -21,26 +20,16 @@ final class Main extends WebController
     #[Route('index', '/', HttpMethod::GET)]
     public function index(): Response
     {
-        $menuItem = $this->get('menuItem');
-
-        return $this->twigResponse(
-            'page.html.twig',
-            [
-                'menuItem' => $menuItem
-            ]
-        );
+        return $this->twigResponse('page.html.twig');
     }
 
     #[Route('index-page', '/index', HttpMethod::GET)]
     public function indexPage(): Response
     {
-        //$icons = Yaml::parseFile(Globals::STATIC_DIR . 'icons.yml');
-
         return $this->twigResponse(
             'pages/index.html.twig',
             [
                 'routes' => $this->getServer()->getRouter()->getRoutes(),
-//                'icons' => $icons
             ]
         );
     }
@@ -51,7 +40,7 @@ final class Main extends WebController
         return $this->twigResponse(
             'menu.html.twig',
             [
-                'menu' => Yaml::parse(file_get_contents(Globals::STATIC_DIR . 'menu.yml'))
+                'menu' => Yaml::parse(file_get_contents(Globals::STATIC_DIR . 'menu.yml')),
             ]
         );
     }

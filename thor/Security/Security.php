@@ -97,7 +97,7 @@ class Security
         return new self(
             isEnabled: match ($config['security'] ?? 'disable') {
                 'enable' => true,
-                default => false
+                default  => false
             },
             identitySource:   $config['identity-source'] ?? self::SOURCE_INTERNAL,
             identityType:     $config['identity-type'] ?? self::TYPE_USERPWD,
@@ -118,15 +118,12 @@ class Security
 
     /**
      * Returns null if no redirect or redirect Response.
-     *
-     * @param ServerRequestInterface  $request
-     * @param Router                  $router
-     * @param RequestHandlerInterface $handler
-     *
-     * @return Response|null
      */
-    public function protect(ServerRequestInterface $request, Router $router, RequestHandlerInterface $handler): ?ResponseInterface
-    {
+    public function protect(
+        ServerRequestInterface $request,
+        Router $router,
+        RequestHandlerInterface $handler
+    ): ?ResponseInterface {
         if (!$this->isActive()) {
             return null;
         }

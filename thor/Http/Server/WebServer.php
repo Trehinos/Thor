@@ -33,7 +33,7 @@ class WebServer extends HttpServer
             'path'   => substr($request->getUri()->getPath(), strlen('/index.php')),
         ]);
 
-        return $this->getRouter()->match($request, '/index.php');
+        return $this->getRouter()->match($request, 'index.php');
     }
 
     public function getTwig(): Environment
