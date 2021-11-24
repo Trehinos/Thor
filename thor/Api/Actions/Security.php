@@ -30,9 +30,12 @@ final class Security extends WebController
     {
         $username = $this->post('username');
         $password = $this->post('password');
+        $token = false;
 
         $user = $this->getServer()->getSecurity()->getUser($this->getServer()->getHandler(), $username);
-        $token = $this->getServer()->getSecurity()->authenticate($user, $password);
+        if ($user) {
+            $token = $this->getServer()->getSecurity()->authenticate($user, $password);
+        }
 
         if ($token) {
             Logger::write("User $username logged in.", LogLevel::DEBUG);

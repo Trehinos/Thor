@@ -2,13 +2,11 @@
 
 namespace Thor\Security;
 
-use Thor\Http\Routing\Router;
-use Thor\Http\Response\Response;
 use JetBrains\PhpStorm\Immutable;
-use Thor\Http\Server\MiddlewareInterface;
-use Thor\Http\Response\ResponseInterface;
 use Thor\Http\Request\ServerRequestInterface;
-use Thor\Http\Server\RequestHandlerInterface;
+use Thor\Http\Response\{Response, ResponseInterface};
+use Thor\Http\Routing\Router;
+use Thor\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 
 class Firewall implements MiddlewareInterface
 {
@@ -48,11 +46,6 @@ class Firewall implements MiddlewareInterface
         return !$this->isAuthenticated;
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    {
-        return Response::create($this->redirect);
-    }
-
     public function pathIsExcluded(ServerRequestInterface $request): bool
     {
         return array_reduce(
@@ -71,8 +64,13 @@ class Firewall implements MiddlewareInterface
                 $this->loginRoute,
                 $this->logoutRoute,
                 $this->checkRoute,
-                ...$this->excludedRoutes
+                ...$this->excludedRoutes,
             ]
         );
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        return Response::create($this->redirect);
     }
 }

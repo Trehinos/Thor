@@ -123,7 +123,7 @@ class Security
         );
     }
 
-    public function getUser(PdoHandler $handler, string $username): UserInterface
+    public function getUser(PdoHandler $handler, string $username): ?UserInterface
     {
         $userCrud = new CrudHelper($this->pdoRowClass, new PdoRequester($handler));
         return $userCrud->readOneBy(new Criteria([$this->usernameField => $username]));
