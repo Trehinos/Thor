@@ -2,37 +2,34 @@
 
 namespace Thor\Factories;
 
-use Thor\Http\Server\HttpServer;
 use Thor\Database\PdoExtension\PdoCollection;
+use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Http\Routing\Router;
+use Thor\Http\Server\HttpServer;
+use Thor\Security\SecurityInterface;
 
-final class HttpServerFactory extends Factory
+final class HttpServerFactory
 {
-
-    public function __construct(
-        private RouterFactory $routerFactory,
-        private SecurityFactory $securityFactory,
-        private PdoCollection $pdoCollection,
-        private array $language
-    ) {
-    }
 
     public static function createHttpServerFromConfiguration(array $config): HttpServer
     {
-        return (new self(
-            new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['api-routes'])),
-            new SecurityFactory($config['security']),
-            PdoCollection::createFromConfiguration($config['database']),
+        $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
+        return self::produce(
+            $router =
+                (new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['api-routes'])))
+                    ->produce(),
+            SecurityFactory::produceSecurity($router, new PdoRequester($pdoCollection->get()), $config['security']),
+            $pdoCollection,
             $config['language']
-        ))->produce();
+        );
     }
 
-    public function produce(array $options = []): HttpServer
-    {
-        return new HttpServer(
-            $this->routerFactory->produce(),
-            $this->securityFactory->produce(),
-            $this->pdoCollection,
-            $this->language
-        );
+    public static function produce(
+        Router $router,
+        SecurityInterface $security,
+        PdoCollection $pdoCollection,
+        array $language
+    ): HttpServer {
+        return new HttpServer($router, $security, $pdoCollection, $language);
     }
 }

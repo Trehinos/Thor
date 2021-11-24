@@ -2,24 +2,23 @@
 
 namespace Thor\Security;
 
-use Thor\Security\Configuration\SecurityConfigurationInterface;
+use Thor\Http\Request\ServerRequestInterface;
+use Thor\Http\Response\ResponseInterface;
+use Thor\Security\Authentication\AuthenticatorInterface;
+use Thor\Security\Identity\ProviderInterface;
 
 interface SecurityInterface
 {
-
-    public function getConfiguration(): SecurityConfigurationInterface;
 
     /**
      * @return Firewall[]
      */
     public function getFirewalls(): array;
 
-    public function getCurrentUser(): ?UserInterface;
+    public function getAuthenticator(): AuthenticatorInterface;
 
-    public function getCurrentToken(): ?string;
+    public function getProvider(): ProviderInterface;
 
-    public function protect(): void;
-
-    public function authenticate(): void;
+    public function protect(ServerRequestInterface $request): ?ResponseInterface;
 
 }

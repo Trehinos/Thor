@@ -9,7 +9,6 @@ use Thor\Security\Security;
 use Thor\Http\UriInterface;
 use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
-use Thor\Http\Request\Request;
 use Thor\Http\Response\Response;
 use Thor\Http\Response\HttpStatus;
 use Thor\Factories\ResponseFactory;
@@ -69,7 +68,7 @@ class HttpServer implements RequestHandlerInterface
         }
 
         $controllerHandler = new ControllerHandler($this, $route);
-        if (null !== ($redirect = $this->security->protect($request, $this->router, $controllerHandler))) {
+        if (null !== ($redirect = $this->security?->protect($request))) {
             return $redirect;
         }
         return $controllerHandler->handle($request);

@@ -11,9 +11,9 @@
 namespace Thor\Api\Managers;
 
 use Exception;
-use Thor\Api\Entities\User;
 use Thor\Database\PdoTable\{Criteria, CrudHelper};
 use Thor\Debug\{Logger, LogLevel};
+use Thor\Security\Identity\DbUser;
 
 final class UserManager
 {
@@ -50,7 +50,7 @@ final class UserManager
     public function createUser(string $username, string $clearPassword): string
     {
         $public_id = $this->userCrud->createOne(
-            new User($username, $clearPassword)
+            new DbUser($username, $clearPassword)
         );
         Logger::write("User $public_id created.", LogLevel::NOTICE);
 
@@ -95,7 +95,7 @@ final class UserManager
         return $state;
     }
 
-    public function getFromUsername(string $username): ?User
+    public function getFromUsername(string $username): ?DbUser
     {
         return $this->userCrud->readOneBy(new Criteria(['username' => $username]));
     }
@@ -104,10 +104,10 @@ final class UserManager
     {
         $user = $this->getFromPublicId($public_id);
 
-        return (null === $user) ? false : $user->hasPwdHashFor($clearPassword);
+        return (null === $user) ? false : $user->isPassword($clearPassword);
     }
 
-    public function getFromPublicId(string $public_id): ?User
+    public function getFromPublicId(string $public_id): ?DbUser
     {
         return $this->userCrud->readOneFromPid($public_id);
     }

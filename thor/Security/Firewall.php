@@ -6,12 +6,11 @@ use JetBrains\PhpStorm\Immutable;
 use Thor\Http\Request\ServerRequestInterface;
 use Thor\Http\Response\{Response, ResponseInterface};
 use Thor\Http\Routing\Router;
-use Thor\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
+use Thor\Http\Server\{RequestHandlerInterface};
 
-class Firewall implements MiddlewareInterface
+class Firewall implements RequestHandlerInterface
 {
 
-    public ?Router $router = null;
     public bool $isAuthenticated = false;
 
     public function __construct(
@@ -32,13 +31,13 @@ class Firewall implements MiddlewareInterface
     ) {
     }
 
-    public function redirect(ServerRequestInterface $request): bool
+    public function redirect(ServerRequestInterface $request, Router $router): bool
     {
         if (!str_starts_with($request->getUri()->getPath(), $this->pattern)) {
             return false;
         }
 
-        if ($this->pathIsExcluded($request) || $this->routeIsExcluded()) {
+        if ($this->pathIsExcluded($request) || $this->routeIsExcluded($router)) {
             return false;
         }
 
@@ -56,10 +55,10 @@ class Firewall implements MiddlewareInterface
         );
     }
 
-    public function routeIsExcluded(): bool
+    public function routeIsExcluded(Router $router): bool
     {
         return !in_array(
-            $this->router?->getMatchedRouteName(),
+            $router->getMatchedRouteName(),
             [
                 $this->loginRoute,
                 $this->logoutRoute,
@@ -69,7 +68,7 @@ class Firewall implements MiddlewareInterface
         );
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return Response::create($this->redirect);
     }

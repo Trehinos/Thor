@@ -15,9 +15,10 @@
 namespace Thor\Api\Commands;
 
 use Exception;
-use Thor\Api\{Entities\User, Managers\UserManager};
+use Thor\Api\{Managers\UserManager};
 use Thor\Cli\{CliKernel, Command, Console};
 use Thor\Database\{PdoExtension\PdoRequester, PdoTable\Criteria, PdoTable\CrudHelper};
+use Thor\Security\Identity\DbUser;
 
 final class UserCommand extends Command
 {
@@ -29,7 +30,7 @@ final class UserCommand extends Command
         parent::__construct($command, $args, $kernel);
         $this->userManager = new UserManager(
             new CrudHelper(
-                User::class,
+                DbUser::class,
                 new PdoRequester($kernel->pdos->get())
             )
         );
@@ -134,11 +135,11 @@ final class UserCommand extends Command
         }
 
         /**
-         * @var User $user
+         * @var DbUser $user
          */
         foreach ($users as $user) {
             $pid = $user->getPublicId();
-            $username = $user->getUsername();
+            $username = $user->getIdentifier();
             $hash = $user->toPdoArray()['password'];
             $this->console->fColor(mode: Console::MODE_DIM)
                           ->write("[$pid] ")

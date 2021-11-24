@@ -9,6 +9,20 @@ configuration:
     session-key: token
     token-expire: 60
 
+after:
+    security: Thor\Security\HttpSecurity | [disable]
+
+    # option : firewall, protect routes
+    firewall:
+        -   pattern: /
+            redirect: ~ # public page to redirect if a status_forbidden is triggered
+            login-route: login
+            logout-route: logout
+            check-route: check
+            exclude-path:
+                - ''
+                - ''
+
 # CURRENT |todo : set with no "future" key
 future:
     security: enable

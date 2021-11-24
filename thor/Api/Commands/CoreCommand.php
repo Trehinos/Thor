@@ -17,7 +17,7 @@
 namespace Thor\Api\Commands;
 
 use Symfony\Component\Yaml\Yaml;
-use Thor\Api\{Entities\User, Managers\UserManager};
+use Thor\Api\{Managers\UserManager};
 use Thor\Cli\{CliKernel, Command, Console, Daemon, DaemonState};
 use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
 use Thor\Database\PdoTable\{Attributes\PdoAttributesReader, CrudHelper, SchemaHelper};
@@ -26,6 +26,7 @@ use Thor\Factories\RouterFactory;
 use Thor\FileSystem\Folder;
 use Thor\Globals;
 use Thor\Http\Routing\Route;
+use Thor\Security\Identity\DbUser;
 use Thor\Thor;
 
 final class CoreCommand extends Command
@@ -72,10 +73,10 @@ final class CoreCommand extends Command
         $requester = new PdoRequester($this->cli->pdos->get());
 
         Logger::write("SETUP : Creating table user...", LogLevel::NOTICE);
-        $schema = new SchemaHelper($requester, new PdoAttributesReader(User::class));
+        $schema = new SchemaHelper($requester, new PdoAttributesReader(DbUser::class));
         $schema->createTable();
 
-        $userManager = new UserManager(new CrudHelper(User::class, $requester));
+        $userManager = new UserManager(new CrudHelper(DbUser::class, $requester));
         $pid = $userManager->createUser('admin', 'password');
         Logger::write("SETUP : Admin $pid created.", LogLevel::NOTICE);
     }

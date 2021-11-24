@@ -2,38 +2,39 @@
 
 namespace Thor\Factories;
 
+use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Http\Routing\Router;
 use Thor\Http\Server\WebServer;
 use Thor\Database\PdoExtension\PdoCollection;
+use Thor\Security\SecurityInterface;
 
-final class WebServerFactory extends Factory
+final class WebServerFactory
 {
-
-    public function __construct(
-        private RouterFactory $routerFactory,
-        private SecurityFactory $securityFactory,
-        private PdoCollection $pdoCollection,
-        private array $language
-    ) {
-    }
 
     public static function creatWebServerFromConfiguration(array $config): WebServer
     {
-        return (new self(
-            new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['web-routes'])),
-            new SecurityFactory($config['security']),
-            PdoCollection::createFromConfiguration($config['database']),
+        $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
+        return self::produce(
+            $router =
+                (new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['api-routes'])))
+                    ->produce(),
+            SecurityFactory::produceSecurity($router, new PdoRequester($pdoCollection->get()), $config['security']),
+            $pdoCollection,
             $config['language']
-        ))->produce($config['twig']);
+        );
     }
 
-    public function produce(array $options = []): WebServer
-    {
-        $router = $this->routerFactory->produce();
-        $security = $this->securityFactory->produce();
-        $webServer = new WebServer($router, $security, $this->pdoCollection, $this->language);
+
+    public static function produce(
+        Router $router,
+        SecurityInterface $security,
+        PdoCollection $pdoCollection,
+        array $language,
+        array $options = []
+    ): WebServer {
+        $webServer = new WebServer($router, $security, $pdoCollection, $language);
         $twig = TwigFactory::createTwigFromConfiguration($webServer, $options);
         $webServer->twig = $twig;
-
-        return $webServer;
+        return new WebServer($router, $security, $pdoCollection, $language, $twig);
     }
 }

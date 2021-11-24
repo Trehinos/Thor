@@ -10,11 +10,12 @@
 
 namespace Thor\Api\Actions;
 
-use Thor\Api\{Entities\User, Managers\UserManager};
+use Thor\Api\{Managers\UserManager};
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Html\{PdoMatrix\MatrixColumn, PdoMatrix\PdoMatrix};
 use Thor\Http\{Controllers\WebController, Request\HttpMethod, Response\Response, Routing\Route, Server\WebServer};
+use Thor\Security\Identity\DbUser;
 use Thor\Validation\Filters\RegexFilter;
 
 final class Users extends WebController
@@ -26,7 +27,7 @@ final class Users extends WebController
     public function __construct(WebServer $webServer)
     {
         parent::__construct($webServer);
-        $this->manager = new UserManager(new CrudHelper(User::class, $this->getServer()->getRequester()));
+        $this->manager = new UserManager(new CrudHelper(DbUser::class, $this->getServer()->getRequester()));
         $this->usernameFilter = new RegexFilter('/^[A-Za-z0-9]{2,255}$/');
     }
 
@@ -39,7 +40,7 @@ final class Users extends WebController
                 'users'      => $this->manager->getUserCrud()->listAll(),
                 'user_table' =>
                     (
-                    new PdoMatrix(User::class, $this->getServer()->getRequester())
+                    new PdoMatrix(DbUser::class, $this->getServer()->getRequester())
                     )->getTableHtmlFromRequest(
                             [
                                 'public_id' => new MatrixColumn('Public ID'),
