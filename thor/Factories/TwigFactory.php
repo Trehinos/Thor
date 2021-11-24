@@ -71,9 +71,15 @@ final class TwigFactory
         $this->twig->addFunction(TwigFunctionFactory::icon());
         $this->twig->addFunction(TwigFunctionFactory::render($server));
         $this->twig->addFunction(TwigFunctionFactory::dump());
+        $this->twig->addFunction(TwigFunctionFactory::uuid());
 
         $this->twig->addFilter(TwigFilterFactory::classname());
         $this->twig->addFilter(TwigFilterFactory::_($server));
+        $this->twig->addFilter(TwigFilterFactory::date2date());
+        $this->twig->addFilter(TwigFilterFactory::datetimeRelative());
+        $this->twig->addFilter(TwigFilterFactory::toUtf8());
+        $this->twig->addFilter(TwigFilterFactory::fromUtf8());
+        $this->twig->addFilter(TwigFilterFactory::format());
 
         return $this;
     }

@@ -29,7 +29,7 @@ final class CrudHelper
      * CrudHelper constructor.
      * Creates a new CRUD requester to manage PdoRows
      *
-     * @param string $className which implements PdoRowInterface and use PdoRowTrait trait.
+     * @param string       $className which implements PdoRowInterface and use PdoRowTrait trait.
      * @param PdoRequester $requester
      */
     public function __construct(
@@ -68,19 +68,20 @@ final class CrudHelper
 
     /**
      * @param PdoRowInterface $row
+     * @param array           $excludeColumns
      *
      * @return string the public_id
      *
      * @throws Exception
      */
-    public function createOne(PdoRowInterface $row): string
+    public function createOne(PdoRowInterface $row, array $excludeColumns = []): string
     {
         if (!empty($row->getFormerPrimary())) {
             throw new PdoRowException(
                 "PdoRow with primary string '{$row->getPrimaryString()}' cannot be inserted as it has been loaded from DB."
             );
         }
-        [$columns, $marks, $values] = self::compileRowValues($row);
+        [$columns, $marks, $values] = self::compileRowValues($row, $excludeColumns);
         $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $values);
 
         if ($row instanceof AbstractPdoRow) {
@@ -92,17 +93,28 @@ final class CrudHelper
 
     /**
      * @param PdoRowInterface $row
+     * @param array           $excludeColumns
      *
      * @return array
      *
      * @throws Exception
      */
-    private static function compileRowValues(PdoRowInterface $row): array
+    private static function compileRowValues(PdoRowInterface $row, array $excludeColumns = []): array
     {
         if ($row instanceof AbstractPdoRow) {
             $row->generatePublicId();
         }
         $pdoArray = $row->toPdoArray();
+
+        if (!empty($excludeColumns)) {
+            $pdo = [];
+            foreach ($pdoArray as $column => $value) {
+                if (!in_array($column, $excludeColumns)) {
+                    $pdo[$column] = $value;
+                }
+            }
+            $pdoArray = $pdo;
+        }
 
         $columns = implode(', ', array_keys($pdoArray));
         $values = implode(', ', array_fill(0, count($pdoArray), '?'));
@@ -112,12 +124,13 @@ final class CrudHelper
 
     /**
      * @param PdoRowInterface[] $rows
+     * @param array             $excludeColumns
      *
      * @return bool
      *
      * @throws Exception
      */
-    public function createMultiple(array $rows): bool
+    public function createMultiple(array $rows, array $excludeColumns = []): bool
     {
         $allValues = [];
         $sqlArray = [];
@@ -129,7 +142,7 @@ final class CrudHelper
                     "PdoRow with primary string '{$row->getPrimaryString()}' cannot be inserted as it has been loaded from DB."
                 );
             }
-            [$columns, $marks, $values] = self::compileRowValues($row);
+            [$columns, $marks, $values] = self::compileRowValues($row, $excludeColumns);
 
             $allValues = array_merge($allValues, $values);
             $sqlArray [] = "($marks)";

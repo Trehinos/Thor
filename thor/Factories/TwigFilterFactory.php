@@ -2,7 +2,9 @@
 
 namespace Thor\Factories;
 
+use DateTime;
 use Twig\TwigFilter;
+use Thor\Tools\DateTimeHelper;
 use Thor\Http\Server\WebServer;
 
 final class TwigFilterFactory
@@ -28,6 +30,50 @@ final class TwigFilterFactory
         return new TwigFilter(
             'classname',
             fn($value) => substr($value, strrpos($value, '\\') + 1)
+        );
+    }
+
+    public static function datetimeRelative(): TwigFilter
+    {
+        return new TwigFilter(
+            'datetimeRelative',
+            function (string $value) {
+                return DateTimeHelper::getRelativeInterval(DateTime::createFromFormat('YmdHis', $value));
+            }
+        );
+    }
+
+    public static function date2date(): TwigFilter
+    {
+        return new TwigFilter(
+            'date2date',
+            fn($valueA, $formatA, $formatB) => $valueA === null
+                ? null
+                : \DateTime::createFromFormat($formatA, $valueA)->format($formatB)
+        );
+    }
+
+    public static function toUtf8(): TwigFilter
+    {
+        return new TwigFilter(
+            'toUtf8',
+            fn($value) => utf8_encode($value)
+        );
+    }
+
+    public static function fromUtf8(): TwigFilter
+    {
+        return new TwigFilter(
+            'fromUtf8',
+            fn($value) => utf8_decode($value)
+        );
+    }
+
+    public static function format(): TwigFilter
+    {
+        return new TwigFilter(
+            'format',
+            fn($value, $format) => sprintf($format, $value)
         );
     }
 

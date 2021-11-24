@@ -44,8 +44,7 @@ final class TwigFunctionFactory
                 $cMethod = $route->getControllerMethod();
 
                 $controller = new $cClass($server);
-                return $controller->$cMethod(...$params)->getBody()
-                ;
+                return $controller->$cMethod(...$params)->getBody();
             },
             ['is_safe' => ['html']]
         );
@@ -61,4 +60,13 @@ final class TwigFunctionFactory
             ['is_safe' => ['html']]
         );
     }
+
+    public static function uuid(int $defaultSize = 8): TwigFunction
+    {
+        return new TwigFunction(
+            'uuid',
+            fn(?int $size = null) => bin2hex(random_bytes($size ?? $defaultSize))
+        );
+    }
+    
 }

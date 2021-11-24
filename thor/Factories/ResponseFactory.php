@@ -16,19 +16,6 @@ final class ResponseFactory extends Factory
     {
     }
 
-    public function produce(array $options = []): Response
-    {
-        return match ($this->status) {
-            HttpStatus::NOT_FOUND => self::notFound($options['message'] ?? ''),
-            HttpStatus::FOUND => self::createRedirection(
-                is_string($url = $options['uri'] ?? '/') ? Uri::create($url) : $url
-            ),
-            HttpStatus::OK => self::ok($options['body'] ?? ''),
-            default => Response::create('', $this->status, $this->headers)
-        };
-    }
-
-
     public static function json(
         mixed $data,
         HttpStatus $status = HttpStatus::OK,
@@ -43,9 +30,24 @@ final class ResponseFactory extends Factory
         );
     }
 
-    public static function createRedirection(UriInterface $uri): Response
+    /**
+     * @param array $options ['status' => HttpStatus, 'headers' => array] +
+     *                       ['body' => string] || 404:['message' => string] || 302:['uri' => UriInterface|string]
+     *
+     * @return Response
+     */
+    public function produce(array $options = []): Response
     {
-        return Response::create('', HttpStatus::FOUND, ['Location' => "$uri"]);
+        $status = $options['status'] ?? $this->status;
+        $headers = ($options['headers'] ?? []) + $this->headers;
+        return match ($status) {
+            HttpStatus::NOT_FOUND => self::notFound($options['message'] ?? ''),
+            HttpStatus::FOUND => self::createRedirection(
+                is_string($url = $options['uri'] ?? '/') ? Uri::create($url) : $url
+            ),
+            HttpStatus::OK => self::ok($options['body'] ?? ''),
+            default => Response::create($options['body'] ?? '', $status, $headers)
+        };
     }
 
     public static function notFound(string $message = ''): Response
@@ -53,9 +55,14 @@ final class ResponseFactory extends Factory
         return Response::create($message, HttpStatus::NOT_FOUND);
     }
 
+    public static function createRedirection(UriInterface $uri): Response
+    {
+        return Response::create('', HttpStatus::FOUND, ['Location' => "$uri"]);
+    }
+
     public static function ok(string $body = ''): Response
     {
-        return Response::create($body, HttpStatus::OK);
+        return Response::create($body);
     }
 
 }

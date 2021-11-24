@@ -47,13 +47,13 @@ final class Criteria
     }
 
     /**
-     * @param array $criteria
+     * @param array  $criteria
      *                      'fieldName' =>  ''  -> DIRECT VALUE
      *                      'fieldName' => []  -> IN
      *                      'and' => [[], []]
      *                      'or' => [[], []]
      *
-     * @param string  $glue
+     * @param string $glue
      *
      * @return array
      */
@@ -87,8 +87,8 @@ final class Criteria
         }
 
         return [
-            'sql'    => implode($glue, $sqlArray),
-            'params' => $params
+            'sql'    => implode(" $glue ", $sqlArray),
+            'params' => $params,
         ];
     }
 
@@ -150,7 +150,7 @@ final class Criteria
 
         return [
             'op'    => $op,
-            'value' => $value
+            'value' => $value,
         ];
     }
 
