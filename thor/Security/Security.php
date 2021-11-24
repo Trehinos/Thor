@@ -37,6 +37,7 @@ class Security
      * @param string      $identitySource
      * @param string      $identityType
      * @param string|null $pdoRowClass
+     * @param string|null $usernameField
      * @param string|null $fileName
      * @param array|null  $fileFields
      * @param string|null $fileSeparator
