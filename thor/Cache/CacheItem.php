@@ -6,6 +6,9 @@ use DateInterval;
 use DateTimeImmutable;
 use Thor\Structures\Item;
 
+/**
+ * @internal used and never exposed by Thor\Cache\Cache
+ */
 class CacheItem extends Item
 {
 

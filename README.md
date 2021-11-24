@@ -11,7 +11,15 @@ This project's goal is to provide a base project for **PHP developers** to devel
 ## Key features
 
 * Complete but lightweight framework :
-    * Smart databases utility classes :
+    * PSR inspired interfaces (compliant but with stronger type bindings) and implementation :
+        * ```PSR-3``` Logger
+        * ```PSR-4``` Auto-loading (with **composer**)
+        * ```PSR-7``` HTTP Message
+        * ```PSR-12``` Code Style
+        * ```PSR-15``` HTTP Handler
+        * ```PSR-16``` SimpleCache (*in memory* implementation)
+        * ```PSR-18``` HTTP Client
+    * Smart databases utility classes using **PDO** :
         * **PdoExtension** : Connection handler, requester, transaction.
         * **PdoTable** :
             * ```CrudHelper``` : performs CRUD operations on DB,
@@ -22,7 +30,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
     * **CLI commands** handling, console color/formatting utility.
     * Static **logger** and **configuration**.
     * **Twig** template system.
-    * **Multilingual** static and **dynamic** strings (```_``` global Twig variable and ```|DICT()``` filter).
+    * **Multilingual** static and **dynamic** strings (```|_()``` Twig filter and ```DICT``` global variable).
     * Extensible application with **kernels**.
 * Base **web application** to develop a corporate work :
   ![Thor web UI illustration](docs/images/ui.png)
@@ -82,9 +90,9 @@ This project's goal is to provide a base project for **PHP developers** to devel
 ### Database installation :
 
 4. **Initialize the database** :
-   * **Create the database** or retrieve DB infos,
-   * **edit** ```thor/app/res/config/database.yml```, then :
-   * **run** ```php thor/bin/thor.php core/setup``` in a terminal.
+    * **Create the database** or retrieve DB infos,
+    * **edit** ```thor/app/res/config/database.yml```, then :
+    * **run** ```php thor/bin/thor.php core/setup``` in a terminal.
 
 ### If you use Thor as a web application :
 
@@ -106,14 +114,13 @@ Link : [Documentation](docs/SUMMARY.md)
 
 * PHP 8.1
 * PSR compliance and implementation :
-  * ```PSR-3``` Logger
-  * ```PSR-4``` Auto-loading (with **composer**)
-  * ```PSR-7``` HTTP Message
-  * ```PSR-12``` Code Style
-  * ~```PSR-11``` Container (is a Composite)
-  * ```PSR-15``` HTTP Handler
-  * ```PSR-16``` SimpleCache (*in memory* implementation)
-  * ```PSR-18``` HTTP Client
+    * ```PSR-3``` Logger
+    * ```PSR-4``` Auto-loading (with **composer**)
+    * ```PSR-7``` HTTP Message
+    * ```PSR-12``` Code Style
+    * ```PSR-15``` HTTP Handler
+    * ```PSR-16``` SimpleCache (*in memory* implementation)
+    * ```PSR-18``` HTTP Client
 
 #### Framework
 
