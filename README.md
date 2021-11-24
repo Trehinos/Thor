@@ -64,12 +64,12 @@ This project's goal is to provide a base project for **PHP developers** to devel
 * Datatables/Editor 2.0.5
 * PhpOffice/PhpSpreadsheet 1.19
 
-### Client-side vendors (included)
+### Web vendors (not included)
 
 * [JQuery 3.5.1](https://code.jquery.com/jquery-3.5.1.min.js)
 * [Popper 1.16](https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js)
 * [Fontawesome 5.13.1](https://fontawesome.com/) PRO icons **licence required**
-* [Bootstrap 5.1](https://getbootstrap.com/docs/5.1/getting-started/introduction/) 5.1
+* [Bootstrap 5.1](https://getbootstrap.com/docs/5.1/getting-started/introduction/)
 
 ## Thor setup
 
