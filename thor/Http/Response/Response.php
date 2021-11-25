@@ -57,7 +57,7 @@ class Response extends Message implements ResponseInterface
 
     public function getReasonPhrase(): string
     {
-        return $this->status->name;
+        return $this->status->normalized();
     }
 
     public function getStatus(): HttpStatus

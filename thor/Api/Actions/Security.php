@@ -11,33 +11,25 @@
 namespace Thor\Api\Actions;
 
 use Thor\Debug\{Logger, LogLevel};
-use Thor\Http\{Controllers\WebController, Request\HttpMethod, Response\Response, Routing\Route};
+use Thor\Http\{Routing\Route, Request\HttpMethod, Controllers\WebController, Response\ResponseInterface};
 
 final class Security extends WebController
 {
 
     #[Route('login', '/login', HttpMethod::GET)]
-    public function login(): Response
+    public function login(): ResponseInterface
     {
-        return $this->twigResponse(
-            'login.html.twig',
-            []
-        );
+        return $this->twigResponse('login.html.twig');
     }
 
-    #[Route('check', '/security/login/action', HttpMethod::POST)]
-    public function check(): Response
+    #[Route('check', '/check', HttpMethod::POST)]
+    public function check(): ResponseInterface
     {
         $username = $this->post('username');
         $password = $this->post('password');
-        $token = false;
-
-        $user = $this->getServer()->getSecurity()->getUser($this->getServer()->getHandler(), $username);
-        if ($user) {
-            $token = $this->getServer()->getSecurity()->authenticate($user, $password);
-        }
-
-        if ($token) {
+        $user = $this->getServer()?->getSecurity()->getProvider()->getIdentity($username);
+        if ($user && $user->isPassword($password)) {
+            $this->getServer()->getSecurity()->getAuthenticator()->authenticate($user);
             Logger::write("User $username logged in.", LogLevel::DEBUG);
             return $this->redirect('index');
         }
@@ -46,9 +38,9 @@ final class Security extends WebController
     }
 
     #[Route('logout', '/logout', HttpMethod::GET)]
-    public function logout(): Response
+    public function logout(): ResponseInterface
     {
-        $this->getServer()->getSecurity()->deleteToken();
+        $this->getServer()->getSecurity()->getAuthenticator()->quash();
         return $this->redirect('index');
     }
 

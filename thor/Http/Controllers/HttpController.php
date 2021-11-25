@@ -14,6 +14,7 @@ use Thor\Http\Server\HttpServer;
 use Thor\Http\Response\Response;
 use Thor\Http\Request\HttpMethod;
 use Thor\Factories\ResponseFactory;
+use Thor\Http\Response\ResponseInterface;
 use Thor\Http\Request\UploadedFileInterface;
 use Thor\Http\Request\ServerRequestInterface;
 
@@ -84,9 +85,9 @@ abstract class HttpController
         return $this->files[$name] ?? null;
     }
 
-    public function redirect(string $routeName, array $params = [], array $query = []): Response
+    public function redirect(string $routeName, array $params = [], array $query = []): ResponseInterface
     {
-        return ResponseFactory::createRedirection($this->getServer()->generateUrl($routeName, $params, $query));
+        return $this->getServer()->redirect($routeName, $params, $query);
     }
 
     public function getServer(): HttpServer

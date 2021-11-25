@@ -4,6 +4,7 @@ namespace Thor\Security;
 
 use Thor\Http\Request\ServerRequestInterface;
 use Thor\Http\Response\ResponseInterface;
+use Thor\Security\Identity\IdentityInterface;
 use Thor\Security\Authentication\AuthenticatorInterface;
 use Thor\Security\Identity\ProviderInterface;
 
@@ -20,5 +21,7 @@ interface SecurityInterface
     public function getProvider(): ProviderInterface;
 
     public function protect(ServerRequestInterface $request): ?ResponseInterface;
+
+    public function getCurrentIdentity(): ?IdentityInterface;
 
 }

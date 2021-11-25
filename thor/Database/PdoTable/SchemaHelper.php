@@ -1,17 +1,15 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Database/PdoTable
+ * @package          Trehinos/Thor/Database/PdoTable
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Database\PdoTable;
 
-use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
-use Thor\Database\PdoTable\Attributes\PdoColumn;
-use Thor\Database\PdoTable\Attributes\PdoIndex;
 use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoTable\{Attributes\PdoIndex, Attributes\PdoColumn, Attributes\PdoAttributesReader};
 
 final class SchemaHelper
 {
@@ -33,7 +31,7 @@ final class SchemaHelper
             $separator,
             array_map(
                 fn(PdoColumn $column) => $column->getSql() .
-                    (($column->getName() === $autoKey) ? ' AUTO_INCREMENT' : ''),
+                                         (($column->getName() === $autoKey) ? ' AUTO_INCREMENT' : ''),
                 $this->reader->getAttributes()['columns']
             )
         );

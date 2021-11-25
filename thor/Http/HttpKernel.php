@@ -10,14 +10,10 @@ namespace Thor\Http;
 
 use Thor\Env;
 use Thor\Thor;
-use Thor\Debug\Logger;
-use Thor\Debug\LogLevel;
 use Thor\KernelInterface;
-use Thor\Http\Server\HttpServer;
-use Thor\Factories\HttpServerFactory;
-use Thor\Factories\ServerRequestFactory;
-use Thor\Http\Response\ResponseInterface;
-use Thor\Http\Request\ServerRequestInterface;
+use Thor\Debug\{Logger, LogLevel};
+use Thor\Factories\{HttpServerFactory, ServerRequestFactory};
+use Thor\Http\{Server\HttpServer, Response\ResponseInterface, Request\ServerRequestInterface};
 
 class HttpKernel implements KernelInterface
 {
@@ -49,11 +45,6 @@ class HttpKernel implements KernelInterface
     public static function createFromConfiguration(array $config = []): static
     {
         return new self(HttpServerFactory::createHttpServerFromConfiguration($config));
-    }
-
-    public function handle(ServerRequestInterface $serverRequest): ResponseInterface
-    {
-        return $this->server->handle($serverRequest);
     }
 
     final public function execute(): void
@@ -89,6 +80,11 @@ class HttpKernel implements KernelInterface
             Logger::write("Send body");
             echo $body;                                                         // Print body
         }
+    }
+
+    public function handle(ServerRequestInterface $serverRequest): ResponseInterface
+    {
+        return $this->server->handle($serverRequest);
     }
 
 }

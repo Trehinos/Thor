@@ -28,11 +28,13 @@ final class Session
 
     public static function write(string $name, mixed $value): void
     {
+        self::start();
         $_SESSION[$name] = $value;
     }
 
     public static function read(string $name, mixed $default = null): mixed
     {
+        self::start();
         return $_SESSION[$name] ?? $default;
     }
 

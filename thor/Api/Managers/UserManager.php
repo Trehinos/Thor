@@ -49,9 +49,10 @@ final class UserManager
      */
     public function createUser(string $username, string $clearPassword): string
     {
-        $public_id = $this->userCrud->createOne(
-            new DbUser($username, $clearPassword)
-        );
+        $user = new DbUser($username, $clearPassword);
+        $user->generatePublicId();
+        $public_id = $user->getPublicId();
+        $this->userCrud->createOne($user);
         Logger::write("User $public_id created.", LogLevel::NOTICE);
 
         return $public_id;

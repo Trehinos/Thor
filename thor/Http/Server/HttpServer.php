@@ -2,21 +2,19 @@
 
 namespace Thor\Http\Server;
 
-use Thor\Http\Uri;
-use Thor\Debug\Logger;
-use Thor\Debug\LogLevel;
-use Thor\Security\Security;
-use Thor\Http\UriInterface;
-use Thor\Http\Routing\Route;
-use Thor\Http\Routing\Router;
-use Thor\Http\Response\Response;
-use Thor\Http\Response\HttpStatus;
+use Thor\Debug\{Logger, LogLevel};
 use Thor\Factories\ResponseFactory;
-use Thor\Http\Response\ResponseInterface;
-use Thor\Database\PdoExtension\PdoHandler;
-use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Http\Request\ServerRequestInterface;
-use Thor\Database\PdoExtension\PdoCollection;
+use Thor\Security\SecurityInterface;
+use Thor\Database\PdoExtension\{PdoHandler, PdoRequester, PdoCollection};
+use Thor\Http\{Uri,
+    UriInterface,
+    Routing\Route,
+    Routing\Router,
+    Response\Response,
+    Response\HttpStatus,
+    Response\ResponseInterface,
+    Request\ServerRequestInterface
+};
 
 class HttpServer implements RequestHandlerInterface
 {
@@ -25,7 +23,7 @@ class HttpServer implements RequestHandlerInterface
 
     public function __construct(
         private Router $router,
-        private ?Security $security,
+        private ?SecurityInterface $security,
         private PdoCollection $pdoCollection,
         private array $language
     ) {
@@ -34,17 +32,6 @@ class HttpServer implements RequestHandlerInterface
     public function getRequest(): ?ServerRequestInterface
     {
         return $this->request;
-    }
-
-    protected function route(ServerRequestInterface $request): Route|false|null
-    {
-        $ip = $request->getServerParams()['REMOTE_ADDR'] ?? 'localhost';
-        Logger::write("Routing request [{method} '{path}'] from $ip", context: [
-            'method' => $request->getMethod()->value,
-            'path'   => substr($request->getUri()->getPath(), strlen('/api.php')),
-        ]);
-
-        return $this->router->match($request, 'api.php');
     }
 
     final public function handle(ServerRequestInterface $request): ResponseInterface
@@ -74,6 +61,17 @@ class HttpServer implements RequestHandlerInterface
         return $controllerHandler->handle($request);
     }
 
+    protected function route(ServerRequestInterface $request): Route|false|null
+    {
+        $ip = $request->getServerParams()['REMOTE_ADDR'] ?? 'localhost';
+        Logger::write("Routing request [{method} '{path}'] from $ip", context: [
+            'method' => $request->getMethod()->value,
+            'path'   => substr($request->getUri()->getPath(), strlen('/api.php')),
+        ]);
+
+        return $this->router->match($request, 'api.php');
+    }
+
     public function getRouter(): Router
     {
         return $this->router;
@@ -89,7 +87,7 @@ class HttpServer implements RequestHandlerInterface
         return $this->pdoCollection->get($name);
     }
 
-    public function getSecurity(): ?Security
+    public function getSecurity(): ?SecurityInterface
     {
         return $this->security;
     }

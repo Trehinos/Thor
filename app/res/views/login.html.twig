@@ -27,19 +27,19 @@
     <div style="width: 400px; margin: auto; text-align: center">
         <h1 class="mb-4">
             <i class="fas fa-lg fa-sign-in"></i><br>
-            {{ "users.login.connect"|DICT(appName) }}
+            {{ "users.login.connect"|_(appName) }}
         </h1>
         <form method="post" action="{{ url('check') }}">
             <div class="form-group">
-                <label for="username">{{ _.users.user }}</label>
+                <label for="username">{{ DICT.users.user }}</label>
                 <input type="text" id="username" name="username" class="form-control">
             </div>
             <div class="form-group">
-                <label for="password">{{ _.users.password }}</label>
+                <label for="password">{{ DICT.users.password }}</label>
                 <input type="password" id="password" name="password" class="form-control">
             </div>
             <button class="btn btn-outline-primary">
-                <i class="fas fa-sign-in"></i> {{ _.users.connect }}
+                <i class="fas fa-sign-in"></i> {{ DICT.users.connect }}
             </button>
         </form>
     </div>

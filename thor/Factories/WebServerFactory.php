@@ -27,7 +27,7 @@ final class WebServerFactory
 
     public static function produce(
         Router $router,
-        SecurityInterface $security,
+        ?SecurityInterface $security,
         PdoCollection $pdoCollection,
         array $language,
         array $twig_config = []

@@ -2,35 +2,37 @@
 
 namespace Thor\Factories;
 
-use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Http\Routing\Router;
-use Thor\Security\Firewall;
-use Thor\Security\HttpSecurity;
-use Thor\Security\SecurityInterface;
+use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Security\{Firewall, HttpSecurity, SecurityInterface};
 
 final class SecurityFactory
 {
 
-    public static function produceSecurity(Router $router, PdoRequester $requester, array $config): SecurityInterface
+    public static function produceSecurity(Router $router, PdoRequester $requester, array $config): ?SecurityInterface
     {
+        if (!($config['security'] ?? null)) {
+            return null;
+        }
         $firewalls = [];
         foreach ($config['firewall'] ?? [] as $firewallConfig) {
-            $firewalls[] = self::produceFirewall($firewallConfig);
+            $firewalls[] = self::produceFirewall($router, $firewallConfig);
         }
 
-        return new HttpSecurity($router, $requester, $firewalls);
+        return new HttpSecurity($requester, $firewalls);
     }
 
-    public static function produceFirewall(array $firewallConfig): Firewall
+    public static function produceFirewall(Router $router, array $firewallConfig): Firewall
     {
         return new Firewall(
-            pattern: $firewallConfig['pattern'] ?? '/',
-            redirect: $firewallConfig['redirect'] ?? 'login',
-            loginRoute: $firewallConfig['login-route'] ?? 'login',
-            logoutRoute: $firewallConfig['logout-route'] ?? 'logout',
-            checkRoute: $firewallConfig['check-route'] ?? 'check',
+                            $router,
+            pattern:        $firewallConfig['pattern'] ?? '/',
+            redirect:       $firewallConfig['redirect'] ?? 'login',
+            loginRoute:     $firewallConfig['login-route'] ?? 'login',
+            logoutRoute:    $firewallConfig['logout-route'] ?? 'logout',
+            checkRoute:     $firewallConfig['check-route'] ?? 'check',
             excludedRoutes: $firewallConfig['exclude-route'] ?? [],
-            excludedPaths: $firewallConfig['exclude'] ?? [],
+            excludedPaths:  $firewallConfig['exclude'] ?? [],
         );
     }
 

@@ -10,10 +10,8 @@ namespace Thor\Http;
 
 use Thor\Thor;
 use Thor\Debug\Logger;
-use Thor\Http\Server\WebServer;
 use Thor\Factories\WebServerFactory;
-use Thor\Http\Response\ResponseInterface;
-use Thor\Http\Request\ServerRequestInterface;
+use Thor\Http\{Server\WebServer, Response\ResponseInterface, Request\ServerRequestInterface};
 
 class WebKernel extends HttpKernel
 {

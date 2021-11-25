@@ -3,7 +3,11 @@
 namespace Thor\Database\PdoTable;
 
 use Exception;
+use Thor\Database\PdoTable\Attributes\PdoIndex;
+use Thor\Database\PdoTable\Attributes\PdoColumn;
 
+#[PdoColumn('public_id', 'VARCHAR(255)', 'string', false)]
+#[PdoIndex(['public_id'], true)]
 trait HasPublicId
 {
 
@@ -23,11 +27,11 @@ trait HasPublicId
     public function generatePublicId(): void
     {
         $this->public_id = bin2hex(random_bytes(2)) .
-            '-' . bin2hex(random_bytes(2)) .
-            '-' . bin2hex(random_bytes(2)) .
-            '-' . bin2hex(random_bytes(2)) .
-            '-' . bin2hex(random_bytes(4)) .
-            '-' . bin2hex(random_bytes(4));
+                           '-' . bin2hex(random_bytes(2)) .
+                           '-' . bin2hex(random_bytes(2)) .
+                           '-' . bin2hex(random_bytes(2)) .
+                           '-' . bin2hex(random_bytes(4)) .
+                           '-' . bin2hex(random_bytes(4));
     }
 
 }

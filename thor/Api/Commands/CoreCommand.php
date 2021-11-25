@@ -16,18 +16,18 @@
 
 namespace Thor\Api\Commands;
 
-use Symfony\Component\Yaml\Yaml;
 use Thor\Api\{Managers\UserManager};
-use Thor\Cli\{CliKernel, Command, Console, Daemon, DaemonState};
-use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
-use Thor\Database\PdoTable\{Attributes\PdoAttributesReader, CrudHelper, SchemaHelper};
-use Thor\Debug\{Logger, LogLevel};
-use Thor\Factories\RouterFactory;
-use Thor\FileSystem\Folder;
-use Thor\Globals;
-use Thor\Http\Routing\Route;
-use Thor\Security\Identity\DbUser;
 use Thor\Thor;
+use Thor\Globals;
+use Thor\FileSystem\Folder;
+use Thor\Http\Routing\Route;
+use Symfony\Component\Yaml\Yaml;
+use Thor\Factories\RouterFactory;
+use Thor\Debug\{Logger, LogLevel};
+use Thor\Security\Identity\DbUser;
+use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
+use Thor\Cli\{Daemon, Console, Command, CliKernel, DaemonState};
+use Thor\Database\PdoTable\{CrudHelper, SchemaHelper, Attributes\PdoAttributesReader};
 
 final class CoreCommand extends Command
 {
@@ -37,7 +37,7 @@ final class CoreCommand extends Command
     public function __construct(string $command, array $args, CliKernel $kernel)
     {
         parent::__construct($command, $args, $kernel);
-        $this->routes = RouterFactory::createRoutesFromConfiguration(Thor::config('routes', true));
+        $this->routes = RouterFactory::createRoutesFromConfiguration(Thor::config('web-routes', true));
     }
 
     public function routeSet()
@@ -65,7 +65,8 @@ final class CoreCommand extends Command
         $this->console
             ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
             ->writeln("Done.")
-            ->mode();
+            ->mode()
+        ;
     }
 
     public function setup()
@@ -90,7 +91,8 @@ final class CoreCommand extends Command
             $this->console
                 ->fColor(Console::COLOR_YELLOW, Console::MODE_BRIGHT)
                 ->write("$routeName : ")
-                ->mode();
+                ->mode()
+            ;
 
             $c = $route->getControllerClass();
             $m = $route->getControllerMethod();
@@ -101,7 +103,8 @@ final class CoreCommand extends Command
                 ->write('::')
                 ->fColor(Console::COLOR_BLUE, Console::MODE_RESET)
                 ->write($m . '()')
-                ->mode();
+                ->mode()
+            ;
 
             $path = $route->getPath();
             if (null !== $path) {
@@ -120,7 +123,8 @@ final class CoreCommand extends Command
                     ->write(' ' . $path ?? '')
                     ->fColor(Console::COLOR_GRAY, Console::MODE_DIM)
                     ->write(']')
-                    ->mode();
+                    ->mode()
+                ;
             }
             $this->console->writeln();
         }
@@ -130,7 +134,8 @@ final class CoreCommand extends Command
     {
         $this->console->fColor(Console::COLOR_CYAN)
                       ->writeln('Clearing the cache...')
-                      ->mode();
+                      ->mode()
+        ;
         $deleted = Folder::removeTree(Globals::VAR_DIR . 'cache', removeFirst: false);
         foreach ($deleted as $file) {
             $this->console->writeln(" - $file deleted.");
@@ -144,7 +149,8 @@ final class CoreCommand extends Command
 
         $this->console->fColor(Console::COLOR_CYAN)
                       ->writeln("Clearing the $env logs...")
-                      ->mode();
+                      ->mode()
+        ;
         $deleted = Folder::removeTree(Globals::VAR_DIR . 'logs', "{$env}_.*[.]log", false, false);
         foreach ($deleted as $file) {
             $this->console->writeln(" - $file deleted.");

@@ -43,9 +43,12 @@ function AJAX(method, url, data, success, fail) {
     });
 }
 
-function $load(selector, url, data) {
+function $load(selector, url, data, after) {
     AJAX('GET', url, data, (responseText) => {
         $(selector).innerHTML = responseText;
+        if (after) {
+            after(responseText);
+        }
     });
 }
 

@@ -2,20 +2,13 @@
 
 namespace Thor\Security;
 
-use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\CrudHelper;
-use Thor\Http\Request\ServerRequestInterface;
-use Thor\Http\Response\ResponseInterface;
-use Thor\Http\Routing\Router;
-use Thor\Security\Authentication\SessionAuthenticator;
-use Thor\Security\Identity\DbUser;
-use Thor\Security\Identity\DbUserProvider;
+use Thor\Database\{PdoTable\CrudHelper, PdoExtension\PdoRequester};
+use Thor\Http\{Response\ResponseInterface, Request\ServerRequestInterface};
+use Thor\Security\{Identity\DbUser, Identity\DbUserProvider, Authentication\SessionAuthenticator};
 
 class HttpSecurity extends Security
 {
-
     public function __construct(
-        private Router $router,
         PdoRequester $requester,
         array $firewalls = []
     ) {
@@ -30,12 +23,10 @@ class HttpSecurity extends Security
     {
         foreach ($this->getFirewalls() as $firewall) {
             $firewall->isAuthenticated = $this->getAuthenticator()->isAuthenticated();
-            if ($firewall->redirect($request, $this->router)) {
-                $request->getAttribute("firewall{$firewall->pattern}", 'FIREWALLED');
+            if ($firewall->redirect($request)) {
                 return $firewall->handle($request);
             }
         }
-
         return null;
     }
 }

@@ -9,6 +9,8 @@ interface AuthenticatorInterface
 
     public function authenticate(IdentityInterface $identity): void;
 
+    public function current(): ?string;
+
     public function quash(): void;
 
     public function isAuthenticated(): bool;

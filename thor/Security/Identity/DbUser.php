@@ -10,17 +10,20 @@
 
 namespace Thor\Security\Identity;
 
-use Thor\Database\PdoTable\Attributes\{PdoColumn, PdoIndex, PdoRow};
-use Thor\Database\PdoTable\HasPublicId;
-use Thor\Database\PdoTable\PdoRowInterface;
-use Thor\Database\PdoTable\PdoRowTrait;
 use Thor\Security\{PasswordHasher};
+use Thor\Database\PdoTable\{PdoRowTrait,
+    HasPublicId,
+    PdoRowInterface,
+    Attributes\PdoRow,
+    Attributes\PdoIndex,
+    Attributes\PdoColumn
+};
 
 #[PdoRow('user', ['id'], 'id')]
 #[PdoColumn('id', 'INTEGER', 'integer', false)]
 #[PdoColumn('username', 'VARCHAR(255)', 'string', false)]
+#[PdoColumn('hash', 'VARCHAR(255)', 'string', false)]
 #[PdoIndex(['username'], true)]
-#[PdoColumn('password', 'VARCHAR(255)', 'string', false)]
 class DbUser extends BaseUser implements PdoRowInterface
 {
 

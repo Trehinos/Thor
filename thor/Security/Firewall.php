@@ -3,6 +3,7 @@
 namespace Thor\Security;
 
 use JetBrains\PhpStorm\Immutable;
+use Thor\Factories\ResponseFactory;
 use Thor\Http\Request\ServerRequestInterface;
 use Thor\Http\Response\{Response, ResponseInterface};
 use Thor\Http\Routing\Router;
@@ -14,6 +15,7 @@ class Firewall implements RequestHandlerInterface
     public bool $isAuthenticated = false;
 
     public function __construct(
+        private Router $router,
         #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
         public string $pattern = '/',
         #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
@@ -31,13 +33,13 @@ class Firewall implements RequestHandlerInterface
     ) {
     }
 
-    public function redirect(ServerRequestInterface $request, Router $router): bool
+    public function redirect(ServerRequestInterface $request): bool
     {
         if (!str_starts_with($request->getUri()->getPath(), $this->pattern)) {
             return false;
         }
 
-        if ($this->pathIsExcluded($request) || $this->routeIsExcluded($router)) {
+        if ($this->pathIsExcluded($request) || $this->routeIsExcluded()) {
             return false;
         }
 
@@ -55,10 +57,10 @@ class Firewall implements RequestHandlerInterface
         );
     }
 
-    public function routeIsExcluded(Router $router): bool
+    public function routeIsExcluded(): bool
     {
-        return !in_array(
-            $router->getMatchedRouteName(),
+        return in_array(
+            $this->router->getMatchedRouteName(),
             [
                 $this->loginRoute,
                 $this->logoutRoute,
@@ -70,6 +72,6 @@ class Firewall implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return Response::create($this->redirect);
+        return ResponseFactory::createRedirection($this->router->getUrl($this->redirect));
     }
 }

@@ -3,6 +3,7 @@
 namespace Thor\Security\Authentication;
 
 use Thor\Http\Session;
+use Thor\Security\Identity\BaseUser;
 use Thor\Security\Identity\IdentityInterface;
 
 class SessionAuthenticator implements AuthenticatorInterface
@@ -25,5 +26,10 @@ class SessionAuthenticator implements AuthenticatorInterface
     public function isAuthenticated(): bool
     {
         return Session::read($this->key) !== null;
+    }
+
+    public function current(): ?string
+    {
+        return Session::read($this->key);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Thor\Security;
 
+use Thor\Security\Identity\IdentityInterface;
 use Thor\Security\Authentication\AuthenticatorInterface;
 use Thor\Security\Identity\ProviderInterface;
 
@@ -35,6 +36,11 @@ abstract class Security implements SecurityInterface
     public function getProvider(): ProviderInterface
     {
         return $this->provider;
+    }
+
+    public function getCurrentIdentity(): ?IdentityInterface
+    {
+        return $this->getProvider()->getIdentity($this->getAuthenticator()->current());
     }
 
 }

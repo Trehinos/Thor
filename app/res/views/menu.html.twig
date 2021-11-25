@@ -28,7 +28,6 @@
     {% endfor %}
 </ul>
 <script>
-
     function unselect($elem) {
         $elem.classList.remove("selected")
     }
@@ -37,9 +36,8 @@
         let url = $elem.dataset.url;
         $$each("#menu ul li button", unselect);
         loadPage(url, null, (response) => {
-            $$each("#menu ul li button", unselect);
             $elem.classList.add("selected");
-            window.history.pushState({"html": response}, null, "?menuItem=" + $elem.data("item"));
+            window.history.pushState({"html": response}, null, "?menuItem=" + $elem.dataset.item);
         });
     }
 </script>

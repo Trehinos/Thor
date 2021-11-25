@@ -26,7 +26,7 @@ final class HttpServerFactory
 
     public static function produce(
         Router $router,
-        SecurityInterface $security,
+        ?SecurityInterface $security,
         PdoCollection $pdoCollection,
         array $language
     ): HttpServer {
