@@ -4,21 +4,21 @@
         <li class="d-flex mb-1">
             <button
                     id="btn-{{ item.route }}"
-                    onclick="menuClick($(this));"
+                    onclick="menuClick(this);"
                     data-url="{% if item.route != '.' %}{{ url(item.route) }}{% else %}#{% endif %}"
                     data-item="{{ item.route }}"
-               class="flex-fill {% if server.currentRouteName == item.route %}selected{% endif %}"
+                    class="flex-fill {% if server.currentRouteName == item.route %}selected{% endif %}"
             >
                 {{ icon(item.icon, 'mr-2 fa-lg ' ~ (item.icon_col ?? 'fas'), true) }}
-                {{ _.menu[item.label] ?? item.label ?? '' }}
+                {{ DICT.menu[item.label] ?? item.label ?? '' }}
             </button>
             {% if is_group %}
                 {% for sub_item in item.group %}
                     <button
-                            onclick="menuClick($(this));"
+                            onclick="menuClick(this);"
                             data-url="{% if sub_item.route != '.' %}{{ url(sub_item.route) }}{% else %}#{% endif %}"
-                       title="{{ _.menu[sub_item.label] ?? sub_item.label ?? '' }}"
-                       {% if server.currentRouteName == sub_item.route %}class="selected"{% endif %}
+                            title="{{ DICT.menu[sub_item.label] ?? sub_item.label ?? '' }}"
+                            {% if server.currentRouteName == sub_item.route %}class="selected"{% endif %}
                     >
                         {{ icon(sub_item.icon, 'fa-lg ' ~ (sub_item.icon_col ?? 'fas'), true) }}
                     </button>
@@ -28,13 +28,18 @@
     {% endfor %}
 </ul>
 <script>
+
+    function unselect($elem) {
+        $elem.classList.remove("selected")
+    }
+
     function menuClick($elem) {
-        let url = $elem.data("url");
-        $("#menu ul li button").removeClass("selected");
+        let url = $elem.dataset.url;
+        $$each("#menu ul li button", unselect);
         loadPage(url, null, (response) => {
-            $("#menu ul li button").removeClass("selected");
-            $elem.addClass("selected");
-            window.history.pushState({"html":response}, null, "?menuItem=" + $elem.data("item"));
+            $$each("#menu ul li button", unselect);
+            $elem.classList.add("selected");
+            window.history.pushState({"html": response}, null, "?menuItem=" + $elem.data("item"));
         });
     }
 </script>

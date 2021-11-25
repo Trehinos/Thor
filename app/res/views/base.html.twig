@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <title>{% block head_title %}App{% endblock %}</title>
     <link rel="icon" href="/assets/thor/thor-favicon-v2.png">
-    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/vendors/bootstrap.min.css">
     {% block head_css %}{% endblock %}
     {% block head_js %}{% endblock %}
 </head>
@@ -14,10 +14,8 @@
         <p>{% block body_text %}{% endblock %}</p>
     </div>
 {% endblock %}
-<script src="/assets/jquery-3.5.1.js"></script>
-<script src="/assets/popper-1.16.0.js"></script>
-<script defer src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script defer src="/assets/fontawesome/js/all.min.js"></script>
+<script defer src="/vendors/bootstrap.bundle.min.js"></script>
+<script defer src="/vendors/fontawesome.min.js"></script>
 {% block body_js %}{% endblock %}
 </body>
 </html>

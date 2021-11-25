@@ -1,7 +1,7 @@
 {
   "name": "trehinos/thor",
-  "version": "0.9",
-  "description": "PSR-compliant framework for PHP-8.1",
+  "version": "0.9.1",
+  "description": "Smart framework for PHP-8.1",
   "license": "Proprietary : (c) 2021 Sébastien GELDREICH",
   "minimum-stability": "stable",
   "authors": [

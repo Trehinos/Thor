@@ -16,25 +16,25 @@ final class WebServerFactory
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
         return self::produce(
             $router =
-                (new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['api-routes'])))
+                (new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['web-routes'])))
                     ->produce(),
             SecurityFactory::produceSecurity($router, new PdoRequester($pdoCollection->get()), $config['security']),
             $pdoCollection,
-            $config['language']
+            $config['language'],
+            $config['twig']
         );
     }
-
 
     public static function produce(
         Router $router,
         SecurityInterface $security,
         PdoCollection $pdoCollection,
         array $language,
-        array $options = []
+        array $twig_config = []
     ): WebServer {
         $webServer = new WebServer($router, $security, $pdoCollection, $language);
-        $twig = TwigFactory::createTwigFromConfiguration($webServer, $options);
+        $twig = TwigFactory::createTwigFromConfiguration($webServer, $twig_config);
         $webServer->twig = $twig;
-        return new WebServer($router, $security, $pdoCollection, $language, $twig);
+        return $webServer;
     }
 }

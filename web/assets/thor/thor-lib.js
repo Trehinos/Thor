@@ -1,5 +1,55 @@
-const ModalSelector = "#modal";
+function $(selector) {
+    return document.querySelector(selector);
+}
 
+function $$(selector) {
+    return document.querySelectorAll(selector);
+}
+
+function $$each(selector, func) {
+    $$(selector).forEach(func);
+}
+
+function EVENT(element, event, func) {
+    element.addEventListener(event, func);
+}
+
+function AJAX(method, url, data, success, fail) {
+    let urlObject = new URL(url);
+    let body = null;
+    if (method === 'GET') {
+        for (let param in data) {
+            urlObject.searchParams.append(param, data[param]);
+        }
+    } else {
+        body = JSON.stringify(data);
+    }
+    fetch(urlObject.toString(), {method: method, body: body}).then((response) => {
+        if (response.ok) {
+            response.blob().then((blob) => {
+                if (success) {
+                    blob.text().then((text) => {
+                        success(text);
+                    });
+                }
+            });
+        }
+    }).catch((error) => {
+        if (fail) {
+            fail(error);
+        } else {
+            console.error("AJAX Error : " + error.message);
+        }
+    });
+}
+
+function $load(selector, url, data) {
+    AJAX('GET', url, data, (responseText) => {
+        $(selector).innerHTML = responseText;
+    });
+}
+
+const ModalSelector = "#modal";
 const Modal = {
     $elem: $(ModalSelector),
     title: (t) => {
@@ -38,8 +88,19 @@ const Modal = {
     }
 };
 
+// TODO rewrite
 const confirmPost = (url, params, message, after) => {
     if (confirm(message)) {
         $.post(url, params, after);
     }
 };
+
+function loadPage(url, params, callback) {
+    let $page = $("#content");
+    $page.innerHTML = "<div id='page'><div style='padding-top: 48px; text-align: center;'><i class='fas fa-4x fa-spin fa-spinner'></i></div></div>";
+    $load("#content", url, params, (response) => {
+        if (callback) {
+            callback(response);
+        }
+    });
+}

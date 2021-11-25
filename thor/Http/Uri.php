@@ -56,7 +56,7 @@ class Uri implements UriInterface
 
     private static function extractHostAndPortFromAuthority(string $authority): array
     {
-        $uri = self::SCHEME_HTTP . $authority;
+        $uri = self::SCHEME_HTTP . "://$authority";
         $parts = parse_url($uri);
         if (false === $parts) {
             return [null, null];
