@@ -12,10 +12,10 @@
  * @license          MIT
  */
 
-namespace Thor\Api\Commands;
+namespace Thor\Framework\Commands;
 
 use Exception;
-use Thor\Api\{Managers\UserManager};
+use Thor\Framework\{Managers\UserManager};
 use Thor\Cli\{CliKernel, Command, Console};
 use Thor\Database\{PdoExtension\PdoRequester, PdoTable\Criteria, PdoTable\CrudHelper};
 use Thor\Security\Identity\DbUser;

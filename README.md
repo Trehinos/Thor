@@ -124,13 +124,13 @@ Link : [Documentation](https://github.com/Trehinos/thor/wiki)
 
 #### Framework
 
-* **Http module** refactor
-* **Security module** refactor
-* **Debug module** refactor
+*  Rewritten modules : **Http module**, **Security module**, **Debug module** 
+*  A lot of new factories
 
 #### Web
 
 * Updated **vendors**
+* Added ```api.php``` entry point
 
 ### ```0.4``` DELTA
 
@@ -196,4 +196,4 @@ Link : [Documentation](https://github.com/Trehinos/thor/wiki)
 ## License
 
 License : [MIT](LICENSE)  
-&copy; 2021 Sébastien Geldreich
+&copy; 2020-2021 Sébastien Geldreich

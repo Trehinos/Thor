@@ -14,9 +14,9 @@
  * @license          MIT
  */
 
-namespace Thor\Api\Commands;
+namespace Thor\Framework\Commands;
 
-use Thor\Api\{Managers\UserManager};
+use Thor\Framework\{Managers\UserManager};
 use Thor\Thor;
 use Thor\Globals;
 use Thor\FileSystem\Folder;

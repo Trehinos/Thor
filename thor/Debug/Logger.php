@@ -62,12 +62,15 @@ final class Logger implements LoggerInterface
         array $context = [],
         bool $print = false
     ): void {
-        self::getDefaultLogger()->log($level, $message, $context);
+        self::get()->log($level, $message, $context);
         if ($print) {
             echo self::interpolate($message, $context) . "\n";
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function log(LogLevel $level, string $message, array $context = []): void
     {
         if ($level->value >= $this->logLevel->value) {
@@ -82,9 +85,20 @@ final class Logger implements LoggerInterface
                 $this->filename = "{$this->basePath}{$thorEnv}_{$nowFileName}.log";
             }
 
-            Folder::createIfNotExists(dirname($this->filename));
-            file_put_contents($this->filename, "$message\n", FILE_APPEND);
+            try {
+                Folder::createIfNotExists(dirname($this->filename));
+                file_put_contents($this->filename, "$message\n", FILE_APPEND);
+            } catch (Throwable $t) {
+            }
         }
+    }
+
+    public static function get(
+        LogLevel $level = LogLevel::INFO,
+        string $basePath = __DIR__ . '/../',
+        string $dateFormat = 'Y-m-d H:i:s.v'
+    ): self {
+        return self::$logger ??= new self($level, $basePath, $dateFormat);
     }
 
     public static function interpolate(string $message, array $context = []): string
@@ -98,12 +112,68 @@ final class Logger implements LoggerInterface
         return strtr($message, $replace);
     }
 
-    public static function getDefaultLogger(
-        LogLevel $level = LogLevel::INFO,
-        string $basePath = __DIR__ . '/../',
-        string $dateFormat = 'Y-m-d H:i:s.v'
-    ): self {
-        return self::$logger ??= new self($level, $basePath, $dateFormat);
+    /**
+     * @inheritDoc
+     */
+    public function emergency(string $message, array $context = []): void
+    {
+        $this->log(LogLevel::EMERGENCY, $message, $context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function alert(string $message, array $context = []): void
+    {
+        $this->log(LogLevel::ALERT, $message, $context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function critical(string $message, array $context = []): void
+    {
+        $this->log(LogLevel::CRITICAL, $message, $context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function error(string $message, array $context = []): void
+    {
+        $this->log(LogLevel::ERROR, $message, $context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function warning(string $message, array $context = []): void
+    {
+        $this->log(LogLevel::WARNING, $message, $context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function notice(string $message, array $context = []): void
+    {
+        $this->log(LogLevel::NOTICE, $message, $context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function info(string $message, array $context = []): void
+    {
+        $this->log(LogLevel::INFO, $message, $context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function debug(string $message, array $context = []): void
+    {
+        $this->log(LogLevel::DEBUG, $message, $context);
     }
 
     /**
@@ -112,46 +182,6 @@ final class Logger implements LoggerInterface
     public static function writeData(string $dataName, array $data, LogLevel $level = LogLevel::INFO): void
     {
         $message = "DATA:$dataName= " . json_encode($data, JSON_THROW_ON_ERROR);
-        self::getDefaultLogger()->log($level, $message);
-    }
-
-    public function emergency(string $message, array $context = []): void
-    {
-        $this->log(LogLevel::EMERGENCY, $message, $context);
-    }
-
-    public function alert(string $message, array $context = []): void
-    {
-        $this->log(LogLevel::ALERT, $message, $context);
-    }
-
-    public function critical(string $message, array $context = []): void
-    {
-        $this->log(LogLevel::CRITICAL, $message, $context);
-    }
-
-    public function error(string $message, array $context = []): void
-    {
-        $this->log(LogLevel::ERROR, $message, $context);
-    }
-
-    public function warning(string $message, array $context = []): void
-    {
-        $this->log(LogLevel::WARNING, $message, $context);
-    }
-
-    public function notice(string $message, array $context = []): void
-    {
-        $this->log(LogLevel::NOTICE, $message, $context);
-    }
-
-    public function info(string $message, array $context = []): void
-    {
-        $this->log(LogLevel::INFO, $message, $context);
-    }
-
-    public function debug(string $message, array $context = []): void
-    {
-        $this->log(LogLevel::DEBUG, $message, $context);
+        self::get()->log($level, $message);
     }
 }

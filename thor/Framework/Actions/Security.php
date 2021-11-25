@@ -8,7 +8,7 @@
  * @license          MIT
  */
 
-namespace Thor\Api\Actions;
+namespace Thor\Framework\Actions;
 
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Http\{Routing\Route, Request\HttpMethod, Controllers\WebController, Response\ResponseInterface};

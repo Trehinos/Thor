@@ -10,11 +10,15 @@
  * @license          MIT
  */
 
-namespace Thor\Api\Actions;
+namespace Thor\Framework\Actions;
 
 use Thor\Factories\ResponseFactory;
 use Thor\Http\{Controllers\HttpController, Request\HttpMethod, Response\Response, Routing\Route};
 
+/**
+ * This is a test HttpController to test Api responses and the api.php entry point.
+ * @internal
+ */
 final class Api extends HttpController
 {
 

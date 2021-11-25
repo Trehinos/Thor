@@ -13,7 +13,7 @@
  * @license          MIT
  */
 
-namespace Thor\Api\Commands;
+namespace Thor\Framework\Commands;
 
 use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\{CliKernel, Command, Console, Daemon, DaemonScheduler, DaemonState};

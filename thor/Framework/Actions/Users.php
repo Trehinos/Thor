@@ -8,9 +8,9 @@
  * @license          MIT
  */
 
-namespace Thor\Api\Actions;
+namespace Thor\Framework\Actions;
 
-use Thor\Api\{Managers\UserManager};
+use Thor\Framework\{Managers\UserManager};
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
 use Thor\Database\PdoTable\CrudHelper;

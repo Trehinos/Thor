@@ -1,15 +1,18 @@
 <?php
 
-/**
- * @package Trehinos/Thor/Cli
- * @copyright (2021) Sébastien Geldreich
- * @license MIT
- */
-
 namespace Thor\Cli;
 
 use JetBrains\PhpStorm\ArrayShape;
 
+/**
+ * Base class for any Thor command.
+ *
+ * The command MUST extends this class and be defined in ``thor/res/static/commands.yml`.
+ *
+ * @package Trehinos/Thor/Cli
+ * @copyright (2021) Sébastien Geldreich
+ * @license MIT
+ */
 abstract class Command
 {
 
@@ -23,11 +26,26 @@ abstract class Command
         $this->console = new Console();
     }
 
+    /**
+     * Set an argument of this command.
+     *
+     * @param string      $arg
+     * @param string|bool $value
+     *
+     * @return void
+     */
     public function set(string $arg, string|bool $value = true): void
     {
         $this->args[$arg] = $value;
     }
 
+    /**
+     * Get an argument of this command.
+     *
+     * @param string $arg
+     *
+     * @return string|bool|null
+     */
     public function get(string $arg): string|bool|null
     {
         return $this->args[$arg] ?? null;

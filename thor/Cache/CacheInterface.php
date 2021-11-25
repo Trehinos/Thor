@@ -5,6 +5,14 @@ namespace Thor\Cache;
 use DateInterval;
 use InvalidArgumentException;
 
+/**
+ * PSR-16 : SimpleCache interface
+ * @see https://www.php-fig.org/psr/psr-16
+ *
+ * @package          Trehinos/Thor/Cache
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 interface CacheInterface
 {
     /**

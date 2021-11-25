@@ -1,34 +1,45 @@
 <?php
 
-/**
- * @package          Trehinos/Thor/Cli
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
 
 namespace Thor\Cli;
 
 use Thor\Thor;
 use Thor\Globals;
-use Thor\Debug\Logger;
-use Thor\Debug\LogLevel;
-use Thor\Debug\Severity;
 use Thor\KernelInterface;
+use Thor\Debug\{Logger, LogLevel};
 use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoExtension\PdoCollection;
 
+/**
+ * This class is the Kernel launched by the `thor.php` entry point.
+ *
+ * It is made to run the command defined in `thor/res/static/commands.yml` and specified in the command line.
+ *
+ * @package          Trehinos/Thor/Cli
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class CliKernel implements KernelInterface
 {
+    /**
+     * @var PdoCollection collection of PdoHandler accessible from the CliKernel.
+     */
     public PdoCollection $pdos;
 
+    /**
+     * @var Console public console object to control Cli output.
+     */
     public Console $console;
 
+    /**
+     * @var array commands list defined in `thor/res/static/commands.yml`
+     */
     public array $commands;
 
     /**
-     * CliKernel constructor.
+     * Construct a CliKernel with database and commands configuration.
      *
-     * @param array $configuration ['database' => ... ]
+     * @param array $configuration ['database' => 'array', 'commands' => 'array']
      */
     public function __construct(
         #[ArrayShape(['database' => 'array', 'commands' => 'array'])]
@@ -40,9 +51,19 @@ final class CliKernel implements KernelInterface
         Logger::write('Instantiate CliKernel');
     }
 
+    /**
+     * Run the terminal command specified in the background.
+     *
+     * An output file can be specified to catch echoes.
+     *
+     * @param string      $cmd
+     * @param string|null $outputFile
+     *
+     * @return void
+     */
     public static function executeBackgroundProgram(string $cmd, ?string $outputFile = null): void
     {
-        if (substr(php_uname(), 0, 7) === "Windows") {
+        if (self::isWindows()) {
             $cmd = preg_replace('/^php/', 'php-win', $cmd);
             $outputFile = $outputFile ? ">> $outputFile" : '';
             pclose(popen("start /B $cmd $outputFile", "r"));
@@ -52,6 +73,19 @@ final class CliKernel implements KernelInterface
         }
     }
 
+    /**
+     * Returns true if PHP is run by q Windows system, false otherwise.
+     *
+     * @return bool
+     */
+    public static function isWindows(): bool
+    {
+        return str_starts_with(php_uname(), "Windows");
+    }
+
+    /**
+     * @inheritDoc
+     */
     public static function create(): static
     {
         self::guardCli();
@@ -59,83 +93,39 @@ final class CliKernel implements KernelInterface
         return self::createFromConfiguration(Thor::getConfiguration()->getConsoleConfiguration());
     }
 
+    /**
+     * This function exit the program if PHP is not run from Cli context.
+     *
+     * @return void|no-return
+     */
     public static function guardCli(): void
     {
         if ('cli' !== php_sapi_name()) {
             Logger::write(
                 "PANIC ABORT : CLI kernel tried to be executed from not-CLI context.",
-                LogLevel::MAJOR,
-                Severity::ERROR
+                LogLevel::CRITICAL,
             );
             exit;
         }
     }
 
-    public static function createFromConfiguration(array $config = []): static
-    {
+    /**
+     * Construct a CliKernel with database and commands configuration.
+     *
+     * @param array $config ['database' => 'array', 'commands' => 'array']
+     */
+    public static function createFromConfiguration(
+        #[ArrayShape(['database' => 'array', 'commands' => 'array'])]
+        array $config = []
+    ): static {
         return new self($config);
     }
 
-    public static function executeCommand(string $commandName, array $args = []): void
-    {
-        $command = $commandName;
-        foreach ($args as $argName => $argValue) {
-            $command .= " -$argName \"$argValue\"";
-        }
-        CliKernel::executeProgram('php ' . Globals::BIN_DIR . "thor.php $command");
-    }
-
-    public static function executeProgram(string $cmd): void
-    {
-        if (substr(php_uname(), 0, 7) === "Windows") {
-            pclose(popen($cmd, "r"));
-        } else {
-            exec($cmd);
-        }
-    }
-
-    public function displayCommandUsage(
-        string $command,
-        #[ArrayShape(
-            [
-                [
-                    'arg' => 'string',
-                    'description' => 'string',
-                    'hasValue' => 'boolean',
-                ],
-            ]
-        )] array $args = []
-    ): self {
-        $this->console
-            ->home()
-            ->fColor(Console::COLOR_YELLOW)->write("$command")
-            ->fColor()->writeln(" usage :\n")
-            ->mode()
-        ;
-
-        $this->console
-            ->home()
-            ->fColor(Console::COLOR_GREEN)->write("\t$command ")
-            ->mode()
-        ;
-
-        foreach ($args as $argName => $arg) {
-            $argName = "-$argName";
-            $value = ($arg['hasValue'] ?? false) ? ' value' : '';
-            $this->console
-                ->write('[')
-                ->fColor(Console::COLOR_YELLOW)->write("$argName")
-                ->fColor()->write($value)
-                ->write('] ')
-                ->mode()
-            ;
-        }
-
-        $this->console->writeln("\n");
-
-        return $this;
-    }
-
+    /**
+     * Executes a command from the command line.
+     *
+     * @return void
+     */
     public function execute(): void
     {
         $args = self::getArgs();
@@ -158,8 +148,7 @@ final class CliKernel implements KernelInterface
                     ->fColor(Console::COLOR_YELLOW)->write("[command]")
                     ->fColor(mode: Console::MODE_DIM)->write(" | ")
                     ->mode()->fColor(Console::COLOR_GREEN)->write("command ")
-                    ->fColor(Console::COLOR_YELLOW)->writeln("[-options]\n")
-                ;
+                    ->fColor(Console::COLOR_YELLOW)->writeln("[-options]\n");
             } else {
                 foreach ($this->commands as $commandName => $command) {
                     if ($displayCommand !== $commandName) {
@@ -214,18 +203,25 @@ final class CliKernel implements KernelInterface
         return $args;
     }
 
+    /**
+     * This method prints a command description in a terminal.
+     *
+     * @param string $command
+     * @param string $description
+     * @param array  $args
+     *
+     * @return $this
+     */
     public function displayCommandDescription(
         string $command,
         string $description,
-        #[ArrayShape(
+        #[ArrayShape([
             [
-                [
-                    'arg' => 'string',
-                    'description' => 'string',
-                    'hasValue' => 'boolean',
-                ],
-            ]
-        )] array $args = []
+                'arg'         => 'string',
+                'description' => 'string',
+                'hasValue'    => 'boolean',
+            ],
+        ])] array $args = []
     ): self {
         $spanCommand = str_repeat(' ', max(16 - strlen($command), 1));
         $span16 = str_repeat(' ', 16);
@@ -233,8 +229,7 @@ final class CliKernel implements KernelInterface
             ->home()
             ->fColor(Console::COLOR_GREEN)->write("\t$command" . $spanCommand)
             ->fColor(mode: Console::MODE_UNDERSCORE)->writeln($description)
-            ->mode()
-        ;
+            ->mode();
 
         foreach ($args as $argName => $arg) {
             $argName = "-$argName";
@@ -243,17 +238,98 @@ final class CliKernel implements KernelInterface
                 max(
                     20 - strlen(
                         $argName . ($vSpan = ($arg['hasValue'] ?? false ? ' value' : ''))
-                    ), 1)
+                    ),
+                    1
+                )
             );
             $this->console
                 ->write("\t$span16")
                 ->fColor(Console::COLOR_YELLOW)->write("$argName$vSpan")
                 ->fColor(mode: Console::MODE_UNDERSCORE)->writeln("$spanArg{$arg['description']}")
-                ->mode()
-            ;
+                ->mode();
         }
 
         $this->console->writeln();
+
+        return $this;
+    }
+
+    /**
+     * Run the Thor command specified in a terminal with its specified arguments values.
+     *
+     * @param string $commandName
+     * @param array  $args
+     *
+     * @return void
+     */
+    public static function executeCommand(string $commandName, array $args = []): void
+    {
+        $command = $commandName;
+        foreach ($args as $argName => $argValue) {
+            $command .= " -$argName \"$argValue\"";
+        }
+        CliKernel::executeProgram('php ' . Globals::BIN_DIR . "thor.php $command");
+    }
+
+    /**
+     * Run the terminal command specified in a terminal.
+     *
+     * @param string $cmd
+     *
+     * @return void
+     */
+    public static function executeProgram(string $cmd): void
+    {
+        if (self::isWindows()) {
+            pclose(popen($cmd, "r"));
+        } else {
+            exec($cmd);
+        }
+    }
+
+    /**
+     * This method prints a command usage in a terminal.
+     *
+     * @param string $command
+     * @param array  $args
+     *
+     * @return $this
+     */
+    public function displayCommandUsage(
+        string $command,
+        #[ArrayShape(
+            [
+                [
+                    'arg'         => 'string',
+                    'description' => 'string',
+                    'hasValue'    => 'boolean',
+                ],
+            ]
+        )] array $args = []
+    ): self {
+        $this->console
+            ->home()
+            ->fColor(Console::COLOR_YELLOW)->write("$command")
+            ->fColor()->writeln(" usage :\n")
+            ->mode();
+
+        $this->console
+            ->home()
+            ->fColor(Console::COLOR_GREEN)->write("\t$command ")
+            ->mode();
+
+        foreach ($args as $argName => $arg) {
+            $argName = "-$argName";
+            $value = ($arg['hasValue'] ?? false) ? ' value' : '';
+            $this->console
+                ->write('[')
+                ->fColor(Console::COLOR_YELLOW)->write("$argName")
+                ->fColor()->write($value)
+                ->write('] ')
+                ->mode();
+        }
+
+        $this->console->writeln("\n");
 
         return $this;
     }

@@ -8,7 +8,7 @@
  * @license          MIT
  */
 
-namespace Thor\Api\Managers;
+namespace Thor\Framework\Managers;
 
 use Exception;
 use Thor\Database\PdoTable\{Criteria, CrudHelper};

@@ -8,7 +8,7 @@
  * @license          MIT
  */
 
-namespace Thor\Api\Actions;
+namespace Thor\Framework\Actions;
 
 use Symfony\Component\Yaml\Yaml;
 use Thor\Globals;
