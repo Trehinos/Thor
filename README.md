@@ -33,7 +33,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
     * **Multilingual** static and **dynamic** strings (```|_()``` Twig filter and ```DICT``` global variable).
     * Extensible application with **kernels**.
 * Base **web application** to develop a corporate work :
-  ![Thor web UI illustration](docs/images/ui.png)
+  ![Thor web UI illustration](https://i.ibb.co/R4q28Pg/ui.png)
     * Index, legal, about and changelog pages.
     * **Menu** system with icons.
     * Page loading in **AJAX** (reduced payload).
@@ -44,7 +44,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
     * ```clear/``` : ```cache``` / ```logs```.
     * ```route/``` : ```set``` / ```list```.
 * Daemons and daemons control (e.g. ```daemon/status -all``` command) :  
-  ![Daemons status illustration](docs/images/daemons.png)
+  ![Daemons status illustration](https://i.ibb.co/y84GkDy/daemons.png)
     * ```start``` / ```stop``` : enable or disable a daemon.
     * ```kill``` / ```reset``` : stop execution or reset state.
 
@@ -106,7 +106,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ## Documentation
 
-Link : [Documentation](docs/SUMMARY.md)
+Link : [Documentation](https://github.com/Trehinos/thor/wiki)
 
 ## Releases notes
 
