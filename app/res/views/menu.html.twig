@@ -4,7 +4,7 @@
         <li class="d-flex mb-1">
             <button
                     id="btn-{{ item.route }}"
-                    onclick="menuClick(this);"
+                    onclick="menuClick($(this));"
                     data-url="{% if item.route != '.' %}{{ url(item.route) }}{% else %}#{% endif %}"
                     data-item="{{ item.route }}"
                     class="flex-fill {% if server.currentRouteName == item.route %}selected{% endif %}"
@@ -15,7 +15,7 @@
             {% if is_group %}
                 {% for sub_item in item.group %}
                     <button
-                            onclick="menuClick(this);"
+                            onclick="menuClick($(this));"
                             data-url="{% if sub_item.route != '.' %}{{ url(sub_item.route) }}{% else %}#{% endif %}"
                             title="{{ DICT.menu[sub_item.label] ?? sub_item.label ?? '' }}"
                             {% if server.currentRouteName == sub_item.route %}class="selected"{% endif %}
@@ -29,15 +29,15 @@
 </ul>
 <script>
     function unselect($elem) {
-        $elem.classList.remove("selected")
+        $elem.removeClass("selected")
     }
 
     function menuClick($elem) {
-        let url = $elem.dataset.url;
-        $$each("#menu ul li button", unselect);
+        let url = $elem.data("url");
+        unselect($("#menu ul li button"));
         loadPage(url, null, (response) => {
-            $elem.classList.add("selected");
-            window.history.pushState({"html": response}, null, "?menuItem=" + $elem.dataset.item);
+            $elem.addClass("selected");
+            window.history.pushState({"html": response}, null, "?menuItem=" + $elem.data("item"));
         });
     }
 </script>

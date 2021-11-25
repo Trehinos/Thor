@@ -25,7 +25,7 @@
                         {{ icon('search', 'fas') }}
                     </button>
                     <button class="btn btn-outline-warning" title="change password"
-                            onclick="Modal.load('{{ url('users-change-password-form', {public_id: server.user.publicId}) }}');"
+                            onclick="Modal.load('{{ url('users-change-password-form', {public_id: server.security.currentIdentity.publicId}) }}');"
                     >
                         {{ icon('lock', 'fas') }}
                         {{ icon('edit', 'fas') }}
@@ -59,7 +59,7 @@
                         onclick="menuClick($(this));"
                         data-url="{{ url('about') }}"
                         data-item="about">
-                    {{ _.footer.about }}
+                    {{ DICT.footer.about }}
                 </button>
                 <button
                         id="btn-legal"
@@ -67,7 +67,7 @@
                         data-url="{{ url('legal') }}"
                         data-item="legal"
                 >
-                    {{ _.footer.legal }}
+                    {{ DICT.footer.legal }}
                 </button>
                 <button
                         id="btn-changelog"
@@ -75,7 +75,7 @@
                         data-url="{{ url('changelog') }}"
                         data-item="changelog"
                 >
-                    {{ _.footer.changelog }}
+                    {{ DICT.footer.changelog }}
                 </button>
             </div>
         {% endblock %}
@@ -88,4 +88,9 @@
 
 {% block body_js %}
     <script src="/assets/thor/thor-lib.js"></script>
+    <script>
+        $(() => {
+            Modal.$elem = $("#modal");
+        });
+    </script>
 {% endblock %}

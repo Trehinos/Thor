@@ -1,24 +1,24 @@
 {% extends "modal-base.html.twig" %}
 
-{% block modal_title %}{{ _.users.create_user }}{% endblock %}
+{% block modal_title %}{{ DICT.users.create_user }}{% endblock %}
 
 {% block modal_body %}
 <form id="form-create-user" action="{{ url('users-create-action') }}" method="POST">
     <div class="form-group">
-        <label for="user-username">{{ _.users.username }}</label>
+        <label for="user-username">{{ DICT.users.username }}</label>
         <input type="text" id="user-username" name="username" value="" class="form-control">
     </div>
     <div class="form-group">
         <label for="user-password">
-            {{ _.users.password }}
+            {{ DICT.users.password }}
             <button type="button" class="btn btn-success btn-sm"
-                    title="{{ _.users.hide_password }}"
+                    title="{{ DICT.users.hide_password }}"
                     onclick="$('#user-password').attr('type', 'password')"
             >
                 {{ icon('eye-slash') }} cacher
             </button>
             <button type="button" class="btn btn-danger btn-sm"
-                    title="{{ _.users.show_password }}"
+                    title="{{ DICT.users.show_password }}"
                     onclick="$('#user-password').attr('type', 'text')"
             >
                 {{ icon('eye') }} afficher
@@ -26,7 +26,7 @@
         </label>
         <input type="text" id="user-password" name="password" value="{{ generatedPassword }}" class="form-control">
     </div>
-    <small class="form-text text-muted">{{ icon('exclamation-triangle') }} {{ _.users.password_warning|raw }}</small>
+    <small class="form-text text-muted">{{ icon('exclamation-triangle') }} {{ DICT.users.password_warning|raw }}</small>
 </form>
 {% endblock %}
 
@@ -44,6 +44,6 @@
         Vider le champ
     </button>
     <button form="form-create-user" type="submit" class="btn btn-primary">
-        {{ _.general.create }}
+        {{ DICT.general.create }}
     </button>
 {% endblock %}

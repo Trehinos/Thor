@@ -20,7 +20,7 @@ final class Main extends WebController
     #[Route('index', '/', HttpMethod::GET)]
     public function index(): Response
     {
-        return $this->twigResponse('page.html.twig');
+        return $this->twigResponse('page.html.twig', ['menuItem' => $this->get('menuItem')]);
     }
 
     #[Route('index-page', '/index', HttpMethod::GET)]

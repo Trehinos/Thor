@@ -1,13 +1,13 @@
-{% extends "page-base.twig" %}
+{% extends "pages/base.html.twig" %}
 
-{% block titlebar %}{{ icon('users', 'fas', true)|raw }} {{ _.users.title }}{% endblock %}
+{% block titlebar %}{{ icon('users', 'fas', true)|raw }} {{ DICT.users.title }}{% endblock %}
 
 {% block toolbar %}
     <button class="btn btn-sm btn-primary"
             onclick="Modal.load('{{ url('users-create-form') }}');"
     >
         {{ icon('plus') }}
-        {{ _.general.create }}
+        {{ DICT.general.create }}
     </button>
 {% endblock %}
 
@@ -18,7 +18,7 @@
         {% for user in users %}
             <div class="m-1 p-4 user">
                 {{ icon('user', 'fa-2x fas') }}
-                {{ user.username }}
+                {{ user.identifier }}
                 <span class="text-info">#{{ user.publicId|slice(0, 9) }}</span><br>
                 <small class="text-muted">{{ user.publicId|slice(10) }}</small>
                 <hr class="mt-1 mb-2">
@@ -26,19 +26,19 @@
                         onclick="Modal.load('{{ url('users-edit-form', {public_id: user.publicId}) }}');"
                 >
                     {{ icon('edit') }}
-                    {{ _.general.edit }}
+                    {{ DICT.general.edit }}
                 </button>
                 <button class="btn btn-sm btn-warning"
                         onclick="Modal.load('{{ url('users-change-password-form', {public_id: user.publicId}) }}');"
                 >
                     {{ icon('lock') }}
-                    {{ _.users.change_password }}
+                    {{ DICT.users.change_password }}
                 </button>
                 <button class="btn btn-sm btn-danger"
                         onclick="confirmPost('{{ url('users-delete-action', {public_id: user.publicId}) }}', {}, 'Supprimer cet utilisateur ?', () => {$(this).parent().remove();})"
                 >
                     {{ icon('trash') }}
-                    {{ _.general.remove }}
+                    {{ DICT.general.remove }}
                 </button>
             </div>
         {% endfor %}

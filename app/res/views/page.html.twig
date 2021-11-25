@@ -5,7 +5,7 @@
 {% block body_js %}
     {{ parent() }}
     <script>
-        EVENT(window, "load", () => {
+        $(() => {
             let menuItem = "{{ menuItem ? menuItem : 'index-page' }}"
             menuClick($(`#btn-${menuItem}`));
         });

@@ -8,16 +8,16 @@
 
 namespace Thor\Html\PdoMatrix;
 
-use Thor\Html\HtmlTag;
 use Thor\Http\Request\Request;
-use Thor\Html\Form\TextType;
-use Thor\Html\Form\InputType;
-use Thor\Database\PdoTable\Criteria;
-use Thor\Database\PdoTable\CrudHelper;
-use Thor\Database\PdoTable\PdoRowInterface;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\Attributes\PdoColumn;
-use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
+use Thor\Html\{HtmlTag, Form\TextType, Form\InputType};
+use Thor\Database\PdoTable\{Criteria,
+    CrudHelper,
+    PdoRowInterface,
+    Attributes\PdoColumn,
+    Attributes\PdoAttributesReader
+};
+use Thor\Http\Request\ServerRequestInterface;
 
 /**
  * Class PdoMatrix
@@ -49,11 +49,12 @@ final class PdoMatrix
      *
      * @return string
      */
-    public function getTableHtmlFromRequest(array $columns): string
+    public function getTableHtmlFromRequest(ServerRequestInterface $request, array $columns): string
     {
         $search = [];
+        $queryParams = $request->getQueryParams();
         foreach ($columns as $columnName => $c) {
-            $querySearch = Request::queryGet("search_$columnName");
+            $querySearch = $queryParams["search_$columnName"] ?? null;
             if (null !== $querySearch && '' !== $querySearch) {
                 $search[$columnName] = $querySearch;
             }
@@ -62,8 +63,7 @@ final class PdoMatrix
         return $this->generateTableTag(
             $this->crudHelper->readMultipleBy(new Criteria($search, Criteria::GLUE_OR)),
             $columns
-        )->toHtml()
-        ;
+        )->toHtml();
     }
 
     /**

@@ -11,12 +11,18 @@
 namespace Thor\Api\Actions;
 
 use Thor\Api\{Managers\UserManager};
-use Thor\Database\PdoTable\CrudHelper;
 use Thor\Debug\{Logger, LogLevel};
-use Thor\Html\{PdoMatrix\MatrixColumn, PdoMatrix\PdoMatrix};
-use Thor\Http\{Controllers\WebController, Request\HttpMethod, Response\Response, Routing\Route, Server\WebServer};
 use Thor\Security\Identity\DbUser;
+use Thor\Database\PdoTable\CrudHelper;
 use Thor\Validation\Filters\RegexFilter;
+use Thor\Html\{PdoMatrix\PdoMatrix, PdoMatrix\MatrixColumn};
+use Thor\Http\{Routing\Route,
+    Server\WebServer,
+    Response\Response,
+    Request\HttpMethod,
+    Controllers\WebController,
+    Response\ResponseInterface
+};
 
 final class Users extends WebController
 {
@@ -38,15 +44,14 @@ final class Users extends WebController
             'pages/users.html.twig',
             [
                 'users'      => $this->manager->getUserCrud()->listAll(),
-                'user_table' =>
-                    (
-                    new PdoMatrix(DbUser::class, $this->getServer()->getRequester())
-                    )->getTableHtmlFromRequest(
-                            [
-                                'public_id' => new MatrixColumn('Public ID'),
-                                'username'  => new MatrixColumn('User name'),
-                            ]
-                        ),
+                'user_table' => (new PdoMatrix(DbUser::class, $this->getServer()->getRequester()))
+                    ->getTableHtmlFromRequest(
+                        $this->getRequest(),
+                        [
+                            'public_id' => new MatrixColumn('Public ID'),
+                            'username'  => new MatrixColumn('User name'),
+                        ]
+                    ),
             ]
         );
     }
@@ -63,7 +68,7 @@ final class Users extends WebController
     }
 
     #[Route('users-create-action', '/users/create/action', HttpMethod::POST)]
-    public function createAction(): Response
+    public function createAction(): ResponseInterface
     {
         $username = $this->usernameFilter->filter($this->post('username'));
         $clearPassword = $this->post('password');
@@ -89,7 +94,7 @@ final class Users extends WebController
         HttpMethod::GET,
         ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
     )]
-    public function editForm(string $public_id): Response
+    public function editForm(string $public_id): ResponseInterface
     {
         $user = $this->manager->getUserCrud()->readOneFromPid($public_id);
 
@@ -107,7 +112,7 @@ final class Users extends WebController
         HttpMethod::POST,
         ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
     )]
-    public function editAction(string $public_id): Response
+    public function editAction(string $public_id): ResponseInterface
     {
         $username = $this->usernameFilter->filter($this->post('username'));
 
@@ -131,7 +136,7 @@ final class Users extends WebController
         HttpMethod::GET,
         ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
     )]
-    public function passwordForm(string $public_id): Response
+    public function passwordForm(string $public_id): ResponseInterface
     {
         $user = $this->manager->getUserCrud()->readOneFromPid($public_id);
 
@@ -150,7 +155,7 @@ final class Users extends WebController
         HttpMethod::POST,
         ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
     )]
-    public function passwordAction(string $public_id): Response
+    public function passwordAction(string $public_id): ResponseInterface
     {
         $password = $this->post('password');
         $confirmPassword = $this->post('confirm-password');
@@ -176,7 +181,7 @@ final class Users extends WebController
         HttpMethod::POST,
         ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
     )]
-    public function deleteAction(string $public_id): Response
+    public function deleteAction(string $public_id): ResponseInterface
     {
         $this->manager->deleteOne($public_id);
 
