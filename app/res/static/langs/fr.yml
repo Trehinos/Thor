@@ -27,6 +27,7 @@ users:
     user: Utilisateur
     create_user: 'Créer un utilisateur'
     edit_user: 'Editer un utilisateur'
+    remove_user: 'Supprimer cet utilisateur'
     username: 'Nom d''utilisateur'
     password: 'Mot de passe'
     hide_password: 'Cacher le mot de passe'

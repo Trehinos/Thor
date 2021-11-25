@@ -12,8 +12,7 @@
 {% endblock %}
 
 {% block page %}
-    {{ user_table|raw }}
-    <hr>
+    {# { user_table|raw } #}
     <div class="d-flex flex-wrap justify-content-around" id="users">
         {% for user in users %}
             <div class="m-1 p-4 user">
@@ -35,7 +34,7 @@
                     {{ DICT.users.change_password }}
                 </button>
                 <button class="btn btn-sm btn-danger"
-                        onclick="confirmPost('{{ url('users-delete-action', {public_id: user.publicId}) }}', {}, 'Supprimer cet utilisateur ?', () => {$(this).parent().remove();})"
+                        onclick="confirmPost('{{ url('users-delete-action', {public_id: user.publicId}) }}', {}, '{{ DICT.users.remove_user }} ?', () => {$(this).parent().remove();})"
                 >
                     {{ icon('trash') }}
                     {{ DICT.general.remove }}

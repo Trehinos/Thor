@@ -44,6 +44,7 @@ final class Users extends WebController
             'pages/users.html.twig',
             [
                 'users'      => $this->manager->getUserCrud()->listAll(),
+                /* standby
                 'user_table' => (new PdoMatrix(DbUser::class, $this->getServer()->getRequester()))
                     ->getTableHtmlFromRequest(
                         $this->getRequest(),
@@ -52,6 +53,7 @@ final class Users extends WebController
                             'username'  => new MatrixColumn('User name'),
                         ]
                     ),
+                */
             ]
         );
     }

@@ -27,6 +27,7 @@ users:
     user: User
     create_user: 'Create user'
     edit_user: 'Edit user'
+    remove_user: 'Delete this user'
     username: Username
     password: Password
     hide_password: 'Hide password'

@@ -13,11 +13,11 @@
                 <span style="color: #fa4">{{ appName|upper }}</span>
             </h1>
             <div class="text-center mb-4" style="color: #ddd; font-size: 0.75em;">
-                PHP Tools
+                Smart PHP framework
             </div>
             {{ render('menu') }}
             <div id="user-box">
-                <div class="float-right mt-1">
+                <div class="float-end mt-1">
                     <button class="btn btn-outline-info" title="user page"
                             onclick=""
                     >
@@ -39,7 +39,7 @@
                 </div>
                 <div class="mt-1">
                     <i class="fas fa-user fa-lg"></i>
-                    {{ server.user.username }}
+                    {{ server.security.currentIdentity.identifier }}
                 </div>
             </div>
         {% endblock %}
