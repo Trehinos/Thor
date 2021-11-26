@@ -1,84 +1,89 @@
 user/create:
-    class: Thor\Api\Commands\UserCommand
+    class: Thor\Framework\Commands\UserCommand
     command: createUser
     description: 'create a new user in DB'
     arguments: { username: { hasValue: true, description: 'user''s login' }, password: { hasValue: true, description: 'user''s clear password. Will be hashed before insertion' } }
 user/list:
-    class: Thor\Api\Commands\UserCommand
+    class: Thor\Framework\Commands\UserCommand
     command: listUsers
     description: 'list all users in DB'
     arguments: { search: { hasValue: true, description: 'User login search request' } }
 user/edit:
-    class: Thor\Api\Commands\UserCommand
+    class: Thor\Framework\Commands\UserCommand
     command: editUser
     description: 'create a new user in DB'
     arguments: { pid: { hasValue: true, description: 'user''s PID. Needed to identify the user in DB' }, username: { hasValue: true, description: 'user''s new login' }, password: { hasValue: true, description: 'user''s new clear password. Will be hashed before insertion' } }
 user/delete:
-    class: Thor\Api\Commands\UserCommand
+    class: Thor\Framework\Commands\UserCommand
     command: deleteUser
     description: 'delete an existing user in DB'
     arguments: { pid: { hasValue: true, description: 'user''s PID. Needed to identify the user in DB' } }
 route/set:
-    class: Thor\Api\Commands\CoreCommand
+    class: Thor\Framework\Commands\CoreCommand
     command: routeSet
     description: 'add or edit a route in app/res/static/routes.yml'
     arguments: { name: { hasValue: true, description: 'route identifier' }, path: { hasValue: true, description: 'route PATH' }, method: { hasValue: true, description: 'the request method GET, POST, ...' }, action-class: { hasValue: true, description: 'the controller class' }, action-method: { hasValue: true, description: 'the controller method' } }
 route/list:
-    class: Thor\Api\Commands\CoreCommand
+    class: Thor\Framework\Commands\CoreCommand
     command: routeList
     description: 'list all routes in app/res/static/routes.yml'
 daemon/start:
-    class: Thor\Api\Commands\DaemonCommand
+    class: Thor\Framework\Commands\DaemonCommand
     command: daemonStart
     description: 'start a daemon'
     arguments: { name: { hasValue: true, description: 'the daemon name' } }
 daemon/stop:
-    class: Thor\Api\Commands\DaemonCommand
+    class: Thor\Framework\Commands\DaemonCommand
     command: daemonStop
     description: 'stop a daemon'
     arguments: { name: { hasValue: true, description: 'the daemon name' } }
 daemon/status:
-    class: Thor\Api\Commands\DaemonCommand
+    class: Thor\Framework\Commands\DaemonCommand
     command: daemonStatus
     description: 'get the status of a daemon'
     arguments: { name: { hasValue: true, description: 'the daemon name' }, all: { hasValue: false, description: 'if present, display all daemons status' } }
 daemon/reset:
-    class: Thor\Api\Commands\DaemonCommand
+    class: Thor\Framework\Commands\DaemonCommand
     command: daemonReset
     description: 'reset the daemon state'
     arguments: { name: { hasValue: true, description: 'the daemon name' } }
 daemon/kill:
-    class: Thor\Api\Commands\DaemonCommand
+    class: Thor\Framework\Commands\DaemonCommand
     command: daemonKill
     description: 'stop the daemon immediately'
     arguments: { name: { hasValue: true, description: 'the daemon name' } }
 clear/cache:
-    class: Thor\Api\Commands\CoreCommand
+    class: Thor\Framework\Commands\CoreCommand
     command: clearCache
     description: 'clear the cache'
 clear/logs:
-    class: Thor\Api\Commands\CoreCommand
+    class: Thor\Framework\Commands\CoreCommand
     command: clearLogs
     description: 'clear all logs'
     arguments: { env: { hasValue: true, description: 'prod|verbose|debug|[dev] : the environment to clear' } }
 core/setup:
-    class: Thor\Api\Commands\CoreCommand
+    class: Thor\Framework\Commands\CoreCommand
     command: setup
     description: 'create the PdoRows tables'
 core/install:
-    class: Thor\Api\Commands\CoreCommand
+    class: Thor\Framework\Commands\CoreCommand
     command: install
     description: 'run thor/setup then migrations'
 core/update:
-    class: Thor\Api\Commands\CoreCommand
+    class: Thor\Framework\Commands\CoreCommand
     command: update
     description: 'run the update process'
 core/uninstall:
-    class: Thor\Api\Commands\CoreCommand
+    class: Thor\Framework\Commands\CoreCommand
     command: uninstall
     description: 'removes all PdoRows in DB'
 database/migrate:
-    class: Thor\Api\Commands\DatabaseCommand
+    class: Thor\Framework\Commands\DatabaseCommand
     command: migrate
     description: 'run a migration file with multiple SQL queries'
-    arguments: { index: { hasValue: true, desciption: 'the new migration index' } }
+    arguments: { index: { hasValue: true, description: 'the new migration index' } }
+core/set-env:
+    class: Thor\Framework\Commands\CoreCommand
+    command: setEnv
+    description: 'set the environnement'
+    arguments: { env: { hasValue: true, description: 'PROD | DEBUG | DEV' } }
