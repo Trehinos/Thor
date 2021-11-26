@@ -2,13 +2,24 @@
 
 namespace Thor\Database\PdoExtension;
 
-use Thor\Thor;
-use Thor\Globals;
+use Thor\{Thor, Globals};
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Defines a class which updates current schema with a set of DQL queries.
+ *
+ * @package Thor/Database/PdoExtension
+ * @copyright (2021) Sébastien Geldreich
+ * @license MIT
+ */
 final class PdoMigrator
 {
 
+    /**
+     * @param PdoCollection $pdoCollection
+     * @param array         $sqlMigrations ['handler_name' => [migrationIndex1 => [...sql], migrationIndex2 => [...sql]]]
+     * @param int           $migrationIndex current migration index
+     */
     public function __construct(
         private PdoCollection $pdoCollection,
         private array $sqlMigrations,
@@ -16,6 +27,13 @@ final class PdoMigrator
     ) {
     }
 
+    /**
+     * Migrates all databases to the specified migrationIndex.
+     *
+     * If $nextIndex is explicitly null, it will migrate to the last index.
+     *
+     * @return int the lastIndex migrated.
+     */
     public function migrate(?int $nextIndex): int
     {
         $requesters = [];
@@ -40,6 +58,11 @@ final class PdoMigrator
         return intval($lastIndex);
     }
 
+    /**
+     * Create a PdoMigrator from `thor/res/config/update.yml` and `thor/res/config/database.yml`.
+     *
+     * The migration files are loaded from `thor/res/static/{update.migration-folder}/migration_{migrationIndex}.yml`
+     */
     public static function createFromConfiguration(): self
     {
         $updateConfiguration = Thor::config('update');

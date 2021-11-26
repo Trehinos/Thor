@@ -176,12 +176,12 @@ final class Logger implements LoggerInterface
         $this->log(LogLevel::DEBUG, $message, $context);
     }
 
-    /**
-     * @throws JsonException
-     */
     public static function writeData(string $dataName, array $data, LogLevel $level = LogLevel::INFO): void
     {
-        $message = "DATA:$dataName= " . json_encode($data, JSON_THROW_ON_ERROR);
-        self::get()->log($level, $message);
+        try {
+            $message = "DATA:$dataName= " . json_encode($data, JSON_THROW_ON_ERROR);
+            self::get()->log($level, $message);
+        } catch (JsonException) {
+        }
     }
 }

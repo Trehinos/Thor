@@ -1,18 +1,18 @@
 <?php
 
-/**
- * @package Thor/Database/PdoExtension
- * @copyright (2021) Sébastien Geldreich
- * @license MIT
- */
-
 namespace Thor\Database\PdoExtension;
 
 use PDOStatement;
 
 use Thor\Debug\Logger;
-use Thor\Debug\LogLevel;
 
+/**
+ * Defines a class which performs SQL queries on a PDO connection wrapped in a PdoHandler.
+ *
+ * @package Thor/Database/PdoExtension
+ * @copyright (2021) Sébastien Geldreich
+ * @license MIT
+ */
 class PdoRequester
 {
 
@@ -21,26 +21,24 @@ class PdoRequester
     }
 
     /**
-     * execute
-     *      Execute a parameterized SQL query with the PdoHandler
+     * Executes a parameterized SQL-query with the PdoHandler.
      *
      * @param string $sql
-     * @param array $parameters
+     * @param array  $parameters
      *
      * @return bool
      */
     final public function execute(string $sql, array $parameters): bool
     {
-        Logger::write("DB execute ($sql).", LogLevel::DEBUG);
-        Logger::writeData('DB parameters', $parameters, LogLevel::DEBUG);
+        Logger::write("DB execute ($sql).");
+        Logger::writeData('DB parameters', $parameters);
         $stmt = $this->handler->getPdo()->prepare($sql);
 
         return $stmt->execute($parameters);
     }
 
     /**
-     * executeMultiple
-     *      Execute a parameterized SQL query with the PdoHandler
+     * Executes a parameterized SQL-query with the PdoHandler multiple times (one time for each array in $parameters).
      *
      * @param string $sql
      * @param array[] $parameters
@@ -50,12 +48,12 @@ class PdoRequester
     final public function executeMultiple(string $sql, array $parameters): bool
     {
         $size = count($parameters);
-        Logger::write("DB execute $size x ($sql).", LogLevel::DEBUG);
+        Logger::write("DB execute $size x ($sql).");
         $stmt = $this->handler->getPdo()->prepare($sql);
         $result = true;
 
         foreach ($parameters as $pdoRowsArray) {
-            Logger::writeData(' -> DB parameters', $pdoRowsArray, LogLevel::DEBUG);
+            Logger::writeData(' -> DB parameters', $pdoRowsArray);
             $result = $result && $stmt->execute($pdoRowsArray);
         }
 
@@ -63,8 +61,7 @@ class PdoRequester
     }
 
     /**
-     * request
-     *      Execute a parameterized SQL query with the PdoHandler and returns the result as a PDOStatement object.
+     * Executes a parameterized SQL-query with the PdoHandler and returns the result as a PDOStatement object.
      *
      * @param string $sql
      * @param array $parameters
@@ -73,14 +70,17 @@ class PdoRequester
      */
     final public function request(string $sql, array $parameters): PDOStatement
     {
-        Logger::write("DB request ($sql).", LogLevel::DEBUG);
-        Logger::writeData('DB parameters', $parameters, LogLevel::DEBUG);
+        Logger::write("DB request ($sql).");
+        Logger::writeData('DB parameters', $parameters);
         $stmt = $this->handler->getPdo()->prepare($sql);
         $stmt->execute($parameters);
 
         return $stmt;
     }
 
+    /**
+     * Gets the PdoHandler of this requester.
+     */
     final public function getPdoHandler(): PdoHandler
     {
         return $this->handler;
