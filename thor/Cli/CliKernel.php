@@ -15,7 +15,7 @@ use Thor\Database\PdoExtension\PdoCollection;
  *
  * It is made to run the command defined in `thor/res/static/commands.yml` and specified in the command line.
  *
- * @package          Trehinos/Thor/Cli
+ * @package          Thor/Cli
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */

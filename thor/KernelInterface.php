@@ -5,7 +5,7 @@ namespace Thor;
 /**
  * Defines a Thor Kernel.
  *
- * @package          Trehinos/Thor
+ * @package          Thor
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */

@@ -10,7 +10,7 @@ use Thor\Structures\Item;
  * This class represent an element of a Thor\Cache\Cache object.
  *
  * @internal         used and never exposed by Thor\Cache\Cache
- * @package          Trehinos/Thor/Cache
+ * @package          Thor/Cache
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */

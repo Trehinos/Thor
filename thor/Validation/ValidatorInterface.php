@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Validation
+ * @package Thor/Validation
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */

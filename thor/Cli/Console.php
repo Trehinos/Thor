@@ -1,13 +1,14 @@
 <?php
 
-/**
- * @package Trehinos/Thor/Cli
- * @copyright (2021) Sébastien Geldreich
- * @license MIT
- */
-
 namespace Thor\Cli;
 
+/**
+ * A class to control Cli output.
+ *
+ * @package          Thor/Cli
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 class Console
 {
 
@@ -52,9 +53,26 @@ class Console
     public const CURSOR_SAVEALL = "\0337";     # unused
     public const CURSOR_RESTORE = "\0338";     # unused
 
+    /**
+     * Constructs a new Console with default mode.
+     */
     public function __construct()
     {
         $this->mode();
+    }
+
+    /**
+     * Changes Foreground and Background colors.
+     *
+     * @param int $mode
+     *
+     * @return Console
+     */
+    public function mode(int $mode = self::MODE_RESET): self
+    {
+        echo self::COLOR_START . "$mode" . self::COLOR_END;
+
+        return $this;
     }
 
     /**
@@ -68,7 +86,7 @@ class Console
     /**
      * Change Foreground color.
      *
-     * @param int $fc
+     * @param int      $fc
      * @param int|null $mode
      *
      * @return Console
@@ -86,7 +104,7 @@ class Console
     /**
      * Change Background color.
      *
-     * @param int $bc
+     * @param int      $bc
      * @param int|null $mode
      *
      * @return Console
@@ -102,19 +120,12 @@ class Console
     }
 
     /**
-     * Change Foreground and Background colors.
+     * Moves the cursor up.
      *
-     * @param int $mode
+     * @param int $y
      *
-     * @return Console
+     * @return $this
      */
-    public function mode(int $mode = self::MODE_RESET): self
-    {
-        echo self::COLOR_START . "$mode" . self::COLOR_END;
-
-        return $this;
-    }
-
     public function moveUp(int $y): self
     {
         echo str_replace('y', $y, self::CURSOR_UP);
@@ -122,6 +133,13 @@ class Console
         return $this;
     }
 
+    /**
+     * Moves the cursor down.
+     *
+     * @param int $y
+     *
+     * @return $this
+     */
     public function moveDown(int $y): self
     {
         echo str_replace('y', $y, self::CURSOR_DOWN);
@@ -129,6 +147,13 @@ class Console
         return $this;
     }
 
+    /**
+     * Moves the cursor left.
+     *
+     * @param int $x
+     *
+     * @return $this
+     */
     public function moveLeft(int $x): self
     {
         echo str_replace('x', $x, self::CURSOR_LEFT);
@@ -136,6 +161,13 @@ class Console
         return $this;
     }
 
+    /**
+     * Moves the cursors right.
+     *
+     * @param int $x
+     *
+     * @return $this
+     */
     public function moveRight(int $x): self
     {
         echo str_replace('x', $x, self::CURSOR_RIGHT);
@@ -198,8 +230,8 @@ class Console
      * Print a text on the screen.
      *
      * @param string $text
-     * @param int $minSize
-     * @param int $direction
+     * @param int    $minSize
+     * @param int    $direction
      *
      * @return Console
      */

@@ -5,7 +5,7 @@ namespace Thor;
 /**
  * This interface describes a process that can be executed.
  *
- * @package Trehinos/Thor
+ * @package Thor
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */

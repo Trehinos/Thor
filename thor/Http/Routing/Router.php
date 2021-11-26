@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package          Trehinos/Thor/Http
+ * @package          Thor/Http
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */

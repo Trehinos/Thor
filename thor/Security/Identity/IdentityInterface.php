@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Security
+ * @package Thor/Security
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */

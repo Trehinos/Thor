@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package          Trehinos/Thor/Factories
+ * @package          Thor/Factories
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */

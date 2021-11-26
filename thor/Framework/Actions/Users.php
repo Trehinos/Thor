@@ -3,7 +3,7 @@
 /**
  * User forms view and action and list WebController.
  *
- * @package          Trehinos/Thor/Api
+ * @package          Thor/Api
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */

@@ -3,7 +3,7 @@
 /**
  * TODO ...
  *
- * @package          Trehinos/Thor/Api
+ * @package          Thor/Api
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */

@@ -11,7 +11,7 @@ use Thor\Structures\Container;
  * As this class never effectively persists data in persistent memory, it should not be used as is.
  * It can be used as a temporary memory.
  *
- * @package          Trehinos/Thor/Cache
+ * @package          Thor/Cache
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */

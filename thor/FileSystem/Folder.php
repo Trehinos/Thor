@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package          Trehinos/Thor/FileSystem
+ * @package          Thor/FileSystem
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */

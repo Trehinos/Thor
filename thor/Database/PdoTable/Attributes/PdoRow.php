@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package Trehinos/Thor/Database/PdoTable
+ * @package Thor/Database/PdoTable
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
