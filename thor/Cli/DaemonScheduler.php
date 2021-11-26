@@ -1,23 +1,19 @@
 <?php
 
+namespace Thor\Cli;
+
+use Throwable;
+use Thor\{Thor, Globals, Application, Debug\Logger, Configuration, Debug\LogLevel, KernelInterface, FileSystem\Folder};
+
 /**
+ * This class is the Kernel of thor daemons.
+ *
+ * Its entry point is `thor/bin/daemon.php`.
+ *
  * @package          Thor/Cli
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-
-namespace Thor\Cli;
-
-use Thor\Application;
-use Thor\Configuration;
-use Thor\Debug\Logger;
-use Thor\Debug\LogLevel;
-use Thor\FileSystem\Folder;
-use Thor\Globals;
-use Thor\KernelInterface;
-use Thor\Thor;
-use Throwable;
-
 final class DaemonScheduler implements KernelInterface
 {
 
@@ -30,7 +26,28 @@ final class DaemonScheduler implements KernelInterface
     }
 
     /**
-     * Executed by the entry point thor/bin/daemons.php.
+     * Creates the DaemonScheduler with the daemons' configuration.
+     */
+    public static function create(): static
+    {
+        CliKernel::guardCli();
+        return self::createFromConfiguration(Configuration::getDaemonsConfig());
+    }
+
+    /**
+     * Creates the DaemonScheduler with the specified configuration.
+     */
+    public static function createFromConfiguration(array $config = []): static
+    {
+        $daemons = [];
+        foreach ($config as $info) {
+            $daemons[$info['name']] = Daemon::instantiate($info);
+        }
+        return new self($daemons);
+    }
+
+    /**
+     * Executed by the entry point `thor/bin/daemons.php`.
      *
      * Usage : php thor/bin/daemons.php [daemonName]
      *
@@ -53,7 +70,7 @@ final class DaemonScheduler implements KernelInterface
     }
 
     /**
-     * @param Daemon|null $daemon
+     * Executes the specified daemon.
      *
      * @return bool false if ($daemon === null)
      *
@@ -77,6 +94,9 @@ final class DaemonScheduler implements KernelInterface
         return true;
     }
 
+    /**
+     * Executes the DaemonScheduler in a new process with the specified daemon as argument.
+     */
     private function cycleDaemonIfRunnable(Daemon $daemon): void
     {
         Logger::write("Cycle {$daemon->getName()}");
@@ -92,21 +112,11 @@ final class DaemonScheduler implements KernelInterface
         }
     }
 
-    public static function create(): static
-    {
-        CliKernel::guardCli();
-        return self::createFromConfiguration(Configuration::getDaemonsConfig());
-    }
-
-    public static function createFromConfiguration(array $config = []): static
-    {
-        $daemons = [];
-        foreach ($config as $info) {
-            $daemons[$info['name']] = Daemon::instantiate($info);
-        }
-        return new self($daemons);
-    }
-
+    /**
+     * Gets daemons of this DaemonScheduler.
+     *
+     * @return Daemon[]
+     */
     public function getDaemons(): array
     {
         return $this->daemons;

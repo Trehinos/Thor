@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @package Thor/Cli
- * @copyright (2021) Sébastien Geldreich
- * @license MIT
- */
-
 namespace Thor\Cli;
 
 use DateTime;
@@ -14,6 +8,13 @@ use Symfony\Component\Yaml\Yaml;
 use Thor\FileSystem\Folder;
 use Thor\Globals;
 
+/**
+ * Represents the current state of a Thor daemon.
+ *
+ * @package Thor/Cli
+ * @copyright (2021) Sébastien Geldreich
+ * @license MIT
+ */
 final class DaemonState
 {
 
@@ -28,6 +29,9 @@ final class DaemonState
     {
     }
 
+    /**
+     * Gets the configuration filepath of the daemon bound with this state object.
+     */
     #[Pure]
     public function getFileName(): string
     {
@@ -35,7 +39,9 @@ final class DaemonState
     }
 
     /**
-     * @return string|null
+     * Gets system PID of the daemon. Returns null if the daemon is not running.
+     *
+     * The PID is loaded from the state file at load(), this value can be outdated at the moment it is read.
      */
     public function getPid(): ?string
     {
@@ -43,14 +49,17 @@ final class DaemonState
     }
 
     /**
-     * @param string|null $pid
+     * Sets the system PID. It does not **change** the PID :
+     * this method is used to update the daemon state.
      */
     public function setPid(?string $pid): void
     {
         $this->pid = $pid;
     }
 
-
+    /**
+     * Loads the current state of the daemon from state file.
+     */
     public function load(): void
     {
         if (!file_exists($this->getFileName())) {
@@ -66,6 +75,9 @@ final class DaemonState
         $this->lastRun = (($lr === null) ? null : DateTime::createFromFormat(self::DATE_FORMAT, $lr));
     }
 
+    /**
+     * Writes the state of the daemon in the state file.
+     */
     public function write(): void
     {
         Folder::createIfNotExists(dirname($this->getFileName()));
@@ -82,16 +94,27 @@ final class DaemonState
         );
     }
 
+    /**
+     * Sets the error field. Set to null to disable error.
+     */
     public function error(?string $errorMessage): void
     {
         $this->error = $errorMessage;
     }
 
+    /**
+     * Gets the last error of this daemon.
+     */
     public function getError(): ?string
     {
         return $this->error;
     }
 
+    /**
+     * Sets the running state of the daemon.
+     *
+     * If set to true, the lastRun field will also be set.
+     */
     public function setRunning(bool $running): void
     {
         if ($running) {
@@ -109,16 +132,25 @@ final class DaemonState
         $this->isRunning = $running;
     }
 
+    /**
+     * Returns true if the daemon is now running.
+     */
     public function isRunning(): bool
     {
         return $this->isRunning ?? false;
     }
 
+    /**
+     * Returns the last run period starts. It is not the effective time when the daemon was executed.
+     */
     public function getLastRun(): ?DateTime
     {
         return $this->lastRun;
     }
 
+    /**
+     * Sets the lastRun field.
+     */
     public function setLastRun(?DateTime $lastRun): void
     {
         $this->lastRun = $lastRun;
