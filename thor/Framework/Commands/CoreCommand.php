@@ -16,6 +16,7 @@
 
 namespace Thor\Framework\Commands;
 
+use Thor\Env;
 use Thor\Framework\{Managers\UserManager};
 use Thor\Thor;
 use Thor\Globals;
@@ -61,7 +62,26 @@ final class CoreCommand extends Command
             ],
         ];
 
-        file_put_contents(Globals::CODE_DIR . 'app/res/routes.yml', Yaml::dump($this->routes));
+        file_put_contents(Globals::STATIC_DIR . 'web-routes.yml', Yaml::dump($this->routes));
+        $this->console
+            ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
+            ->writeln("Done.")
+            ->mode()
+        ;
+    }
+
+    public function setEnv()
+    {
+        $env = $this->get('env');
+
+        if (!in_array($env, [Env::PROD->value, Env::DEBUG->value, Env::DEV->value])) {
+            $this->error("Usage error\n", 'Specified env is not valid.', true, true);
+        }
+
+        $config = Thor::config('config');
+        $config['env'] = $env;
+
+        file_put_contents(Globals::CONFIG_DIR . 'config.yml', Yaml::dump($config));
         $this->console
             ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
             ->writeln("Done.")
