@@ -16,7 +16,8 @@ use Thor\Database\PdoExtension\PdoRequester;
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRows.
  *
- * @package Thor\Database\Sql
+ * @template T
+ * @package  Thor\Database\Sql
  */
 final class CrudHelper
 {
@@ -29,8 +30,8 @@ final class CrudHelper
      * CrudHelper constructor.
      * Creates a new CRUD requester to manage PdoRows
      *
-     * @param string       $className which implements PdoRowInterface and use PdoRowTrait trait.
-     * @param PdoRequester $requester
+     * @param class-string<T> $className which implements PdoRowInterface and use PdoRowTrait trait.
+     * @param PdoRequester    $requester
      */
     public function __construct(
         private string $className,
@@ -157,7 +158,12 @@ final class CrudHelper
         return $this->readOneBy($this->primaryArrayToCriteria($primaries));
     }
 
-    public function readOneBy(Criteria $criteria): mixed
+    /**
+     * @param Criteria $criteria
+     *
+     * @return T|null
+     */
+    public function readOneBy(Criteria $criteria): ?object
     {
         $sql = Criteria::getWhere($criteria);
         $row = $this->requester->request(
@@ -182,8 +188,12 @@ final class CrudHelper
         return new Criteria($criteria);
     }
 
-
-    public function readOneFromPid(string $pid): mixed
+    /**
+     * @param string $pid
+     *
+     * @return T|null
+     */
+    public function readOneFromPid(string $pid): ?object
     {
         return $this->readOneBy(new Criteria(['public_id' => $pid]));
     }
@@ -191,7 +201,7 @@ final class CrudHelper
     /**
      * @param Criteria $criteria
      *
-     * @return array
+     * @return T[]
      */
     public function readMultipleBy(Criteria $criteria): array
     {

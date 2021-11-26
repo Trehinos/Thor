@@ -15,7 +15,6 @@ use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Validation\Filters\RegexFilter;
-use Thor\Html\{PdoMatrix\PdoMatrix, PdoMatrix\MatrixColumn};
 use Thor\Http\{Routing\Route,
     Server\WebServer,
     Response\Response,
@@ -43,7 +42,7 @@ final class Users extends WebController
         return $this->twigResponse(
             'pages/users.html.twig',
             [
-                'users'      => $this->manager->getUserCrud()->listAll(),
+                'users' => $this->manager->getUserCrud()->listAll(),
                 /* standby
                 'user_table' => (new PdoMatrix(DbUser::class, $this->getServer()->getRequester()))
                     ->getTableHtmlFromRequest(
@@ -145,7 +144,7 @@ final class Users extends WebController
         return $this->twigResponse(
             'pages/users_modals/change-password.html.twig',
             [
-                'user'              => $user,
+                'user' => $user,
                 'generatedPassword' => UserManager::generatePassword(),
             ]
         );

@@ -19,6 +19,9 @@ final class UserManager
 {
 
 
+    /**
+     * @param CrudHelper<DbUser> $userCrud
+     */
     public function __construct(private CrudHelper $userCrud)
     {
     }
@@ -105,7 +108,7 @@ final class UserManager
     {
         $user = $this->getFromPublicId($public_id);
 
-        return (null === $user) ? false : $user->isPassword($clearPassword);
+        return !(null === $user) && $user->isPassword($clearPassword);
     }
 
     public function getFromPublicId(string $public_id): ?DbUser

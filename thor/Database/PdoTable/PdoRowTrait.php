@@ -1,28 +1,26 @@
 <?php
 
 /**
- * @package Thor/Database/PdoTable
+ * @package          Thor/Database/PdoTable
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 
 namespace Thor\Database\PdoTable;
 
-use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
-use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
-use Thor\Database\PdoTable\Attributes\PdoColumn;
-use Thor\Database\PdoTable\Attributes\PdoRow;
+use JetBrains\PhpStorm\ArrayShape;
+use Thor\Database\PdoTable\Attributes\{PdoRow, PdoColumn, PdoAttributesReader};
 
 /**
  * Trait PdoRowTrait: implements PdoRowInterface with Pdo Attributes.
- * @package Thor\Database\PdoExtension
+ * @package   Thor\Database\PdoExtension
  *
- * @since 2020-10
- * @version 1.0
- * @author Trehinos
+ * @since     2020-10
+ * @version   1.0
+ * @author    Trehinos
  * @copyright Author
- * @license MIT
+ * @license   MIT
  */
 trait PdoRowTrait
 {
@@ -34,14 +32,6 @@ trait PdoRowTrait
     public function __construct(
         protected array $primaries = []
     ) {
-    }
-
-    /**
-     * @return string[] an array of field name(s).
-     */
-    final public static function getPrimaryKeys(): array
-    {
-        return static::getTableDefinition()->getPrimaryKeys();
     }
 
     final public static function getIndexes(): array
@@ -56,19 +46,24 @@ trait PdoRowTrait
     }
 
     /**
-     * @return PdoColumn[]
+     * @template T
+     *
+     * @param class-string<T> $className
+     * @param array           $row
+     * @param bool            $fromDb
+     * @param mixed           ...$constructorArguments
+     *
+     * @return T
      */
-    final public static function getPdoColumnsDefinitions(): array
-    {
-        return array_combine(
-            array_map(fn(PdoColumn $column) => $column->getName(), static::getTD()['columns']),
-            array_values(static::getTD()['columns'])
-        );
-    }
-
-    final public static function getTableDefinition(): PdoRow
-    {
-        return static::getTD()['row'];
+    public static function instantiateFromRow(
+        string $className,
+        array $row,
+        bool $fromDb = false,
+        mixed ...$constructorArguments
+    ): object {
+        $rowObj = new $className(...$constructorArguments);
+        $rowObj->fromPdoArray($row, $fromDb);
+        return $rowObj;
     }
 
     public function toPdoArray(): array
@@ -83,6 +78,30 @@ trait PdoRowTrait
             $pdoArray[$columnName] = $pdoColumn->toSql($this->$propertyName ?? null);
         }
         return $pdoArray;
+    }
+
+    /**
+     * @return PdoColumn[]
+     */
+    final public static function getPdoColumnsDefinitions(): array
+    {
+        return array_combine(
+            array_map(fn(PdoColumn $column) => $column->getName(), static::getTD()['columns']),
+            array_values(static::getTD()['columns'])
+        );
+    }
+
+    /**
+     * @return string[] an array of field name(s).
+     */
+    final public static function getPrimaryKeys(): array
+    {
+        return static::getTableDefinition()->getPrimaryKeys();
+    }
+
+    final public static function getTableDefinition(): PdoRow
+    {
+        return static::getTD()['row'];
     }
 
     public function fromPdoArray(array $pdoArray, bool $fromDb = false): void
@@ -133,13 +152,6 @@ trait PdoRowTrait
     final public function getPrimaryString(): string
     {
         return implode('-', $this->primaries);
-    }
-
-    public static function instantiateFromRow(string $className, array $row, bool $fromDb = false, mixed ...$constructorArguments): mixed
-    {
-        $rowObj = new $className(...$constructorArguments);
-        $rowObj->fromPdoArray($row, $fromDb);
-        return $rowObj;
     }
 
 }
