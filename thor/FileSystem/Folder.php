@@ -1,23 +1,21 @@
 <?php
 
+namespace Thor\FileSystem;
+
 /**
+ * Static utilities to perform operations on folders.
+ *
  * @package          Thor/FileSystem
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-
-namespace Thor\FileSystem;
-
 final class Folder
 {
 
     /**
-     * @param string       $path
-     * @param string|false $mask
-     * @param bool         $removeDirs
-     * @param bool         $removeFirst ignored if $removeDirs is false
+     * Removes all elements in the corresponding $path.
      *
-     * @return array
+     * @param bool         $removeFirst ignored if $removeDirs is false
      */
     public static function removeTree(
         string $path,
@@ -54,11 +52,14 @@ final class Folder
         return $ret;
     }
 
-    public static function isSpecial(string $file): bool
+    private static function isSpecial(string $file): bool
     {
         return in_array($file, ['.', '..']);
     }
 
+    /**
+     * Copies the specified path to $dest.
+     */
     public static function copyTree(string $path, string $dest): void
     {
         self::mapFiles(
@@ -70,6 +71,9 @@ final class Folder
         );
     }
 
+    /**
+     * Performs an operation on each file in the $path folder. Recursively.
+     */
     public static function mapFiles(string $path, callable $mappedFunction, mixed ...$functionArguments): void
     {
         $files = scandir($path);
@@ -86,6 +90,9 @@ final class Folder
         }
     }
 
+    /**
+     * Creates (a) folder(s) recursively if the path does not exist.
+     */
     public static function createIfNotExists(string $name): void
     {
         if (!file_exists($name)) {

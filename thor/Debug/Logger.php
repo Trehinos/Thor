@@ -1,18 +1,21 @@
 <?php
 
-/**
- * @package          Thor/Debug
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Debug;
 
 use Thor\Thor;
 use Throwable;
 use JsonException;
+use Thor\Tools\Strings;
 use Thor\FileSystem\Folder;
 
+/**
+ * Logger class for Thor.
+ * Provides a static context to have a unique global Logger object.
+ *
+ * @package          Thor/Debug
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class Logger implements LoggerInterface
 {
 
@@ -26,6 +29,9 @@ final class Logger implements LoggerInterface
     ) {
     }
 
+    /**
+     * Sets the static Logger.
+     */
     public static function setDefaultLogger(
         LogLevel $level = LogLevel::DEBUG,
         string $basePath = __DIR__ . '/../',
@@ -34,6 +40,10 @@ final class Logger implements LoggerInterface
         return self::$logger = new self($level, $basePath, $dateFormat);
     }
 
+    /**
+     * Logs a Throwable : the message is written with an LogLevel::ERROR level.
+     * The details are written with the LogLevel::DEBUG level.
+     */
     public static function logThrowable(Throwable $e): string
     {
         $pad = str_repeat(' ', 37);
@@ -56,6 +66,9 @@ final class Logger implements LoggerInterface
         return $message;
     }
 
+    /**
+     * Writes a message with the static Logger.
+     */
     public static function write(
         string $message,
         LogLevel $level = LogLevel::INFO,
@@ -64,7 +77,7 @@ final class Logger implements LoggerInterface
     ): void {
         self::get()->log($level, $message, $context);
         if ($print) {
-            echo self::interpolate($message, $context) . "\n";
+            echo Strings::interpolate($message, $context) . "\n";
         }
     }
 
@@ -77,7 +90,7 @@ final class Logger implements LoggerInterface
             $strLevel = str_pad($level->name, 10);
             $now = new \DateTime();
             $nowStr = $now->format($this->dateFormat);
-            $message = "$nowStr $strLevel : " . self::interpolate($message, $context);
+            $message = "$nowStr $strLevel : " . Strings::interpolate($message, $context);
 
             if (null === $this->filename) {
                 $nowFileName = $now->format('Ymd');
@@ -93,6 +106,9 @@ final class Logger implements LoggerInterface
         }
     }
 
+    /**
+     * Gets the current static Logger.
+     */
     public static function get(
         LogLevel $level = LogLevel::INFO,
         string $basePath = __DIR__ . '/../',
@@ -101,15 +117,16 @@ final class Logger implements LoggerInterface
         return self::$logger ??= new self($level, $basePath, $dateFormat);
     }
 
-    public static function interpolate(string $message, array $context = []): string
+    /**
+     * Writes data encoded into JSON with the static Logger.
+     */
+    public static function writeData(string $dataName, mixed $data, LogLevel $level = LogLevel::INFO): void
     {
-        $replace = [];
-        foreach ($context as $key => $val) {
-            if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString'))) {
-                $replace['{' . $key . '}'] = $val;
-            }
+        try {
+            $message = "DATA:$dataName= " . json_encode($data, JSON_THROW_ON_ERROR);
+            self::get()->log($level, $message);
+        } catch (JsonException) {
         }
-        return strtr($message, $replace);
     }
 
     /**
@@ -174,14 +191,5 @@ final class Logger implements LoggerInterface
     public function debug(string $message, array $context = []): void
     {
         $this->log(LogLevel::DEBUG, $message, $context);
-    }
-
-    public static function writeData(string $dataName, array $data, LogLevel $level = LogLevel::INFO): void
-    {
-        try {
-            $message = "DATA:$dataName= " . json_encode($data, JSON_THROW_ON_ERROR);
-            self::get()->log($level, $message);
-        } catch (JsonException) {
-        }
     }
 }
