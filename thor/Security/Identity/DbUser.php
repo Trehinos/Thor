@@ -12,14 +12,14 @@ namespace Thor\Security\Identity;
 
 use Thor\Security\{PasswordHasher};
 use Thor\Database\PdoTable\{PdoRowTrait,
-    HasPublicId,
+    HasPublicIdTrait,
     PdoRowInterface,
-    Attributes\PdoRow,
+    Attributes\PdoTable,
     Attributes\PdoIndex,
     Attributes\PdoColumn
 };
 
-#[PdoRow('user', ['id'], 'id')]
+#[PdoTable('user', ['id'], 'id')]
 #[PdoColumn('id', 'INTEGER', 'integer', false)]
 #[PdoColumn('username', 'VARCHAR(255)', 'string', false)]
 #[PdoColumn('hash', 'VARCHAR(255)', 'string', false)]
@@ -30,7 +30,7 @@ class DbUser extends BaseUser implements PdoRowInterface
     use PdoRowTrait {
         PdoRowTrait::__construct as private traitConstructor;
     }
-    use HasPublicId;
+    use HasPublicIdTrait;
 
     public function __construct(
         string $username = '',

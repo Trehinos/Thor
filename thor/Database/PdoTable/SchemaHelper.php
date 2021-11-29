@@ -1,19 +1,31 @@
 <?php
 
-/**
- * @package          Thor/Database/PdoTable
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Database\PdoTable;
 
+use ReflectionException;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\PdoTable\{Attributes\PdoIndex, Attributes\PdoColumn, Attributes\PdoAttributesReader};
 
+/**
+ * This class provides methods to execute DQL statements from a PdoAttributesReader.
+ *
+ * @package   Thor\Database\PdoTable
+ *
+ * @template T
+ * @since     2020-10
+ * @version   1.0
+ * @author    Trehinos
+ * @copyright Author
+ * @license   MIT
+ */
 final class SchemaHelper
 {
 
+    /**
+     * @param PdoRequester        $requester
+     * @param PdoAttributesReader $reader
+     * @param bool                $isDebug if true, generates and returns SQL statements instead of executing them.
+     */
     public function __construct(
         private PdoRequester $requester,
         private PdoAttributesReader $reader,
@@ -21,6 +33,11 @@ final class SchemaHelper
     ) {
     }
 
+    /**
+     * Create the table in the database.
+     *
+     * @throws ReflectionException
+     */
     public function createTable(): bool|string
     {
         $separator = ",\n    ";
@@ -61,6 +78,11 @@ final class SchemaHelper
         return $this->requester->execute($sql, []);
     }
 
+    /**
+     * Drop the table in the database.
+     *
+     * @throws ReflectionException
+     */
     public function dropTable(): bool|string
     {
         $tableName = $this->reader->getAttributes()['row']->getTableName();

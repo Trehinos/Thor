@@ -1,13 +1,14 @@
 <?php
 
+namespace Thor\Database\PdoTable;
+
 /**
+ * Default implementor of PdoRowInterface.
+ *
  * @package Thor/Database/PdoTable
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-
-namespace Thor\Database\PdoTable;
-
 abstract class BasePdoRow implements PdoRowInterface
 {
 

@@ -3,6 +3,7 @@
 namespace Thor\Database\PdoTable\Attributes;
 
 use ReflectionException;
+use JetBrains\PhpStorm\Pure;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -17,7 +18,7 @@ use ReflectionClass;
 final class PdoAttributesReader
 {
 
-    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
+    #[ArrayShape(['row' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     private static array $classInfos = [];
 
     /**
@@ -27,12 +28,12 @@ final class PdoAttributesReader
     {
     }
 
-    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
+    #[ArrayShape(['row' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     private static function parseAttributes(
         ReflectionClass $rc
     ): array {
-        /** @var PdoRow $row */
-        $row = ($rc->getAttributes(PdoRow::class)[0] ?? null)?->newInstance();
+        /** @var PdoTable $table */
+        $table = ($rc->getAttributes(PdoTable::class)[0] ?? null)?->newInstance();
         $columns = array_map(
             fn(ReflectionAttribute $ra) => $ra->newInstance(),
             $rc->getAttributes(PdoColumn::class)
@@ -49,26 +50,27 @@ final class PdoAttributesReader
         );
 
         foreach ($rc->getTraits() as $t) {
-            ['row' => $pRow, 'columns' => $pColumns, 'indexes' => $pIndexes, 'foreign_keys' => $pFks] =
+            ['row' => $pTable, 'columns' => $pColumns, 'indexes' => $pIndexes, 'foreign_keys' => $pFks] =
                 self::parseAttributes($t);
-            ['row' => $row, 'columns' => $columns, 'indexes' => $indexes] =
-                self::_merge($pRow, $row, $pColumns, $columns, $pIndexes, $indexes, $fks, $pFks);
+            ['row' => $table, 'columns' => $columns, 'indexes' => $indexes] =
+                self::_merge($pTable, $table, $pColumns, $columns, $pIndexes, $indexes, $fks, $pFks);
         }
 
         if ($p = $rc->getParentClass()) {
-            ['row' => $pRow, 'columns' => $pColumns, 'indexes' => $pIndexes, 'foreign_keys' => $pFks] =
+            ['row' => $pTable, 'columns' => $pColumns, 'indexes' => $pIndexes, 'foreign_keys' => $pFks] =
                 self::parseAttributes($p);
-            ['row' => $row, 'columns' => $columns, 'indexes' => $indexes] =
-                self::_merge($pRow, $row, $pColumns, $columns, $pIndexes, $indexes, $fks, $pFks);
+            ['row' => $table, 'columns' => $columns, 'indexes' => $indexes] =
+                self::_merge($pTable, $table, $pColumns, $columns, $pIndexes, $indexes, $fks, $pFks);
         }
 
-        return ['row' => $row, 'columns' => $columns, 'indexes' => $indexes, 'foreign_keys' => $fks];
+        return ['row' => $table, 'columns' => $columns, 'indexes' => $indexes, 'foreign_keys' => $fks];
     }
 
-    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
+    #[Pure]
+    #[ArrayShape(['row' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     private static function _merge(
-        ?PdoRow $rowA,
-        ?PdoRow $rowB,
+        ?PdoTable $tableA,
+        ?PdoTable $tableB,
         array $columnsA,
         array $columnsB,
         array $indexA,
@@ -77,11 +79,11 @@ final class PdoAttributesReader
         array $fkB
     ): array {
         return [
-            'row' => ($rowA === null) ? $rowB :
-                new PdoRow(
-                    $rowB?->getTableName() ?? $rowA->getTableName(),
-                    array_merge($rowA->getPrimaryKeys(), $rowB?->getPrimaryKeys() ?? []),
-                    $rowB?->getAutoColumnName() ?? $rowA->getAutoColumnName(),
+            'row' => ($tableA === null) ? $tableB :
+                new PdoTable(
+                    $tableB?->getTableName() ?? $tableA->getTableName(),
+                    array_merge($tableA->getPrimaryKeys(), $tableB?->getPrimaryKeys() ?? []),
+                    $tableB?->getAutoColumnName() ?? $tableA->getAutoColumnName(),
                 )
             ,
             'columns' => array_merge($columnsA, $columnsB),
@@ -95,7 +97,7 @@ final class PdoAttributesReader
      *
      * @throws ReflectionException
      */
-    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
+    #[ArrayShape(['row' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     public function getAttributes(): array
     {
         return self::$classInfos[$this->classname] ??= self::parseAttributes(new ReflectionClass($this->classname));
@@ -108,8 +110,8 @@ final class PdoAttributesReader
      *
      * @throws ReflectionException
      */
-    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
-    public static function pdoRowInfo(string $className): array
+    #[ArrayShape(['row' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
+    public static function pdoTableInformation(string $className): array
     {
         return (new self($className))->getAttributes();
     }

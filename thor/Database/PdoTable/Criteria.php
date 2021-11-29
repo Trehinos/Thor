@@ -1,15 +1,16 @@
 <?php
 
-/**
- * @package          Thor/Database/PdoTable
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Database\PdoTable;
 
 use JetBrains\PhpStorm\ArrayShape;
 
+/**
+ * Describes a where SQL statement.
+ *
+ * @package          Thor/Database/PdoTable
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class Criteria
 {
     public const GLUE_AND = 'AND';
@@ -18,12 +19,47 @@ final class Criteria
     private ?string $sql = null;
     private ?array $params = null;
 
+    /**
+     * **An example of criteria** :
+     *
+     * ['SOCIETY' => 'Xerox', 'OR' => ['EMPLOYEE_ID' => [1, 14, 999], 'MANAGER_ID' => 4]]
+     *
+     * @param array $criteria criteria in the form of :
+     *
+     *                          'fieldName' => value  -> DIRECT VALUE
+     *
+     *                          'fieldName' => []  -> IN
+     *
+     *                          'and' => [[], []]
+     *
+     *                          'or' => [[], []]
+     *
+     *                         value can be prefixed by one of these operators :
+     *
+     *                         =, !=, <>, >=, <=, >, <
+     *
+     *                         % (LIKE '%value%') -
+     *
+     *                         !% (NOT LIKE '%value%') -
+     *
+     *                         %* (LIKE '%value') -
+     *
+     *                         *% (LIKE 'value%') -
+     *
+     *                         if value === null, it will be 'IS NULL' in the SQL statement.
+     *
+     *                         if value === '!', it will be 'IS NOT NULL' in the SQL statement.
+     *
+     *                         if is_array(value), it will generate an IN statement.
+     *
+     *                         Write '=operator' to test the equality with one of these special operators.
+     */
     public function __construct(private array $criteria = [], private string $glue = self::GLUE_AND)
     {
     }
 
     /**
-     * @param Criteria $criteria
+     * Returns a WHERE statement for the specified Criteria.
      *
      * @return string SQL with 'WHERE' if there is any criteria or ''.
      */
@@ -32,6 +68,9 @@ final class Criteria
         return (($t_sql = $criteria->getSql()) === '') ? '' : "WHERE $t_sql";
     }
 
+    /**
+     * Get the SQL statement. Without "WHERE".
+     */
     public function getSql(): string
     {
         if ($this->sql === null) {
@@ -47,15 +86,16 @@ final class Criteria
     }
 
     /**
-     * @param array  $criteria
+     * Static method to generate SQL without a Criteria instantiation.
+     *
+     * @param array $criteria
      *                      'fieldName' =>  ''  -> DIRECT VALUE
+     *
      *                      'fieldName' => []  -> IN
+     *
      *                      'and' => [[], []]
+     *
      *                      'or' => [[], []]
-     *
-     * @param string $glue
-     *
-     * @return array
      */
     #[ArrayShape(['sql' => "string", 'params' => "array"])]
     public static function compile(
@@ -135,8 +175,6 @@ final class Criteria
                         $value = '%' . substr($value, 1) . '%';
                         break;
 
-                    case '!':
-
                     default:
                         if ($value === null) {
                             $op = 'IS';
@@ -154,6 +192,9 @@ final class Criteria
         ];
     }
 
+    /**
+     * Returns the parameters of the SQL statement.
+     */
     public function getParams(): array
     {
         if ($this->params === null) {

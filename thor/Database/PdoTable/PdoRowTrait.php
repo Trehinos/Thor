@@ -1,20 +1,16 @@
 <?php
 
-/**
- * @package          Thor/Database/PdoTable
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Database\PdoTable;
 
+use ReflectionException;
 use JetBrains\PhpStorm\Pure;
 use JetBrains\PhpStorm\ArrayShape;
-use Thor\Database\PdoTable\Attributes\{PdoRow, PdoColumn, PdoAttributesReader};
+use Thor\Database\PdoTable\Attributes\{PdoIndex, PdoTable, PdoColumn, PdoAttributesReader};
 
 /**
  * Trait PdoRowTrait: implements PdoRowInterface with Pdo Attributes.
- * @package   Thor\Database\PdoExtension
+ *
+ * @package   Thor\Database\PdoTable
  *
  * @since     2020-10
  * @version   1.0
@@ -25,7 +21,7 @@ use Thor\Database\PdoTable\Attributes\{PdoRow, PdoColumn, PdoAttributesReader};
 trait PdoRowTrait
 {
 
-    private static array $tableDefinition = [];
+    private static array $tablesAttributes = [];
 
     protected array $formerPrimaries = [];
 
@@ -34,38 +30,33 @@ trait PdoRowTrait
     ) {
     }
 
+    /**
+     * @return PdoIndex[] an array of PdoIndex containing indexes information.
+     *
+     * @throws ReflectionException
+     */
     final public static function getIndexes(): array
     {
-        return static::getTD()['indexes'];
-    }
-
-    #[ArrayShape(['row' => PdoRow::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
-    protected static function getTD(): array
-    {
-        return static::$tableDefinition[static::class] ??= PdoAttributesReader::pdoRowInfo(static::class);
+        return static::getTableAttributes()['indexes'];
     }
 
     /**
-     * @template T
+     * Gets all Thor\Database\PdoTable\Attributes\Pdo* attributes.
      *
-     * @param class-string<T> $className
-     * @param array           $row
-     * @param bool            $fromDb
-     * @param mixed           ...$constructorArguments
-     *
-     * @return T
+     * @throws ReflectionException
      */
-    public static function instantiateFromRow(
-        string $className,
-        array $row,
-        bool $fromDb = false,
-        mixed ...$constructorArguments
-    ): object {
-        $rowObj = new $className(...$constructorArguments);
-        $rowObj->fromPdoArray($row, $fromDb);
-        return $rowObj;
+    #[ArrayShape(['row' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
+    public static function getTableAttributes(): array
+    {
+        return static::$tablesAttributes[static::class] ??= PdoAttributesReader::pdoTableInformation(static::class);
     }
 
+    /**
+     * @return array an array representation of this object which is the same as it would be returned by
+     *               PDOStatement::fetch().
+     *
+     * @throws ReflectionException
+     */
     public function toPdoArray(): array
     {
         $pdoArray = [];
@@ -81,29 +72,45 @@ trait PdoRowTrait
     }
 
     /**
-     * @return PdoColumn[]
+     * @return array an array of 'column_name' => 'SQL_COLUMN_TYPE(SIZE)'.
+     *
+     * @throws ReflectionException
      */
     final public static function getPdoColumnsDefinitions(): array
     {
         return array_combine(
-            array_map(fn(PdoColumn $column) => $column->getName(), static::getTD()['columns']),
-            array_values(static::getTD()['columns'])
+            array_map(fn(PdoColumn $column) => $column->getName(), static::getTableAttributes()['columns']),
+            array_values(static::getTableAttributes()['columns'])
         );
     }
 
     /**
      * @return string[] an array of field name(s).
+     *
+     * @throws ReflectionException
      */
     final public static function getPrimaryKeys(): array
     {
-        return static::getTableDefinition()->getPrimaryKeys();
+        return static::getPdoTable()->getPrimaryKeys();
     }
 
-    final public static function getTableDefinition(): PdoRow
+    /**
+     * Gets the PdoTable representing the table information of this PdoRowInterface.
+     *
+     * @throws ReflectionException
+     */
+    final public static function getPdoTable(): PdoTable
     {
-        return static::getTD()['row'];
+        return static::getTableAttributes()['row'];
     }
 
+    /**
+     * This method hydrates the object from the $pdoArray array.
+     *
+     * If $fromDb is true, this equality MUST be true :  getFormerPrimary() === getPrimary(), after this method.
+     *
+     * @throws ReflectionException
+     */
     public function fromPdoArray(array $pdoArray, bool $fromDb = false): void
     {
         $this->primaries = [];
@@ -123,23 +130,24 @@ trait PdoRowTrait
     }
 
     /**
-     * @return array get primary values.
+     * @return array get primary keys in an array of 'column_name' => PHP_value.
      */
     final public function getPrimary(): array
     {
         return $this->primaries;
     }
 
+    /**
+     * @return array get primary keys as loaded from DB. Empty if not loaded from DB.
+     */
     final public function getFormerPrimary(): array
     {
         return $this->formerPrimaries;
     }
 
-    final public function setPrimary(array $primary): void
-    {
-        $this->primaries = $primary;
-    }
-
+    /**
+     * Copy formerPrimary on primary array
+     */
     final public function reset(): void
     {
         $this->primaries = $this->formerPrimaries;
@@ -152,6 +160,14 @@ trait PdoRowTrait
     final public function getPrimaryString(): string
     {
         return implode('-', $this->primaries);
+    }
+
+    /**
+     * Sets primary key(s).
+     */
+    final public function setPrimary(array $primary): void
+    {
+        $this->primaries = $primary;
     }
 
 }

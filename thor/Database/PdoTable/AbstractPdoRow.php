@@ -1,23 +1,21 @@
 <?php
 
+namespace Thor\Database\PdoTable;
+
 /**
+ * Merges BasePdoRow and HasPublicId.
+ *
+ * @see BasePdoRow
+ * @see HasPublicIdTrait
+ *
  * @package Thor/Database/PdoTable
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-
-namespace Thor\Database\PdoTable;
-
-use Exception;
-use Thor\Database\PdoTable\Attributes\PdoColumn;
-use Thor\Database\PdoTable\Attributes\PdoIndex;
-
-#[PdoColumn('public_id', 'VARCHAR(255)', 'string', false)]
-#[PdoIndex(['public_id'], true)]
-abstract class AbstractPdoRow extends BasePdoRow
+abstract class AbstractPdoRow extends BasePdoRow implements HasPublicIdInterface
 {
 
-    use HasPublicId;
+    use HasPublicIdTrait;
 
     public function __construct(?string $public_id = null, array $primaries = [])
     {

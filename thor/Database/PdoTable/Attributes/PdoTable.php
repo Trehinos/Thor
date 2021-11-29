@@ -5,7 +5,7 @@ namespace Thor\Database\PdoTable\Attributes;
 use Attribute;
 
 /**
- * Describe a PdoRow attribute. Use this attribute on a PdoRowInterface implementor
+ * Describe a PdoTable attribute. Use this attribute on a PdoRowInterface implementor
  * to specify the corresponding table name, primary keys and auto-increment.
  *
  * @package Thor/Database/PdoTable
@@ -13,7 +13,7 @@ use Attribute;
  * @license MIT
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class PdoRow
+class PdoTable
 {
 
     public function __construct(

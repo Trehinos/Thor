@@ -17,34 +17,38 @@ use Thor\Database\PdoExtension\PdoRequester;
  * Class CrudHelper : SQL CRUD operation requester for PdoRows.
  *
  * @template T
- * @package  Thor\Database\Sql
+ * @package  Thor\Database\PdoTable
  */
-final class CrudHelper
+final class CrudHelper implements CrudInterface
 {
 
     private string $tableName;
     private array $primary;
-    private array $indexes;
 
     /**
      * CrudHelper constructor.
      * Creates a new CRUD requester to manage PdoRows
      *
      * @param class-string<T> $className which implements PdoRowInterface and use PdoRowTrait trait.
-     * @param PdoRequester    $requester
      */
     public function __construct(
         private string $className,
-        private PdoRequester $requester
+        private PdoRequester $requester,
+        private array $excludeColumnsFromInsert = [],
+        private array $excludeColumnsFromUpdate = [],
     ) {
         if (!class_exists($this->className) || !in_array(PdoRowInterface::class, class_implements($this->className))) {
             throw new TypeError("{$this->className} class not found or not implementing PdoRowInterface...");
         }
-        $this->tableName = ($this->className)::getTableDefinition()->getTableName();
+        $this->tableName = ($this->className)::getPdoTable()->getTableName();
         $this->primary = ($this->className)::getPrimaryKeys();
-        $this->indexes = ($this->className)::getIndexes();
     }
 
+    /**
+     * List all rows of the entity managed by this Crud.
+     *
+     * @return T[]
+     */
     public function listAll(): array
     {
         $rows = $this->requester->request("SELECT * FROM {$this->table()}", [])->fetchAll();
@@ -54,13 +58,16 @@ final class CrudHelper
 
         $rowsObjs = [];
         foreach ($rows as $row) {
-            $rowObj = PdoRowTrait::instantiateFromRow($this->className, $row, true);
+            $rowObj = self::instantiateFromRow($this->className, $row, true);
             $rowsObjs[] = $rowObj;
         }
 
         return $rowsObjs;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function table(): string
     {
@@ -68,21 +75,38 @@ final class CrudHelper
     }
 
     /**
-     * @param PdoRowInterface $row
-     * @param array           $excludeColumns
+     * @param class-string<T> $className
      *
-     * @return string the public_id
+     * @return T
+     */
+    public static function instantiateFromRow(
+        string $className,
+        array $row,
+        bool $fromDb = false,
+        mixed ...$constructorArguments
+    ): object {
+        $rowObj = new $className(...$constructorArguments);
+        $rowObj->fromPdoArray($row, $fromDb);
+        return $rowObj;
+    }
+
+    /**
+     * Create one row in DB.
+     *
+     * @param T $row
+     *
+     * @return string primary string/key
      *
      * @throws Exception
      */
-    public function createOne(PdoRowInterface $row, array $excludeColumns = []): string
+    public function createOne(PdoRowInterface $row): string
     {
         if (!empty($row->getFormerPrimary())) {
             throw new PdoRowException(
                 "PdoRow with primary string '{$row->getPrimaryString()}' cannot be inserted as it has been loaded from DB."
             );
         }
-        [$columns, $marks, $values] = self::compileRowValues($row, $excludeColumns);
+        [$columns, $marks, $values] = self::compileRowValues($row, $this->excludeColumnsFromInsert);
         $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $values);
 
         if ($row instanceof AbstractPdoRow) {
@@ -93,10 +117,7 @@ final class CrudHelper
     }
 
     /**
-     * @param PdoRowInterface $row
-     * @param array           $excludeColumns
-     *
-     * @return array
+     * @param T $row
      *
      * @throws Exception
      */
@@ -124,14 +145,15 @@ final class CrudHelper
     }
 
     /**
-     * @param PdoRowInterface[] $rows
-     * @param array             $excludeColumns
+     * Creates multiple rows in DB.
+     *
+     * @param T[] $rows
      *
      * @return bool
      *
      * @throws Exception
      */
-    public function createMultiple(array $rows, array $excludeColumns = []): bool
+    public function createMultiple(array $rows): bool
     {
         $allValues = [];
         $sqlArray = [];
@@ -143,7 +165,7 @@ final class CrudHelper
                     "PdoRow with primary string '{$row->getPrimaryString()}' cannot be inserted as it has been loaded from DB."
                 );
             }
-            [$columns, $marks, $values] = self::compileRowValues($row, $excludeColumns);
+            [$columns, $marks, $values] = self::compileRowValues($row, $this->excludeColumnsFromInsert);
 
             $allValues = array_merge($allValues, $values);
             $sqlArray [] = "($marks)";
@@ -153,21 +175,34 @@ final class CrudHelper
         return $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $allValues);
     }
 
-    public function readOne(array $primaries): mixed
+    /**
+     * Gets one row from its primary keys.
+     *
+     * Returns `null` if the row has not been found.
+     *
+     * @param array $primaries
+     *
+     * @return T|null
+     */
+    public function readOne(array $primaries): ?PdoRowInterface
     {
         return $this->readOneBy($this->primaryArrayToCriteria($primaries));
     }
 
     /**
+     * Gets one row from the specified criteria.
+     *
+     * Returns `null` if the row has not been found.
+     *
      * @param Criteria $criteria
      *
      * @return T|null
      */
-    public function readOneBy(Criteria $criteria): ?object
+    public function readOneBy(Criteria $criteria): ?PdoRowInterface
     {
         $sql = Criteria::getWhere($criteria);
         $row = $this->requester->request(
-                $sql = "SELECT * FROM {$this->table()} $sql",
+                "SELECT * FROM {$this->table()} $sql",
                 $criteria->getParams()
             )->fetchAll()[0] ?? [];
 
@@ -175,7 +210,7 @@ final class CrudHelper
             return null;
         }
 
-        return PdoRowTrait::instantiateFromRow($this->className, $row, true);
+        return self::instantiateFromRow($this->className, $row, true);
     }
 
     private function primaryArrayToCriteria(array $primaries): Criteria
@@ -189,16 +224,8 @@ final class CrudHelper
     }
 
     /**
-     * @param string $pid
+     * Gets multiple rows from the specified criteria.
      *
-     * @return T|null
-     */
-    public function readOneFromPid(string $pid): ?object
-    {
-        return $this->readOneBy(new Criteria(['public_id' => $pid]));
-    }
-
-    /**
      * @param Criteria $criteria
      *
      * @return T[]
@@ -219,19 +246,28 @@ final class CrudHelper
 
         $objs = [];
         foreach ($rows as $row) {
-            $objs[] = PdoRowTrait::instantiateFromRow($this->className, $row, true);
+            $objs[] = self::instantiateFromRow($this->className, $row, true);
         }
 
         return $objs;
     }
 
-    public function updateOne(PdoRowInterface $row, array $excludeColumns = []): bool
+    /**
+     * Updates all column of the corresponding row in DB.
+     *
+     * Returns true if the statement has correctly been executed.
+     *
+     * @param T $row
+     *
+     * @return bool
+     */
+    public function updateOne(PdoRowInterface $row): bool
     {
         $pdoArray = $row->toPdoArray();
-        if (!empty($excludeColumns)) {
+        if (!empty($this->excludeColumnsFromUpdate)) {
             $pdoTmp = [];
             foreach ($pdoArray as $key => $item) {
-                if (!in_array($key, $excludeColumns)) {
+                if (!in_array($key, $this->excludeColumnsFromUpdate)) {
                     $pdoTmp[$key] = $item;
                 }
             }
@@ -247,6 +283,15 @@ final class CrudHelper
         );
     }
 
+    /**
+     * Delete the corresponding row in DB.
+     *
+     * Returns true if the statement has correctly been executed.
+     *
+     * @param T $row
+     *
+     * @return bool
+     */
     public function deleteOne(PdoRowInterface $row): bool
     {
         $criteria = $this->primaryArrayToCriteria($row->getFormerPrimary());
