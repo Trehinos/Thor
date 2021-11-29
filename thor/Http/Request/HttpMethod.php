@@ -7,6 +7,9 @@ namespace Thor\Http\Request;
  *
  * @link             https://datatracker.ietf.org/doc/html/rfc7231#section-4
  *
+ * @see (PATCH, LINK, UNLINK) https://www.rfc-editor.org/rfc/rfc2068.html#section-19.6.1
+ * @see (WebDav) https://www.iana.org/assignments/http-methods/http-methods.xhtml
+ *
  * @package          Thor/Http/Request
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
@@ -16,7 +19,6 @@ enum HttpMethod: string
     case GET = 'GET';
     case POST = 'POST';
     case PUT = 'PUT';
-    case PATCH = 'PATCH';
     case DELETE = 'DELETE';
     case HEAD = 'HEAD';
     case TRACE = 'TRACE';
@@ -25,7 +27,7 @@ enum HttpMethod: string
 
     public function hasBody(): bool
     {
-        return in_array($this, [HttpMethod::POST, HttpMethod::PUT, HttpMethod::CONNECT, HttpMethod::PATCH]);
+        return in_array($this, [HttpMethod::POST, HttpMethod::PUT, HttpMethod::CONNECT]);
     }
 
     public function responseHasBody(): bool
@@ -35,12 +37,12 @@ enum HttpMethod: string
 
     public function isSafe(): bool
     {
-        return in_array($this, [HttpMethod::GET, HttpMethod::HEAD, HttpMethod::OPTIONS]);
+        return in_array($this, [HttpMethod::GET, HttpMethod::HEAD, HttpMethod::OPTIONS, HttpMethod::TRACE]);
     }
 
     public function isIdempotent(): bool
     {
-        return in_array($this, [HttpMethod::POST, HttpMethod::CONNECT, HttpMethod::PATCH]);
+        return !in_array($this, [HttpMethod::POST, HttpMethod::CONNECT]);
     }
 
     public function compatibleWithCache(): bool
