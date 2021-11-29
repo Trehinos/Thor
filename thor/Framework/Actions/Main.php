@@ -1,19 +1,20 @@
 <?php
 
-/**
- * Main WebController to serve the main default routes of Thor.
- *
- * @package          Thor/Api
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Framework\Actions;
 
 use Symfony\Component\Yaml\Yaml;
 use Thor\Globals;
 use Thor\Http\{Controllers\WebController, Request\HttpMethod, Response\Response, Routing\Route};
 
+/**
+ * WebController, this is the main controller to serve Responses for the main routes of Thor.
+ *
+ * @internal
+ *
+ * @package          Thor/Framework
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class Main extends WebController
 {
 

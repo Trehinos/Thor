@@ -6,6 +6,13 @@ use Thor\Http\Routing\Router;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Security\{Firewall, HttpSecurity, SecurityInterface};
 
+/**
+ * A factory the security context from configuration.
+ *
+ * @package          Thor/Database/PdoTable
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class SecurityFactory
 {
 

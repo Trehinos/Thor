@@ -7,6 +7,13 @@ use Twig\TwigFilter;
 use Thor\Tools\DateTimeHelper;
 use Thor\Http\Server\WebServer;
 
+/**
+ * A factory to create twig Filters.
+ *
+ * @package          Thor/Database/PdoTable
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class TwigFilterFactory
 {
 

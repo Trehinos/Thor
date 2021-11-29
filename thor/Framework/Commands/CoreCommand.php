@@ -1,25 +1,11 @@
 <?php
 
-/**
- * This Command class Contains main commands of Thor-Api commands :
- *  - clear/cache
- *  - clear/logs
- *  - core/setup
- *  - core/update
- *  - route/set
- *  - route/list
- *
- * @package          Thor/Api
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Framework\Commands;
 
 use Thor\Env;
-use Thor\Framework\{Managers\UserManager};
 use Thor\Thor;
 use Thor\Globals;
+use Thor\Framework\{Managers\UserManager};
 use Thor\FileSystem\Folder;
 use Thor\Http\Routing\Route;
 use Symfony\Component\Yaml\Yaml;
@@ -30,6 +16,19 @@ use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
 use Thor\Cli\{Daemon, Console, Command, CliKernel, DaemonState};
 use Thor\Database\PdoTable\{CrudHelper, SchemaHelper, Attributes\PdoAttributesReader};
 
+/**
+ * This Command class Contains main commands of Thor-Api commands :
+ *  - clear/cache
+ *  - clear/logs
+ *  - core/setup
+ *  - core/update
+ *  - route/set
+ *  - route/list
+ *
+ * @package          Thor/Framework
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class CoreCommand extends Command
 {
 
@@ -66,8 +65,7 @@ final class CoreCommand extends Command
         $this->console
             ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
             ->writeln("Done.")
-            ->mode()
-        ;
+            ->mode();
     }
 
     public function setEnv()
@@ -85,8 +83,7 @@ final class CoreCommand extends Command
         $this->console
             ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
             ->writeln("Done.")
-            ->mode()
-        ;
+            ->mode();
     }
 
     public function setup()
@@ -111,8 +108,7 @@ final class CoreCommand extends Command
             $this->console
                 ->fColor(Console::COLOR_YELLOW, Console::MODE_BRIGHT)
                 ->write("$routeName : ")
-                ->mode()
-            ;
+                ->mode();
 
             $c = $route->getControllerClass();
             $m = $route->getControllerMethod();
@@ -123,8 +119,7 @@ final class CoreCommand extends Command
                 ->write('::')
                 ->fColor(Console::COLOR_BLUE, Console::MODE_RESET)
                 ->write($m . '()')
-                ->mode()
-            ;
+                ->mode();
 
             $path = $route->getPath();
             if (null !== $path) {
@@ -143,8 +138,7 @@ final class CoreCommand extends Command
                     ->write(' ' . $path ?? '')
                     ->fColor(Console::COLOR_GRAY, Console::MODE_DIM)
                     ->write(']')
-                    ->mode()
-                ;
+                    ->mode();
             }
             $this->console->writeln();
         }
@@ -154,8 +148,7 @@ final class CoreCommand extends Command
     {
         $this->console->fColor(Console::COLOR_CYAN)
                       ->writeln('Clearing the cache...')
-                      ->mode()
-        ;
+                      ->mode();
         $deleted = Folder::removeTree(Globals::VAR_DIR . 'cache', removeFirst: false);
         foreach ($deleted as $file) {
             $this->console->writeln(" - $file deleted.");
@@ -169,8 +162,7 @@ final class CoreCommand extends Command
 
         $this->console->fColor(Console::COLOR_CYAN)
                       ->writeln("Clearing the $env logs...")
-                      ->mode()
-        ;
+                      ->mode();
         $deleted = Folder::removeTree(Globals::VAR_DIR . 'logs', "{$env}_.*[.]log", false, false);
         foreach ($deleted as $file) {
             $this->console->writeln(" - $file deleted.");

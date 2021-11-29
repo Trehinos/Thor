@@ -7,6 +7,13 @@ use Thor\Http\Routing\Router;
 use Thor\Http\Server\WebServer;
 use Symfony\Component\VarDumper\VarDumper;
 
+/**
+ * A factory to create twig Functions.
+ *
+ * @package          Thor/Database/PdoTable
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class TwigFunctionFactory
 {
 

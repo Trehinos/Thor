@@ -1,18 +1,19 @@
 <?php
 
-/**
- * WebController of security actions (login, check, logout).
- *
- * @package          Thor/Api
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Framework\Actions;
 
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Http\{Routing\Route, Request\HttpMethod, Controllers\WebController, Response\ResponseInterface};
 
+/**
+ * WebController of security routes (login, check and logout).
+ *
+ * @internal
+ *
+ * @package          Thor/Framework
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class Security extends WebController
 {
 

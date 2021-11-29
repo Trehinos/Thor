@@ -8,6 +8,13 @@ use Thor\Http\Server\WebServer;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Security\SecurityInterface;
 
+/**
+ * A factory to create the WebServer.
+ *
+ * @package          Thor/Database/PdoTable
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class WebServerFactory
 {
 

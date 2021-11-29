@@ -8,6 +8,13 @@ use Thor\Http\Routing\Router;
 use Thor\Http\Server\HttpServer;
 use Thor\Security\SecurityInterface;
 
+/**
+ * A factory to create HttpServers.
+ *
+ * @package          Thor/Database/PdoTable
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class HttpServerFactory
 {
 

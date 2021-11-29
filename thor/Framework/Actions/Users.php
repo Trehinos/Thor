@@ -1,18 +1,11 @@
 <?php
 
-/**
- * User forms view and action and list WebController.
- *
- * @package          Thor/Api
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Framework\Actions;
 
 use Thor\Framework\{Managers\UserManager};
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
+use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Validation\Filters\RegexFilter;
 use Thor\Http\{Routing\Route,
@@ -23,6 +16,15 @@ use Thor\Http\{Routing\Route,
     Response\ResponseInterface
 };
 
+/**
+ * User forms view and action and list WebController.
+ *
+ * @internal
+ *
+ * @package          Thor/Framework
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class Users extends WebController
 {
 
@@ -43,16 +45,6 @@ final class Users extends WebController
             'pages/users.html.twig',
             [
                 'users' => $this->manager->getUserCrud()->listAll(),
-                /* standby
-                'user_table' => (new PdoMatrix(DbUser::class, $this->getServer()->getRequester()))
-                    ->getTableHtmlFromRequest(
-                        $this->getRequest(),
-                        [
-                            'public_id' => new MatrixColumn('Public ID'),
-                            'username'  => new MatrixColumn('User name'),
-                        ]
-                    ),
-                */
             ]
         );
     }
@@ -97,7 +89,7 @@ final class Users extends WebController
     )]
     public function editForm(string $public_id): ResponseInterface
     {
-        $user = $this->manager->getUserCrud()->readOneFromPid($public_id);
+        $user = $this->manager->getUserCrud()->readOneBy(new Criteria(['public_id' => $public_id]));
 
         return $this->twigResponse(
             'pages/users_modals/edit.html.twig',
@@ -139,7 +131,7 @@ final class Users extends WebController
     )]
     public function passwordForm(string $public_id): ResponseInterface
     {
-        $user = $this->manager->getUserCrud()->readOneFromPid($public_id);
+        $user = $this->manager->getUserCrud()->readOneBy(new Criteria(['public_id' => $public_id]));
 
         return $this->twigResponse(
             'pages/users_modals/change-password.html.twig',

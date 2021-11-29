@@ -10,6 +10,13 @@ use Thor\Http\Request\UploadedFile;
 use Thor\Http\Request\ServerRequest;
 use Thor\Http\Request\ServerRequestInterface;
 
+/**
+ * A factory to create a ServerRequest from globals.
+ *
+ * @package          Thor/Database/PdoTable
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class ServerRequestFactory
 {
 

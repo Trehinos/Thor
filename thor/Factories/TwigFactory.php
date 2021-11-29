@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @package          Thor/Factories
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Factories;
 
 use Thor\Thor;
@@ -14,6 +8,13 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Thor\Http\{Routing\Router, Server\WebServer};
 
+/**
+ * A factory to create the Twig Environment from configuration.
+ *
+ * @package          Thor/Database/PdoTable
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class TwigFactory
 {
 

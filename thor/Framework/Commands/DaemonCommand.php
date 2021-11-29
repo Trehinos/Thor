@@ -1,5 +1,13 @@
 <?php
 
+namespace Thor\Framework\Commands;
+
+use Thor\Globals;
+use Thor\Configuration;
+use Symfony\Component\Yaml\Yaml;
+use Thor\Cli\{Daemon, Console, Command, CliKernel, DaemonState, DaemonScheduler};
+
+
 /**
  * This Command contains all daemons related Thor-Api commands :
  *  - daemon/start
@@ -8,18 +16,10 @@
  *  - daemon/status
  *  - daemon/kill
  *
- * @package          Thor/Api
+ * @package          Thor/Framework
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-
-namespace Thor\Framework\Commands;
-
-use Symfony\Component\Yaml\Yaml;
-use Thor\Cli\{CliKernel, Command, Console, Daemon, DaemonScheduler, DaemonState};
-use Thor\Configuration;
-use Thor\Globals;
-
 final class DaemonCommand extends Command
 {
 

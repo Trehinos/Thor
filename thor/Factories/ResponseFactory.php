@@ -8,6 +8,13 @@ use Thor\Http\ProtocolVersion;
 use Thor\Http\Response\Response;
 use Thor\Http\Response\HttpStatus;
 
+/**
+ * A factory to standard Responses.
+ *
+ * @package          Thor/Database/PdoTable
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class ResponseFactory
 {
 

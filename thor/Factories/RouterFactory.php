@@ -9,6 +9,13 @@ use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
 use Thor\Http\Request\HttpMethod;
 
+/**
+ * The router from configuration.
+ *
+ * @package          Thor/Database/PdoTable
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class RouterFactory
 {
 

@@ -1,5 +1,13 @@
 <?php
 
+namespace Thor\Framework\Commands;
+
+use Exception;
+use Thor\Framework\{Managers\UserManager};
+use Thor\Security\Identity\DbUser;
+use Thor\Cli\{Command, Console, CliKernel};
+use Thor\Database\{PdoTable\Criteria, PdoTable\CrudHelper, PdoExtension\PdoRequester};
+
 /**
  * This Command contains user management Thor-Api commands :
  *  - user/create
@@ -7,19 +15,10 @@
  *  - user/delete
  *  - user/list
  *
- * @package          Thor/Api
+ * @package          Thor/Framework
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-
-namespace Thor\Framework\Commands;
-
-use Exception;
-use Thor\Framework\{Managers\UserManager};
-use Thor\Cli\{CliKernel, Command, Console};
-use Thor\Database\{PdoExtension\PdoRequester, PdoTable\Criteria, PdoTable\CrudHelper};
-use Thor\Security\Identity\DbUser;
-
 final class UserCommand extends Command
 {
 
@@ -37,7 +36,7 @@ final class UserCommand extends Command
     }
 
     /**
-     * Thor\Api user/create -username USERNAME -password CLEAR_PASSWORD
+     * Thor\Framework user/create -username USERNAME -password CLEAR_PASSWORD
      *
      * @throws Exception
      */
@@ -61,7 +60,7 @@ final class UserCommand extends Command
     }
 
     /**
-     * Thor\Api user/create -pid PID [-username NEW_USERNAME] [-password NEW_CLEAR_PASSWORD]
+     * Thor\Framework user/create -pid PID [-username NEW_USERNAME] [-password NEW_CLEAR_PASSWORD]
      *
      * @throws Exception
      */
@@ -105,7 +104,7 @@ final class UserCommand extends Command
     }
 
     /**
-     * Thor\Api user/delete -pid PID
+     * Thor\Framework user/delete -pid PID
      *
      * @throws Exception
      */
@@ -120,7 +119,7 @@ final class UserCommand extends Command
     }
 
     /**
-     * Thor\Api user/list [-search SEARCH_STRING]
+     * Thor\Framework user/list [-search SEARCH_STRING]
      *
      * @throws Exception
      */
