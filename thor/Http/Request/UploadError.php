@@ -4,6 +4,13 @@ namespace Thor\Http\Request;
 
 use Exception;
 
+/**
+ * This enumeration lists all possible file upload errors.
+ *
+ * @package          Thor/Http/Request
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 enum UploadError: int
 {
 
@@ -21,7 +28,7 @@ enum UploadError: int
      */
     public function getErrorMessage(): ?string
     {
-        return match ($this->value) {
+        return match ($this) {
             self::NO_ERROR => null,
             self::INI_SIZE => 'PHP INI : upload_max_filesize exceeded',
             self::FORM_SIZE => 'HTML form : MAX_FILE_SIZE exceeded',
@@ -29,8 +36,7 @@ enum UploadError: int
             self::NO_FILE => 'Transport error, file not uploaded',
             self::NO_TMP_DIR => 'Uploaded temporary folder missing',
             self::CANT_WRITE => 'Write error',
-            self::EXTENSION => 'PHP extension error',
-            default => throw new Exception('Unexpected match value'),
+            self::EXTENSION => 'PHP extension error'
         };
     }
 

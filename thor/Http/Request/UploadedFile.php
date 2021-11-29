@@ -7,6 +7,13 @@ use Thor\Stream\Stream;
 use InvalidArgumentException;
 use Thor\Stream\StreamInterface;
 
+/**
+ * This class can be used to manage files uploaded by an HTML form.
+ *
+ * @package          Thor/Http/Request
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 class UploadedFile implements UploadedFileInterface
 {
 
@@ -28,6 +35,14 @@ class UploadedFile implements UploadedFileInterface
     ) {
     }
 
+    /**
+     * Translate the original $_FILES[field][name] = [...]
+     * to an $array[name] = UploadedFile(...).
+     *
+     * @param array $files
+     *
+     * @return array
+     */
     public static function normalizeFiles(array $files): array
     {
         $normalized = [];
@@ -80,6 +95,9 @@ class UploadedFile implements UploadedFileInterface
         return $normalizedFiles;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getStream(): StreamInterface
     {
         return $this->stream;
@@ -95,6 +113,9 @@ class UploadedFile implements UploadedFileInterface
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function moveTo(string $targetPath): void
     {
         $this->validateActive();
@@ -105,21 +126,33 @@ class UploadedFile implements UploadedFileInterface
         $this->moved = true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getSize(): ?int
     {
         return $this->size;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getError(): UploadError
     {
         return $this->errorStatus;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getClientFilename(): ?string
     {
         return $this->clientFilename;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getClientMediaType(): ?string
     {
         return $this->clientMediaType;

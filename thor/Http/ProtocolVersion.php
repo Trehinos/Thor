@@ -2,6 +2,9 @@
 
 namespace Thor\Http;
 
+/**
+ * This enumeration contains different valid versions of the HTTP protocol.
+ */
 enum ProtocolVersion:string
 {
 

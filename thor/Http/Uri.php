@@ -2,8 +2,16 @@
 
 namespace Thor\Http;
 
+use Thor\Tools\Strings;
 use JetBrains\PhpStorm\Pure;
 
+/**
+ * Holds and manages an URI.
+ *
+ * @package          Thor/Http
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 class Uri implements UriInterface
 {
 
@@ -23,6 +31,9 @@ class Uri implements UriInterface
     ) {
     }
 
+    /**
+     * Creates and returns an URI from $_SERVER globals.
+     */
     public static function fromGlobals(): UriInterface
     {
         $host = null;
@@ -68,6 +79,9 @@ class Uri implements UriInterface
         return [$host, $port];
     }
 
+    /**
+     * Creates an URI from the specified string.
+     */
     public static function create(string $url): self|false
     {
         $prefix = '';
@@ -110,6 +124,9 @@ class Uri implements UriInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function withScheme(string $scheme): static
     {
@@ -125,6 +142,9 @@ class Uri implements UriInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function withHost(string $host): static
     {
@@ -140,6 +160,9 @@ class Uri implements UriInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function withPort(?int $port = null): static
     {
@@ -155,6 +178,9 @@ class Uri implements UriInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function withPath(string $path): static
     {
@@ -170,6 +196,9 @@ class Uri implements UriInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function withQuery(array $queryArguments): static
     {
@@ -185,6 +214,9 @@ class Uri implements UriInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function withUserInfo(string $user, ?string $password = null): static
     {
@@ -200,6 +232,9 @@ class Uri implements UriInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function withFragment(string $fragment): static
     {
@@ -215,70 +250,81 @@ class Uri implements UriInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function __toString(): string
     {
-        $query = self::prefix('?', $this->getQuery());
-        $fragment = self::prefix('#', $this->getFragment());
-        $path = self::prefix('/', $this->getPath());
+        $query = Strings::prefix('?', $this->getQuery());
+        $fragment = Strings::prefix('#', $this->getFragment());
+        $path = Strings::prefix('/', $this->getPath());
         return "{$this->getScheme()}://{$this->getAuthority()}$path$query$fragment";
     }
 
-    public static function prefix(string $prefix, ?string $str): string
-    {
-        if ($str === null || $str === '') {
-            return '';
-        }
-        return "$prefix$str";
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function getQuery(): string
     {
         return http_build_query($this->queryArguments);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getFragment(): string
     {
         return $this->fragment;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getPath(): string
     {
         return $this->path;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getScheme(): string
     {
         return $this->scheme;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function getAuthority(): string
     {
-        $userInfo = self::suffix($this->getUserInfo(), '@');
-        $port = self::prefix(':', $this->getPort());
+        $userInfo = Strings::suffix($this->getUserInfo(), '@');
+        $port = Strings::prefix(':', $this->getPort());
         return "$userInfo{$this->getHost()}$port";
     }
 
-    public static function suffix(?string $str, string $suffix): string
-    {
-        if ($str === null || $str === '') {
-            return '';
-        }
-        return "$str$suffix";
-    }
-
+    /**
+     * @inheritDoc
+     */
     #[Pure]
     public function getUserInfo(): string
     {
-        return $this->user . self::prefix(':', $this->password);
+        return $this->user . Strings::prefix(':', $this->password);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getPort(): ?int
     {
         return $this->port;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getHost(): string
     {
         return $this->host;

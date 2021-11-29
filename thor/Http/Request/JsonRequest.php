@@ -7,6 +7,15 @@ use Thor\Http\Uri;
 use Thor\Stream\Stream;
 use Thor\Http\ProtocolVersion;
 
+/**
+ * A class too create Json APIs.
+ *
+ * @see              ServerRequestFactory to create a ServerRequest from globals
+ *
+ * @package          Thor/Http/Request
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 class JsonRequest extends Request
 {
 
@@ -30,6 +39,8 @@ class JsonRequest extends Request
     }
 
     /**
+     * Encodes specified data to JSON.
+     *
      * @throws JsonException
      */
     public static function encode(mixed $data): string
@@ -38,17 +49,21 @@ class JsonRequest extends Request
     }
 
     /**
+     * Get data as a decoded JSON (it can be any scalar or array).
+     *
      * @throws JsonException
      */
-    public function getData(): array|string|int|bool|null
+    public function getData(): array|string|float|int|bool|null
     {
         return self::decode($this->getBody()->getContents());
     }
 
     /**
+     * Decodes the specified JSON string to a scalar or an array.
+     *
      * @throws JsonException
      */
-    public static function decode(string $json): array|string|int|bool|null
+    public static function decode(string $json): array|string|float|int|bool|null
     {
         return json_decode($json, true, flags: JSON_THROW_ON_ERROR);
     }

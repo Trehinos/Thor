@@ -10,7 +10,7 @@ use Thor\Http\Request\UploadedFile;
 use Thor\Http\Request\ServerRequest;
 use Thor\Http\Request\ServerRequestInterface;
 
-final class ServerRequestFactory extends RequestFactory
+final class ServerRequestFactory
 {
 
     public static function createFromGlobals(): ServerRequestInterface

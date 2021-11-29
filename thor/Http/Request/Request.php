@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @package          Thor/Http
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Http\Request;
 
 use Thor\Http\Uri;
@@ -16,6 +10,16 @@ use JetBrains\PhpStorm\Pure;
 use Thor\Http\ProtocolVersion;
 use Thor\Stream\StreamInterface;
 
+
+/**
+ * Describes a base HTTP Request.
+ *
+ * This class is not attended to be instantiated directly in any project.
+ *
+ * @package          Thor/Http/Request
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 class Request extends Message implements RequestInterface
 {
 
@@ -30,6 +34,17 @@ class Request extends Message implements RequestInterface
         parent::__construct($version, $headers, $body);
     }
 
+    /**
+     * Creates a new Request with some parameters as optionals.
+     *
+     * @param HttpMethod      $method
+     * @param UriInterface    $target
+     * @param string          $data
+     * @param array           $headers
+     * @param ProtocolVersion $version
+     *
+     * @return static
+     */
     public static function create(
         HttpMethod $method,
         UriInterface $target,
@@ -40,11 +55,17 @@ class Request extends Message implements RequestInterface
         return new self($version, $headers, Stream::create($data), $method, $target);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getRequestTarget(): string
     {
         return (string)$this->target;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withRequestTarget(string $requestTarget): static
     {
         return new self(
@@ -56,21 +77,33 @@ class Request extends Message implements RequestInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getMethod(): HttpMethod
     {
         return $this->method;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withMethod(HttpMethod $method): static
     {
         return new self($this->getProtocolVersion(), $this->getHeaders(), $this->getBody(), $method, $this->getUri());
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getUri(): UriInterface
     {
         return $this->target;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withUri(UriInterface $uri, bool $preserveHost = false): static
     {
         return new self(

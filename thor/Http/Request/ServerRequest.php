@@ -3,9 +3,20 @@
 namespace Thor\Http\Request;
 
 use thor\Http\UriInterface;
+use JetBrains\PhpStorm\Pure;
 use Thor\Http\ProtocolVersion;
 use Thor\Stream\StreamInterface;
+use Thor\Factories\ServerRequestFactory;
 
+/**
+ * Describes an HTTP Request send to a Server.
+ *
+ * @see              ServerRequestFactory to create a ServerRequest from globals
+ *
+ * @package          Thor/Http/Request
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 class ServerRequest extends Request implements ServerRequestInterface
 {
 
@@ -22,6 +33,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @param array                   $serverParams
      * @param UploadedFileInterface[] $uploadedFiles
      */
+    #[Pure]
     public function __construct(
         ProtocolVersion $version,
         array $headers,
@@ -38,16 +50,25 @@ class ServerRequest extends Request implements ServerRequestInterface
         parent::__construct($version, $headers, $body, $method, $target);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getServerParams(): array
     {
         return $this->serverParams;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getCookieParams(): array
     {
         return $this->cookies;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withCookieParams(array $cookies): static
     {
         return new self(
@@ -64,11 +85,17 @@ class ServerRequest extends Request implements ServerRequestInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getQueryParams(): array
     {
         return $this->queryParams;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withQueryParams(array $query): static
     {
         return new self(
@@ -85,11 +112,17 @@ class ServerRequest extends Request implements ServerRequestInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getUploadedFiles(): array
     {
         return $this->uploadedFiles;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withUploadedFiles(array $uploadedFiles): static
     {
         return new self(
@@ -106,11 +139,17 @@ class ServerRequest extends Request implements ServerRequestInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getParsedBody(): null|array|object
     {
         return $this->parsedBody;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withParsedBody(object|array|null $data): static
     {
         return new self(
@@ -127,16 +166,25 @@ class ServerRequest extends Request implements ServerRequestInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getAttributes(): array
     {
         return $this->attributes;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getAttribute(string $name, mixed $default = null): mixed
     {
         return $this->attributes[$name] ?? $default;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withAttribute(string $name, mixed $value): static
     {
         return new self(
@@ -153,6 +201,9 @@ class ServerRequest extends Request implements ServerRequestInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withoutAttribute(string $name): static
     {
         $attributes = $this->attributes;

@@ -2,7 +2,15 @@
 
 namespace Thor\Http\Request;
 
-/** @link https://datatracker.ietf.org/doc/html/rfc7231#section-4 */
+/**
+ * This enumeration lists all valid HTTP Methods as defined by RFC-7231.
+ *
+ * @link             https://datatracker.ietf.org/doc/html/rfc7231#section-4
+ *
+ * @package          Thor/Http/Request
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 enum HttpMethod: string
 {
     case GET = 'GET';

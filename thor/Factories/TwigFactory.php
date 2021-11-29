@@ -8,12 +8,11 @@
 
 namespace Thor\Factories;
 
-use Thor\Globals;
-use Thor\Http\Server\WebServer;
-use Thor\Http\Routing\Router;
 use Thor\Thor;
+use Thor\Globals;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use Thor\Http\{Routing\Router, Server\WebServer};
 
 final class TwigFactory
 {
@@ -45,8 +44,7 @@ final class TwigFactory
         WebServer $server,
         array $twig_config
     ): Environment {
-        return (new self($twig_config))->addDefaults($server, $server->getRouter())->produce()
-        ;
+        return (new self($twig_config))->addDefaults($server, $server->getRouter())->produce();
     }
 
     /**

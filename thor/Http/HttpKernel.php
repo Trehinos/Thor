@@ -1,20 +1,26 @@
 <?php
 
-/**
- * @package          Thor/Http
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Http;
 
 use Thor\Env;
 use Thor\Thor;
+use Thor\Configuration;
 use Thor\KernelInterface;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Factories\{HttpServerFactory, ServerRequestFactory};
-use Thor\Http\{Server\HttpServer, Response\ResponseInterface, Request\ServerRequestInterface};
+use Thor\Http\{Server\HttpServer,
+    Controllers\HttpController,
+    Response\ResponseInterface,
+    Request\ServerRequestInterface
+};
 
+/**
+ * HttpKernel of Thor. It is by default instantiated with the `api.php` entry point.
+ *
+ * @package          Thor/Http
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 class HttpKernel implements KernelInterface
 {
 
@@ -23,6 +29,14 @@ class HttpKernel implements KernelInterface
         Logger::write('Instantiate HttpKernel');
     }
 
+    /**
+     * This function return a new kernel.
+     *
+     * It loads the configuration files and use it to instantiate the Kernel.
+     *
+     * @see Configuration::getHttpConfiguration()
+     * @see Thor::getConfiguration()
+     */
     public static function create(): static
     {
         self::guardHttp();
@@ -31,6 +45,11 @@ class HttpKernel implements KernelInterface
         return self::createFromConfiguration(Thor::getConfiguration()->getHttpConfiguration());
     }
 
+    /**
+     * This function exit the program if PHP is run from Cli context.
+     *
+     * @return void|no-return
+     */
     final public static function guardHttp(): void
     {
         if ('cli' === php_sapi_name()) {
@@ -42,11 +61,29 @@ class HttpKernel implements KernelInterface
         }
     }
 
+    /**
+     * This static function returns a new HttpKernel with specified configuration.
+     *
+     * @param array $config
+     *
+     * @return static
+     */
     public static function createFromConfiguration(array $config = []): static
     {
         return new self(HttpServerFactory::createHttpServerFromConfiguration($config));
     }
 
+    /**
+     * This method executes the HttpKernel :
+     * 1. Load a ServerRequestInterface from the globals,
+     * 2. Let the HttpServer handle it (security, controller, etc),
+     * 3. Uses the returned ResponseInterface to send the response.
+     *
+     * @see ServerRequestInterface
+     * @see HttpServer
+     * @see HttpController
+     * @see ResponseInterface
+     */
     final public function execute(): void
     {
         ob_start();
@@ -82,6 +119,9 @@ class HttpKernel implements KernelInterface
         }
     }
 
+    /**
+     * Makes the HttpServer handle the ServerRequestInterface and returns its ResponseInterface.
+     */
     public function handle(ServerRequestInterface $serverRequest): ResponseInterface
     {
         return $this->server->handle($serverRequest);

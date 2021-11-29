@@ -15,9 +15,7 @@ final class WebServerFactory
     {
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
         return self::produce(
-            $router =
-                (new RouterFactory(RouterFactory::createRoutesFromConfiguration($config['web-routes'])))
-                    ->produce(),
+            $router = RouterFactory::createRouterFromConfiguration($config['web-routes']),
             SecurityFactory::produceSecurity($router, new PdoRequester($pdoCollection->get()), $config['security']),
             $pdoCollection,
             $config['language'],

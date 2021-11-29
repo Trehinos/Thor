@@ -6,21 +6,15 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionException;
 use Thor\Http\Routing\Route;
-use JetBrains\PhpStorm\Pure;
 use Thor\Http\Routing\Router;
 use Thor\Http\Request\HttpMethod;
 
-final class RouterFactory extends Factory
+final class RouterFactory
 {
 
-    public function __construct(private array $routesList)
+    public static function createRouterFromConfiguration(array $routes): Router
     {
-    }
-
-    #[Pure]
-    public function produce(array $options = []): Router
-    {
-        return new Router($options + $this->routesList);
+        return new Router(self::createRoutesFromConfiguration($routes));
     }
 
     /**
