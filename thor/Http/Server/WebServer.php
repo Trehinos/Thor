@@ -11,6 +11,15 @@ use Thor\Http\Routing\Router;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Http\Request\ServerRequestInterface;
 
+/**
+ * Handles a ServerRequestInterface and send a ResponseInterface.
+ *
+ * In comparison with an HttpServer, this server handles a Twig Environment.
+ *
+ * @package          Thor/Http/Server
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 class WebServer extends HttpServer
 {
 
@@ -25,6 +34,9 @@ class WebServer extends HttpServer
         parent::__construct($router, $security, $pdoCollection, $language);
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function route(ServerRequestInterface $request): Route|false|null
     {
         $ip = $request->getServerParams()['REMOTE_ADDR'] ?? 'localhost';
@@ -36,6 +48,11 @@ class WebServer extends HttpServer
         return $this->getRouter()->match($request, 'index.php');
     }
 
+    /**
+     * Gets the Twig Environment of the server.
+     *
+     * @return Environment
+     */
     public function getTwig(): Environment
     {
         return $this->twig;

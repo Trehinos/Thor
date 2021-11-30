@@ -8,6 +8,13 @@ use Thor\Http\Routing\Route;
 use Thor\Http\Response\ResponseInterface;
 use Thor\Http\Request\ServerRequestInterface;
 
+/**
+ * Handles a request by instantiating a controller and sending its response.
+ *
+ * @package Thor/Http/Server
+ * @copyright (2021) Sébastien Geldreich
+ * @license MIT
+ */
 class ControllerHandler implements RequestHandlerInterface
 {
 
@@ -15,7 +22,13 @@ class ControllerHandler implements RequestHandlerInterface
     {
     }
 
-
+    /**
+     * Instantiate the controller class from the Route given in the constructor and returns its response.
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return ResponseInterface
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $cClass = $this->route->getControllerClass();

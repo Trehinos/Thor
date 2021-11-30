@@ -6,13 +6,17 @@ use JetBrains\PhpStorm\Pure;
 use Thor\Http\{UriInterface,
     Server\HttpServer,
     Request\HttpMethod,
+    Response\HttpStatus,
     Response\ResponseInterface,
     Request\UploadedFileInterface,
     Request\ServerRequestInterface
 };
+use JetBrains\PhpStorm\ExpectedValues;
 
 /**
  * This abstract class is a base class for every controller of an HttpServer.
+ *
+ * It defines shortcuts to access Server and Request objects.
  *
  * @package          Thor/Http/Controllers
  * @copyright (2021) Sébastien Geldreich
@@ -21,8 +25,16 @@ use Thor\Http\{UriInterface,
 abstract class HttpController
 {
 
+    /**
+     * @var HttpMethod the method of the client's request.
+     */
     public HttpMethod $method;
+
+    /**
+     * @var UriInterface the Uri requested by the client.
+     */
     public UriInterface $uri;
+
     private array $get;
     private array $post;
     private array $server;
@@ -146,19 +158,35 @@ abstract class HttpController
     }
 
     /**
+     * Sends a redirect response with an Uri corresponding the route name.
      *
-     *
-     * @param string $routeName
-     * @param array  $params
-     * @param array  $query
+     * @param string     $routeName
+     * @param array      $params
+     * @param array      $query
+     * @param HttpStatus $status (default : 302 FOUND)
      *
      * @return ResponseInterface
      */
-    public function redirect(string $routeName, array $params = [], array $query = []): ResponseInterface
-    {
-        return $this->getServer()->redirect($routeName, $params, $query);
+    public function redirect(
+        string $routeName,
+        array $params = [],
+        array $query = [],
+        #[ExpectedValues([
+            HttpStatus::FOUND,
+            HttpStatus::SEE_OTHER,
+            HttpStatus::TEMPORARY_REDIRECT,
+            HttpStatus::PERMANENT_REDIRECT,
+        ])]
+        HttpStatus $status = HttpStatus::FOUND
+    ): ResponseInterface {
+        return $this->getServer()->redirect($routeName, $params, $query, $status);
     }
 
+    /**
+     * Gets the server which has executed this Controller.
+     *
+     * @return HttpServer
+     */
     public function getServer(): HttpServer
     {
         return $this->httpServer;

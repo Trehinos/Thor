@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @package Thor/Http
- * @copyright (2021) Sébastien Geldreich
- * @license MIT
- */
-
 namespace Thor\Http\Controllers;
 
 use Thor\Debug\Logger;
@@ -16,6 +10,13 @@ use Thor\Http\Server\WebServer;
 use Thor\Http\Response\Response;
 use Thor\Http\Response\HttpStatus;
 
+/**
+ * Base controller for web context.
+ *
+ * @package Thor/Http/Controller
+ * @copyright (2021) Sébastien Geldreich
+ * @license MIT
+ */
 abstract class WebController extends HttpController
 {
 
@@ -24,12 +25,17 @@ abstract class WebController extends HttpController
         parent::__construct($webServer);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getServer(): WebServer
     {
         return $this->webServer;
     }
 
     /**
+     * Returns a Response with twig rendering.
+     *
      * @throws SyntaxError
      * @throws RuntimeError
      * @throws LoaderError
