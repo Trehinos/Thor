@@ -2,15 +2,16 @@
 
 namespace Thor\Http\Server;
 
+use InvalidArgumentException;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Factories\ResponseFactory;
 use Thor\Security\SecurityInterface;
+use JetBrains\PhpStorm\ExpectedValues;
 use Thor\Database\PdoExtension\{PdoHandler, PdoRequester, PdoCollection};
 use Thor\Http\{Uri,
     UriInterface,
     Routing\Route,
     Routing\Router,
-    Response\Response,
     Response\HttpStatus,
     Response\ResponseInterface,
     Request\ServerRequestInterface
@@ -44,14 +45,11 @@ class HttpServer implements RequestHandlerInterface
                 LogLevel::DEBUG,
                 ['method' => $request->getMethod()->value]
             );
-            return Response::createFromStatus(
-                HttpStatus::METHOD_NOT_ALLOWED,
-                ['Allow' => $this->router->getErrorRoute()->getMethod()->value]
-            );
+            return ResponseFactory::methodNotAllowed($this->router->getErrorRoute()->getMethod()->value);
         }
         if (null === $route) {
             Logger::write(' -> No route matched', LogLevel::DEBUG);
-            return Response::createFromStatus(HttpStatus::NOT_FOUND);
+            return ResponseFactory::notFound();
         }
 
         $controllerHandler = new ControllerHandler($this, $route);
@@ -97,14 +95,30 @@ class HttpServer implements RequestHandlerInterface
         return $this->language;
     }
 
-    public function redirect(string $routeName, array $params = [], array $query = []): ResponseInterface
-    {
-        return $this->redirectTo($this->generateUrl($routeName, $params, $query));
+    public function redirect(
+        string $routeName,
+        array $params = [],
+        array $query = [],
+        #[ExpectedValues([
+            HttpStatus::FOUND,
+            HttpStatus::SEE_OTHER,
+            HttpStatus::TEMPORARY_REDIRECT,
+            HttpStatus::PERMANENT_REDIRECT,
+        ])]
+        HttpStatus $status = HttpStatus::FOUND
+    ): ResponseInterface {
+        return $this->redirectTo($this->generateUrl($routeName, $params, $query), $status);
     }
 
-    public function redirectTo(UriInterface $uri): ResponseInterface
+    public function redirectTo(UriInterface $uri, HttpStatus $status = HttpStatus::FOUND): ResponseInterface
     {
-        return ResponseFactory::found($uri);
+        return match ($status) {
+            HttpStatus::FOUND => ResponseFactory::found($uri),
+            HttpStatus::SEE_OTHER => ResponseFactory::seeOther($uri),
+            HttpStatus::TEMPORARY_REDIRECT => ResponseFactory::temporaryRedirect($uri),
+            HttpStatus::PERMANENT_REDIRECT => ResponseFactory::permanentRedirect($uri),
+            default => throw new InvalidArgumentException()
+        };
     }
 
     public function generateUrl(string $routeName, array $params = [], array $query = []): UriInterface
