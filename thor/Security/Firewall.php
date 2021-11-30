@@ -72,6 +72,6 @@ class Firewall implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return ResponseFactory::createRedirection($this->router->getUrl($this->redirect));
+        return ResponseFactory::found($this->router->getUrl($this->redirect));
     }
 }

@@ -1,19 +1,18 @@
 <?php
 
+namespace Thor\Http\Response;
+
+use JetBrains\PhpStorm\Pure;
+use Thor\Http\{Message, ProtocolVersion};
+use Thor\Stream\{Stream, StreamInterface};
+
 /**
- * @package          Thor/Http
+ * Describes a Response of an HTTP Request.
+ *
+ * @package          Thor/Http/Response
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-
-namespace Thor\Http\Response;
-
-use Thor\Http\Message;
-use Thor\Stream\Stream;
-use JetBrains\PhpStorm\Pure;
-use Thor\Http\ProtocolVersion;
-use Thor\Stream\StreamInterface;
-
 class Response extends Message implements ResponseInterface
 {
 
@@ -27,6 +26,16 @@ class Response extends Message implements ResponseInterface
         parent::__construct($version, $headers, $body);
     }
 
+    /**
+     * Creates a new Response with default parameters.
+     *
+     * @param string          $body
+     * @param HttpStatus      $status
+     * @param array           $headers
+     * @param ProtocolVersion $version
+     *
+     * @return static
+     */
     public static function create(
         string $body,
         HttpStatus $status = HttpStatus::OK,
@@ -36,6 +45,17 @@ class Response extends Message implements ResponseInterface
         return new self($version, $headers, Stream::create($body), $status);
     }
 
+    /**
+     * Creates a Response from its status.
+     *
+     * The body will be filled with the reason phrase corresponding the status.
+     *
+     * @param HttpStatus      $status
+     * @param array           $headers
+     * @param ProtocolVersion $version
+     *
+     * @return static
+     */
     public static function createFromStatus(
         HttpStatus $status,
         array $headers = [],
@@ -44,22 +64,33 @@ class Response extends Message implements ResponseInterface
         return new self($version, $headers, Stream::create($status->normalized()), $status);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getStatusCode(): int
     {
         return $this->status->value;
     }
 
-    #[Pure]
+    /**
+     * @inheritDoc
+     */
     public function withStatus(HttpStatus $status): static
     {
         return new self($this->getProtocolVersion(), $this->getHeaders(), $this->getBody(), $status);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getReasonPhrase(): string
     {
         return $this->status->normalized();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getStatus(): HttpStatus
     {
         return $this->status;

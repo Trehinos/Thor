@@ -1,15 +1,16 @@
 <?php
 
-/**
- * @package Thor/Html
- * @copyright (2021) Sébastien Geldreich
- * @license MIT
- */
-
 namespace Thor\Html\Form;
 
 use Thor\Html\HtmlInterface;
 
+/**
+ *
+ *
+ * @package Thor/Html/From
+ * @copyright (2021) Sébastien Geldreich
+ * @license MIT
+ */
 interface FieldInterface extends HtmlInterface
 {
 

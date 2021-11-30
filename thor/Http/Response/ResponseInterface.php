@@ -58,7 +58,6 @@ interface ResponseInterface extends MessageInterface
      * @param HttpStatus $status
      *
      * @return static
-     * @throws InvalidArgumentException For invalid status code arguments.
      */
     public function withStatus(HttpStatus $status): static;
 

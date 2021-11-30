@@ -104,7 +104,7 @@ class HttpServer implements RequestHandlerInterface
 
     public function redirectTo(UriInterface $uri): ResponseInterface
     {
-        return ResponseFactory::createRedirection($uri);
+        return ResponseFactory::found($uri);
     }
 
     public function generateUrl(string $routeName, array $params = [], array $query = []): UriInterface

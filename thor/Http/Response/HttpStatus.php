@@ -2,7 +2,17 @@
 
 namespace Thor\Http\Response;
 
-/** @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml */
+/**
+ * Defines an HTTP status code.
+ *
+ * Every valid HTTP status code defined by the IANA is declared in this enumeration.
+ *
+ * @package          Thor/Http/Response
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ *
+ * @link             http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+ */
 enum HttpStatus: int
 {
     case CONTINUE = 100;
