@@ -48,7 +48,7 @@ class BaseUser implements IdentityInterface
      */
     public function isPassword(string $clearPassword): bool
     {
-        return PasswordHasher::verify($clearPassword, $this->hash);
+        return $this->hasPassword() === false || PasswordHasher::verify($clearPassword, $this->hash);
     }
 
 }

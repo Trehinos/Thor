@@ -4,11 +4,10 @@ security-factory: Thor\Factories\SecurityFactory:produceSecurity
 
 # option : firewall, protect routes
 firewall:
-    -   pattern: /
-        redirect: ~ # public page to redirect if a status_forbidden is triggered, null -> login
+    -   pattern: /index.php
+        redirect: ~
         login-route: login
         logout-route: logout
         check-route: check
-        exclude-path:
-            - ''
-            - ''
+        exclude-route: []
+        exclude-path: []

@@ -39,7 +39,7 @@ final class SecurityFactory
             logoutRoute:    $firewallConfig['logout-route'] ?? 'logout',
             checkRoute:     $firewallConfig['check-route'] ?? 'check',
             excludedRoutes: $firewallConfig['exclude-route'] ?? [],
-            excludedPaths:  $firewallConfig['exclude'] ?? [],
+            excludedPaths:  $firewallConfig['exclude-path'] ?? [],
         );
     }
 
