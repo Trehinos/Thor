@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Represent a PdoRow user implementing UserInterface.
- *
- * @package          Thor/Api
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor\Security\Identity;
 
 use Thor\Security\{PasswordHasher};
@@ -19,6 +11,13 @@ use Thor\Database\PdoTable\{PdoRowTrait,
     Attributes\PdoColumn
 };
 
+/**
+ * This extension of BaseUser gives a way to have an Identity stored in DB.
+ *
+ * @package Thor/Security/Identity
+ * @copyright (2021) Sébastien Geldreich
+ * @license MIT
+ */
 #[PdoTable('user', ['id'], 'id')]
 #[PdoColumn('id', 'INTEGER', 'integer', false)]
 #[PdoColumn('username', 'VARCHAR(255)', 'string', false)]

@@ -1,17 +1,19 @@
 <?php
 
-/**
- * @package          Thor
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
- */
-
 namespace Thor;
 
 use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
 use Throwable;
 
+/**
+ * Main class of the framework. It loads the global configuration, sets the logger level
+ * and executes the kernel corresponding the calling entry point.
+ *
+ * @package          Thor
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class Application implements KernelInterface
 {
 
@@ -19,6 +21,11 @@ final class Application implements KernelInterface
     {
     }
 
+    /**
+     * Creates the application with the configuration.
+     *
+     * @return static
+     */
     public static function create(): static
     {
         global $thor_kernel;
@@ -26,6 +33,13 @@ final class Application implements KernelInterface
         return self::createFromConfiguration(['thor_kernel' => $thor_kernel] + $config);
     }
 
+    /**
+     * Creates the application with given configuration.
+     *
+     * @param array $config
+     *
+     * @return static
+     */
     public static function createFromConfiguration(array $config = []): static
     {
         Application::setLoggerLevel(
@@ -35,6 +49,14 @@ final class Application implements KernelInterface
         return new self(Application::getKernel($config['thor_kernel'] ?? ''));
     }
 
+    /**
+     * Sets the static logger level.
+     *
+     * @param LogLevel $logLevel
+     * @param string   $logPath
+     *
+     * @return void
+     */
     public static function setLoggerLevel(LogLevel $logLevel, string $logPath): void
     {
         Logger::setDefaultLogger($logLevel, $logPath);
@@ -48,6 +70,13 @@ final class Application implements KernelInterface
         ini_set('date.timezone', $config['timezone'] ?? 'Europe/Paris');
     }
 
+    /**
+     * Gets the kernel corresponding the $thor_kernel string.
+     *
+     * @param string|null $thor_kernel
+     *
+     * @return KernelInterface|null
+     */
     public static function getKernel(?string $thor_kernel = null): ?KernelInterface
     {
         $kernel = null;
@@ -67,6 +96,15 @@ final class Application implements KernelInterface
         return $kernel;
     }
 
+    /**
+     * Executes the kernel.
+     *
+     * This function catches any Throwable not cached by a nested function to log it and displays it if
+     *
+     * `Thor::isDev() === true`
+     *
+     * @return void
+     */
     public function execute(): void
     {
         try {

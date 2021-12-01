@@ -7,7 +7,7 @@ use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Security\{Firewall, HttpSecurity, SecurityInterface};
 
 /**
- * A factory the security context from configuration.
+ * A factory to create the security context and firewalls from configuration.
  *
  * @package          Thor/Database/PdoTable
  * @copyright (2021) Sébastien Geldreich

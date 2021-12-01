@@ -5,6 +5,13 @@ namespace Thor\Stream;
 use RuntimeException;
 use InvalidArgumentException;
 
+/**
+ * Provides an object-oriented style for stream operations.
+ *
+ * @package          Thor/Stream
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 class Stream implements StreamInterface
 {
 
@@ -24,6 +31,14 @@ class Stream implements StreamInterface
         }
     }
 
+    /**
+     * Copy the content of the Stream into the returned string.
+     *
+     * @param StreamInterface $stream
+     * @param int             $maxLen
+     *
+     * @return string
+     */
     public static function copyToString(StreamInterface $stream, int $maxLen = -1): string
     {
         $buffer = '';
@@ -36,6 +51,9 @@ class Stream implements StreamInterface
         return $buffer;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function eof(): bool
     {
         if (null === $this->stream) {
@@ -45,6 +63,9 @@ class Stream implements StreamInterface
         return feof($this->stream);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function read(int $length): string
     {
         if (!isset($this->stream)) {
@@ -65,11 +86,17 @@ class Stream implements StreamInterface
         return $read;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function isReadable(): bool
     {
         return preg_match(self::READABLE_MODES, $this->getMetadata('mode')) === 1;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getMetadata(?string $key = null): mixed
     {
         if (null === $this->stream) {
@@ -82,6 +109,16 @@ class Stream implements StreamInterface
         return $meta[$key] ?? null;
     }
 
+    /**
+     * Copy a Stream into another Stream.
+     *
+     * @param StreamInterface $source
+     * @param StreamInterface $dest
+     * @param int             $maxLen
+     * @param int             $bufferSize
+     *
+     * @return void
+     */
     public static function copyToStream(
         StreamInterface $source,
         StreamInterface $dest,
@@ -108,6 +145,9 @@ class Stream implements StreamInterface
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function write(string $string): int
     {
         if (!isset($this->stream)) {
@@ -122,12 +162,59 @@ class Stream implements StreamInterface
         return $result;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function isWritable(): bool
     {
         return preg_match(self::WRITABLE_MODES, $this->getMetadata('mode')) === 1;
     }
 
     /**
+     * Creates a new Stream object from resource.
+     *
+     * @param resource $resource
+     *
+     * @return static
+     */
+    public static function createFromResource($resource): self
+    {
+        return new self($resource);
+    }
+
+    /**
+     * Creates a new readable Stream with specified data.
+     *
+     * @param string $data
+     *
+     * @return static
+     */
+    public static function create(string $data): self
+    {
+        $file = self::createFromFile('php://temp', 'r+');
+        $file->write($data);
+        $file->rewind();
+        return $file;
+    }
+
+    /**
+     * Opens a file and returns the corresponding Stream.
+     *
+     * @param string $filename
+     * @param string $mode
+     *
+     * @return static
+     */
+    public static function createFromFile(string $filename, string $mode): self
+    {
+        return new self(self::fileOpen($filename, $mode));
+    }
+
+    /**
+     * Open a file and returns the resource stream.
+     *
+     * This is a utility function.
+     *
      * @param string $filename
      * @param string $mode
      *
@@ -170,73 +257,16 @@ class Stream implements StreamInterface
         return $handle;
     }
 
-    public static function createFromFile(string $filename, string $mode): self
-    {
-        return new self(self::fileOpen($filename, $mode));
-    }
-
     /**
-     * @param resource $resource
-     *
-     * @return static
+     * @inheritDoc
      */
-    public static function createFromResource($resource): self
+    public function rewind(): void
     {
-        return new self($resource);
-    }
-
-    public static function create(string $data): self
-    {
-        $file = self::createFromFile('php://temp', 'r+');
-        $file->write($data);
-        $file->rewind();
-        return $file;
-    }
-
-    public function __destruct()
-    {
-        $this->close();
-    }
-
-    public function close(): void
-    {
-        if (null !== $this->stream) {
-            fclose($this->stream);
-            $this->detach();
-        }
+        $this->seek(0);
     }
 
     /**
-     * @return resource|null
-     */
-    public function detach()
-    {
-        if (null === $this->stream) {
-            return null;
-        }
-        $result = $this->stream;
-        $this->stream = null;
-        return $result;
-    }
-
-    public function __toString(): string
-    {
-        if ($this->isSeekable()) {
-            $this->seek(0);
-        }
-        return $this->getContents();
-    }
-
-    public function isSeekable(): bool
-    {
-        return $this->getMetadata('seekable') ?? false;
-    }
-
-    /**
-     * @param int $offset
-     * @param int $whence
-     *
-     * @throws RuntimeException
+     * @inheritDoc
      */
     public function seek(int $offset, int $whence = SEEK_SET): void
     {
@@ -251,6 +281,57 @@ class Stream implements StreamInterface
         }
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function isSeekable(): bool
+    {
+        return $this->getMetadata('seekable') ?? false;
+    }
+
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function close(): void
+    {
+        if (null !== $this->stream) {
+            fclose($this->stream);
+            $this->detach();
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function detach()
+    {
+        if (null === $this->stream) {
+            return null;
+        }
+        $result = $this->stream;
+        $this->stream = null;
+        return $result;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function __toString(): string
+    {
+        if ($this->isSeekable()) {
+            $this->seek(0);
+        }
+        return $this->getContents();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getContents(): string
     {
         if (null === $this->stream) {
@@ -259,6 +340,9 @@ class Stream implements StreamInterface
         return stream_get_contents($this->stream) ?: '';
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getSize(): ?int
     {
         if (null === $this->stream) {
@@ -268,16 +352,14 @@ class Stream implements StreamInterface
         return $stats['size'] ?? null;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function tell(): int
     {
         if (null === $this->stream) {
             throw new RuntimeException('Stream is detached');
         }
         return ftell($this->stream) ?: 0;
-    }
-
-    public function rewind(): void
-    {
-        $this->seek(0);
     }
 }

@@ -1,16 +1,18 @@
 <?php
 
-/**
- * @package Thor
- * @copyright (2021) Sébastien Geldreich
- * @license MIT
- */
-
 namespace Thor;
 
 use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * This class loads configuration files from thor/res/{static/config}/*yml files
+ * and keep their in memory accessible statically.
+ *
+ * @package Thor
+ * @copyright (2021) Sébastien Geldreich
+ * @license MIT
+ */
 final class Configuration
 {
 
@@ -20,6 +22,11 @@ final class Configuration
     {
     }
 
+    /**
+     * Loads the configuration for Http context (api.php entry point).
+     *
+     * @return array
+     */
     #[ArrayShape([
         'config' => "array|mixed",
         'database' => "array|mixed",
@@ -35,6 +42,11 @@ final class Configuration
             ];
     }
 
+    /**
+     * Loads the configuration for Web context (index.php entry point).
+     *
+     * @return array
+     */
     #[ArrayShape([
         'config' => "array|mixed",
         'database' => "array|mixed",
@@ -51,6 +63,14 @@ final class Configuration
             ];
     }
 
+    /**
+     * Gets a configuration set.
+     *
+     * @param array $configList
+     * @param array $staticList
+     *
+     * @return array
+     */
     public function getConfigurationSet(array $configList, array $staticList): array
     {
         foreach (
@@ -74,6 +94,11 @@ final class Configuration
         );
     }
 
+    /**
+     * Loads the configuration for Console context (thor.php entry point).
+     *
+     * @return array
+     */
     #[ArrayShape([
         'config' => "array|mixed",
         'database' => "array|mixed",
@@ -88,6 +113,15 @@ final class Configuration
             ];
     }
 
+    /**
+     * Gets the configuration of a daemon.
+     *
+     * If no filename is given, loads all daemons configurations.
+     *
+     * @param string|null $fileName
+     *
+     * @return array
+     */
     public static function getDaemonsConfig(?string $fileName = null): array
     {
         $files = glob(Globals::STATIC_DIR . 'daemons/*.yml');
@@ -102,17 +136,37 @@ final class Configuration
         return $config;
     }
 
+    /**
+     * Loads one configuration or static file.
+     *
+     * @param string $configName
+     * @param bool   $typeStatic
+     *
+     * @return array
+     */
     public function loadConfig(string $configName, bool $typeStatic = false): array
     {
         return $this->configurations[$configName] ??=
             Yaml::parseFile(($typeStatic ? Globals::STATIC_DIR : Globals::CONFIG_DIR) . "$configName.yml");
     }
 
+    /**
+     * Shortcut to load one static file.
+     *
+     * @param string $configName
+     *
+     * @return array
+     */
     public function loadStatic(string $configName): array
     {
         return $this->loadConfig($configName, true);
     }
 
+    /**
+     * Gets the current static instance.
+     *
+     * @return static
+     */
     public static function getInstance(): self
     {
         return self::$defaultInstance ??= new self();

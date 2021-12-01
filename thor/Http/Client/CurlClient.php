@@ -3,13 +3,23 @@
 namespace Thor\Http\Client;
 
 use CurlHandle;
-use Thor\Http\Response\Response;
-use Thor\Http\Request\HttpMethod;
-use Thor\Http\Response\HttpStatus;
 use Thor\Factories\ResponseFactory;
-use Thor\Http\Request\RequestInterface;
-use Thor\Http\Response\ResponseInterface;
+use Thor\Http\{Response\Response,
+    Request\HttpMethod,
+    Response\HttpStatus,
+    Request\RequestInterface,
+    Response\ResponseInterface
+};
 
+/**
+ * Provides an implementation of ClientInterface to send requests with Curl.
+ *
+ * @see              MessageInterface
+ *
+ * @package          Thor/Http/Client
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class CurlClient implements ClientInterface
 {
 
@@ -22,13 +32,25 @@ final class CurlClient implements ClientInterface
         $this->curl = curl_init();
     }
 
+    /**
+     * Sends the specified request and returns the server's response.
+     *
+     * @param RequestInterface $request
+     *
+     * @return ResponseInterface
+     */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
         return $this
-                ->prepare($request)
-                ->execute() ?? ResponseFactory::notFound();
+                   ->prepare($request)
+                   ->execute() ?? ResponseFactory::notFound();
     }
 
+    /**
+     * Sends the request to the server.
+     *
+     * @return ResponseInterface|null
+     */
     public function execute(): ?ResponseInterface
     {
         if ($this->preparedRequest === null) {
@@ -41,6 +63,13 @@ final class CurlClient implements ClientInterface
         return Response::create($body, HttpStatus::from($status), $this->responseHeaders);
     }
 
+    /**
+     * Prepares a request to be sent with `execute()`.
+     *
+     * @param RequestInterface $request
+     *
+     * @return $this
+     */
     public function prepare(RequestInterface $request): self
     {
         $this->preparedRequest = $request;
@@ -71,6 +100,11 @@ final class CurlClient implements ClientInterface
         return $this;
     }
 
+    /**
+     * Returns the CurlHandle of this client.
+     *
+     * @return CurlHandle
+     */
     public function getCurlHandle(): CurlHandle
     {
         return $this->curl;

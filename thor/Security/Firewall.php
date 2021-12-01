@@ -4,11 +4,22 @@ namespace Thor\Security;
 
 use JetBrains\PhpStorm\Immutable;
 use Thor\Factories\ResponseFactory;
-use Thor\Http\Request\ServerRequestInterface;
-use Thor\Http\Response\{Response, ResponseInterface};
-use Thor\Http\Routing\Router;
-use Thor\Http\Server\{RequestHandlerInterface};
+use Thor\Factories\SecurityFactory;
+use Thor\Http\{Routing\Router,
+    Response\ResponseInterface,
+    Request\ServerRequestInterface,
+    Server\RequestHandlerInterface
+};
 
+/**
+ * Thor firewall.
+ *
+ * @see              SecurityFactory to instantiate from configuration.
+ *
+ * @package          Thor/Security
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 class Firewall implements RequestHandlerInterface
 {
 
@@ -33,6 +44,13 @@ class Firewall implements RequestHandlerInterface
     ) {
     }
 
+    /**
+     * True if the Request will cause a redirection.
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return bool
+     */
     public function redirect(ServerRequestInterface $request): bool
     {
         if (!str_starts_with($request->getUri()->getPath(), $this->pattern)) {
@@ -47,16 +65,28 @@ class Firewall implements RequestHandlerInterface
         return !$this->isAuthenticated;
     }
 
+    /**
+     * True if the Request is excluded with its path.
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return bool
+     */
     public function pathIsExcluded(ServerRequestInterface $request): bool
     {
         return array_reduce(
             $this->excludedPaths,
             fn(bool $carry, string $excludePath) => $carry
-                || str_starts_with($request->getUri()->getPath(), $excludePath),
+                                                    || str_starts_with($request->getUri()->getPath(), $excludePath),
             false
         );
     }
 
+    /**
+     * True if the matched route of the router is in this firewall's excluded routes.
+     *
+     * @return bool
+     */
     public function routeIsExcluded(): bool
     {
         return in_array(
@@ -70,6 +100,9 @@ class Firewall implements RequestHandlerInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return ResponseFactory::found($this->router->getUrl($this->redirect));

@@ -23,7 +23,7 @@ class HtmlTag implements HtmlInterface
     private ?string $textContent = null;
 
     /**
-     * FormType constructor.
+     * Html node constructor.
      *
      * @param string      $tag
      * @param bool        $autoClose
@@ -46,11 +46,28 @@ class HtmlTag implements HtmlInterface
         }
     }
 
+    /**
+     * Creates a `<DIV></DIV>` element.
+     *
+     * @param array $attrs
+     * @param array $children
+     *
+     * @return HtmlTag
+     */
     public static function div(array $attrs = [], array $children = []): HtmlTag
     {
         return self::tag('div', $attrs, $children);
     }
 
+    /**
+     * Creates a custom tag.
+     *
+     * @param string $tag
+     * @param array  $attrs
+     * @param array  $children
+     *
+     * @return HtmlTag
+     */
     public static function tag(string $tag, array $attrs = [], array $children = []): HtmlTag
     {
         $div = new self($tag, false, $attrs);
@@ -60,6 +77,26 @@ class HtmlTag implements HtmlInterface
         return $div;
     }
 
+    /**
+     * Creates a `<button></button>` element.
+     *
+     * @param string $content
+     * @param string $onclick
+     * @param array  $attrs
+     *
+     * @return HtmlTag
+     */
+    public static function button(string $content, string $onclick = '', array $attrs = []): HtmlTag
+    {
+        $button = self::tag('button', ['onclick' => $onclick] + $attrs);
+        $button->setContent($content);
+        return $button;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function addChild(HtmlInterface $child): void
     {
         if ($this->autoClose) {
@@ -70,13 +107,9 @@ class HtmlTag implements HtmlInterface
         $this->children[] = $child;
     }
 
-    public static function button(string $content, string $onclick = '', array $attrs = []): HtmlTag
-    {
-        $button = self::tag('button', ['onclick' => $onclick] + $attrs);
-        $button->setContent($content);
-        return $button;
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function setContent(string $content): void
     {
         if ($this->autoClose) {
@@ -98,16 +131,25 @@ class HtmlTag implements HtmlInterface
         $this->attrs['id'] = "$prefix{$this->tag}_" .  bin2hex(random_bytes(4));
     }
 
+    /**
+     * @inheritDoc
+     */
     public function setAttr(string $name, $value): void
     {
         $this->attrs[$name] = $value;
     }
 
-    public function getAttr(string $name): mixed
+    /**
+     * @inheritDoc
+     */
+    public function getAttr(string $name): string|bool|null
     {
         return $this->attrs[$name] ?? null;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function toHtml(): string
     {
         $closeTag = ($this->autoClose && $this->tag !== '') ? '' : "</{$this->tag}>";
@@ -140,6 +182,9 @@ class HtmlTag implements HtmlInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getContent(): string
     {
         if ($this->autoClose) {
@@ -154,13 +199,16 @@ class HtmlTag implements HtmlInterface
             );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getChildren(): array
     {
         return $this->children;
     }
 
     /**
-     * @param HtmlInterface[] $children
+     * @inheritDoc
      */
     public function setChildren(array $children): void
     {
