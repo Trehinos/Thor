@@ -21,12 +21,27 @@ final class HttpServerFactory
     public static function createHttpServerFromConfiguration(array $config): HttpServer
     {
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
-        return self::produce(
+        $server = self::produce(
             $router = RouterFactory::createRouterFromConfiguration($config['api-routes']),
-            SecurityFactory::produceSecurity($router, new PdoRequester($pdoCollection->get()), $config['security']),
+            null,
             $pdoCollection,
             $config['language']
         );
+
+        $server->setSecurity(self::produceSecurity($server, $config['security']));
+
+        return $server;
+    }
+
+    public static function produceSecurity(HttpServer $server, array $config): ?SecurityInterface
+    {
+        if (!($config['security'] ?? false)) {
+            return null;
+        }
+        $factoryString = $config['security-factory'];
+        [$factoryClass, $factoryMethod] = explode(':', $factoryString);
+
+        return $factoryClass::$factoryMethod($server, $config);
     }
 
     public static function produce(

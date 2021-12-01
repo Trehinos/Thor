@@ -3,7 +3,7 @@
 namespace Thor\Factories;
 
 use Thor\Http\Routing\Router;
-use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Http\Server\HttpServer;
 use Thor\Security\{Firewall, HttpSecurity, SecurityInterface};
 
 /**
@@ -16,17 +16,17 @@ use Thor\Security\{Firewall, HttpSecurity, SecurityInterface};
 final class SecurityFactory
 {
 
-    public static function produceSecurity(Router $router, PdoRequester $requester, array $config): ?SecurityInterface
+    public static function produceSecurity(HttpServer $server, array $config): ?SecurityInterface
     {
         if (!($config['security'] ?? null)) {
             return null;
         }
         $firewalls = [];
         foreach ($config['firewall'] ?? [] as $firewallConfig) {
-            $firewalls[] = self::produceFirewall($router, $firewallConfig);
+            $firewalls[] = self::produceFirewall($server->getRouter(), $firewallConfig);
         }
 
-        return new HttpSecurity($requester, $firewalls);
+        return new HttpSecurity($server->getRequester($config['db-handler'] ?? 'default'), $firewalls);
     }
 
     public static function produceFirewall(Router $router, array $firewallConfig): Firewall

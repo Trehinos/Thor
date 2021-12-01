@@ -1,4 +1,6 @@
 security: true
+pdo-handler: default
+security-factory: Thor\Factories\SecurityFactory:produceSecurity
 
 # option : firewall, protect routes
 firewall:

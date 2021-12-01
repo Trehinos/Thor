@@ -2,11 +2,10 @@
 
 namespace Thor\Factories;
 
-use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Http\Routing\Router;
 use Thor\Http\Server\WebServer;
-use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Security\SecurityInterface;
+use Thor\Database\PdoExtension\PdoCollection;
 
 /**
  * A factory to create the WebServer.
@@ -21,13 +20,17 @@ final class WebServerFactory
     public static function creatWebServerFromConfiguration(array $config): WebServer
     {
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
-        return self::produce(
+        $server = self::produce(
             $router = RouterFactory::createRouterFromConfiguration($config['web-routes']),
-            SecurityFactory::produceSecurity($router, new PdoRequester($pdoCollection->get()), $config['security']),
+            null,
             $pdoCollection,
             $config['language'],
             $config['twig']
         );
+
+        $server->setSecurity(HttpServerFactory::produceSecurity($server, $config['security']));
+
+        return $server;
     }
 
     public static function produce(

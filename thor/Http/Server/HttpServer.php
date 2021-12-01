@@ -137,6 +137,14 @@ class HttpServer implements RequestHandlerInterface
     }
 
     /**
+     * Sets the security context of the server.
+     */
+    public function setSecurity(SecurityInterface|null $security): void
+    {
+        $this->security = $security;
+    }
+
+    /**
      * Returns the security context of the server.
      *
      * @return SecurityInterface|null
