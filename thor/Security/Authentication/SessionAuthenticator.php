@@ -33,6 +33,7 @@ class SessionAuthenticator implements AuthenticatorInterface
     public function quash(): void
     {
         Session::write($this->key, null);
+        Session::delete();
     }
 
     /**

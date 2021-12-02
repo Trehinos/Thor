@@ -77,7 +77,7 @@ final class CurlClient implements ClientInterface
         curl_setopt_array($this->curl, [
             CURLOPT_USERAGENT      => 'Thor/CurlClient',
             CURLOPT_URL            => $request->getRequestTarget(),
-            CURLOPT_HTTPHEADER     => $request->getHeaders(),
+            CURLOPT_HTTPHEADER     => self::toHeadersLines($request->getHeaders()),
             CURLOPT_HTTPGET        => $request->getMethod() === HttpMethod::GET,
             CURLOPT_POST           => $request->getMethod() === HttpMethod::POST,
             CURLOPT_RETURNTRANSFER => true,
@@ -98,6 +98,17 @@ final class CurlClient implements ClientInterface
         }
 
         return $this;
+    }
+    public static function toHeadersLines(array $headers): array
+    {
+        $headersLines = array_map(
+            fn (string $key, array|string $value) => "$key: " . (is_string($value) ? $value : implode(', ', $value)),
+            array_keys($headers),
+            array_values($headers),
+        );
+
+        dump($headersLines);
+        return $headersLines;
     }
 
     /**
