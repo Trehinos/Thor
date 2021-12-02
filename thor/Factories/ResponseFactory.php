@@ -280,7 +280,7 @@ final class ResponseFactory
      */
     public static function permanentRedirect(UriInterface $uri): ResponseInterface
     {
-        return Response::create('', HttpStatus::TEMPORARY_REDIRECT, ['Location' => "$uri"]);
+        return Response::create('', HttpStatus::PERMANENT_REDIRECT, ['Location' => "$uri"]);
     }
 
     /**
