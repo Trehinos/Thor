@@ -3,7 +3,6 @@
 namespace Thor\Security;
 
 use Thor\Database\{PdoTable\CrudHelper, PdoExtension\PdoRequester};
-use Thor\Http\{Response\ResponseInterface, Request\ServerRequestInterface};
 use Thor\Security\{Identity\DbUser, Identity\DbUserProvider, Authentication\SessionAuthenticator};
 
 /**
@@ -15,6 +14,9 @@ use Thor\Security\{Identity\DbUser, Identity\DbUserProvider, Authentication\Sess
  */
 class HttpSecurity extends Security
 {
+
+    use ProtectWithFirewalls;
+
     public function __construct(
         PdoRequester $requester,
         array $firewalls = []
@@ -26,17 +28,4 @@ class HttpSecurity extends Security
         );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function protect(ServerRequestInterface $request): ?ResponseInterface
-    {
-        foreach ($this->getFirewalls() as $firewall) {
-            $firewall->isAuthenticated = $this->getAuthenticator()->isAuthenticated();
-            if ($firewall->redirect($request)) {
-                return $firewall->handle($request);
-            }
-        }
-        return null;
-    }
 }
