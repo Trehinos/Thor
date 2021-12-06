@@ -22,8 +22,15 @@ final class Api extends HttpController
     #[Route('api-index', '/', HttpMethod::GET)]
     public function index(): Response
     {
-        $test = RequestFactory::put(Uri::create("#test"), ['testVar' => 'testValue']);
-        echo nl2br($test->getRaw());
+        $requestTest = RequestFactory::formPost(Uri::create('test.com/test.php#test'), [
+            'Truc' => 'Bidule',
+            'Machin' => 'Chose'
+        ]);
+        echo nl2br($requestTest->getRaw());
+
+        echo "<hr>";
+        $responseTest = ResponseFactory::json(['test-response' => 'This is a test...']);
+        echo nl2br($responseTest->getRaw());
         exit;
 
         return ResponseFactory::json(['test-response' => 'This is a test...']);

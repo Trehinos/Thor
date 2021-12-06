@@ -56,7 +56,6 @@ class Request extends Message implements RequestInterface
         return new self($version, $headers, Stream::create($data), $method, $target);
     }
 
-
     /**
      * Gets the string corresponding the current request.
      *
@@ -68,13 +67,14 @@ class Request extends Message implements RequestInterface
             "{$this->getMethod()->value} {$this->getUri()} HTTP/{$this->getProtocolVersion()->value}\r\n";
 
         foreach ($this->getHeaders() as $name => $value) {
-            $requestStr .= "$name: " . implode(', ', $value) . "\r\n";
+            $requestStr .= "$name: " . (is_array($value) ?  implode(', ', $value) : $value) . "\r\n";
         }
 
         $requestStr .= "\r\n" . $this->getBody()->getContents();
 
         return $requestStr;
     }
+
     /**
      * @inheritDoc
      */

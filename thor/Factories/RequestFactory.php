@@ -5,22 +5,38 @@ namespace Thor\Factories;
 use Thor\Http\UriInterface;
 use Thor\Http\Request\Request;
 use Thor\Http\Request\HttpMethod;
-use Thor\Http\Request\RequestInterface;
 
 class RequestFactory
 {
 
-    public static function get(UriInterface $uri, array $headers = []): RequestInterface
+    public static function multipart(array $data, string $boundary, string $contentDisposition = 'form-data'): string
+    {
+        return implode(
+            "\n",
+            array_map(
+                fn(string $fieldName, string $fieldValue) => <<<§
+                        --$boundary
+                        Content-Disposition: $contentDisposition; name="$fieldName"
+                        
+                        $fieldValue
+                        §,
+                array_keys($data),
+                array_values($data)
+            )
+        ) . "\n--$boundary--";
+    }
+
+    public static function get(UriInterface $uri, array $headers = []): Request
     {
         return Request::create(HttpMethod::GET, $uri, '', $headers);
     }
 
-    public static function head(UriInterface $uri, array $headers = []): RequestInterface
+    public static function head(UriInterface $uri, array $headers = []): Request
     {
         return Request::create(HttpMethod::HEAD, $uri, '', $headers);
     }
 
-    public static function post(UriInterface $uri, array $data, array $headers = []): RequestInterface
+    public static function post(UriInterface $uri, array $data, array $headers = []): Request
     {
         return Request::create(
             HttpMethod::POST,
@@ -35,32 +51,19 @@ class RequestFactory
         array $data,
         array $headers = [],
         ?string $boundary = null,
-    ): RequestInterface {
-        $boundary ??= hex2bin(random_bytes(4));
+    ): Request {
+        $boundary ??= bin2hex(random_bytes(4));
         return Request::create(
             HttpMethod::POST,
             $uri,
-            implode(
-                "\n",
-                array_map(
-                    fn(string $fieldName, string $fieldValue) => <<<§
-                        --$boundary
-                        Content-Disposition: form-data; name="$fieldName"
-                        
-                        $fieldValue
-                        
-                        §,
-                    array_keys($data),
-                    array_keys($data)
-                )
-            ) . "--$boundary--",
+            self::multipart($data, $boundary),
             [
                 'Content-Type' => "multipart/form-data;boundary=\"$boundary\"",
             ] + $headers
         );
     }
 
-    public static function jsonPost(UriInterface $uri, array $data, array $headers = []): RequestInterface
+    public static function jsonPost(UriInterface $uri, array $data, array $headers = []): Request
     {
         return Request::create(
             HttpMethod::POST,
@@ -70,13 +73,13 @@ class RequestFactory
         );
     }
 
-    public static function put(UriInterface $uri, array $data, array $headers = []): RequestInterface
+    public static function put(UriInterface $uri, array $data, array $headers = []): Request
     {
         return Request::create(HttpMethod::PUT, $uri, http_build_query($data), $headers);
     }
 
 
-    public static function jsonPut(UriInterface $uri, array $data, array $headers = []): RequestInterface
+    public static function jsonPut(UriInterface $uri, array $data, array $headers = []): Request
     {
         return Request::create(HttpMethod::PUT, $uri, json_encode($data, JSON_THROW_ON_ERROR), $headers);
     }

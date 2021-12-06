@@ -65,6 +65,25 @@ class Response extends Message implements ResponseInterface
     }
 
     /**
+     * Gets the string corresponding the current request.
+     *
+     * @return string
+     */
+    public function getRaw(): string
+    {
+        $requestStr =
+            "HTTP/{$this->getProtocolVersion()->value} {$this->getStatusCode()} {$this->getStatus()->normalized()} \r\n";
+
+        foreach ($this->getHeaders() as $name => $value) {
+            $requestStr .= "$name: " . (is_array($value) ?  implode(', ', $value) : $value) . "\r\n";
+        }
+
+        $requestStr .= "\r\n" . $this->getBody()->getContents();
+
+        return $requestStr;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getStatusCode(): int

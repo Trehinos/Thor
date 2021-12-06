@@ -9,7 +9,7 @@ use DateTimeInterface;
 use DateTimeImmutable;
 use Thor\Stream\Stream;
 use JetBrains\PhpStorm\ExpectedValues;
-use Thor\Http\{UriInterface, ProtocolVersion, Response\Response, Response\HttpStatus, Response\ResponseInterface};
+use Thor\Http\{UriInterface, ProtocolVersion, Response\Response, Response\HttpStatus};
 
 /**
  * A factory to create standard Responses.
@@ -40,7 +40,7 @@ final class ResponseFactory
         HttpStatus $status = HttpStatus::OK,
         array $headers = [],
         ProtocolVersion $version = ProtocolVersion::HTTP11
-    ): ResponseInterface {
+    ): Response {
         return self::text(
             json_encode($data, JSON_THROW_ON_ERROR),
             $status,
@@ -64,7 +64,7 @@ final class ResponseFactory
         HttpStatus $status = HttpStatus::OK,
         array $headers = [],
         ProtocolVersion $version = ProtocolVersion::HTTP11
-    ): ResponseInterface {
+    ): Response {
         return new Response(
             $version,
             $headers + ['Content-Type' => 'text/plain; charset=UTF-8'],
@@ -88,7 +88,7 @@ final class ResponseFactory
         HttpStatus $status = HttpStatus::OK,
         array $headers = [],
         ProtocolVersion $version = ProtocolVersion::HTTP11
-    ): ResponseInterface {
+    ): Response {
         return self::text($body, $status, $headers + ['Content-Type' => 'text/html; charset=UTF-8'], $version);
     }
 
@@ -102,7 +102,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function ok(string $body = '', array $headers = []): ResponseInterface
+    public static function ok(string $body = '', array $headers = []): Response
     {
         return Response::create($body, HttpStatus::OK, $headers);
     }
@@ -122,7 +122,7 @@ final class ResponseFactory
         string $location,
         string $etag = '',
         ?DateTimeInterface $lastModified = new DateTime()
-    ): ResponseInterface {
+    ): Response {
         return Response::create('', HttpStatus::CREATED, [
             'Location'      => $location,
             'ETag'          => $etag,
@@ -141,7 +141,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function accepted(string $payload = ''): ResponseInterface
+    public static function accepted(string $payload = ''): Response
     {
         return Response::create($payload, HttpStatus::ACCEPTED);
     }
@@ -153,7 +153,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function noContent(): ResponseInterface
+    public static function noContent(): Response
     {
         return Response::create('', HttpStatus::NO_CONTENT);
     }
@@ -165,7 +165,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function resetContent(): ResponseInterface
+    public static function resetContent(): Response
     {
         return Response::create('', HttpStatus::RESET_CONTENT);
     }
@@ -179,7 +179,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function moved(UriInterface $uri): ResponseInterface
+    public static function moved(UriInterface $uri): Response
     {
         return Response::create('', HttpStatus::MOVED_PERMANENTLY, ['Location' => "$uri"]);
     }
@@ -193,7 +193,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function found(UriInterface $uri): ResponseInterface
+    public static function found(UriInterface $uri): Response
     {
         return Response::create('', HttpStatus::FOUND, ['Location' => "$uri"]);
     }
@@ -209,7 +209,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function seeOther(UriInterface $uri): ResponseInterface
+    public static function seeOther(UriInterface $uri): Response
     {
         return Response::create('', HttpStatus::SEE_OTHER, ['Location' => "$uri"]);
     }
@@ -237,7 +237,7 @@ final class ResponseFactory
         string $cacheControl = 'no-cache',
         ?DateInterval $expires = null,
         array|string $vary = '*'
-    ): ResponseInterface {
+    ): Response {
         $headers = [
             'Date'          => $date->format(DateTimeInterface::RFC7231),
             'Cache-Control' => $cacheControl,
@@ -265,7 +265,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function temporaryRedirect(UriInterface $uri): ResponseInterface
+    public static function temporaryRedirect(UriInterface $uri): Response
     {
         return Response::create('', HttpStatus::TEMPORARY_REDIRECT, ['Location' => "$uri"]);
     }
@@ -279,7 +279,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function permanentRedirect(UriInterface $uri): ResponseInterface
+    public static function permanentRedirect(UriInterface $uri): Response
     {
         return Response::create('', HttpStatus::PERMANENT_REDIRECT, ['Location' => "$uri"]);
     }
@@ -293,7 +293,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function badRequest(string $message = ''): ResponseInterface
+    public static function badRequest(string $message = ''): Response
     {
         return Response::create($message, HttpStatus::BAD_REQUEST);
     }
@@ -325,7 +325,7 @@ final class ResponseFactory
         string $type,
         ?string $realm = null,
         bool $utf8 = true
-    ): ResponseInterface {
+    ): Response {
         $elems = [];
         if ($realm) {
             $elems[] = "realm=\"$realm\"";
@@ -346,7 +346,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function forbidden(): ResponseInterface
+    public static function forbidden(): Response
     {
         return Response::create('', HttpStatus::FORBIDDEN);
     }
@@ -360,7 +360,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function notFound(string $message = ''): ResponseInterface
+    public static function notFound(string $message = ''): Response
     {
         return Response::create($message, HttpStatus::NOT_FOUND);
     }
@@ -374,7 +374,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function methodNotAllowed(array|string $allow): ResponseInterface
+    public static function methodNotAllowed(array|string $allow): Response
     {
         if (is_array($allow)) {
             $allow = implode(', ', $allow);
@@ -391,7 +391,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function conflict(string $payload): ResponseInterface
+    public static function conflict(string $payload): Response
     {
         return Response::create($payload, HttpStatus::CONFLICT);
     }
@@ -405,7 +405,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function internalServerError(string $payload = ''): ResponseInterface
+    public static function internalServerError(string $payload = ''): Response
     {
         return Response::create($payload, HttpStatus::INTERNAL_SERVER_ERROR);
     }
@@ -417,7 +417,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function notImplemented(): ResponseInterface
+    public static function notImplemented(): Response
     {
         return Response::create('', HttpStatus::NOT_IMPLEMENTED);
     }
@@ -429,7 +429,7 @@ final class ResponseFactory
      *
      * @return Response
      */
-    public static function serviceUnavailable(DateTimeInterface|int $retryAfter): ResponseInterface
+    public static function serviceUnavailable(DateTimeInterface|int $retryAfter): Response
     {
         return Response::create('', HttpStatus::SERVICE_UNAVAILABLE, [
             'Retry-After' => is_int($retryAfter) ? $retryAfter : $retryAfter->format(DateTimeInterface::RFC7231),
