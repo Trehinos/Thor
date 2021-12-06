@@ -27,6 +27,17 @@ use Thor\Http\MessageInterface;
  */
 interface RequestInterface extends MessageInterface
 {
+
+
+    /**
+     * NOT PART OF PSR.
+     *
+     * Gets the string corresponding the current request.
+     *
+     * @return string
+     */
+    public function getRaw(): string;
+
     /**
      * Retrieves the message's request target.
      *

@@ -98,12 +98,13 @@ final class ResponseFactory
      * OK response but respond with no content.
      *
      * @param string $body
+     * @param array  $headers
      *
      * @return Response
      */
-    public static function ok(string $body = ''): ResponseInterface
+    public static function ok(string $body = '', array $headers = []): ResponseInterface
     {
-        return Response::create($body);
+        return Response::create($body, HttpStatus::OK, $headers);
     }
 
     /**

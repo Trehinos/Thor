@@ -9,6 +9,7 @@ use thor\Http\UriInterface;
 use JetBrains\PhpStorm\Pure;
 use Thor\Http\ProtocolVersion;
 use Thor\Stream\StreamInterface;
+use Thor\Factories\ServerRequestFactory;
 
 
 /**
@@ -55,6 +56,25 @@ class Request extends Message implements RequestInterface
         return new self($version, $headers, Stream::create($data), $method, $target);
     }
 
+
+    /**
+     * Gets the string corresponding the current request.
+     *
+     * @return string
+     */
+    public function getRaw(): string
+    {
+        $requestStr =
+            "{$this->getMethod()->value} {$this->getUri()} HTTP/{$this->getProtocolVersion()->value}\r\n";
+
+        foreach ($this->getHeaders() as $name => $value) {
+            $requestStr .= "$name: " . implode(', ', $value) . "\r\n";
+        }
+
+        $requestStr .= "\r\n" . $this->getBody()->getContents();
+
+        return $requestStr;
+    }
     /**
      * @inheritDoc
      */
