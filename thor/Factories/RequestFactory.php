@@ -37,17 +37,20 @@ class RequestFactory
         HttpMethod $method,
         UriInterface $uri,
         string $data = '',
-        array $headers = []
+        array $headers = [],
+        string $contentType = 'text/plain'
     ): Request {
         return Request::create(
             $method,
             $uri,
             $data,
-            Headers::createFrom($headers)
+            Headers::create()
                    ->host($uri->getHost())
+                   ->contentType($contentType)
                    ->contentLength(strlen($data))
                    ->userAgent(self::$userAgent)
                    ->date()
+                   ->merge($headers)
                    ->get()
         );
     }
@@ -63,7 +66,8 @@ class RequestFactory
             HttpMethod::POST,
             $uri,
             http_build_query($data),
-            ['Content-Type' => 'application/x-www-form-urlencoded'] + $headers
+            $headers,
+            'application/x-www-form-urlencoded'
         );
     }
 
@@ -78,9 +82,8 @@ class RequestFactory
             HttpMethod::POST,
             $uri,
             self::multipart($data, $boundary),
-            [
-                'Content-Type' => "multipart/form-data;boundary=\"$boundary\"",
-            ] + $headers
+            $headers,
+            "multipart/form-data;boundary=\"$boundary\""
         );
     }
 
@@ -107,7 +110,8 @@ class RequestFactory
             HttpMethod::POST,
             $uri,
             json_encode($data, JSON_THROW_ON_ERROR),
-            ['Content-Type' => 'application/json; charset=UTF-8'] + $headers
+            $headers,
+            'application/json; charset=UTF-8'
         );
     }
 
@@ -123,7 +127,8 @@ class RequestFactory
             HttpMethod::PUT,
             $uri,
             json_encode($data, JSON_THROW_ON_ERROR),
-            ['Content-Type' => 'application/json; charset=UTF-8'] + $headers
+            $headers,
+            'application/json; charset=UTF-8'
         );
     }
 }

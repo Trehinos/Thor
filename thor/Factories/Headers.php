@@ -16,7 +16,7 @@ final class Headers
     {
     }
 
-    public static function createFrom(array $headers = []): self
+    public static function create(array $headers = []): self
     {
         $headersObject = new self();
         $headersObject->headers = $headers;
@@ -70,6 +70,13 @@ final class Headers
     {
         return self::merge([
             'User-Agent' => $userAgent,
+        ]);
+    }
+
+    public function contentType(string $mimeType): self
+    {
+        return self::merge([
+            'Content-Type' => $mimeType,
         ]);
     }
 
