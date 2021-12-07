@@ -17,32 +17,39 @@ final class Strings
     }
 
     /**
-     * @param string $toSplit
-     * @param string $delimiter
+     * Split a first element (head) and the rest of the string (tail) against a specified delimiter.
+     *
+     * @param string  $stringToSplit
+     * @param string  $delimiter
      * @param string& $head
      *
      * @return string tail
      */
-    public static function split(string $toSplit, string $delimiter, string& $head): string
+    public static function split(string $stringToSplit, string $delimiter, string& $head): string
     {
-        if (!str_contains($toSplit, $delimiter)) {
-            return $toSplit;
+        if (!str_contains($stringToSplit, $delimiter)) {
+            return $stringToSplit;
         }
-        $parts = explode($delimiter, $toSplit);
+        $parts = explode($delimiter, $stringToSplit);
         $head = $parts[0];
         return implode($delimiter, array_slice($parts, 1));
     }
 
     /**
-     * Replaces all {key} in $message string by $context[key] value.
+     * * If $dollarSymbol parameter is set false (default) : Replaces all {key} in $message string by $context[key] value.
+     * * If $dollarSymbol parameter is set true : Replaces all $key in $message string by $context[key] value.
      *
      * Values in $context MUST not be arrays or objects (or they MUST define a __toString() method).
      */
-    public static function interpolate(string $message, array $context = []): string
+    public static function interpolate(string $message, array $context = [], bool $dollarSymbol = false): string
     {
         $replace = [];
         foreach ($context as $key => $val) {
             if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString'))) {
+                if ($dollarSymbol) {
+                    $replace["\$$key"] = $val;
+                    continue;
+                }
                 $replace['{' . $key . '}'] = $val;
             }
         }

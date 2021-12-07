@@ -19,7 +19,7 @@ use Thor\Http\{Controllers\HttpController, Request\HttpMethod, Response\Response
 final class Api extends HttpController
 {
 
-    #[Route('api-index', '/', HttpMethod::GET)]
+    #[Route('api-index', '/', [HttpMethod::GET, HttpMethod::POST])]
     public function index(): Response
     {
         $requestTest = RequestFactory::post($uri = Uri::create('https://test.com#zergjbezrjfkgzehf'), [

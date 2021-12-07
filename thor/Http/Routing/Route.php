@@ -3,6 +3,7 @@
 namespace Thor\Http\Routing;
 
 use Attribute;
+use Thor\Tools\Strings;
 use Thor\Http\Request\HttpMethod;
 
 /**
@@ -20,10 +21,18 @@ final class Route
 
     private array $filledParams = [];
 
+    /**
+     * @param string|null             $routeName
+     * @param string|null             $path
+     * @param HttpMethod|HttpMethod[] $method
+     * @param array                   $parameters
+     * @param string|null             $controllerClass
+     * @param string|null             $controllerMethod
+     */
     public function __construct(
         private ?string $routeName = null,
         private ?string $path = null,
-        private HttpMethod $method = HttpMethod::GET,
+        private array|HttpMethod $method = HttpMethod::GET,
         private array $parameters = [],
         private ?string $controllerClass = null,
         private ?string $controllerMethod = null,
@@ -90,7 +99,7 @@ final class Route
     }
 
     /**
-     * Gets an URL corresponding this route with provided paramters.
+     * Gets a URL corresponding this route with provided parameters.
      *
      * @param array $parameters
      *
@@ -98,11 +107,7 @@ final class Route
      */
     public function url(array $parameters): string
     {
-        $path = $this->path;
-        foreach ($parameters as $pName => $pValue) {
-            $path = str_replace("\$$pName", "$pValue", $path);
-        }
-
+        $path = Strings::interpolate($this->path, $parameters, true);
         return "/index.php$path";
     }
 
@@ -117,13 +122,29 @@ final class Route
     }
 
     /**
-     * Gets the HttpMethod which matches this route.
+     * Gets the HttpMethod(s) which matches this route.
      *
-     * @return HttpMethod
+     * @return HttpMethod|HttpMethod[]
      */
-    public function getMethod(): HttpMethod
+    public function getMethod(): HttpMethod|array
     {
         return $this->method;
+    }
+
+    /**
+     * Gets the allowed methods names.
+     *
+     * @return string[]
+     */
+    public function getAllowedMethods(): array
+    {
+        if (is_array($this->method)) {
+            return array_map(
+                fn(HttpMethod $method) => $method->value,
+                $this->method
+            );
+        }
+        return [$this->method->value];
     }
 
     /**

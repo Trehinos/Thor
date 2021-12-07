@@ -60,7 +60,7 @@ class HttpServer implements RequestHandlerInterface
                 LogLevel::DEBUG,
                 ['method' => $request->getMethod()->value]
             );
-            return ResponseFactory::methodNotAllowed($this->router->getErrorRoute()->getMethod()->value);
+            return ResponseFactory::methodNotAllowed($this->router->getErrorRoute()->getAllowedMethods());
         }
         if (null === $route) {
             Logger::write(' -> No route matched', LogLevel::DEBUG);
