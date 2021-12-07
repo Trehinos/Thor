@@ -16,6 +16,10 @@ use Thor\Security\{Firewall, HttpSecurity, SecurityInterface};
 final class SecurityFactory
 {
 
+    private function __construct()
+    {
+    }
+
     public static function produceSecurity(HttpServer $server, array $config): ?SecurityInterface
     {
         if (!($config['security'] ?? null)) {

@@ -17,6 +17,10 @@ use Symfony\Component\VarDumper\VarDumper;
 final class TwigFunctionFactory
 {
 
+    private function __construct()
+    {
+    }
+
     public static function url(Router $router): TwigFunction
     {
         return new TwigFunction(

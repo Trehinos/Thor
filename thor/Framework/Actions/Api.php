@@ -22,10 +22,11 @@ final class Api extends HttpController
     #[Route('api-index', '/', HttpMethod::GET)]
     public function index(): Response
     {
-        $requestTest = RequestFactory::formPost(Uri::create('test.com/test.php#test'), [
+        $requestTest = RequestFactory::post($uri = Uri::create('https://test.com#zergjbezrjfkgzehf'), [
             'Truc' => 'Bidule',
             'Machin' => 'Chose'
         ]);
+        dump($uri->getHost());
         echo nl2br($requestTest->getRaw());
 
         echo "<hr>";

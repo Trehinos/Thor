@@ -23,6 +23,10 @@ use Thor\Http\{UriInterface, ProtocolVersion, Response\Response, Response\HttpSt
 final class ResponseFactory
 {
 
+    private function __construct()
+    {
+    }
+
     /**
      * Generates a custom JSON Response from specified data.
      *

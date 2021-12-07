@@ -18,6 +18,10 @@ use Thor\Security\SecurityInterface;
 final class HttpServerFactory
 {
 
+    private function __construct()
+    {
+    }
+
     public static function createHttpServerFromConfiguration(array $config): HttpServer
     {
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);

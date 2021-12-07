@@ -15,6 +15,10 @@ use DateTimeInterface;
 final class DateTimeHelper
 {
 
+    private function __construct()
+    {
+    }
+
     /**
      * Returns a string from a Date, accordingly to relative time between now and $date :
      * - `< 24h` and **today** : "H:i"

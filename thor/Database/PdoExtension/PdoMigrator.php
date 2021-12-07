@@ -32,7 +32,7 @@ final class PdoMigrator
      *
      * If $nextIndex is explicitly null, it will migrate to the last index.
      *
-     * @return int the lastIndex migrated.
+     * @return int the last index migrated.
      */
     public function migrate(?int $nextIndex): int
     {

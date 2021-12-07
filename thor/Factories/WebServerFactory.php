@@ -17,6 +17,10 @@ use Thor\Database\PdoExtension\PdoCollection;
 final class WebServerFactory
 {
 
+    private function __construct()
+    {
+    }
+
     public static function creatWebServerFromConfiguration(array $config): WebServer
     {
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);

@@ -18,17 +18,25 @@ class Uri implements UriInterface
     public const SCHEME_HTTP = 'http';
     public const SCHEME_HTTPS = 'https';
     public const SCHEME_FTP = 'ftp';
+    public const SCHEME_SSH = 'ssh';
 
     private function __construct(
         private string $scheme,
         private string $host = '',
         private ?string $user = null,
         private ?string $password = null,
-        private ?int $port = 80,
+        private ?int $port = null,
         private string $path = '',
         private array $queryArguments = [],
         private string $fragment = '',
     ) {
+        $this->port ??= match ($this->scheme) {
+            self::SCHEME_FTP   => 21,
+            self::SCHEME_SSH   => 22,
+            self::SCHEME_HTTP  => 80,
+            self::SCHEME_HTTPS => 443,
+            default            => null
+        };
     }
 
     /**
@@ -55,12 +63,12 @@ class Uri implements UriInterface
         }
 
         return new self(
-                            !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'
-                                ? self::SCHEME_HTTPS
-                                : self::SCHEME_HTTP,
-                            $host ?? $_SERVER['SERVER_NAME'] ?? $_SERVER['SERVER_ADDR'] ?? 'localhost',
-            port:           $port ?? $_SERVER['SERVER_PORT'] ?? null,
-            path:           $path,
+            !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'
+                ? self::SCHEME_HTTPS
+                : self::SCHEME_HTTP,
+            $host ?? $_SERVER['SERVER_NAME'] ?? $_SERVER['SERVER_ADDR'] ?? 'localhost',
+            port: $port ?? $_SERVER['SERVER_PORT'] ?? null,
+            path: $path,
             queryArguments: $queryArguments
         );
     }
@@ -101,24 +109,31 @@ class Uri implements UriInterface
         );
 
         $result = parse_url($prefix . $encodedUrl);
-
         if ($result === false) {
             return false;
         }
 
         $map = array_map('urldecode', $result);
+        $scheme = $map['scheme'] ?? '';
+        $host = $map['host'] ?? null;
+        $port = $map['port'] ?? null;
+        $path = $map['path'] ?? '';
+        if ($host === null && $port === null && str_contains($path, '/')) {
+            $host = '';
+            $path = Strings::split($path, '/', $host);
+        }
 
         $queryArguments = [];
         if (($map['query'] ?? '') !== '') {
             parse_str($map['query'], $queryArguments);
         }
         return new self(
-            $map['scheme'] ?? self::SCHEME_HTTP,
-            $map['host'] ?? '',
+            $scheme,
+            $host ?? '',
             $map['user'] ?? '',
             $map['pass'] ?? null,
-            $map['port'] ?? null,
-            $map['path'] ?? '',
+            $port,
+            ltrim($path, '/'),
             $queryArguments,
             $map['fragment'] ?? ''
         );
@@ -258,8 +273,10 @@ class Uri implements UriInterface
     {
         $query = Strings::prefix('?', $this->getQuery());
         $fragment = Strings::prefix('#', $this->getFragment());
-        $path = Strings::prefix('/', $this->getPath());
-        return "{$this->getScheme()}://{$this->getAuthority()}$path$query$fragment";
+        $path = $this->getPath();
+        $authority = $path !== '' ? Strings::suffix($this->getAuthority(), '/') : $this->getAuthority();
+        $scheme = Strings::suffix($this->getScheme(), '://');
+        return "$scheme$authority$path$query$fragment";
     }
 
     /**
@@ -289,6 +306,17 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Pure]
+    public function getAuthority(): string
+    {
+        $port = Strings::prefix(':', $this->getPort());
+        $userInfo = Strings::suffix($this->getUserInfo(), '@');
+        return "$userInfo{$this->getHost()}$port";
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getScheme(): string
     {
         return $this->scheme;
@@ -297,12 +325,16 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
-    #[Pure]
-    public function getAuthority(): string
+    public function getPort(): ?int
     {
-        $userInfo = Strings::suffix($this->getUserInfo(), '@');
-        $port = Strings::prefix(':', $this->getPort());
-        return "$userInfo{$this->getHost()}$port";
+        if (
+            ($this->scheme === self::SCHEME_HTTP && $this->port === 80)
+            ||
+            ($this->scheme === self::SCHEME_HTTPS && $this->port === 443)
+        ) {
+            return null;
+        }
+        return $this->port;
     }
 
     /**
@@ -312,14 +344,6 @@ class Uri implements UriInterface
     public function getUserInfo(): string
     {
         return $this->user . Strings::prefix(':', $this->password);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getPort(): ?int
-    {
-        return $this->port;
     }
 
     /**

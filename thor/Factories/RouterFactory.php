@@ -19,6 +19,10 @@ use Thor\Http\Request\HttpMethod;
 final class RouterFactory
 {
 
+    private function __construct()
+    {
+    }
+
     public static function createRouterFromConfiguration(array $routes): Router
     {
         return new Router(self::createRoutesFromConfiguration($routes));

@@ -20,6 +20,10 @@ use Thor\Http\Request\ServerRequestInterface;
 final class ServerRequestFactory
 {
 
+    private function __construct()
+    {
+    }
+
     public static function createFromGlobals(): ServerRequestInterface
     {
         $version = explode('/', $_SERVER['SERVER_PROTOCOL'])[1] ?? '1.1';

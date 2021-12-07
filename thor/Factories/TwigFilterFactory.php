@@ -17,6 +17,10 @@ use Thor\Http\Server\WebServer;
 final class TwigFilterFactory
 {
 
+    private function __construct()
+    {
+    }
+
     public static function _(WebServer $server): TwigFilter
     {
         return new TwigFilter(
