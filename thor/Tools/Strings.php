@@ -36,24 +36,24 @@ final class Strings
     }
 
     /**
-     * * If $dollarSymbol parameter is set false (default) : Replaces all {key} in $message string by $context[key] value.
-     * * If $dollarSymbol parameter is set true : Replaces all $key in $message string by $context[key] value.
+     * * If $phpStyle parameter is set false (default) : Replaces all {key} in $message string by $context[key] value.
+     * * If $phpStyle parameter is set true : Replaces all $key in $message string by $context[key] value.
      *
      * Values in $context MUST not be arrays or objects (or they MUST define a __toString() method).
      */
-    public static function interpolate(string $message, array $context = [], bool $dollarSymbol = false): string
+    public static function interpolate(string $string, array $context = [], bool $phpStyle = false): string
     {
         $replace = [];
         foreach ($context as $key => $val) {
             if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString'))) {
-                if ($dollarSymbol) {
+                if ($phpStyle) {
                     $replace["\$$key"] = $val;
                     continue;
                 }
                 $replace['{' . $key . '}'] = $val;
             }
         }
-        return strtr($message, $replace);
+        return strtr($string, $replace);
     }
 
     /**

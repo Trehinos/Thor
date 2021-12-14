@@ -4,7 +4,7 @@ namespace Thor\Factories;
 
 use DateTime;
 use Twig\TwigFilter;
-use Thor\Tools\DateTimeHelper;
+use Thor\Tools\DateTimes;
 use Thor\Http\Server\WebServer;
 
 /**
@@ -49,7 +49,7 @@ final class TwigFilterFactory
         return new TwigFilter(
             'datetimeRelative',
             function (string $value) {
-                return DateTimeHelper::getRelativeInterval(DateTime::createFromFormat('YmdHis', $value));
+                return DateTimes::getRelativeDateTime(DateTime::createFromFormat('YmdHis', $value));
             }
         );
     }
