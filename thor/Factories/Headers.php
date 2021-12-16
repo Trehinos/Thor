@@ -2,13 +2,16 @@
 
 namespace Thor\Factories;
 
+use Exception;
 use DateTimeInterface;
 use DateTimeImmutable;
 
 final class Headers
 {
 
-    public const AUTHORIZATION_BEARER = 'Bearer'; // todo Complete
+    public const AUTHORIZATION_BEARER = 'Bearer';
+    public const TYPE_JSON = 'application/json; charset=UTF-8';
+    public const TYPE_TEXT = 'text/plain';
 
     private array $headers = [];
 
@@ -23,6 +26,12 @@ final class Headers
         return $headersObject;
     }
 
+    public function clear(): self
+    {
+        $this->headers = [];
+        return $this;
+    }
+
     public function get(): array
     {
         return $this->headers;
@@ -30,9 +39,7 @@ final class Headers
 
     public function host(string $host): self
     {
-        return self::merge([
-            'Host' => $host,
-        ]);
+        return self::merge(['Host' => $host]);
     }
 
     public function merge(array $headersToAdd): self
@@ -61,38 +68,37 @@ final class Headers
 
     public function date(DateTimeInterface $dateTime = new DateTimeImmutable()): self
     {
-        return self::merge([
-            'Date' => $dateTime->format(DateTimeInterface::RFC7231),
-        ]);
+        return self::merge(
+            [
+                'Date' => $dateTime->format(DateTimeInterface::RFC7231),
+            ]
+        );
     }
 
     public function userAgent(string $userAgent): self
     {
-        return self::merge([
-            'User-Agent' => $userAgent,
-        ]);
+        return self::merge(['User-Agent' => $userAgent]);
     }
 
     public function contentType(string $mimeType): self
     {
-        return self::merge([
-            'Content-Type' => $mimeType,
-        ]);
+        return self::merge(['Content-Type' => $mimeType]);
     }
 
     public function contentLength(int $length): self
     {
-        return self::merge([
-            'Content-Length' => $length,
-        ]);
+        return self::merge(['Content-Length' => $length]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function authorization(string $type, array $data): self
     {
         return self::merge(
             match ($type) {
                 self::AUTHORIZATION_BEARER => ['Authorization' => "Bearer {$data['token']}"],
-                default                    => throw new \Exception("Invalid Authorization type $type")
+                default => throw new Exception("Invalid Authorization type $type")
             }
         );
     }

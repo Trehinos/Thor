@@ -99,6 +99,16 @@ final class CurlClient implements ClientInterface
 
         return $this;
     }
+
+    /**
+     * Transforms a ['Header' => value] array to an array :
+     *  * ['Header: value'] if value is a string,
+     *  * ['Header: value1, value2...'] if value is an array.
+     *
+     * @param array $headers
+     *
+     * @return array
+     */
     public static function toHeadersLines(array $headers): array
     {
         $headersLines = array_map(
