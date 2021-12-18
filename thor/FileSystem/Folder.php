@@ -12,10 +12,14 @@ namespace Thor\FileSystem;
 final class Folder
 {
 
+    private function __construct()
+    {
+    }
+
     /**
      * Removes all elements in the corresponding $path.
      *
-     * @param bool         $removeFirst ignored if $removeDirs is false
+     * @param bool $removeFirst ignored if $removeDirs is false
      */
     public static function removeTree(
         string $path,
@@ -93,10 +97,14 @@ final class Folder
     /**
      * Creates (a) folder(s) recursively if the path does not exist.
      */
-    public static function createIfNotExists(string $name): void
+    public static function createIfNotExists(string $name, int $permissions = File::ALL_ALL, ?string $user = null): void
     {
-        if (!file_exists($name)) {
+        if (!File::exists($name)) {
             mkdir($name, recursive: true);
+            chmod($name, $permissions);
+            if (null !== $user) {
+                File::chown($name, $user);
+            }
         }
     }
 
