@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests;
+
 use Thor\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 

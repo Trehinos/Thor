@@ -28,7 +28,7 @@ class PdoRequester
      *
      * @return bool
      */
-    final public function execute(string $sql, array $parameters): bool
+    final public function execute(string $sql, array $parameters = []): bool
     {
         Logger::write("DB execute ($sql).");
         Logger::writeData('DB parameters', $parameters);
@@ -68,7 +68,7 @@ class PdoRequester
      *
      * @return PDOStatement
      */
-    final public function request(string $sql, array $parameters): PDOStatement
+    final public function request(string $sql, array $parameters = []): PDOStatement
     {
         Logger::write("DB request ($sql).");
         Logger::writeData('DB parameters', $parameters);

@@ -75,7 +75,7 @@ final class SchemaHelper
             return $sql;
         }
 
-        return $this->requester->execute($sql, []);
+        return $this->requester->execute($sql);
     }
 
     /**
@@ -96,7 +96,7 @@ final class SchemaHelper
             if ($this->isDebug) {
                 $sql .= $sql_i . "\n";
             }
-            $result = $result && $this->requester->request($sql_i, []);
+            $result = $result && $this->requester->request($sql_i);
         }
 
         $sql_i = "DROP TABLE $tableName";
@@ -104,7 +104,7 @@ final class SchemaHelper
             $sql .= $sql_i;
             return $sql;
         }
-        return $result && $this->requester->execute($sql_i, []);
+        return $result && $this->requester->execute($sql_i);
     }
 
 }

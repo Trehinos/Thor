@@ -1,44 +1,52 @@
 {
-  "name": "trehinos/thor",
-  "version": "0.9.1",
-  "description": "Smart framework for PHP-8.1",
-  "license": "Proprietary : (c) 2021 Sébastien GELDREICH",
-  "minimum-stability": "stable",
-  "authors": [
-    {
-      "name": "Sébastien GELDREICH",
-      "email": "trehinos@gmail.com"
+    "name": "trehinos/thor",
+    "version": "0.9.1",
+    "description": "Smart framework for PHP-8.1",
+    "license": "Proprietary : (c) 2021 Sébastien GELDREICH",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Sébastien GELDREICH",
+            "email": "trehinos@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Thor\\": "thor/",
+            "App\\": "app/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "vendor-dir": "vendors/",
+        "bin-dir": "bin/"
+    },
+    "require": {
+      "php": "^8.1",
+      "ext-calendar": "*",
+      "ext-curl": "*",
+      "ext-ftp": "*",
+      "ext-intl": "*",
+      "ext-json": "*",
+      "ext-ldap": "*",
+      "ext-mbstring": "*",
+      "ext-openssl": "*",
+      "ext-pdo": "*",
+      "ext-ssh2": "*",
+      "ext-xml": "*",
+      "ext-zip": "*",
+      "datatables.net/editor-php": "2.*",
+      "nusphere/nusoap": "0.9.6",
+      "phpoffice/phpspreadsheet": "^1",
+      "symfony/var-dumper": "5.*",
+      "symfony/yaml": "5.*",
+      "twig/twig": "3.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
     }
-  ],
-  "autoload": {
-    "psr-4": {
-      "Thor\\": "thor/",
-      "App\\": "app/src/"
-    }
-  },
-  "config": {
-    "vendor-dir": "vendors/",
-    "bin-dir": "bin/"
-  },
-  "require": {
-    "php": "^8.1",
-    "ext-calendar": "*",
-    "ext-curl": "*",
-    "ext-ftp": "*",
-    "ext-json": "*",
-    "ext-pdo": "*",
-    "ext-ssh2": "*",
-    "ext-zip": "*",
-    "ext-openssl": "*",
-    "ext-ldap": "*",
-    "nusphere/nusoap": "0.9.6",
-    "symfony/var-dumper": "5.*",
-    "symfony/yaml": "5.*",
-    "twig/twig": "3.*",
-    "datatables.net/editor-php": "2.*",
-    "phpoffice/phpspreadsheet": "^1"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^9"
-  }
 }
