@@ -3,6 +3,7 @@
 namespace Thor\Security\Identity;
 
 use Thor\Security\PasswordHasher;
+use Thor\Security\Authorization\HasPermissions;
 
 /**
  * This implementation of identity provide a simple User with username as identity and a hashed password.
@@ -11,14 +12,15 @@ use Thor\Security\PasswordHasher;
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-class BaseUser implements IdentityInterface
+class BaseUser implements IdentityInterface, HasPassword, HasPermissions
 {
 
     protected string $hash;
 
     public function __construct(
         protected string $username,
-        string $clearPassword
+        string $clearPassword,
+        protected array $permissions = []
     ) {
         $this->hash = PasswordHasher::hashPassword($clearPassword);
     }
@@ -51,4 +53,8 @@ class BaseUser implements IdentityInterface
         return $this->hasPassword() === false || PasswordHasher::verify($clearPassword, $this->hash);
     }
 
+    public function hasPermission(string $permission): bool
+    {
+        return in_array($permission, $this->permissions);
+    }
 }
