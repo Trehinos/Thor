@@ -4,6 +4,7 @@ namespace Thor\Database\PdoTable\Attributes;
 
 use Attribute;
 use JetBrains\PhpStorm\Pure;
+use Thor\Database\PdoTable\TableType\TableTypeInterface;
 
 /**
  * Describe a PdoColumn attribute. Use this attribute on a PdoRowInterface implementor
@@ -17,27 +18,12 @@ use JetBrains\PhpStorm\Pure;
 class PdoColumn
 {
 
-    /**
-     * @var callable
-     */
-    private $toSqlValue;
-
-    /**
-     * @var callable
-     */
-    private $toPhpValue;
-
     public function __construct(
         private string $name,
-        private string $sqlType,
-        private string $phpType,
+        private TableTypeInterface $type,
         private bool $nullable = true,
         private mixed $defaultValue = null,
-        ?callable $toSqlValue = null,
-        ?callable $toPhpValue = null
     ) {
-        $this->toSqlValue = $toSqlValue;
-        $this->toPhpValue = $toPhpValue;
     }
 
     /**
@@ -45,9 +31,7 @@ class PdoColumn
      */
     public function toPhp(mixed $sqlValue): mixed
     {
-        return null === $this->toPhpValue ?
-            $sqlValue :
-            ($this->toPhpValue)($sqlValue);
+        return $this->type->toPhpValue($sqlValue);
     }
 
     /**
@@ -55,9 +39,7 @@ class PdoColumn
      */
     public function toSql(mixed $phpValue): mixed
     {
-        return null === $this->toSqlValue ?
-            $phpValue :
-            ($this->toSqlValue)($phpValue);
+        return $this->type->toSqlValue($phpValue);
     }
 
     /**
@@ -65,7 +47,7 @@ class PdoColumn
      */
     public function getPhpType(): string
     {
-        return $this->phpType;
+        return $this->type->phpType();
     }
 
     /**
@@ -110,7 +92,7 @@ class PdoColumn
      */
     public function getSqlType(): string
     {
-        return $this->sqlType;
+        return $this->type->sqlType();
     }
 
 }
