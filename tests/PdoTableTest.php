@@ -9,6 +9,7 @@ use Thor\Debug\LogLevel;
 use PHPUnit\Framework\TestCase;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Database\PdoTable\SchemaHelper;
+use Thor\Database\PdoTable\Driver\Sqlite;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoTable\PdoRowInterface;
 use Thor\Database\PdoExtension\PdoRequester;
@@ -29,7 +30,7 @@ final class PdoTableTest extends TestCase
         Logger::setDefaultLogger(LogLevel::INFO, Globals::VAR_DIR . '/test-logs/');
         $pdoHandler = new PdoHandler(self::DSN, self::USER, self::PASSWORD);
         self::$requester = new PdoRequester($pdoHandler);
-        self::$schema = new SchemaHelper(self::$requester, new PdoAttributesReader(TestTable::class));
+        self::$schema = new SchemaHelper(self::$requester, new Sqlite(), TestTable::class);
         self::$crud = new CrudHelper(TestTable::class, self::$requester);
     }
 

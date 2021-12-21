@@ -32,6 +32,15 @@ final class PdoHandler
     ) {
     }
 
+    public function __destruct()
+    {
+    }
+
+    public function getDriverName(): ?string
+    {
+        return explode(':', $this->dsn)[0] ?: null;
+    }
+
     /**
      * Returns true if PDO object has been constructed, false otherwise.
      */

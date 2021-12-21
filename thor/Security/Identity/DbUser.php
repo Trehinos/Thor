@@ -2,14 +2,12 @@
 
 namespace Thor\Security\Identity;
 
-use Thor\Security\{PasswordHasher};
-use Thor\Database\PdoTable\{PdoRowTrait,
-    HasPublicIdTrait,
-    PdoRowInterface,
-    Attributes\PdoTable,
-    Attributes\PdoIndex,
-    Attributes\PdoColumn
-};
+use Thor\Security\PasswordHasher;
+use Thor\Database\PdoTable\PdoRowTrait;
+use Thor\Database\PdoTable\PdoRowInterface;
+use Thor\Database\PdoTable\HasPublicIdTrait;
+use Thor\Database\PdoTable\TableType\{ArrayType, StringType, IntegerType};
+use Thor\Database\PdoTable\Attributes\{PdoTable, PdoIndex, PdoColumn};
 
 /**
  * This extension of BaseUser gives a way to have an Identity stored in DB.
@@ -19,9 +17,10 @@ use Thor\Database\PdoTable\{PdoRowTrait,
  * @license MIT
  */
 #[PdoTable('user', ['id'], 'id')]
-#[PdoColumn('id', 'INTEGER', 'integer', false)]
-#[PdoColumn('username', 'VARCHAR(255)', 'string', false)]
-#[PdoColumn('hash', 'VARCHAR(255)', 'string', false)]
+#[PdoColumn('id', new IntegerType(), false)]
+#[PdoColumn('username', new StringType(), false)]
+#[PdoColumn('hash', new StringType(), false)]
+#[PdoColumn('permissions', new ArrayType(4096), false)]
 #[PdoIndex(['username'], true)]
 class DbUser extends BaseUser implements PdoRowInterface
 {
@@ -34,10 +33,12 @@ class DbUser extends BaseUser implements PdoRowInterface
     public function __construct(
         string $username = '',
         string $clearPassword = '',
+        array $permissions = [],
+        ?string $public_id = null
     ) {
-        parent::__construct($username, $clearPassword);
+        parent::__construct($username, $clearPassword, $permissions);
         $this->traitConstructor(['id' => null]);
-        $this->public_id = null;
+        $this->public_id = $public_id;
     }
 
     public function setUsername(string $username): void

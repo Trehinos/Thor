@@ -14,7 +14,7 @@ use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
 use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
 use Thor\Cli\{Daemon, Console, Command, CliKernel, DaemonState};
-use Thor\Database\PdoTable\{CrudHelper, SchemaHelper, Attributes\PdoAttributesReader};
+use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, Driver\Sqlite, SchemaHelper};
 
 /**
  * This Command class Contains main commands of Thor-Api commands :
@@ -40,7 +40,7 @@ final class CoreCommand extends Command
         $this->routes = RouterFactory::createRoutesFromConfiguration(Thor::config('web-routes', true));
     }
 
-    public function routeSet()
+    public function routeSet(): void
     {
         $name = $this->get('name');
         $path = $this->get('path');
@@ -68,7 +68,7 @@ final class CoreCommand extends Command
             ->mode();
     }
 
-    public function setEnv()
+    public function setEnv(): void
     {
         $env = $this->get('env');
 
@@ -86,20 +86,27 @@ final class CoreCommand extends Command
             ->mode();
     }
 
-    public function setup()
+    public function setup(): void
     {
-        $requester = new PdoRequester($this->cli->pdos->get());
+        $databaseName = $this->get('database') ?? 'default';
+        $requester = new PdoRequester($handler = $this->cli->pdos->get($databaseName));
 
+        $driver = match($driverName = $handler->getDriverName()) {
+            'sqlite' => new Sqlite(),
+            'mysql' => new MySql(),
+            default => throw new \Exception("Unsupported driver '$driverName' for PdoTable...")
+        };
         Logger::write("SETUP : Creating table user...", LogLevel::NOTICE);
-        $schema = new SchemaHelper($requester, new PdoAttributesReader(DbUser::class));
+        $schema = new SchemaHelper($requester, $driver, DbUser::class);
+        $schema->dropTable();
         $schema->createTable();
 
         $userManager = new UserManager(new CrudHelper(DbUser::class, $requester));
-        $pid = $userManager->createUser('admin', 'password');
+        $pid = $userManager->createUser('admin', 'password', ['manage-user']);
         Logger::write("SETUP : Admin $pid created.", LogLevel::NOTICE);
     }
 
-    public function routeList()
+    public function routeList(): void
     {
         /** @var Route $route */
         foreach ($this->routes as $route) {

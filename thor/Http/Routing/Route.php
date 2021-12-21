@@ -5,6 +5,7 @@ namespace Thor\Http\Routing;
 use Attribute;
 use Thor\Tools\Strings;
 use Thor\Http\Request\HttpMethod;
+use Thor\Security\Authorization\Authorization;
 
 /**
  * Describes a route.
@@ -36,6 +37,7 @@ final class Route
         private array $parameters = [],
         private ?string $controllerClass = null,
         private ?string $controllerMethod = null,
+        public ?Authorization $authorization = null
     ) {
     }
 

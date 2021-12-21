@@ -65,6 +65,7 @@ core/setup:
     class: Thor\Framework\Commands\CoreCommand
     command: setup
     description: 'create the PdoRows tables'
+    arguments: { database: { hasValue: true, description: '(default = default)' } }
 core/install:
     class: Thor\Framework\Commands\CoreCommand
     command: install

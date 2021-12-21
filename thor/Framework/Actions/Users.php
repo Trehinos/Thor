@@ -8,6 +8,7 @@ use Thor\Security\Identity\DbUser;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Validation\Filters\RegexFilter;
+use Thor\Security\Authorization\Authorization;
 use Thor\Http\{Routing\Route,
     Server\WebServer,
     Response\Response,
@@ -38,6 +39,7 @@ final class Users extends WebController
         $this->usernameFilter = new RegexFilter('/^[A-Za-z0-9]{2,255}$/');
     }
 
+    #[Authorization('manage-user')]
     #[Route('users', '/users', HttpMethod::GET)]
     public function usersInterface(): Response
     {
@@ -49,6 +51,7 @@ final class Users extends WebController
         );
     }
 
+    #[Authorization('manage-user', 'create-user')]
     #[Route('users-create-form', '/users/create/form', HttpMethod::GET)]
     public function createForm(): Response
     {
@@ -60,6 +63,7 @@ final class Users extends WebController
         );
     }
 
+    #[Authorization('manage-user', 'create-user')]
     #[Route('users-create-action', '/users/create/action', HttpMethod::POST)]
     public function createAction(): ResponseInterface
     {
@@ -81,6 +85,7 @@ final class Users extends WebController
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }
 
+    #[Authorization('manage-user', 'edit-user')]
     #[Route(
         'users-edit-form',
         '/users/$public_id/edit/form',
@@ -99,6 +104,7 @@ final class Users extends WebController
         );
     }
 
+    #[Authorization('manage-user', 'edit-user')]
     #[Route(
         'users-edit-action',
         '/users/$public_id/edit/action',
@@ -123,6 +129,7 @@ final class Users extends WebController
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }
 
+    #[Authorization('manage-user', 'edit-user')]
     #[Route(
         'users-change-password-form',
         '/users/$public_id/change-password/form',
@@ -168,6 +175,7 @@ final class Users extends WebController
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }
 
+    #[Authorization('manage-user', 'remove-user')]
     #[Route(
         'users-delete-action',
         '/users/$public_id/delete/action',

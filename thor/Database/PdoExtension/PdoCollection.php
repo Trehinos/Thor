@@ -69,8 +69,8 @@ final class PdoCollection
                 $connectionName,
                 new PdoHandler(
                     $config['dsn'] ?? '',
-                    $config['user'] ?? '',
-                    $config['password'] ?? '',
+                    $config['user'] ?? null,
+                    $config['password'] ?? null,
                     match (strtolower($config['case'] ?? 'natural')) {
                         'upper' => PDO::CASE_UPPER,
                         'lower' => PDO::CASE_LOWER,

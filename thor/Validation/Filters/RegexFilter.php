@@ -26,7 +26,7 @@ class RegexFilter implements FilterInterface
      */
     public function filter(mixed $value): array|string|null
     {
-        return filter_var($value, FILTER_VALIDATE_REGEXP, ['regexp' => $this->regExp]);
+        return filter_var($value, FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => $this->regExp]]);
     }
 
 }

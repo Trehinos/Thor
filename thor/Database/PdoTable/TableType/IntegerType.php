@@ -16,7 +16,7 @@ class IntegerType implements TableTypeInterface
 
     public function sqlType(): string
     {
-        return "INTEGER({$this->size}";
+        return "INTEGER({$this->size})";
     }
 
     public function toPhpValue(mixed $sqlValue): int

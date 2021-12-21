@@ -5,10 +5,12 @@ namespace Tests;
 use Thor\Database\PdoTable\BasePdoRow;
 use Thor\Database\PdoTable\Attributes\PdoTable;
 use Thor\Database\PdoTable\Attributes\PdoColumn;
+use Thor\Database\PdoTable\TableType\StringType;
+use Thor\Database\PdoTable\TableType\IntegerType;
 
 #[PdoTable('test', ['id'])]
-#[PdoColumn('id', 'INTEGER', 'int', nullable: false)]
-#[PdoColumn('data', 'VARCHAR(255)', 'string')]
+#[PdoColumn('id', new IntegerType(), nullable: false)]
+#[PdoColumn('data', new StringType())]
 final class TestTable extends BasePdoRow
 {
 

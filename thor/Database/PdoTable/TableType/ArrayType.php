@@ -16,7 +16,7 @@ class ArrayType implements TableTypeInterface
 
     public function sqlType(): string
     {
-        return "{$this->sqlType}({$this->sqlStringSize}";
+        return "{$this->sqlType}({$this->sqlStringSize})";
     }
 
     public function toPhpValue(mixed $sqlValue): array

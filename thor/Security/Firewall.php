@@ -26,6 +26,7 @@ class Firewall implements RequestHandlerInterface
     public bool $isAuthenticated = false;
 
     public function __construct(
+        private SecurityInterface $security,
         private Router $router,
         #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
         public string $pattern = '/',
@@ -61,8 +62,17 @@ class Firewall implements RequestHandlerInterface
             return false;
         }
 
-        // TODO is Authenticated, verify authorization
-        return !$this->isAuthenticated;
+        if (!$this->isAuthenticated) {
+            return true;
+        }
+        $routeName = $this->router->getMatchedRouteName();
+        if ($routeName !== null) {
+            $route = $this->router->getRoute($routeName);
+            if ($route->authorization !== null) {
+                return !$route->authorization->isAuthorized($this->security->getCurrentIdentity());
+            }
+        }
+        return false;
     }
 
     /**

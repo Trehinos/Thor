@@ -8,6 +8,7 @@ use ReflectionException;
 use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
 use Thor\Http\Request\HttpMethod;
+use Thor\Security\Authorization\Authorization;
 
 /**
  * The router from configuration.
@@ -72,10 +73,13 @@ final class RouterFactory
             $rc = new ReflectionClass($loadPath);
             foreach ($rc->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
                 if (!empty($routeAttrs = $method->getAttributes(Route::class))) {
+                    $authorization = ($method->getAttributes(Authorization::class)[0] ?? null)?->newInstance();
                     foreach ($routeAttrs as $routeAttr) {
+                        /** @var Route $route */
                         $route = $routeAttr->newInstance();
                         $route->setControllerClass($loadPath);
                         $route->setControllerMethod($method->getName());
+                        $route->authorization = $authorization;
                         $routesObj[$route->getRouteName()] = $route;
                     }
                 }

@@ -4,14 +4,14 @@ namespace Thor\Database\PdoTable;
 
 use ReflectionException;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\{Attributes\PdoIndex, Attributes\PdoColumn, Attributes\PdoAttributesReader};
+use Thor\Database\PdoTable\{Attributes\PdoAttributesReader, Attributes\PdoIndex, Driver\DriverInterface};
 
 /**
  * This class provides methods to execute DQL statements from a PdoAttributesReader.
  *
  * @package   Thor\Database\PdoTable
  *
- * @template T
+ * @template  T
  * @since     2020-10
  * @version   1.0
  * @author    Trehinos
@@ -22,60 +22,42 @@ final class SchemaHelper
 {
 
     /**
-     * @param PdoRequester        $requester
-     * @param PdoAttributesReader $reader
-     * @param bool                $isDebug if true, generates and returns SQL statements instead of executing them.
+     * @param PdoRequester    $requester
+     * @param DriverInterface $driver
+     * @param string          $className
+     * @param bool            $isDebug if true, generates and returns SQL statements instead of executing them.
      */
     public function __construct(
         private PdoRequester $requester,
-        private PdoAttributesReader $reader,
+        private DriverInterface $driver,
+        private string $className,
         private bool $isDebug = false
     ) {
     }
 
     /**
      * Create the table in the database.
-     *
-     * @throws ReflectionException
      */
     public function createTable(): bool|string
     {
-        $separator = ",\n    ";
-        $tableName = $this->reader->getAttributes()['row']->getTableName();
-        $primary = implode(', ', $this->reader->getAttributes()['row']->getPrimaryKeys());
-        $autoKey = $this->reader->getAttributes()['row']->getAutoColumnName();
-        $columns = implode(
-            $separator,
-            array_map(
-                fn(PdoColumn $column) => $column->getSql() .
-                                         (($column->getName() === $autoKey) ? ' AUTO_INCREMENT' : ''),
-                $this->reader->getAttributes()['columns']
-            )
-        );
-        $indexes = implode(
-            $separator,
-            array_map(
-                fn(PdoIndex $index) => $index->getSql(),
-                $this->reader->getAttributes()['indexes']
-            )
-        );
+        $createTableSql = $this->driver->createTable($this->className);
+        $sql = $createTableSql;
 
-        if ($indexes !== '') {
-            $indexes = "$separator$indexes";
+        if (!$this->isDebug) {
+            $result = $this->requester->execute($createTableSql);
         }
 
-        $sql = <<<§
-            CREATE TABLE $tableName (
-                $columns,
-                PRIMARY KEY ($primary)$indexes
-            )
-            §;
-
-        if ($this->isDebug) {
-            return $sql;
+        $createIndexesSqls = $this->driver->createIndexes($this->className);
+        if (!$this->isDebug) {
+            foreach ($createIndexesSqls as $createIndexSql) {
+                $result = $result && $this->requester->execute($createIndexSql);
+            }
+            return $result;
+        } else {
+            $sql .= ";\n" . implode(";\n", $createIndexesSqls);
         }
 
-        return $this->requester->execute($sql);
+        return $sql;
     }
 
     /**
@@ -85,13 +67,14 @@ final class SchemaHelper
      */
     public function dropTable(): bool|string
     {
-        $tableName = $this->reader->getAttributes()['row']->getTableName();
+        $attrs = (new PdoAttributesReader($this->className))->getAttributes();
+        $tableName = $attrs['row']->getTableName();
 
         $sql = '';
 
         $result = true;
         /** @var PdoIndex $index */
-        foreach ($this->reader->getAttributes()['indexes'] as $index) {
+        foreach ($attrs['indexes'] as $index) {
             $sql_i = "DROP INDEX {$index->getName()} ON $tableName";
             if ($this->isDebug) {
                 $sql .= $sql_i . "\n";
