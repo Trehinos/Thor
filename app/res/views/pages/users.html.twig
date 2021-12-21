@@ -3,16 +3,17 @@
 {% block titlebar %}{{ icon('users', 'fas', true)|raw }} {{ DICT.users.title }}{% endblock %}
 
 {% block toolbar %}
-    <button class="btn btn-sm btn-primary"
-            onclick="Modal.load('{{ url('users-create-form') }}');"
-    >
-        {{ icon('plus') }}
-        {{ DICT.general.create }}
-    </button>
+    {% if authorization('manage-user', 'create-user') %}
+        <button class="btn btn-sm btn-primary"
+                onclick="Modal.load('{{ url('users-create-form') }}');"
+        >
+            {{ icon('plus') }}
+            {{ DICT.general.create }}
+        </button>
+    {% endif %}
 {% endblock %}
 
 {% block page %}
-    {# { user_table|raw } #}
     <div class="d-flex flex-wrap justify-content-around" id="users">
         {% for user in users %}
             <div class="m-1 p-4 user">
@@ -21,24 +22,28 @@
                 <span class="text-info">#{{ user.publicId|slice(0, 9) }}</span><br>
                 <small class="text-muted">{{ user.publicId|slice(10) }}</small>
                 <hr class="mt-1 mb-2">
-                <button class="btn btn-sm btn-secondary"
-                        onclick="Modal.load('{{ url('users-edit-form', {public_id: user.publicId}) }}');"
-                >
-                    {{ icon('edit') }}
-                    {{ DICT.general.edit }}
-                </button>
-                <button class="btn btn-sm btn-warning"
-                        onclick="Modal.load('{{ url('users-change-password-form', {public_id: user.publicId}) }}');"
-                >
-                    {{ icon('lock') }}
-                    {{ DICT.users.change_password }}
-                </button>
-                <button class="btn btn-sm btn-danger"
-                        onclick="confirmPost('{{ url('users-delete-action', {public_id: user.publicId}) }}', {}, '{{ DICT.users.remove_user }} ?', () => {$(this).parent().remove();})"
-                >
-                    {{ icon('trash') }}
-                    {{ DICT.general.remove }}
-                </button>
+                {% if authorization('manage-user', 'edit-user') %}
+                    <button class="btn btn-sm btn-secondary"
+                            onclick="Modal.load('{{ url('users-edit-form', {public_id: user.publicId}) }}');"
+                    >
+                        {{ icon('edit') }}
+                        {{ DICT.general.edit }}
+                    </button>
+                    <button class="btn btn-sm btn-warning"
+                            onclick="Modal.load('{{ url('users-change-password-form', {public_id: user.publicId}) }}');"
+                    >
+                        {{ icon('lock') }}
+                        {{ DICT.users.change_password }}
+                    </button>
+                {% endif %}
+                {% if authorization('manage-user', 'remove-user') %}
+                    <button class="btn btn-sm btn-danger"
+                            onclick="confirmPost('{{ url('users-delete-action', {public_id: user.publicId}) }}', {}, '{{ DICT.users.remove_user }} ?', () => {$(this).parent().remove();})"
+                    >
+                        {{ icon('trash') }}
+                        {{ DICT.general.remove }}
+                    </button>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

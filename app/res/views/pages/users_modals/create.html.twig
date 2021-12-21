@@ -8,16 +8,16 @@
         <label for="user-username">{{ DICT.users.username }}</label>
         <input type="text" id="user-username" name="username" value="" class="form-control">
     </div>
-    <div class="form-group">
+    <div class="form-group mt-2">
         <label for="user-password">
             {{ DICT.users.password }}
-            <button type="button" class="btn btn-success btn-sm"
+            <button type="button" class="btn btn-success btn-sm p-0"
                     title="{{ DICT.users.hide_password }}"
                     onclick="$('#user-password').attr('type', 'password')"
             >
                 {{ icon('eye-slash') }} cacher
             </button>
-            <button type="button" class="btn btn-danger btn-sm"
+            <button type="button" class="btn btn-danger btn-sm p-0"
                     title="{{ DICT.users.show_password }}"
                     onclick="$('#user-password').attr('type', 'text')"
             >
@@ -27,6 +27,8 @@
         <input type="text" id="user-password" name="password" value="{{ generatedPassword }}" class="form-control">
     </div>
     <small class="form-text text-muted">{{ icon('exclamation-triangle') }} {{ DICT.users.password_warning|raw }}</small>
+    <hr>
+    {% include 'pages/users_modals/permissions.html.twig' %}
 </form>
 {% endblock %}
 

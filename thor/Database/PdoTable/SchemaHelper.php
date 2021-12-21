@@ -4,7 +4,7 @@ namespace Thor\Database\PdoTable;
 
 use ReflectionException;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\{Attributes\PdoAttributesReader, Attributes\PdoIndex, Driver\DriverInterface};
+use Thor\Database\PdoTable\{Attributes\PdoIndex, Driver\DriverInterface, Attributes\PdoAttributesReader};
 
 /**
  * This class provides methods to execute DQL statements from a PdoAttributesReader.
@@ -24,7 +24,7 @@ final class SchemaHelper
     /**
      * @param PdoRequester    $requester
      * @param DriverInterface $driver
-     * @param string          $className
+     * @param class-string    $className
      * @param bool            $isDebug if true, generates and returns SQL statements instead of executing them.
      */
     public function __construct(

@@ -13,7 +13,6 @@ use Thor\Database\PdoTable\Driver\Sqlite;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoTable\PdoRowInterface;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
 
 final class PdoTableTest extends TestCase
 {

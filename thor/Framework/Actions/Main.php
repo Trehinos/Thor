@@ -2,9 +2,9 @@
 
 namespace Thor\Framework\Actions;
 
-use Symfony\Component\Yaml\Yaml;
 use Thor\Globals;
-use Thor\Http\{Controllers\WebController, Request\HttpMethod, Response\Response, Routing\Route};
+use Symfony\Component\Yaml\Yaml;
+use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod, Controllers\WebController};
 
 /**
  * WebController, this is the main controller to serve Responses for the main routes of Thor.
@@ -33,6 +33,12 @@ final class Main extends WebController
                 'routes' => $this->getServer()->getRouter()->getRoutes(),
             ]
         );
+    }
+
+    #[Route('documentation', '/documentation', HttpMethod::GET)]
+    public function documentationPage(): Response
+    {
+        return $this->twigResponse('pages/documentation.html.twig');
     }
 
     #[Route('menu')]

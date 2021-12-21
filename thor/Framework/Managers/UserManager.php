@@ -75,12 +75,17 @@ final class UserManager
      *
      * @return bool
      */
-    public function updateUser(string $public_id, string $username): bool
+    public function updateUser(string $public_id, ?string $username = null, ?array $permissions = null): bool
     {
         $state = false;
         $user = $this->userCrud->readOneBy(new Criteria(['public_id' => $public_id]));
         if ($user) {
-            $user->setUsername($username);
+            if (null !== $username) {
+                $user->setUsername($username);
+            }
+            if (null !== $permissions) {
+                $user->setPermissions($permissions);
+            }
             $state = $this->userCrud->updateOne($user);
             Logger::write("User $public_id updated !", LogLevel::NOTICE);
         }

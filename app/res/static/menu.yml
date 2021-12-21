@@ -6,8 +6,9 @@
     label: users
     icon: users
     route: users
+    authorization: manage-user
     group: [{ icon: user-friends, route: index-page, label: users-groups }]
 -
     label: Documentation
     icon: books
-    route: index-page
+    route: documentation

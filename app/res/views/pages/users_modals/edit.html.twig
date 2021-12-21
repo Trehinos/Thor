@@ -8,14 +8,16 @@
             <label for="user-id">{{ DICT.general.id }}</label>
             <input readonly type="text" id="user-id" value="{{ user.primaryString }}" class="form-control">
         </div>
-        <div class="form-group">
+        <div class="form-group mt-2">
             <label for="user-public_id">{{ DICT.general.public_id }}</label>
             <input readonly type="text" id="user-public_id" value="{{ user.publicId }}" class="form-control">
         </div>
-        <div class="form-group">
+        <div class="form-group mt-2">
             <label for="user-username">{{ DICT.users.username }}</label>
             <input type="text" id="user-username" name="username" value="{{ user.identifier }}" class="form-control">
         </div>
+        <hr>
+        {% include 'pages/users_modals/permissions.html.twig' %}
     </form>
 {% endblock %}
 

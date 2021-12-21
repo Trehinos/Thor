@@ -2,6 +2,7 @@
 
 namespace Thor\Framework\Actions;
 
+use Thor\Thor;
 use Thor\Framework\{Managers\UserManager};
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
@@ -30,13 +31,11 @@ final class Users extends WebController
 {
 
     private UserManager $manager;
-    private RegexFilter $usernameFilter;
 
     public function __construct(WebServer $webServer)
     {
         parent::__construct($webServer);
         $this->manager = new UserManager(new CrudHelper(DbUser::class, $this->getServer()->getRequester()));
-        $this->usernameFilter = new RegexFilter('/^[A-Za-z0-9]{2,255}$/');
     }
 
     #[Authorization('manage-user')]
@@ -59,6 +58,7 @@ final class Users extends WebController
             'pages/users_modals/create.html.twig',
             [
                 'generatedPassword' => UserManager::generatePassword(),
+                'permissions' => $this->getPermissions()
             ]
         );
     }
@@ -67,8 +67,9 @@ final class Users extends WebController
     #[Route('users-create-action', '/users/create/action', HttpMethod::POST)]
     public function createAction(): ResponseInterface
     {
-        $username = $this->usernameFilter->filter($this->post('username'));
+        $username = $this->post('username');
         $clearPassword = $this->post('password');
+        $permissions = $this->post('permissions', []);
 
         $errors = [];
         if (!$username) {
@@ -79,7 +80,7 @@ final class Users extends WebController
         }
 
         if (empty($errors)) {
-            $this->manager->createUser($username, $clearPassword);
+            $this->manager->createUser($username, $clearPassword, $permissions);
         }
 
         return $this->redirect('index', query: ['menuItem' => 'users']);
@@ -100,6 +101,7 @@ final class Users extends WebController
             'pages/users_modals/edit.html.twig',
             [
                 'user' => $user,
+                'permissions' => $this->getPermissions()
             ]
         );
     }
@@ -113,7 +115,8 @@ final class Users extends WebController
     )]
     public function editAction(string $public_id): ResponseInterface
     {
-        $username = $this->usernameFilter->filter($this->post('username'));
+        $username = $this->post('username');
+        $permissions = $this->post('permissions', []);
 
         $errors = [];
         if (!$username) {
@@ -124,7 +127,7 @@ final class Users extends WebController
             Logger::write(print_r($errors, true), LogLevel::DEBUG);
             exit;
         }
-        $this->manager->updateUser($public_id, $username);
+        $this->manager->updateUser($public_id, $username, $permissions);
 
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }
@@ -187,6 +190,17 @@ final class Users extends WebController
         $this->manager->deleteOne($public_id);
 
         return $this->redirect('index', query: ['menuItem' => 'users']);
+    }
+
+    private function getPermissions(): array
+    {
+        return array_map(
+            fn (string $permission) => [
+                'permission' => $permission,
+                'label' => $this->getServer()->getLanguage()['permissions'][$permission] ?? $permission
+            ],
+            Thor::config('permissions', true)
+        );
     }
 
 }

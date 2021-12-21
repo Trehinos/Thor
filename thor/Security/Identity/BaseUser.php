@@ -8,9 +8,9 @@ use Thor\Security\Authorization\HasPermissions;
 /**
  * This implementation of identity provide a simple User with username as identity and a hashed password.
  *
- * @package Thor/Security/Identity
+ * @package          Thor/Security/Identity
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 class BaseUser implements IdentityInterface, HasPassword, HasPermissions
 {
@@ -34,14 +34,6 @@ class BaseUser implements IdentityInterface, HasPassword, HasPermissions
     }
 
     /**
-     * @return bool always true
-     */
-    public function hasPassword(): bool
-    {
-        return true;
-    }
-
-    /**
      * Returns true if the specified clear password correspond this user's password.
      *
      * @param string $clearPassword
@@ -53,8 +45,38 @@ class BaseUser implements IdentityInterface, HasPassword, HasPermissions
         return $this->hasPassword() === false || PasswordHasher::verify($clearPassword, $this->hash);
     }
 
+    /**
+     * @return bool always true
+     */
+    public function hasPassword(): bool
+    {
+        return true;
+    }
+
     public function hasPermission(string $permission): bool
     {
         return in_array($permission, $this->permissions);
     }
+
+    public function addPermission(string $permission): void
+    {
+        $this->permissions[] = $permission;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPermissions(): array
+    {
+        return $this->permissions;
+    }
+
+    /**
+     * @param string[] $permissions
+     */
+    public function setPermissions(array $permissions): void
+    {
+        $this->permissions = $permissions;
+    }
+
 }

@@ -12,7 +12,7 @@ namespace Thor;
 final class Thor
 {
 
-    public const VERSION = '0.9-dev';
+    public const VERSION = '0.9.1-dev';
     public const VERSION_NAME = 'ω';
     private static ?Configuration $configuration = null;
 

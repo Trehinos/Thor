@@ -52,3 +52,8 @@ legal:
 errors:
     too-short-username: 'Nom d''utilisateur trop court (min. 4 car.) ou trop long (max. 255 car.) ou caractères invalides.'
     too-short-password: 'Mot de passe trop court (min. 16 car.) ou trop long (max. 255 car.).'
+permissions:
+    manage-user: "Gérer les utilisateurs"
+    create-user: "Créer un utilisateur"
+    edit-user: "Editer un utilisateur"
+    remove-user: "Supprimer un utilisateur"

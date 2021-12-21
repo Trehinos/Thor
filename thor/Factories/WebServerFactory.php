@@ -33,6 +33,7 @@ final class WebServerFactory
         );
 
         $server->setSecurity(HttpServerFactory::produceSecurity($server, $config['security']));
+        $server->getTwig()->addFunction(TwigFunctionFactory::authorization($server->getSecurity()));
 
         return $server;
     }

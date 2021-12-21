@@ -102,7 +102,7 @@ final class CoreCommand extends Command
         $schema->createTable();
 
         $userManager = new UserManager(new CrudHelper(DbUser::class, $requester));
-        $pid = $userManager->createUser('admin', 'password', ['manage-user']);
+        $pid = $userManager->createUser('admin', 'password', ['manage-user', 'create-user', 'edit-user', 'remove-user']);
         Logger::write("SETUP : Admin $pid created.", LogLevel::NOTICE);
     }
 

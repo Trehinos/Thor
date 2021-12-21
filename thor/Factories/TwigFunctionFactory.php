@@ -5,6 +5,7 @@ namespace Thor\Factories;
 use Twig\TwigFunction;
 use Thor\Http\Routing\Router;
 use Thor\Http\Server\WebServer;
+use Thor\Security\SecurityInterface;
 use Symfony\Component\VarDumper\VarDumper;
 
 /**
@@ -19,6 +20,22 @@ final class TwigFunctionFactory
 
     private function __construct()
     {
+    }
+
+    public static function authorization(SecurityInterface $security): TwigFunction
+    {
+        return new TwigFunction(
+            'authorization',
+            function (string ...$permissions) use ($security): bool {
+                $identity = $security->getCurrentIdentity();
+                foreach ($permissions as $permission) {
+                    if (!$identity->hasPermission($permission)) {
+                        return false;
+                    }
+                }
+                return true;
+            },
+        );
     }
 
     public static function url(Router $router): TwigFunction
@@ -79,5 +96,5 @@ final class TwigFunctionFactory
             fn(?int $size = null) => bin2hex(random_bytes($size ?? $defaultSize))
         );
     }
-    
+
 }

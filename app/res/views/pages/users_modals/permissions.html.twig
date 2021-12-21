@@ -1,0 +1,12 @@
+<h5>Permissions</h5>
+<div style="max-height: 300px; overflow: auto">
+    {% for permission in permissions %}
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="{{ permission.permission }}"
+                   id="permission-{{ permission.permission }}" name="permissions[]"
+                   {% if user is defined and user.hasPermission(permission.permission) %}checked{% endif %}
+            >
+            <label class="form-check-label" for="permission-{{ permission.permission }}">{{ permission.label }}</label>
+        </div>
+    {% endfor %}
+</div>

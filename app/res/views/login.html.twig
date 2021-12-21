@@ -17,7 +17,7 @@
         }
         #content {
             margin: 0;
-            padding: 16px;
+            padding-top: 64px;
             width: 100%;
         }
     </style>
@@ -34,11 +34,11 @@
                 <label for="username">{{ DICT.users.user }}</label>
                 <input type="text" id="username" name="username" class="form-control">
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="password">{{ DICT.users.password }}</label>
                 <input type="password" id="password" name="password" class="form-control">
             </div>
-            <button class="btn btn-outline-primary">
+            <button class="btn btn-outline-primary mt-3">
                 <i class="fas fa-sign-in"></i> {{ DICT.users.connect }}
             </button>
         </form>

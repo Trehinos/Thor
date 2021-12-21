@@ -1,0 +1,17 @@
+{% extends "pages/base.html.twig" %}
+
+{% block titlebar %}{{ icon('book', 'fas', true) }} Documentation{% endblock %}
+
+{% block toolbar %}La documentation est disponible dans le Wiki du projet sur Github.{% endblock %}
+
+{% block page %}
+    <div class="text-center pt-5">
+        <a class="btn btn-primary btn-lg"
+           target="_blank"
+           href="https://github.com/Trehinos/Thor/wiki"
+        >
+            <i class="fas fa-external-link"></i>
+            Voir la documentation sur Github
+        </a>
+    </div>
+{% endblock %}
