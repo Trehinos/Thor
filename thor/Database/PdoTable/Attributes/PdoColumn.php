@@ -51,19 +51,6 @@ class PdoColumn
     }
 
     /**
-     * Gets the SQL statement to create/alter this column.
-     */
-    #[Pure]
-    public function getSql(): string
-    {
-        $nullStr = $this->isNullable() ? '' : ' NOT NULL';
-        $defaultStr = ($this->getDefault() === null)
-            ? ($this->isNullable() ? ' DEFAULT NULL' : '')
-            : " DEFAULT {$this->getDefault()}";
-        return "{$this->getName()} {$this->getSqlType()}$nullStr$defaultStr";
-    }
-
-    /**
      * Returns true if this column is nullable.
      */
     public function isNullable(): bool

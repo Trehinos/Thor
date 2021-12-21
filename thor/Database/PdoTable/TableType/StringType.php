@@ -16,7 +16,7 @@ class StringType implements TableTypeInterface
 
     public function sqlType(): string
     {
-        return "{$this->sqlType}({$this->size}";
+        return "{$this->sqlType}({$this->size})";
     }
 
     public function toPhpValue(mixed $sqlValue): string

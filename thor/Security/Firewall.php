@@ -68,8 +68,9 @@ class Firewall implements RequestHandlerInterface
         $routeName = $this->router->getMatchedRouteName();
         if ($routeName !== null) {
             $route = $this->router->getRoute($routeName);
-            // TODO
-            return !!$route->authorization?->isAuthorized($this->security->getCurrentIdentity());
+            if ($route->authorization !== null) {
+                return !$route->authorization->isAuthorized($this->security->getCurrentIdentity());
+            }
         }
         return false;
     }

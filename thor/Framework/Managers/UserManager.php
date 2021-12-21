@@ -54,9 +54,9 @@ final class UserManager
      *
      * @throws Exception
      */
-    public function createUser(string $username, string $clearPassword): string
+    public function createUser(string $username, string $clearPassword, array $permissions = []): string
     {
-        $user = new DbUser($username, $clearPassword);
+        $user = new DbUser($username, $clearPassword, $permissions);
         $user->generatePublicId();
         $public_id = $user->getPublicId();
         $this->userCrud->createOne($user);
