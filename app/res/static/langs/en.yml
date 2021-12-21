@@ -13,6 +13,7 @@ menu:
     users-groups: Groups
     users-roles: Roles
     users-permissions: Permissions
+    documentation: Documentation
 footer:
     about: About
     legal: Legal
@@ -40,6 +41,9 @@ users:
     min_size: 'min. 16 characters'
     connect: 'Sign in'
 users.login.connect: 'Sign in <strong>%s</strong>'
+documentation:
+    alert: "The documentation is available in the project's wiki on Github."
+    linklabel: "See the documentation on Github"
 changelog:
     title: Changelog
     legend: Legend
@@ -52,3 +56,8 @@ legal:
 errors:
     too-short-username: 'Username too short (4 char. min.) or too long (255 char. max.) or invalid characters.'
     too-short-password: 'Password too short (16 char. min.) or too long (255 char. max.).'
+permissions:
+    manage-user: "Manage users"
+    create-user: "Create an user"
+    edit-user: "Edit an user"
+    remove-user: "Delete an user"

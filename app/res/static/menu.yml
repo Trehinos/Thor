@@ -9,6 +9,6 @@
     authorization: manage-user
     group: [{ icon: user-friends, route: index-page, label: users-groups }]
 -
-    label: Documentation
+    label: documentation
     icon: books
     route: documentation

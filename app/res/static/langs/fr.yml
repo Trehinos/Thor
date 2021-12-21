@@ -13,6 +13,7 @@ menu:
     users-groups: Groupes
     users-roles: Rôles
     users-permissions: Permissions
+    documentation: Documentation
 footer:
     about: 'A propos'
     legal: 'Mentions légales'
@@ -40,6 +41,9 @@ users:
     min_size: 'min. 16 caractères'
     connect: 'Se connecter'
 users.login.connect: 'Connexion à <strong>%s</strong>'
+documentation:
+    alert: "La documentation est disponible dans le Wiki du projet sur Github."
+    linklabel: "Voir la documentation sur Github"
 changelog:
     title: 'Notes de versions'
     legend: Légende
