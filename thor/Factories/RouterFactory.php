@@ -73,7 +73,7 @@ final class RouterFactory
             $rc = new ReflectionClass($loadPath);
             foreach ($rc->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
                 if (!empty($routeAttrs = $method->getAttributes(Route::class))) {
-                    $authorization = $method->getAttributes(Authorization::class)[0]?->newInstance();
+                    $authorization = ($method->getAttributes(Authorization::class)[0] ?? null)?->newInstance();
                     foreach ($routeAttrs as $routeAttr) {
                         /** @var Route $route */
                         $route = $routeAttr->newInstance();

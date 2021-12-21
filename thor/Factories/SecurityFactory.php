@@ -25,25 +25,26 @@ final class SecurityFactory
         if (!($config['security'] ?? null)) {
             return null;
         }
-        $firewalls = [];
+        $security = new HttpSecurity($server->getRequester($config['db-handler'] ?? 'default'));
         foreach ($config['firewall'] ?? [] as $firewallConfig) {
-            $firewalls[] = self::produceFirewall($server->getRouter(), $firewallConfig);
+            $security->addFirewall(self::produceFirewall($security, $server->getRouter(), $firewallConfig));
         }
 
-        return new HttpSecurity($server->getRequester($config['db-handler'] ?? 'default'), $firewalls);
+        return $security;
     }
 
-    public static function produceFirewall(Router $router, array $firewallConfig): Firewall
+    public static function produceFirewall(SecurityInterface $security, Router $router, array $firewallConfig): Firewall
     {
         return new Firewall(
-                            $router,
-            pattern:        $firewallConfig['pattern'] ?? '/',
-            redirect:       $firewallConfig['redirect'] ?? 'login',
-            loginRoute:     $firewallConfig['login-route'] ?? 'login',
-            logoutRoute:    $firewallConfig['logout-route'] ?? 'logout',
-            checkRoute:     $firewallConfig['check-route'] ?? 'check',
+            $security,
+            $router,
+            pattern: $firewallConfig['pattern'] ?? '/',
+            redirect: $firewallConfig['redirect'] ?? 'login',
+            loginRoute: $firewallConfig['login-route'] ?? 'login',
+            logoutRoute: $firewallConfig['logout-route'] ?? 'logout',
+            checkRoute: $firewallConfig['check-route'] ?? 'check',
             excludedRoutes: $firewallConfig['exclude-route'] ?? [],
-            excludedPaths:  $firewallConfig['exclude-path'] ?? [],
+            excludedPaths: $firewallConfig['exclude-path'] ?? [],
         );
     }
 
