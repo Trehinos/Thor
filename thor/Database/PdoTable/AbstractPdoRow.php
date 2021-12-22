@@ -12,7 +12,7 @@ namespace Thor\Database\PdoTable;
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-abstract class AbstractPdoRow extends BasePdoRow implements HasPublicIdInterface
+abstract class AbstractPdoRow extends BasePdoRow implements HasPublicId
 {
 
     use HasPublicIdTrait;

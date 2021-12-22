@@ -27,7 +27,7 @@ interface CrudInterface
      *
      * @return string primary string/key
      */
-    public function createOne(PdoRowInterface $row): string;
+    public function createOne(object $row): string;
 
     /**
      * Creates multiple rows in DB.
@@ -54,7 +54,7 @@ interface CrudInterface
      *
      * @return T|null
      */
-    public function readOne(array $primaries): ?PdoRowInterface;
+    public function readOne(array $primaries): ?object;
 
     /**
      * Gets one row from the specified criteria.
@@ -65,7 +65,7 @@ interface CrudInterface
      *
      * @return T|null
      */
-    public function readOneBy(Criteria $criteria): ?PdoRowInterface;
+    public function readOneBy(Criteria $criteria): ?object;
 
     /**
      * Gets multiple rows from the specified criteria.
@@ -85,7 +85,7 @@ interface CrudInterface
      *
      * @return bool
      */
-    public function updateOne(PdoRowInterface $row): bool;
+    public function updateOne(object $row): bool;
 
     /**
      * Delete the corresponding row in DB.
@@ -96,6 +96,6 @@ interface CrudInterface
      *
      * @return bool
      */
-    public function deleteOne(PdoRowInterface $row): bool;
+    public function deleteOne(object $row): bool;
 
 }

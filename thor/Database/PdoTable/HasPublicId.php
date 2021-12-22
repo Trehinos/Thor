@@ -9,7 +9,7 @@ namespace Thor\Database\PdoTable;
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-interface HasPublicIdInterface
+interface HasPublicId
 {
 
     public function getPublicId(): ?string;

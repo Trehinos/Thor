@@ -16,7 +16,7 @@ use Thor\Database\PdoExtension\PdoRequester;
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRows.
  *
- * @template T
+ * @template T of PdoInterface
  * @package  Thor\Database\PdoTable
  */
 final class CrudHelper implements CrudInterface
@@ -99,7 +99,7 @@ final class CrudHelper implements CrudInterface
      *
      * @throws Exception
      */
-    public function createOne(PdoRowInterface $row): string
+    public function createOne(object $row): string
     {
         if (!empty($row->getFormerPrimary())) {
             throw new PdoRowException(
@@ -121,9 +121,9 @@ final class CrudHelper implements CrudInterface
      *
      * @throws Exception
      */
-    private static function compileRowValues(PdoRowInterface $row, array $excludeColumns = []): array
+    private static function compileRowValues(object $row, array $excludeColumns = []): array
     {
-        if ($row instanceof AbstractPdoRow) {
+        if ($row instanceof AbstractPdoRow && $row->getPublicId() === null) {
             $row->generatePublicId();
         }
         $pdoArray = $row->toPdoArray();
@@ -184,7 +184,7 @@ final class CrudHelper implements CrudInterface
      *
      * @return T|null
      */
-    public function readOne(array $primaries): ?PdoRowInterface
+    public function readOne(array $primaries): ?object
     {
         return $this->readOneBy($this->primaryArrayToCriteria($primaries));
     }
@@ -198,7 +198,7 @@ final class CrudHelper implements CrudInterface
      *
      * @return T|null
      */
-    public function readOneBy(Criteria $criteria): ?PdoRowInterface
+    public function readOneBy(Criteria $criteria): ?object
     {
         $sql = Criteria::getWhere($criteria);
         $row = $this->requester->request(
@@ -261,7 +261,7 @@ final class CrudHelper implements CrudInterface
      *
      * @return bool
      */
-    public function updateOne(PdoRowInterface $row): bool
+    public function updateOne(object $row): bool
     {
         $pdoArray = $row->toPdoArray();
         if (!empty($this->excludeColumnsFromUpdate)) {
@@ -292,7 +292,7 @@ final class CrudHelper implements CrudInterface
      *
      * @return bool
      */
-    public function deleteOne(PdoRowInterface $row): bool
+    public function deleteOne(object $row): bool
     {
         $criteria = $this->primaryArrayToCriteria($row->getFormerPrimary());
         return $this->requester->execute(

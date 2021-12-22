@@ -17,6 +17,7 @@ use Thor\Database\PdoTable\Attributes\{PdoIndex, PdoTable, PdoColumn, PdoAttribu
  * @author    Trehinos
  * @copyright Author
  * @license   MIT
+ * @implements PdoRowInterface
  */
 trait PdoRowTrait
 {
