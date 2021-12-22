@@ -122,6 +122,39 @@ final class CliKernel implements KernelInterface
     }
 
     /**
+     * Run the Thor command specified in a terminal with its specified arguments values.
+     *
+     * @param string $commandName
+     * @param array  $args
+     *
+     * @return void
+     */
+    public static function executeCommand(string $commandName, array $args = []): void
+    {
+        $command = $commandName;
+        foreach ($args as $argName => $argValue) {
+            $command .= " -$argName \"$argValue\"";
+        }
+        CliKernel::executeProgram('php ' . Globals::BIN_DIR . "thor.php $command");
+    }
+
+    /**
+     * Run the terminal command specified in a terminal.
+     *
+     * @param string $cmd
+     *
+     * @return void
+     */
+    public static function executeProgram(string $cmd): void
+    {
+        if (self::isWindows()) {
+            pclose(popen($cmd, "r"));
+        } else {
+            exec($cmd);
+        }
+    }
+
+    /**
      * Executes a command from the command line.
      *
      * @return void
@@ -174,11 +207,32 @@ final class CliKernel implements KernelInterface
 
         $commandSpecs = $this->commands[$command] ?? null;
         if (null === $commandSpecs) {
+            $this->console
+                ->mode(Console::MODE_BRIGHT)
+                ->fColor(Console::COLOR_YELLOW)->write("The command ")
+                ->fColor(Console::COLOR_BLUE)->write($command)
+                ->fColor(Console::COLOR_YELLOW)->writeln(" doesn't exist...")
+                ->writeln()
+                ->mode()
+                ->mode(Console::MODE_UNDERSCORE)
+                ->write('Write ')
+                ->fColor(Console::COLOR_GREEN)->write('-help')
+                ->fColor(Console::COLOR_GRAY)->writeln(' to see a list of valid commands.')
+                ->writeln()
+            ;
             return;
         }
         $commandClass = $commandSpecs['class'] ?? null;
         $commandAction = $commandSpecs['command'] ?? null;
         if (null === $commandClass || $commandAction === null) {
+            $this->console
+                ->mode(Console::MODE_BRIGHT)
+                ->fColor(Console::COLOR_YELLOW)->write("The command ")
+                ->fColor(Console::COLOR_RED)->write($command)
+                ->fColor(Console::COLOR_YELLOW)->writeln(" doesn't have a corresponding class...")
+                ->writeln()
+                ->mode()
+            ;
             return;
         }
 
@@ -229,7 +283,8 @@ final class CliKernel implements KernelInterface
             ->home()
             ->fColor(Console::COLOR_GREEN)->write("\t$command" . $spanCommand)
             ->fColor(mode: Console::MODE_UNDERSCORE)->writeln($description)
-            ->mode();
+            ->mode()
+        ;
 
         foreach ($args as $argName => $arg) {
             $argName = "-$argName";
@@ -246,45 +301,13 @@ final class CliKernel implements KernelInterface
                 ->write("\t$span16")
                 ->fColor(Console::COLOR_YELLOW)->write("$argName$vSpan")
                 ->fColor(mode: Console::MODE_UNDERSCORE)->writeln("$spanArg{$arg['description']}")
-                ->mode();
+                ->mode()
+            ;
         }
 
         $this->console->writeln();
 
         return $this;
-    }
-
-    /**
-     * Run the Thor command specified in a terminal with its specified arguments values.
-     *
-     * @param string $commandName
-     * @param array  $args
-     *
-     * @return void
-     */
-    public static function executeCommand(string $commandName, array $args = []): void
-    {
-        $command = $commandName;
-        foreach ($args as $argName => $argValue) {
-            $command .= " -$argName \"$argValue\"";
-        }
-        CliKernel::executeProgram('php ' . Globals::BIN_DIR . "thor.php $command");
-    }
-
-    /**
-     * Run the terminal command specified in a terminal.
-     *
-     * @param string $cmd
-     *
-     * @return void
-     */
-    public static function executeProgram(string $cmd): void
-    {
-        if (self::isWindows()) {
-            pclose(popen($cmd, "r"));
-        } else {
-            exec($cmd);
-        }
     }
 
     /**
@@ -311,12 +334,14 @@ final class CliKernel implements KernelInterface
             ->home()
             ->fColor(Console::COLOR_YELLOW)->write("$command")
             ->fColor()->writeln(" usage :\n")
-            ->mode();
+            ->mode()
+        ;
 
         $this->console
             ->home()
             ->fColor(Console::COLOR_GREEN)->write("\t$command ")
-            ->mode();
+            ->mode()
+        ;
 
         foreach ($args as $argName => $arg) {
             $argName = "-$argName";
@@ -326,7 +351,8 @@ final class CliKernel implements KernelInterface
                 ->fColor(Console::COLOR_YELLOW)->write("$argName")
                 ->fColor()->write($value)
                 ->write('] ')
-                ->mode();
+                ->mode()
+            ;
         }
 
         $this->console->writeln("\n");
