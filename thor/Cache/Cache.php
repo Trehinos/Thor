@@ -69,7 +69,7 @@ class Cache extends Container implements CacheInterface
      * Executes the callable for each element in $items.
      *
      * @param iterable $items
-     * @param callable $operation
+     * @param callable $operation ($key, $item)
      *
      * @return bool
      */
