@@ -36,6 +36,7 @@
       "ext-mbstring": "*",
       "ext-openssl": "*",
       "ext-pdo": "*",
+      "ext-simplexml": "*",
       "ext-ssh2": "*",
       "ext-xml": "*",
       "ext-zip": "*",

@@ -8,7 +8,6 @@ use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
-use Thor\Validation\Filters\RegexFilter;
 use Thor\Security\Authorization\Authorization;
 use Thor\Http\{Routing\Route,
     Server\WebServer,
@@ -58,8 +57,19 @@ final class Users extends WebController
             'pages/users_modals/create.html.twig',
             [
                 'generatedPassword' => UserManager::generatePassword(),
-                'permissions' => $this->getPermissions()
+                'permissions'       => $this->getPermissions(),
             ]
+        );
+    }
+
+    private function getPermissions(): array
+    {
+        return array_map(
+            fn(string $permission) => [
+                'permission' => $permission,
+                'label'      => $this->getServer()->getLanguage()['permissions'][$permission] ?? $permission,
+            ],
+            Thor::config('permissions', true)
         );
     }
 
@@ -100,8 +110,8 @@ final class Users extends WebController
         return $this->twigResponse(
             'pages/users_modals/edit.html.twig',
             [
-                'user' => $user,
-                'permissions' => $this->getPermissions()
+                'user'        => $user,
+                'permissions' => $this->getPermissions(),
             ]
         );
     }
@@ -146,7 +156,7 @@ final class Users extends WebController
         return $this->twigResponse(
             'pages/users_modals/change-password.html.twig',
             [
-                'user' => $user,
+                'user'              => $user,
                 'generatedPassword' => UserManager::generatePassword(),
             ]
         );
@@ -190,17 +200,6 @@ final class Users extends WebController
         $this->manager->deleteOne($public_id);
 
         return $this->redirect('index', query: ['menuItem' => 'users']);
-    }
-
-    private function getPermissions(): array
-    {
-        return array_map(
-            fn (string $permission) => [
-                'permission' => $permission,
-                'label' => $this->getServer()->getLanguage()['permissions'][$permission] ?? $permission
-            ],
-            Thor::config('permissions', true)
-        );
     }
 
 }

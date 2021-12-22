@@ -6,18 +6,18 @@
  * @license          MIT
  */
 
-namespace Thor\Html\PdoMatrix;
+namespace Thor\Html\TableMatrix;
 
-use Thor\Http\Request\Request;
+use Thor\Factories\Html;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Html\{HtmlTag, Form\TextType, Form\InputType};
+use Thor\Http\Request\ServerRequestInterface;
+use Thor\Html\{Node, TextNode, Form\Field\TextField, Form\Field\InputField};
 use Thor\Database\PdoTable\{Criteria,
     CrudHelper,
     PdoRowInterface,
     Attributes\PdoColumn,
     Attributes\PdoAttributesReader
 };
-use Thor\Http\Request\ServerRequestInterface;
 
 /**
  * Class PdoMatrix
@@ -30,7 +30,7 @@ use Thor\Http\Request\ServerRequestInterface;
  *
  * @package Thor\Html\PdoMatrix
  */
-final class PdoMatrix
+final class TableMatrix
 {
 
     private CrudHelper $crudHelper;
@@ -45,7 +45,8 @@ final class PdoMatrix
     }
 
     /**
-     * @param MatrixColumn[] $columns
+     * @param ServerRequestInterface $request
+     * @param MatrixColumn[]         $columns
      *
      * @return string
      */
@@ -63,27 +64,27 @@ final class PdoMatrix
         return $this->generateTableTag(
             $this->crudHelper->readMultipleBy(new Criteria($search, Criteria::GLUE_OR)),
             $columns
-        )->toHtml();
+        )->getHtml();
     }
 
     /**
      * @param PdoRowInterface[] $rows
      * @param MatrixColumn[]    $columns
      *
-     * @return HtmlTag
+     * @return Node
      */
-    public function generateTableTag(array $rows, array $columns): HtmlTag
+    public function generateTableTag(array $rows, array $columns): Node
     {
-        $thead = HtmlTag::tag('thead', ['style' => 'background: #246; color: #fff']);
+        $thead = Html::node('thead', ['style' => 'background: #246; color: #fff']);
         $this->createHeadLine($thead, $columns);
         $this->createHeadLine($thead, $columns, true);
 
-        $tbody = HtmlTag::tag('tbody');
+        $tbody = Html::node('tbody');
         foreach ($rows as $row) {
             $this->createBodyLine($tbody, $row, $columns);
         }
 
-        return HtmlTag::tag(
+        return Html::node(
             'table',
             ['class' => 'table-pdo-matrix table table-bordered table-sm table-hover'],
             [$thead, $tbody]
@@ -91,82 +92,84 @@ final class PdoMatrix
     }
 
     /**
-     * @param HtmlTag        $thead
+     * @param Node           $thead
      * @param MatrixColumn[] $columns
      * @param bool           $withSearchTag
      */
-    protected function createHeadLine(HtmlTag $thead, array $columns, bool $withSearchTag = false): void
+    protected function createHeadLine(Node $thead, array $columns, bool $withSearchTag = false): void
     {
-        $thead_tr = new HtmlTag('tr', false);
-        $th = new HtmlTag('th', false);
-        $th->setContent('');
+        $thead_tr = Html::node('tr', content: ['']);
+        $th = Html::node('th', content: ['']);
         $thead_tr->addChild($th);
-        $th = new HtmlTag('th', false);
+        $th = Html::node('th');
         if ($withSearchTag) {
             $th->addChild($this->searchTag('primary', 'Primary'));
         } else {
-            $th->setContent('Primary');
+            $th->addChild(new TextNode('Primary'));
         }
         $thead_tr->addChild($th);
         foreach ($columns as $columnName => $column) {
-            $th = new HtmlTag('th', false);
+            $th = Html::node('th');
             if ($withSearchTag) {
                 $th->addChild($this->searchTag($columnName, $column->label));
             } else {
-                $th->setContent($column->label);
+                $th->addChild(new TextNode($column->label));
             }
             $thead_tr->addChild($th);
         }
-        $thead_tr->addChild(new HtmlTag('th', false));
+        $thead_tr->addChild(Html::node('th', content: ['']));
         $thead->addChild($thead_tr);
     }
 
-    private function searchTag(string $columnName, string $label): HtmlTag
+    private function searchTag(string $columnName, string $label): Node
     {
-        $tag = new TextType(htmlClass: 'form-control form-control-sm');
-        $tag->setAttr('name', "search_$columnName");
-        $tag->setAttr('placeholder', "$label search string");
+        $tag = new TextField("search_$columnName", htmlClass: 'form-control form-control-sm');
+        $tag->setAttribute('placeholder', "$label search string");
         return $tag;
     }
 
     /**
-     * @param HtmlTag         $tbody
+     * @param Node            $tbody
      * @param PdoRowInterface $row
      * @param MatrixColumn[]  $columns
      */
-    protected function createBodyLine(HtmlTag $tbody, PdoRowInterface $row, array $columns): void
+    protected function createBodyLine(Node $tbody, PdoRowInterface $row, array $columns): void
     {
-        $tag = new HtmlTag('tr', false);
+        $tag = Html::node('tr');
         $pdoArray = $row->toPdoArray();
 
-        $td = new HtmlTag('td', false, ['class' => 'text-center']);
-        $checkbox = new InputType('checkbox', htmlClass: 'form-check-input');
-        $checkbox->setAttr('name', 'select_' . $row->getPrimaryString());
-        $checkbox->setAttr('style', 'height: 1.5em;');
-        $formCheck = HtmlTag::div(
+        $td = Html::node('td', ['class' => 'text-center']);
+        $checkbox = new InputField('select_' . $row->getPrimaryString(), 'checkbox', htmlClass: 'form-check-input');
+        $checkbox->setAttribute('style', 'height: 1.5em;');
+        $formCheck = Html::div(
             ['class' => 'form-check'],
             [$checkbox]
         );
         $td->addChild($formCheck);
         $tag->addChild($td);
-        $td = new HtmlTag('td', false);
-        $td->setContent($row->getPrimaryString());
+        $td = Html::node('td');
+        $td->addChild(new TextNode($row->getPrimaryString()));
         $tag->addChild($td);
         foreach ($columns as $columnName => $column) {
             $attr = [];
             if ($this->isInteger($columnName)) {
                 $attr['class'] = 'text-right';
             }
-            $td = new HtmlTag('td', false, $attr);
-            $td->setContent($column->fromDb($pdoArray[$columnName] ?? '<em class="text-warning">invalid</em>'));
+            $td = Html::node('td', $attr);
+            $td->addChild(
+                new TextNode(
+                    $column->fromDb($pdoArray[$columnName] ?? '<em class="text-warning">invalid</em>')
+                )
+            );
             $tag->addChild($td);
         }
-        $tdAction = HtmlTag::tag(
-                      'td',
-            children: [
-                          HtmlTag::button(HtmlTag::icon('edit'), '', ['class' => 'btn btn-sm btn-primary']),
-                          HtmlTag::button(HtmlTag::icon('trash'), '', ['class' => 'btn btn-sm btn-danger']),
-                      ]
+        $tdAction = Html::node(
+            'td',
+            [],
+            [
+                Html::button(Html::icon('edit'), '', ['class' => 'btn btn-sm btn-primary']),
+                Html::button(Html::icon('trash'), '', ['class' => 'btn btn-sm btn-danger']),
+            ]
         );
         $tag->addChild($tdAction);
         $tbody->addChild($tag);

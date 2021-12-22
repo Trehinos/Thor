@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-namespace Thor\Html\PdoMatrix;
+namespace Thor\Html\TableMatrix;
 
 class MatrixColumn
 {

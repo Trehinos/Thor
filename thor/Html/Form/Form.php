@@ -8,37 +8,64 @@
 
 namespace Thor\Html\Form;
 
-use Thor\Html\HtmlTag;
+use Thor\Html\Node;
 use Thor\Http\Request\HttpMethod;
+use Thor\Html\Form\Field\FieldInterface;
 
-abstract class Form extends HtmlTag implements FormInterface
+abstract class Form extends Node implements FormInterface
 {
 
-    private array $data;
-
-    public function __construct(string $action, HttpMethod $method = HttpMethod::POST)
+    public function __construct(private string $action, private HttpMethod $method = HttpMethod::POST)
     {
-        parent::__construct('form', true, ['action' => $action, 'method' => $method->value]);
+        parent::__construct('form');
+        $this->setAttribute('action', $this->action);
+        $this->setAttribute('method', $this->method->value);
+        $this->setData(static::formDefinition());
     }
 
-    public function getChildren(): array
-    {
-        return array_values(static::formDefinition());
+    public function getAction(): string {
+        return $this->action;
     }
 
-    public static function formDefinition(): array
+    public function getMethod(): HttpMethod
     {
-        return [];
+        return $this->method;
     }
 
-    public function setData(array $data): void
+    public function getFieldValues(): array
     {
-        $this->data = $data + $this->data;
+        $values = [];
+        foreach ($this->getFields() as $fieldName => $field) {
+            $values[$fieldName] = $field->getValue();
+        }
+        return $values;
+    }
+
+    public function getFieldValue(string $name): mixed
+    {
+         return $this->getField($name)?->getValue();
+    }
+
+    public function setFieldsData(array $data): void
+    {
+        foreach ($data as $fieldName => $value) {
+            $this->getField($fieldName)?->setValue($value);
+        }
+    }
+
+    public function setFields(array $data): void
+    {
+        $this->setData(array_merge($this->getFields(), $data));
+    }
+
+    public function getField(string $name): ?FieldInterface
+    {
+        return $this->getFields()[$name] ?? null;
     }
 
     public function getFields(): array
     {
-        return $this->data;
+        return $this->getChildren();
     }
 
 }
