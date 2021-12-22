@@ -38,13 +38,13 @@ final class Criteria
      *
      *                         =, !=, <>, >=, <=, >, <
      *
-     *                         % (LIKE '%value%') -
+     *                         % (LIKE '%value%')
      *
-     *                         !% (NOT LIKE '%value%') -
+     *                         !% (NOT LIKE '%value%')
      *
-     *                         %* (LIKE '%value') -
+     *                         %* (LIKE '%value')
      *
-     *                         *% (LIKE 'value%') -
+     *                         *% (LIKE 'value%')
      *
      *                         if value === null, it will be 'IS NULL' in the SQL statement.
      *
