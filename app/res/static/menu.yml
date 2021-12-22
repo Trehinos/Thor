@@ -7,7 +7,7 @@
     icon: users
     route: users
     authorization: manage-user
-    group: [{ icon: user-friends, route: index-page, label: users-groups }]
+    group: [{ icon: gavel, route: index-page, label: Permissions }]
 -
     label: documentation
     icon: books

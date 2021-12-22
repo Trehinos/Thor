@@ -18,6 +18,7 @@
                     <button
                             onclick="menuClick($(this));"
                             data-url="{% if sub_item.route != '.' %}{{ url(sub_item.route) }}{% else %}#{% endif %}"
+                            data-item="{{ sub_item.route }}"
                             title="{{ DICT.menu[sub_item.label] ?? sub_item.label ?? '' }}"
                             {% if server.currentRouteName == sub_item.route %}class="selected"{% endif %}
                     >
