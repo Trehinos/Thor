@@ -30,15 +30,12 @@ final class DateTimes
         DateTimeInterface $date,
         string $dateFormat = 'Y-m-d',
         string $yesterday = 'Yesterday',
-        DateTimeInterface $relativeTo = new DateTime()
+        DateTimeInterface $relativeTo = new \DateTimeImmutable()
     ): string {
-        $start = clone $relativeTo;
-        $start->setTime(23, 59, 59);
-        $diff = $date->diff($start);
-        if ($diff->days > 1) {
+        $diff = $date->diff($relativeTo);
+        if ($diff->format('%a%H%I%S') > 1000000) {
             return $date->format($dateFormat);
         }
-
         $prefix = '';
         if ($relativeTo->format('Ymd') !== $date->format('Ymd')) {
             $prefix = "$yesterday ";

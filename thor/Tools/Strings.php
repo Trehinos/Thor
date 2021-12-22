@@ -27,11 +27,8 @@ final class Strings
      */
     public static function split(string $stringToSplit, string $delimiter, string& $head): string
     {
-        if (!str_contains($stringToSplit, $delimiter)) {
-            return $stringToSplit;
-        }
         $parts = explode($delimiter, $stringToSplit);
-        $head = $parts[0];
+        $head = $parts[0] ?? '';
         return implode($delimiter, array_slice($parts, 1));
     }
 

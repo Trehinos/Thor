@@ -67,11 +67,11 @@ class Container extends Item implements ContainerInterface
     public function eachItem(callable $operation, ?array $keys = null): array
     {
         return array_map(
-            function (string $key, ContainerInterface|ItemInterface|null $value) use ($operation, $keys) {
+            function (string $key, ContainerInterface|ItemInterface|null $item) use ($operation, $keys) {
                 if ($keys !== null && !in_array($key, $keys)) {
-                    return $value;
+                    return $item;
                 }
-                return $operation($key, $value);
+                return $operation($key, $item);
             },
             array_keys($this->data),
             array_values($this->data)
@@ -81,11 +81,22 @@ class Container extends Item implements ContainerInterface
     /**
      * @inheritDoc
      */
-    public function copy(ContainerInterface $container): static
+    public function copyInto(ContainerInterface $container, ?array $keys = null): static
     {
         $this->eachItem(
-            function (string $key, ?ItemInterface $value) use ($container) {
-                $container->setItem($value);
+            function (string $key, ContainerInterface|ItemInterface|null $item) use ($container, $keys) {
+                if ($keys !== null && !in_array($key, $keys)) {
+                    return;
+                }
+                if ($item instanceof ContainerInterface) {
+                    $newContainer = new Container($key);
+                    $item->copyInto($newContainer);
+                    $item = $newContainer;
+                } elseif ($item instanceof ItemInterface) {
+                    $newItem = new Item($key, $item->getValue());
+                    $item = $newItem;
+                }
+                $container->setItem($item);
             }
         );
         return $this;

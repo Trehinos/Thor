@@ -78,9 +78,10 @@ interface ContainerInterface extends ItemInterface
      * Copy the content of this Container into the specified Container.
      *
      * @param ContainerInterface $container
+     * @param array|null         $keys
      *
      * @return $this
      */
-    public function copy(ContainerInterface $container): static;
+    public function copyInto(ContainerInterface $container, ?array $keys = null): static;
 
 }
