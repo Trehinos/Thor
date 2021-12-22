@@ -24,11 +24,11 @@ final class PdoHandler
      * Constructs a new PdoHandler.
      */
     public function __construct(
-        private string $dsn,
-        private ?string $user = null,
-        private ?string $password = null,
-        private int $defaultCase = PDO::CASE_NATURAL,
-        private array $customOptions = [],
+        public readonly string $dsn,
+        public readonly ?string $user = null,
+        public readonly ?string $password = null,
+        public readonly int $defaultCase = PDO::CASE_NATURAL,
+        public readonly array $customOptions = [],
     ) {
     }
 
