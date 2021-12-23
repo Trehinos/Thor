@@ -3,7 +3,9 @@
 namespace Thor\Framework\Actions;
 
 use Thor\Thor;
+use Thor\Globals;
 use Thor\Framework\{Managers\UserManager};
+use Symfony\Component\Yaml\Yaml;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
 use Thor\Database\PdoTable\Criteria;
@@ -200,6 +202,45 @@ final class Users extends WebController
         $this->manager->deleteOne($public_id);
 
         return $this->redirect('index', query: ['menuItem' => 'users']);
+    }
+
+    #[Authorization('manage-user')]
+    #[Route('manage-permissions', '/permissions/form')]
+    public function permissionsForm(): ResponseInterface
+    {
+        return $this->twigResponse(
+            'pages/permissions.html.twig',
+            [
+                'permissions' => $this->getPermissions(),
+            ]
+        );
+    }
+
+    #[Authorization('manage-user')]
+    #[Route('permissions-update', '/permissions/action', HttpMethod::POST)]
+    public function permissionsAction(): ResponseInterface
+    {
+        $permissions = $this->post('permissions');
+
+        $permissionsData = [];
+        $language = Thor::config('config')['lang'] ?? 'en';
+        $languageData = Thor::config("langs/$language", true);
+        foreach ($permissions['permission'] as $key => $permission) {
+            $permissionsData[] = $permission;
+            $languageData['permissions'][$permission] = $permissions['label'][$key];
+        }
+
+        file_put_contents(
+            Globals::STATIC_DIR . "permissions.yml",
+            Yaml::dump($permissionsData)
+        );
+        file_put_contents(
+            Globals::STATIC_DIR . "langs/$language.yml",
+            Yaml::dump($languageData)
+        );
+
+
+        return $this->redirect('index', query: ['menuItem' => 'manage-permissions']);
     }
 
 }

@@ -42,8 +42,8 @@ users:
     connect: 'Se connecter'
 users.login.connect: 'Connexion à <strong>%s</strong>'
 documentation:
-    alert: "La documentation est disponible dans le Wiki du projet sur Github."
-    linklabel: "Voir la documentation sur Github"
+    alert: 'La documentation est disponible dans le Wiki du projet sur Github.'
+    linklabel: 'Voir la documentation sur Github'
 changelog:
     title: 'Notes de versions'
     legend: Légende
@@ -57,7 +57,9 @@ errors:
     too-short-username: 'Nom d''utilisateur trop court (min. 4 car.) ou trop long (max. 255 car.) ou caractères invalides.'
     too-short-password: 'Mot de passe trop court (min. 16 car.) ou trop long (max. 255 car.).'
 permissions:
-    manage-user: "Gérer les utilisateurs"
-    create-user: "Créer un utilisateur"
-    edit-user: "Editer un utilisateur"
-    remove-user: "Supprimer un utilisateur"
+    manage-user: 'Gérer les utilisateurs'
+    create-user: 'Créer un utilisateur'
+    edit-user: 'Editer un utilisateur'
+    remove-user: 'Supprimer un utilisateur'
+    test: TEST
+    manage-permissions: 'Gérer les permissions'

@@ -16,6 +16,7 @@
             {% if is_group %}
                 {% for sub_item in item.group %}
                     <button
+                            id="btn-{{ sub_item.route }}"
                             onclick="menuClick($(this));"
                             data-url="{% if sub_item.route != '.' %}{{ url(sub_item.route) }}{% else %}#{% endif %}"
                             data-item="{{ sub_item.route }}"
