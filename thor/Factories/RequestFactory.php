@@ -3,6 +3,7 @@
 namespace Thor\Factories;
 
 use Thor\Thor;
+use Thor\Tools\Strings;
 use Thor\Http\UriInterface;
 use Thor\Http\Request\Request;
 use Thor\Http\Request\HttpMethod;
@@ -10,7 +11,7 @@ use Thor\Http\Request\HttpMethod;
 class RequestFactory
 {
 
-    public static string $userAgent = 'Thor-' . Thor::VERSION . '/Http';
+    public static string $userAgent = '{appName}-{version}/Http';
 
     private function __construct()
     {
@@ -48,7 +49,16 @@ class RequestFactory
                    ->host($uri->getHost())
                    ->contentType($contentType)
                    ->contentLength(strlen($data))
-                   ->userAgent(self::$userAgent)
+                   ->userAgent(
+                       Strings::interpolate(
+                           self::$userAgent,
+                           [
+                               'appName'     => Thor::appName(),
+                               'version'     => Thor::version(),
+                               'versionName' => Thor::versionName(),
+                           ]
+                       )
+                   )
                    ->date()
                    ->merge($headers)
                    ->get()
@@ -90,18 +100,18 @@ class RequestFactory
     public static function multipart(array $data, string $boundary, string $contentDisposition = 'form-data'): string
     {
         return implode(
-                "\n",
-                array_map(
-                    fn(string $fieldName, string $fieldValue) => <<<§
+                   "\n",
+                   array_map(
+                       fn(string $fieldName, string $fieldValue) => <<<§
                         --$boundary
                         Content-Disposition: $contentDisposition; name="$fieldName"
                         
                         $fieldValue
                         §,
-                    array_keys($data),
-                    array_values($data)
-                )
-            ) . "\n--$boundary--";
+                       array_keys($data),
+                       array_values($data)
+                   )
+               ) . "\n--$boundary--";
     }
 
     public static function jsonPost(UriInterface $uri, array $data, array $headers = []): Request

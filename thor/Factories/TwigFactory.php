@@ -60,8 +60,9 @@ final class TwigFactory
     {
         $this->twig->addGlobal('server', $server);
         $this->twig->addGlobal('appName', Thor::appName());
-        $this->twig->addGlobal('version', Thor::VERSION);
-        $this->twig->addGlobal('versionName', Thor::VERSION_NAME);
+        $this->twig->addGlobal('appVendor', Thor::vendor());
+        $this->twig->addGlobal('version', Thor::version());
+        $this->twig->addGlobal('versionName', Thor::versionName());
         $this->twig->addGlobal('DICT', $server->getLanguage());
 
         $this->twig->addFunction(TwigFunctionFactory::url($router));

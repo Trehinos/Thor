@@ -3,5 +3,36 @@
 {% block titlebar %}{{ icon('book', 'fas', true) }} {{ DICT.index.title }}{% endblock %}
 
 {% block page %}
-    Hello world !
+    <div class="alert alert-info mb-5">
+        <strong>Thor</strong> est un framework complet pour PHP 8.1.<br>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    Accédez à une API permettant de développer rapidement de nouvelles fonctionnalités.
+                </div>
+                <div class="card-footer">
+                    <button onclick="menuClick($('#btn-documentation'))" class="btn btn-sm btn-dark">
+                        Page de documentation
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    Profitez de fonctionnalités pré-développées à étendre selon vos besoins.
+                </div>
+                <div class="card-footer">
+                    <button onclick="menuClick($('#btn-users'))" class="btn btn-sm btn-dark">
+                        Gestion des utilisateurs
+                    </button>
+                    <button onclick="menuClick($('#btn-manage-permissions'))" class="btn btn-sm btn-dark">
+                        Gestion des permissions
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

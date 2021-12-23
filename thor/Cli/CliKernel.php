@@ -172,7 +172,9 @@ final class CliKernel implements KernelInterface
             if ($displayCommand === null) {
                 $this->console
                     ->clear()
-                    ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)->writeln('Thor v' . Thor::VERSION)
+                    ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)->writeln(
+                        Thor::appName() . ' v' . Thor::version()
+                    )
                     ->mode()->fColor()->write('Console help. ')
                     ->fColor(Console::COLOR_CYAN)->write('bin/thor.php')
                     ->fColor()->writeln(" command usage :")

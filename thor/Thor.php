@@ -12,32 +12,15 @@ namespace Thor;
 final class Thor
 {
 
-    public const VERSION = '0.9.1-dev';
-    public const VERSION_NAME = 'ω';
     private static ?Configuration $configuration = null;
 
     private function __construct()
     {
     }
 
-    /**
-     * Returns true if the current Thor's environment is Env::DEV.
-     *
-     * @return bool
-     */
-    public static function isDev(): bool
+    public static function version(): string
     {
-        return self::getEnv() === Env::DEV;
-    }
-
-    /**
-     * Gets the current Thor's environment.
-     *
-     * @return Env
-     */
-    public static function getEnv(): Env
-    {
-        return Env::tryFrom(strtoupper(self::config('config')['env'] ?? 'dev'));
+        return self::config('config')['app_version'] ?? '';
     }
 
     /**
@@ -65,14 +48,39 @@ final class Thor
         return self::$configuration ??= Configuration::getInstance();
     }
 
-    /**
-     * Returns the configured app_name.
-     *
-     * @return string
-     */
+    public static function versionName(): string
+    {
+        return self::config('config')['app_version_name'] ?? '';
+    }
+
     public static function appName(): string
     {
         return self::config('config')['app_name'] ?? '';
+    }
+
+    public static function vendor(): string
+    {
+        return self::config('config')['app_vendor'] ?? '';
+    }
+
+    /**
+     * Returns true if the current Thor's environment is Env::DEV.
+     *
+     * @return bool
+     */
+    public static function isDev(): bool
+    {
+        return self::getEnv() === Env::DEV;
+    }
+
+    /**
+     * Gets the current Thor's environment.
+     *
+     * @return Env
+     */
+    public static function getEnv(): Env
+    {
+        return Env::tryFrom(strtoupper(self::config('config')['env'] ?? 'dev'));
     }
 
 }

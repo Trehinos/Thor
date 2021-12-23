@@ -1,5 +1,8 @@
-lang: fr
-env: DEV
+app_vendor: Trehinos
 app_name: Thor
+app_version: 0.9.2-dev
+app_version_name: ω
+env: DEV
+lang: fr
 timezone: Europe/Paris
 log_path: logs/
