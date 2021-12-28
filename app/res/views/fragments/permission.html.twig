@@ -1,0 +1,31 @@
+<div class="form-group mt-2">
+    <div class="row">
+        <div class="col-3">
+            <input class="form-control" value="{{ permission.permission }}"
+                   id="permission-{{ permission.permission }}" name="permissions[permission][]"
+            >
+        </div>
+        <div class="col-6">
+            <div class="tab-content">
+                {% for lang in languages %}
+                    <div class="labels-lang-{{ lang }} tab-pane fade {% if loop.index == 1 %}show active{% endif %}">
+                        <input class="form-control" value="{{ permission.label[lang] }}"
+                               id="label-{{ permission.permission }}-lang-{{ lang }}"
+                               name="permissions[label][{{ lang }}][]"
+                        >
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="col-3 pt-1">
+            <button class="btn btn-sm btn-danger"
+                    type="button"
+                    onclick="deletePermission(this);"
+            >
+                <i class="fas fa-times"></i>
+                Supprimer
+            </button>
+        </div>
+    </div>
+</div>

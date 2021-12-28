@@ -8,6 +8,7 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Thor\Http\{Routing\Router, Server\WebServer};
 use Thor\Configuration\Configuration;
+use Thor\Configuration\ThorConfiguration;
 
 /**
  * A factory to create the Twig Environment from configuration.
@@ -64,6 +65,7 @@ final class TwigFactory
         $this->twig->addGlobal('appVendor', Thor::vendor());
         $this->twig->addGlobal('version', Thor::version());
         $this->twig->addGlobal('versionName', Thor::versionName());
+        $this->twig->addGlobal('lang', ThorConfiguration::get()->lang());
         $this->twig->addGlobal('DICT', $server->getLanguage());
 
         $this->twig->addFunction(TwigFunctionFactory::url($router));

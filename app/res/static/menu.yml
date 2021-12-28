@@ -1,14 +1,15 @@
--
-    label: index
+-   label: index
     icon: book
     route: index-page
--
-    label: users
+-   label: users
     icon: users
     route: users
     authorization: manage-user
-    group: [{ icon: gavel, route: manage-permissions, label: Permissions }]
--
-    label: documentation
+    group:
+        -   icon: gavel
+            route: manage-permissions
+            label: Permissions
+            authorization: manage-permissions
+-   label: documentation
     icon: books
     route: documentation

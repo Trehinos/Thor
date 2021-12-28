@@ -53,37 +53,7 @@
         </div>
         <div id="permissions">
             {% for permission in permissions %}
-                <div class="form-group mt-2">
-                    <div class="row">
-                        <div class="col-3">
-                            <input class="form-control" value="{{ permission.permission }}"
-                                   id="permission-{{ permission.permission }}" name="permissions[permission][]"
-                            >
-                        </div>
-                        <div class="col-6">
-                            <div class="tab-content">
-                                {% for lang in languages %}
-                                    <div class="labels-lang-{{ lang }} tab-pane fade {% if loop.index == 1 %}show active{% endif %}">
-                                        <input class="form-control" value="{{ permission.label[lang] }}"
-                                               id="label-{{ permission.permission }}-lang-{{ lang }}"
-                                               name="permissions[label][{{ lang }}][]"
-                                        >
-                                    </div>
-                                {% endfor %}
-                            </div>
-
-                        </div>
-                        <div class="col-3 pt-1">
-                            <button class="btn btn-sm btn-danger"
-                                    type="button"
-                                    onclick="deletePermission(this);"
-                            >
-                                <i class="fas fa-times"></i>
-                                Supprimer
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                {% include "fragments/permission.html.twig" %}
             {% endfor %}
         </div>
     </form>
@@ -91,41 +61,27 @@
 
 {% block page_js %}
     <script>
-        let $permissions = $("#permissions");
-        const newPermission = `<div class="form-group mt-2">
-    <div class="row">
-        <div class="col-3">
-            <input class="form-control" value="" name="permissions[permission][]">
-        </div>
-        <div class="col-6">
-            <input class="form-control" value="" name="permissions[label][]">
-        </div>
-        <div class="col-3 pt-1">
-            <button class="btn btn-sm btn-danger" type="button" onclick="deletePermission(this);">
-                <i class="fas fa-times"></i>
-                Supprimer
-            </button>
-        </div>
-    </div>
-</div>`;
+            var $permissions = $("#permissions");
 
-        function showTab($button) {
-            let $targets = $($button.data('target'));
-            $(".tab-pane").removeClass("show").removeClass("active");
-            $targets.each((index, element) => {
-                $(element).addClass("show").addClass("active");
-            });
-            $("button.nav-link").removeClass("active");
-            $button.addClass("active");
-        }
+            function showTab($button) {
+                let $targets = $($button.data('target'));
+                $(".tab-pane").removeClass("show").removeClass("active");
+                $targets.each((index, element) => {
+                    $(element).addClass("show").addClass("active");
+                });
+                $("button.nav-link").removeClass("active");
+                $button.addClass("active");
+            }
 
-        function addPermissionLine() {
-            $permissions.append(newPermission);
-        }
+            function addPermissionLine() {
+                $.get("{{ url('permission-line') }}", {}, (response) => {
+                    $permissions.append(response);
+                });
 
-        function deletePermission(btn) {
-            $(btn).parent().parent().parent().remove();
-        }
+            }
 
+            function deletePermission(btn) {
+                $(btn).parent().parent().parent().remove();
+            }
     </script>
 {% endblock %}

@@ -9,7 +9,6 @@ use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
-use Thor\Configuration\ThorConfiguration;
 use Thor\Configuration\LanguageDictionary;
 use Thor\Configuration\ConfigurationFromFile;
 use Thor\Security\Authorization\Authorization;
@@ -69,21 +68,25 @@ final class Users extends WebController
     private function getPermissions(): array
     {
         return array_map(
-            fn(string $permission) => [
-                'permission' => $permission,
-                'label'      =>
-                    array_combine(
-                        $this->getLanguages(),
-                        array_map(
-                            fn(string $language) => LanguageDictionary::get($language)['permissions'][$permission]
-                                                    ?? $permission,
-                            $this->getLanguages()
-                        )
-                    ),
-
-            ],
+            $this->getPermissionLabelsFunction(),
             ConfigurationFromFile::get('permissions', true)->getArrayCopy()
         );
+    }
+
+    private function getPermissionLabelsFunction(): callable
+    {
+        return fn(string $permission) => [
+            'permission' => $permission,
+            'label'      =>
+                array_combine(
+                    $this->getLanguages(),
+                    array_map(
+                        fn(string $language) => LanguageDictionary::get($language)['permissions'][$permission]
+                            ?? $permission,
+                        $this->getLanguages()
+                    )
+                ),
+        ];
     }
 
     private function getLanguages(): array
@@ -236,32 +239,49 @@ final class Users extends WebController
         );
     }
 
-    #[Authorization('manage-user')]
+    #[Authorization('manage-permissions')]
     #[Route('permissions-update', '/permissions/action', HttpMethod::POST)]
     public function permissionsAction(): ResponseInterface
     {
         $permissions = $this->post('permissions');
-
         $permissionsData = [];
-        $language = ThorConfiguration::get()->lang();
-        $languageData = LanguageDictionary::get($language);
-        $languageData['permissions'] = [];
-        foreach ($permissions['permission'] as $key => $permission) {
+        foreach ($permissions['permission'] as $permission) {
             $permissionsData[] = $permission;
-            $languageData['permissions'][$permission] = $permissions['label'][$key];
         }
-
         file_put_contents(
             Globals::STATIC_DIR . "permissions.yml",
             Yaml::dump($permissionsData)
         );
-        file_put_contents(
-            Globals::STATIC_DIR . "langs/$language.yml",
-            Yaml::dump($languageData->getArrayCopy())
-        );
-
+        foreach ($permissions['label'] as $language => $labels) {
+            $languageData = LanguageDictionary::get($language);
+            $languageData['permissions'] = [];
+            foreach ($labels as $key => $label) {
+                $languageData['permissions'][$permissionsData[$key]] = $label;
+            }
+            dump($languageData);
+            file_put_contents(
+                Globals::STATIC_DIR . "langs/$language.yml",
+                Yaml::dump($languageData->getArrayCopy())
+            );
+        }
 
         return $this->redirect('index', query: ['menuItem' => 'manage-permissions']);
+    }
+
+    #[Authorization('manage-permissions', 'create-user')]
+    #[Route('permission-line', '/permission/line', HttpMethod::GET)]
+    public function addPermissionLine(): ResponseInterface
+    {
+        return $this->twigResponse(
+            'fragments/permission.html.twig',
+            [
+                'permission' => array_map(
+                    $this->getPermissionLabelsFunction(),
+                    ['']
+                ),
+                'languages'  => $this->getLanguages(),
+            ]
+        );
     }
 
 }
