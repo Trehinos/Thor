@@ -2,7 +2,6 @@
 
 namespace Thor\Framework\Actions;
 
-use Thor\Thor;
 use Thor\Globals;
 use Thor\Framework\{Managers\UserManager};
 use Symfony\Component\Yaml\Yaml;
@@ -10,6 +9,9 @@ use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
+use Thor\Configuration\ThorConfiguration;
+use Thor\Configuration\LanguageDictionary;
+use Thor\Configuration\ConfigurationFromFile;
 use Thor\Security\Authorization\Authorization;
 use Thor\Http\{Routing\Route,
     Server\WebServer,
@@ -69,9 +71,26 @@ final class Users extends WebController
         return array_map(
             fn(string $permission) => [
                 'permission' => $permission,
-                'label'      => $this->getServer()->getLanguage()['permissions'][$permission] ?? $permission,
+                'label'      =>
+                    array_combine(
+                        $this->getLanguages(),
+                        array_map(
+                            fn(string $language) => LanguageDictionary::get($language)['permissions'][$permission]
+                                                    ?? $permission,
+                            $this->getLanguages()
+                        )
+                    ),
+
             ],
-            Thor::config('permissions', true)
+            ConfigurationFromFile::get('permissions', true)->getArrayCopy()
+        );
+    }
+
+    private function getLanguages(): array
+    {
+        return array_map(
+            fn(string $filename) => explode('.', basename($filename))[0],
+            glob(Globals::STATIC_DIR . 'langs/*.yml')
         );
     }
 
@@ -212,6 +231,7 @@ final class Users extends WebController
             'pages/permissions.html.twig',
             [
                 'permissions' => $this->getPermissions(),
+                'languages'   => $this->getLanguages(),
             ]
         );
     }
@@ -223,8 +243,9 @@ final class Users extends WebController
         $permissions = $this->post('permissions');
 
         $permissionsData = [];
-        $language = Thor::config('config')['lang'] ?? 'en';
-        $languageData = Thor::config("langs/$language", true);
+        $language = ThorConfiguration::get()->lang();
+        $languageData = LanguageDictionary::get($language);
+        $languageData['permissions'] = [];
         foreach ($permissions['permission'] as $key => $permission) {
             $permissionsData[] = $permission;
             $languageData['permissions'][$permission] = $permissions['label'][$key];
@@ -236,7 +257,7 @@ final class Users extends WebController
         );
         file_put_contents(
             Globals::STATIC_DIR . "langs/$language.yml",
-            Yaml::dump($languageData)
+            Yaml::dump($languageData->getArrayCopy())
         );
 
 

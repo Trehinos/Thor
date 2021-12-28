@@ -2,6 +2,8 @@
 
 namespace Thor;
 
+use Thor\Configuration\Configuration;
+
 /**
  * Defines a Thor Kernel.
  *
@@ -17,11 +19,11 @@ interface KernelInterface extends Executable
      *
      * The implementation is responsible on how the $config array is used.
      *
-     * @param array $config
+     * @param Configuration $config
      *
      * @return static
      */
-    public static function createFromConfiguration(array $config = []): static;
+    public static function createFromConfiguration(Configuration $config): static;
 
     /**
      * This function return a new KernelInterface with default configuration.

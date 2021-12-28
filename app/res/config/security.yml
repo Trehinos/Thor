@@ -3,7 +3,7 @@ pdo-handler: default
 security-factory: Thor\Factories\SecurityFactory:produceSecurity
 
 # option : firewall, protect routes
-firewall:
+firewalls:
     -   pattern: /index.php
         redirect: ~
         login-route: login

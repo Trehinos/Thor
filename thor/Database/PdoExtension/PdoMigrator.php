@@ -2,7 +2,7 @@
 
 namespace Thor\Database\PdoExtension;
 
-use Thor\{Thor, Globals};
+use Thor\{Configuration\Configuration, Configuration\DatabasesConfiguration, Globals};
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -65,8 +65,8 @@ final class PdoMigrator
      */
     public static function createFromConfiguration(): self
     {
-        $updateConfiguration = Thor::config('update');
-        $databaseConfiguration = Thor::config('database');
+        $updateConfiguration = Configuration::get('update');
+        $databaseConfiguration = DatabasesConfiguration::get();
         $migrations = [];
         $migrationFilelist = glob(
             (Globals::STATIC_DIR . ($updateConfiguration['migration-folder'] ?? '')) . '/migration_*.yml'

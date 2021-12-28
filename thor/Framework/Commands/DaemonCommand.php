@@ -3,8 +3,8 @@
 namespace Thor\Framework\Commands;
 
 use Thor\Globals;
-use Thor\Configuration;
 use Symfony\Component\Yaml\Yaml;
+use Thor\Factories\Configurations;
 use Thor\Cli\{Daemon, Console, Command, CliKernel, DaemonState, DaemonScheduler};
 
 
@@ -99,7 +99,7 @@ final class DaemonCommand extends Command
             dump($state);
             return;
         }
-        $daemons = DaemonScheduler::createFromConfiguration(Configuration::getDaemonsConfig())->getDaemons();
+        $daemons = DaemonScheduler::createFromConfiguration(Configurations::getDaemonsConfig())->getDaemons();
         if (empty($daemons)) {
             $this->error('No daemon found', ' : Verify the static files in ' . Globals::STATIC_DIR . 'daemons/');
         }

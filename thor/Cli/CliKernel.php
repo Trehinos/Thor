@@ -8,6 +8,8 @@ use Thor\Globals;
 use Thor\KernelInterface;
 use Thor\Debug\{Logger, LogLevel};
 use JetBrains\PhpStorm\ArrayShape;
+use Thor\Factories\Configurations;
+use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;
 
 /**
@@ -39,15 +41,14 @@ final class CliKernel implements KernelInterface
     /**
      * Construct a CliKernel with database and commands configuration.
      *
-     * @param array $configuration ['database' => 'array', 'commands' => 'array']
+     * @param Configuration $configuration ['database' => 'array', 'commands' => 'array']
      */
     public function __construct(
-        #[ArrayShape(['database' => 'array', 'commands' => 'array'])]
-        array $configuration
+        Configuration $configuration
     ) {
         $this->pdos = PdoCollection::createFromConfiguration($configuration['database'] ?? []);
         $this->console = new Console();
-        $this->commands = $configuration['commands'];
+        $this->commands = $configuration['commands']->getArrayCopy();
         Logger::write('Instantiate CliKernel');
     }
 
@@ -90,7 +91,7 @@ final class CliKernel implements KernelInterface
     {
         self::guardCli();
         Logger::write('Start CLI context');
-        return self::createFromConfiguration(Thor::getConfiguration()->getConsoleConfiguration());
+        return self::createFromConfiguration(Configurations::getConsoleConfiguration());
     }
 
     /**
@@ -115,8 +116,7 @@ final class CliKernel implements KernelInterface
      * @param array $config ['database' => 'array', 'commands' => 'array']
      */
     public static function createFromConfiguration(
-        #[ArrayShape(['database' => 'array', 'commands' => 'array'])]
-        array $config = []
+        Configuration $config
     ): static {
         return new self($config);
     }

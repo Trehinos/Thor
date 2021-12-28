@@ -3,6 +3,8 @@
 namespace Thor\Database\PdoExtension;
 
 use PDO;
+use Thor\Configuration\Configuration;
+use Thor\Configuration\DatabasesConfiguration;
 
 /**
  * Holds a collection of PdoHandlers.
@@ -60,7 +62,7 @@ final class PdoCollection
     /**
      * Creates the PdoCollection from a configuration array.
      */
-    public static function createFromConfiguration(array $db_config): self
+    public static function createFromConfiguration(DatabasesConfiguration $db_config): self
     {
         $pdos = new self();
 

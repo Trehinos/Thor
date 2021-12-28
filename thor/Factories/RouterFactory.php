@@ -8,6 +8,8 @@ use ReflectionException;
 use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
 use Thor\Http\Request\HttpMethod;
+use Thor\Configuration\Configuration;
+use Thor\Configuration\RoutesConfiguration;
 use Thor\Security\Authorization\Authorization;
 
 /**
@@ -24,19 +26,19 @@ final class RouterFactory
     {
     }
 
-    public static function createRouterFromConfiguration(array $routes): Router
+    public static function createRouterFromConfiguration(RoutesConfiguration $routes): Router
     {
         return new Router(self::createRoutesFromConfiguration($routes));
     }
 
     /**
-     * @param array $routes
+     * @param RoutesConfiguration $routes
      *
      * @return Route[]
      *
      * @throws ReflectionException
      */
-    public static function createRoutesFromConfiguration(array $routes): array
+    public static function createRoutesFromConfiguration(RoutesConfiguration $routes): array
     {
         $routesObj = [];
         foreach ($routes as $routeName => $routeInfo) {

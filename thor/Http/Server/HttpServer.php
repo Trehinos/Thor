@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Factories\ResponseFactory;
 use Thor\Security\SecurityInterface;
+use Thor\Configuration\Configuration;
 use JetBrains\PhpStorm\ExpectedValues;
 use Thor\Database\PdoExtension\{PdoHandler, PdoRequester, PdoCollection};
 use Thor\Http\{Uri,
@@ -33,7 +34,7 @@ class HttpServer implements RequestHandlerInterface
         private Router $router,
         private ?SecurityInterface $security,
         private PdoCollection $pdoCollection,
-        private array $language
+        private Configuration $language
     ) {
     }
 
@@ -161,7 +162,7 @@ class HttpServer implements RequestHandlerInterface
      */
     public function getLanguage(): array
     {
-        return $this->language;
+        return $this->language->getArrayCopy();
     }
 
     /**

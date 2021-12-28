@@ -4,15 +4,15 @@ namespace Thor\Http;
 
 use Thor\Env;
 use Thor\Thor;
-use Thor\Configuration;
 use Thor\KernelInterface;
 use Thor\Debug\{Logger, LogLevel};
+use Thor\Factories\Configurations;
+use Thor\Configuration\Configuration;
 use Thor\Factories\{HttpServerFactory, ServerRequestFactory};
 use Thor\Http\{Server\HttpServer,
     Controllers\HttpController,
     Response\ResponseInterface,
-    Request\ServerRequestInterface
-};
+    Request\ServerRequestInterface};
 
 /**
  * HttpKernel of Thor. It is by default instantiated with the `api.php` entry point.
@@ -34,15 +34,15 @@ class HttpKernel implements KernelInterface
      *
      * It loads the configuration files and use it to instantiate the Kernel.
      *
-     * @see Configuration::getHttpConfiguration()
-     * @see Thor::getConfiguration()
+     * @see Configurations::getHttpConfiguration()
+     * @see Thor::getConfigurationPool()
      */
     public static function create(): static
     {
         self::guardHttp();
         Logger::write('Start HTTP context');
 
-        return self::createFromConfiguration(Thor::getConfiguration()->getHttpConfiguration());
+        return self::createFromConfiguration(Configurations::getHttpConfiguration());
     }
 
     /**
@@ -64,11 +64,11 @@ class HttpKernel implements KernelInterface
     /**
      * This static function returns a new HttpKernel with specified configuration.
      *
-     * @param array $config
+     * @param Configuration $config
      *
      * @return static
      */
-    public static function createFromConfiguration(array $config = []): static
+    public static function createFromConfiguration(Configuration $config): static
     {
         return new self(HttpServerFactory::createHttpServerFromConfiguration($config));
     }

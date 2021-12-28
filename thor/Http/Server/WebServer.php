@@ -9,6 +9,7 @@ use JetBrains\PhpStorm\Pure;
 use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
 use Thor\Security\SecurityInterface;
+use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Http\Request\ServerRequestInterface;
 
@@ -29,7 +30,7 @@ class WebServer extends HttpServer
         Router $router,
         ?SecurityInterface $security,
         PdoCollection $pdoCollection,
-        array $language,
+        Configuration $language,
         public ?Environment $twig = null
     ) {
         parent::__construct($router, $security, $pdoCollection, $language);

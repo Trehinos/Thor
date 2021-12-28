@@ -61,5 +61,4 @@ permissions:
     create-user: 'Créer un utilisateur'
     edit-user: 'Editer un utilisateur'
     remove-user: 'Supprimer un utilisateur'
-    test: TEST
     manage-permissions: 'Gérer les permissions'

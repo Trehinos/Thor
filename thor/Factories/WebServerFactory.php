@@ -5,6 +5,7 @@ namespace Thor\Factories;
 use Thor\Http\Routing\Router;
 use Thor\Http\Server\WebServer;
 use Thor\Security\SecurityInterface;
+use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;
 
 /**
@@ -21,11 +22,11 @@ final class WebServerFactory
     {
     }
 
-    public static function creatWebServerFromConfiguration(array $config): WebServer
+    public static function creatWebServerFromConfiguration(Configuration $config): WebServer
     {
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
         $server = self::produce(
-            $router = RouterFactory::createRouterFromConfiguration($config['web-routes']),
+            $router = RouterFactory::createRouterFromConfiguration($config['routes']),
             null,
             $pdoCollection,
             $config['language'],
@@ -42,8 +43,8 @@ final class WebServerFactory
         Router $router,
         ?SecurityInterface $security,
         PdoCollection $pdoCollection,
-        array $language,
-        array $twig_config = []
+        Configuration $language,
+        ?Configuration $twig_config = null
     ): WebServer {
         $webServer = new WebServer($router, $security, $pdoCollection, $language);
         $twig = TwigFactory::createTwigFromConfiguration($webServer, $twig_config);

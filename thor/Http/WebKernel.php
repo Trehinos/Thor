@@ -4,7 +4,9 @@ namespace Thor\Http;
 
 use Thor\Thor;
 use Thor\Debug\Logger;
+use Thor\Factories\Configurations;
 use Thor\Factories\WebServerFactory;
+use Thor\Configuration\Configuration;
 use Thor\Http\{Server\WebServer, Response\ResponseInterface, Request\ServerRequestInterface};
 
 /**
@@ -32,25 +34,24 @@ class WebKernel extends HttpKernel
      *
      * It loads the configuration files and use it to instantiate the Kernel.
      *
-     * @see Configuration::getWebConfiguration()
-     * @see Thor::getConfiguration()
+     * @see Configurations::getWebConfiguration()
      */
     public static function create(): static
     {
         self::guardHttp();
         Logger::write('Start Web context');
 
-        return self::createFromConfiguration(Thor::getConfiguration()->getWebConfiguration());
+        return self::createFromConfiguration(Configurations::getWebConfiguration());
     }
 
     /**
      * This static function returns a new WebKernel with specified configuration.
      *
-     * @param array $config
+     * @param Configuration $config
      *
      * @return static
      */
-    public static function createFromConfiguration(array $config = []): static
+    public static function createFromConfiguration(Configuration $config): static
     {
         return new self(WebServerFactory::creatWebServerFromConfiguration($config));
     }

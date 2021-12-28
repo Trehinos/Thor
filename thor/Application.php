@@ -5,6 +5,10 @@ namespace Thor;
 use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
 use Throwable;
+use Thor\Factories\Configurations;
+use Thor\Configuration\Configuration;
+use Thor\Configuration\ThorConfiguration;
+use Thor\Configuration\KernelsConfiguration;
 
 /**
  * Main class of the framework. It loads the global configuration, sets the logger level
@@ -29,24 +33,24 @@ final class Application implements KernelInterface
     public static function create(): static
     {
         global $thor_kernel;
-        $config = Thor::config('config');
-        return self::createFromConfiguration(['thor_kernel' => $thor_kernel] + $config);
+        $config = new ThorConfiguration($thor_kernel);
+        return self::createFromConfiguration($config);
     }
 
     /**
      * Creates the application with given configuration.
      *
-     * @param array $config
+     * @param ThorConfiguration $config
      *
      * @return static
      */
-    public static function createFromConfiguration(array $config = []): static
+    public static function createFromConfiguration(Configuration $config): static
     {
         Application::setLoggerLevel(
-            LogLevel::fromEnv(Env::tryFrom(strtoupper($config['env']))) ?? LogLevel::DEBUG,
-            Globals::VAR_DIR . ($config['log_path'] ?? '')
+            LogLevel::fromEnv($config->env()) ?? LogLevel::DEBUG,
+            Globals::VAR_DIR . ($config->logPath())
         );
-        return new self(Application::getKernel($config['thor_kernel'] ?? ''));
+        return new self(Application::getKernel($config->thorKernel()));
     }
 
     /**
@@ -79,21 +83,18 @@ final class Application implements KernelInterface
      */
     public static function getKernel(?string $thor_kernel = null): ?KernelInterface
     {
-        $kernel = null;
-
-        if (null !== ($thor_kernel ?? null)) {
-            foreach (Thor::config('kernels', true) as $kernelName => $kernelClass) {
+        if (null !== $thor_kernel) {
+            foreach (KernelsConfiguration::get() as $kernelName => $kernelClass) {
                 if ($kernelName === $thor_kernel) {
                     if (!class_exists($kernelClass)) {
                         return null;
                     }
-                    $kernel = $kernelClass::create();
-                    break;
+                    return $kernelClass::create();
                 }
             }
         }
 
-        return $kernel;
+        return null;
     }
 
     /**

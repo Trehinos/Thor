@@ -2,6 +2,10 @@
 
 namespace Thor;
 
+use Thor\Factories\Configurations;
+use Thor\Configuration\Configuration;
+use Thor\Configuration\ThorConfiguration;
+
 /**
  * A general utility class for Thor.
  *
@@ -12,55 +16,36 @@ namespace Thor;
 final class Thor
 {
 
-    private static ?Configuration $configuration = null;
+    private static ThorConfiguration|null $configuration = null;
 
     private function __construct()
     {
     }
 
+    private static function config(): ThorConfiguration
+    {
+        global $thor_kernel;
+        return self::$configuration ??= new ThorConfiguration($thor_kernel);
+    }
+
     public static function version(): string
     {
-        return self::config('config')['app_version'] ?? '';
-    }
-
-    /**
-     * Gets the configuration from a file in the resources' folder.
-     *
-     * @param string $name
-     * @param bool   $staticResource If false (default), search in the res/config/ folder.
-     *                               If true, search in the res/static/ folder.
-     *
-     *
-     * @return array
-     */
-    public static function config(string $name, bool $staticResource = false): array
-    {
-        return self::getConfiguration()->loadConfig($name, $staticResource);
-    }
-
-    /**
-     * Gets the static Configuration object.
-     *
-     * @return Configuration
-     */
-    public static function getConfiguration(): Configuration
-    {
-        return self::$configuration ??= Configuration::getInstance();
+        return self::config()->appVersion();
     }
 
     public static function versionName(): string
     {
-        return self::config('config')['app_version_name'] ?? '';
+        return self::config()->appVersionName();
     }
 
     public static function appName(): string
     {
-        return self::config('config')['app_name'] ?? '';
+        return self::config()->appName();
     }
 
     public static function vendor(): string
     {
-        return self::config('config')['app_vendor'] ?? '';
+        return self::config()->appVendor();
     }
 
     /**
@@ -80,7 +65,7 @@ final class Thor
      */
     public static function getEnv(): Env
     {
-        return Env::tryFrom(strtoupper(self::config('config')['env'] ?? 'dev'));
+        return self::config()->env();
     }
 
 }

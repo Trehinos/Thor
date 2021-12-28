@@ -7,6 +7,7 @@ use Thor\Globals;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Thor\Http\{Routing\Router, Server\WebServer};
+use Thor\Configuration\Configuration;
 
 /**
  * A factory to create the Twig Environment from configuration.
@@ -20,12 +21,12 @@ final class TwigFactory
 
     private Environment $twig;
 
-    public function __construct(array $twigConfig = [])
+    public function __construct(Configuration $twigConfig)
     {
         $this->twig = self::defaultTwigEnvironment($twigConfig);
     }
 
-    private static function defaultTwigEnvironment(array $twig_config = []): Environment
+    private static function defaultTwigEnvironment(Configuration $twig_config): Environment
     {
         return new Environment(
             new FilesystemLoader(
@@ -43,7 +44,7 @@ final class TwigFactory
 
     public static function createTwigFromConfiguration(
         WebServer $server,
-        array $twig_config
+        Configuration $twig_config
     ): Environment {
         return (new self($twig_config))->addDefaults($server, $server->getRouter())->produce();
     }

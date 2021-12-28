@@ -34,6 +34,19 @@
             </div>
             <div class="col-6">
                 Label
+                <ul class="nav nav-pills">
+                    {% for lang in languages %}
+                        <li class="nav-item">
+                            <button class="nav-link {% if loop.index == 1 %}active{% endif %}"
+                                    type="button"
+                                    data-target=".labels-lang-{{ lang }}"
+                                    onclick="showTab($(this));"
+                            >
+                                {{ lang }}
+                            </button>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
             <div class="col-3">
             </div>
@@ -48,9 +61,17 @@
                             >
                         </div>
                         <div class="col-6">
-                            <input class="form-control" value="{{ permission.label }}"
-                                   id="permission-label-{{ permission.permission }}" name="permissions[label][]"
-                            >
+                            <div class="tab-content">
+                                {% for lang in languages %}
+                                    <div class="labels-lang-{{ lang }} tab-pane fade {% if loop.index == 1 %}show active{% endif %}">
+                                        <input class="form-control" value="{{ permission.label[lang] }}"
+                                               id="label-{{ permission.permission }}-lang-{{ lang }}"
+                                               name="permissions[label][{{ lang }}][]"
+                                        >
+                                    </div>
+                                {% endfor %}
+                            </div>
+
                         </div>
                         <div class="col-3 pt-1">
                             <button class="btn btn-sm btn-danger"
@@ -87,6 +108,16 @@
         </div>
     </div>
 </div>`;
+
+        function showTab($button) {
+            let $targets = $($button.data('target'));
+            $(".tab-pane").removeClass("show").removeClass("active");
+            $targets.each((index, element) => {
+                $(element).addClass("show").addClass("active");
+            });
+            $("button.nav-link").removeClass("active");
+            $button.addClass("active");
+        }
 
         function addPermissionLine() {
             $permissions.append(newPermission);

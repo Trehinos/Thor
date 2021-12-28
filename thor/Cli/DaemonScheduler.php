@@ -3,7 +3,16 @@
 namespace Thor\Cli;
 
 use Throwable;
-use Thor\{Thor, Globals, Application, Debug\Logger, Configuration, Debug\LogLevel, KernelInterface, FileSystem\Folder};
+use Thor\{Configuration\ThorConfiguration,
+    Thor,
+    Globals,
+    Application,
+    Debug\Logger,
+    Debug\LogLevel,
+    KernelInterface,
+    FileSystem\Folder,
+    Factories\Configurations,
+    Configuration\Configuration};
 
 /**
  * This class is the Kernel of thor daemons.
@@ -31,13 +40,13 @@ final class DaemonScheduler implements KernelInterface
     public static function create(): static
     {
         CliKernel::guardCli();
-        return self::createFromConfiguration(Configuration::getDaemonsConfig());
+        return self::createFromConfiguration(Configurations::getDaemonsConfig());
     }
 
     /**
      * Creates the DaemonScheduler with the specified configuration.
      */
-    public static function createFromConfiguration(array $config = []): static
+    public static function createFromConfiguration(Configuration $config): static
     {
         $daemons = [];
         foreach ($config as $info) {
@@ -86,7 +95,7 @@ final class DaemonScheduler implements KernelInterface
         $state = new DaemonState($daemon);
         $state->load();
 
-        $logPath = Globals::VAR_DIR . (Thor::config('config')['log_path'] ?? '');
+        $logPath = Globals::VAR_DIR . ThorConfiguration::get()->logPath();
         Application::setLoggerLevel(LogLevel::fromEnv(Thor::getEnv()), "$logPath{$daemon->getName()}/");
         Logger::write("Start {$daemon->getName()} daemon");
 
@@ -103,7 +112,7 @@ final class DaemonScheduler implements KernelInterface
         $state = new DaemonState($daemon);
         $state->load();
         if (!$state->isRunning() && $daemon->isNowRunnable($state->getLastRun())) {
-            $logPath = Globals::VAR_DIR . (Thor::config('config')['log_path'] ?? '');
+            $logPath = Globals::VAR_DIR . ThorConfiguration::get()->logPath();
             Folder::createIfNotExists($logPath . $daemon->getName());
             CliKernel::executeBackgroundProgram(
                 'php ' . Globals::BIN_DIR . "daemon.php {$daemon->getName()}",
