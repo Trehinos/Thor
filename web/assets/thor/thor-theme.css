@@ -1,8 +1,16 @@
 
+/*
+GLOBAL RESETS
+ */
+
 html, body {
     height: 100%;
     background: #eee;
 }
+
+/*
+Main elements of Thor
+ */
 
 #menu {
     color: #ccc;
@@ -81,8 +89,6 @@ html, body {
     color: #aaa;
 }
 
-/* ****************************************************************************************************************** */
-
 #content {
     margin-left: 320px;
     width: calc(100% - 320px);
@@ -114,6 +120,11 @@ html, body {
     padding-left: 16px;
 }
 
+#page {;
+    padding: 96px 16px;
+}
+
+
 #modal .modal-header {
     position: relative;
 }
@@ -127,9 +138,9 @@ html, body {
     background: #f40;
 }
 
-#page {;
-    padding: 96px 16px;
-}
+/*
+Main elements of Thor on pages
+ */
 
 #users .user .btn, #users .user small {
     opacity: 0.1;
@@ -154,7 +165,7 @@ html, body {
     margin: 0.4em;
 }
 
-/* */
+/* Small resolutions */
 @media (max-width: 991.98px){
     #content, #titlebar, #toolbar {
         width: 100%;
@@ -214,7 +225,10 @@ html, body {
     }
 }
 
-/* ****************************************************************************************************************** */
+/*
+Bootstrap overrides
+ */
+
 .fa-li {
     top: 7px;
 }
@@ -225,6 +239,10 @@ html, body {
 .modal-footer {
     background: #ccc;
 }
+
+/*
+Thor elements
+ */
 
 .box {
     display: inline-block;
@@ -242,11 +260,14 @@ html, body {
     color: #fffa;
     bottom: 8px;
     left: 8px;
+    font-size: 2em;
 }
 
 .box .box-text {
     text-align: right;
     position: absolute;
+    width: 96px;
+    font-size: 0.8em;
     bottom: 8px;
     right: 8px;
     line-height: 1;

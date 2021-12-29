@@ -13,8 +13,9 @@
                     {{ DICT.index.documentation_text }}
                 </div>
                 <div class="card-footer">
-                    <button onclick="menuClick($('#btn-documentation'))" class="btn btn-sm btn-dark">
-                        {{ DICT.index.documentation_button }}
+                    <button onclick="menuClick($('#btn-documentation'))" class="box" style="background: #469">
+                        {{ icon('book box-icon') }}
+                        <span class="box-text">{{ DICT.index.documentation_button }}</span>
                     </button>
                 </div>
             </div>
@@ -25,11 +26,13 @@
                     {{ DICT.index.features_text }}
                 </div>
                 <div class="card-footer">
-                    <button onclick="menuClick($('#btn-users'))" class="btn btn-sm btn-dark">
-                        {{ DICT.index.users_button }}
+                    <button onclick="menuClick($('#btn-users'))" class="box" style="background: #832">
+                        {{ icon('users box-icon') }}
+                        <span class="box-text">{{ DICT.index.users_button }}</span>
                     </button>
-                    <button onclick="menuClick($('#btn-manage-permissions'))" class="btn btn-sm btn-dark">
-                        {{ DICT.index.permissions_button }}
+                    <button onclick="menuClick($('#btn-manage-permissions'))" class="box" style="background: #a60">
+                        {{ icon('gavel box-icon') }}
+                        <span class="box-text">{{ DICT.index.permissions_button }}</span>
                     </button>
                 </div>
             </div>
