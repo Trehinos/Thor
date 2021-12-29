@@ -46,16 +46,12 @@ final class DataTables
 
         $noFormatter = fn($value) => $value;
 
-        $editor = Editor::inst($this->getDatabase(), $tableName, $primaries);
+        $editor = new Editor($this->getDatabase(), $tableName, $primaries);
         $editor->field(
             array_map(
-                fn(PdoColumn $column) => Field::inst($column->getName())
-                                              ->setFormatter(
-                                                  $this->formatters[$column->getName()]['set'] ?? $noFormatter
-                                              )
-                                              ->getFormatter(
-                                                  $this->formatters[$column->getName()]['get'] ?? $noFormatter
-                                              ),
+                fn(PdoColumn $column) => (new Field($column->getName()))
+                    ->setFormatter($this->formatters[$column->getName()]['set'] ?? $noFormatter)
+                    ->getFormatter($this->formatters[$column->getName()]['get'] ?? $noFormatter),
                 $this->getColumns()
             )
         );
@@ -93,23 +89,28 @@ final class DataTables
             'table' => Html::node(
                 'table',
                 [
-                    'id'    => $this->className . '-dt',
+                    'id' => $this->className . '-dt',
                     'class' => 'table table-bordered w-100',
                 ],
                 [
                     Html::node(
-                                 'thead',
-                        content: [
-                                     Html::node(
-                                                  'tr',
-                                         content: array_map(
-                                                      fn(PdoColumn $column) => Html::node('th', content: [
-                                                          $labels[$column->getName()] ?? $column->getName(),
-                                                      ]),
-                                                      $this->getColumns()
-                                                  )
-                                     ),
-                                 ]
+                        'thead',
+                        [],
+                        [
+                            Html::node(
+                                'tr',
+                                [],
+                                array_map(
+                                    fn(PdoColumn $column) => Html::node(
+                                        'th',
+                                        ['class' => 'bg-dark text-light'],
+                                        [
+                                        $labels[$column->getName()] ?? $column->getName(),
+                                    ]),
+                                    $this->getColumns()
+                                )
+                            ),
+                        ]
                     ),
                     Html::node('tbody', content: ['']),
                 ]
