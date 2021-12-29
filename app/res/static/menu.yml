@@ -8,7 +8,7 @@
     group:
         -   icon: gavel
             route: manage-permissions
-            label: Permissions
+            label: users_permissions
             authorization: manage-permissions
 -   label: documentation
     icon: books

@@ -27,7 +27,7 @@
     <div style="width: 400px; margin: auto; text-align: center">
         <h1 class="mb-4">
             <i class="fas fa-lg fa-sign-in"></i><br>
-            {{ "users.login.connect"|_(appName) }}
+            {{ "users.login.connect"|_({appName}) }}
         </h1>
         <form method="post" action="{{ url('check') }}">
             <div class="form-group">

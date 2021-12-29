@@ -1,52 +1,51 @@
 {% extends "pages/base.html.twig" %}
 
-{% block titlebar %}{{ icon('gavel', 'fas', true) }} Permissions{% endblock %}
+{% block titlebar %}{{ icon('gavel', 'fas', true) }} {{ DICT.menu.users_permissions }}{% endblock %}
 
 {% block toolbar %}
     <button class="btn btn-sm btn-success"
             onclick="addPermissionLine();"
     >
         <i class="fas fa-plus"></i>
-        Ajouter une ligne
+        {{ DICT.permissions_page.add }}
     </button>
-    <button class="btn btn-sm btn-primary float-end"
+    <button class="btn btn-sm btn-primary"
             type="submit"
             form="form-permissions"
     >
         <i class="fas fa-save"></i>
-        Enregistrer les permissions
+        {{ DICT.permissions_page.save }}
     </button>
+    <ul class="nav nav-pills d-inline-block float-end">
+        {% for lang in languages %}
+            <li class="nav-item float-start">
+                <button class="p-2 pt-1 pb-1 nav-link {% if lang == _lang %}active{% endif %}"
+                        type="button"
+                        data-target=".labels-lang-{{ lang }}"
+                        onclick="showTab($(this));"
+                >
+                    {{ lang }}
+                </button>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 
 {% block page %}
     <div class="alert alert-info">
-        Ce formulaire permet d'éditer les permissions disponibles dans <strong>Thor.</strong>.<br>
-        Il édite :
-        <ul>
-            <li>le fichier <code>/app/res/static/permissions.yml</code> et</li>
-            <li>le fichier de langage courant dans <code>/app/res/static/langs/</code>.</li>
-        </ul>
+        {{ icon('info-circle') }}
+        {{ "permissions_page.text"|_({
+            'permissionsFile': '/app/res/static/permissions.yml',
+            'langsFile': '/app/res/static/langs/*.yml'
+        }) }}
     </div>
     <form id="form-permissions" action="{{ url('permissions-update') }}" method="POST">
         <div class="row" style="font-weight: bold;">
-            <div class="col-3">
-                Permission
+            <div class="col-3 align-self-end">
+                {{ DICT.menu.users_permissions }}
             </div>
             <div class="col-6">
-                Label
-                <ul class="nav nav-pills">
-                    {% for lang in languages %}
-                        <li class="nav-item">
-                            <button class="nav-link {% if loop.index == 1 %}active{% endif %}"
-                                    type="button"
-                                    data-target=".labels-lang-{{ lang }}"
-                                    onclick="showTab($(this));"
-                            >
-                                {{ lang }}
-                            </button>
-                        </li>
-                    {% endfor %}
-                </ul>
+                {{ DICT.general.label }}
             </div>
             <div class="col-3">
             </div>
@@ -61,27 +60,27 @@
 
 {% block page_js %}
     <script>
-            var $permissions = $("#permissions");
+        var $permissions = $("#permissions");
 
-            function showTab($button) {
-                let $targets = $($button.data('target'));
-                $(".tab-pane").removeClass("show").removeClass("active");
-                $targets.each((index, element) => {
-                    $(element).addClass("show").addClass("active");
-                });
-                $("button.nav-link").removeClass("active");
-                $button.addClass("active");
-            }
+        function showTab($button) {
+            let $targets = $($button.data('target'));
+            $(".tab-pane").removeClass("show").removeClass("active");
+            $targets.each((index, element) => {
+                $(element).addClass("show").addClass("active");
+            });
+            $("button.nav-link").removeClass("active");
+            $button.addClass("active");
+        }
 
-            function addPermissionLine() {
-                $.get("{{ url('permission-line') }}", {}, (response) => {
-                    $permissions.append(response);
-                });
+        function addPermissionLine() {
+            $.get("{{ url('permission-line') }}", {}, (response) => {
+                $permissions.append(response);
+            });
 
-            }
+        }
 
-            function deletePermission(btn) {
-                $(btn).parent().parent().parent().remove();
-            }
+        function deletePermission(btn) {
+            $(btn).parent().parent().parent().remove();
+        }
     </script>
 {% endblock %}

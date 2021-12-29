@@ -20,7 +20,7 @@ use Thor\Database\PdoTable\{Criteria,
 };
 
 /**
- * Class PdoMatrix
+ * Class TableMatrix
  *      Request <-> CrudHelper(PdoRow) <-> Form
  *
  * Request -> select -> html table

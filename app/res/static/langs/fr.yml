@@ -7,12 +7,11 @@ general:
     show: Afficher
     hide: Cacher
     clean_fields: 'Vider les champs'
+    label: Libellé
 menu:
     index: Index
     users: Utilisateurs
-    users-groups: Groupes
-    users-roles: Rôles
-    users-permissions: Permissions
+    users_permissions: Permissions
     documentation: Documentation
 footer:
     about: 'A propos'
@@ -20,9 +19,12 @@ footer:
     changelog: 'Notes de versions'
 index:
     title: Index
-    search_placeholder: 'Rechercher une route...'
-    tip: 'Cette interface permet de tester les routes de l''application. Celles-ci sont définies dans'
-    route: Route
+    thor_description: "Thor est un framework complet pour PHP 8.1."
+    documentation_text: "Accédez à une API permettant de développer rapidement de nouvelles fonctionnalités."
+    documentation_button: "Page de documentation"
+    features_text: "Profitez de fonctionnalités pré-développées à étendre selon vos besoins."
+    users_button: "Gestion des utilisateurs"
+    permissions_button: "Gestion des permissions"
 users:
     title: Utilisateurs
     user: Utilisateur
@@ -40,7 +42,7 @@ users:
     generated_password: 'Mot de passe généré'
     min_size: 'min. 16 caractères'
     connect: 'Se connecter'
-users.login.connect: 'Connexion à <strong>%s</strong>'
+users.login.connect: 'Connexion à <strong>{appName}</strong>'
 documentation:
     alert: 'La documentation est disponible dans le Wiki du projet sur Github.'
     linklabel: 'Voir la documentation sur Github'
@@ -49,13 +51,26 @@ changelog:
     legend: Légende
 about:
     title: 'A propos'
-about.body: "<strong>Thor</strong> est un framework PHP.<br>\n<strong>Version courante :</strong> %s<br>\n<strong>License</strong> : MIT (&copy; Sébastien GELDREICH)<br>"
+about.body: "<strong>Thor</strong> est un framework PHP.<br>\n<strong>Version courante :</strong> {version}<br>\n<strong>License</strong> : MIT (&copy; Sébastien GELDREICH)<br>"
 legal:
     title: 'Mentions légales'
     description: "<i class=\"far fa-copyright\"></i> 2021 Sébastien GELDREICH<br>\nLicense : MIT"
 errors:
     too-short-username: 'Nom d''utilisateur trop court (min. 4 car.) ou trop long (max. 255 car.) ou caractères invalides.'
     too-short-password: 'Mot de passe trop court (min. 16 car.) ou trop long (max. 255 car.).'
+permissions_page:
+    add: Ajouter une permission
+    save: Enregistrer les permissions
+permissions_page.text: |-
+    Dans <strong>Thor</strong>, une permission est juste une <code>string</code> définie dans le fichier <code>{permissionsFile}</code>.<br>
+    La permission est ensuite vérifiée avec la fonction <strong>Twig</strong> <code>authorized()</code> ou l'attribut <strong>PHP</strong> <code>#[Authorization]</code>.
+    <hr>
+    Ce formulaire permet d'éditer les permissions disponibles dans <strong>Thor</strong>.<br>
+    Il édite:
+    <ul>
+        <li>le fichier <code>{permissionsFile}</code> et</li>
+        <li>les fichiers de langage <code>{langsFile}</code> pour les traductions.</li>
+    </ul>
 permissions:
     manage-user: 'Gérer les utilisateurs'
     create-user: 'Créer un utilisateur'

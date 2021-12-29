@@ -7,12 +7,11 @@ general:
     show: Show
     hide: Hide
     clean_fields: 'Clean fields'
+    label: Label
 menu:
     index: Index
     users: Users
-    users-groups: Groups
-    users-roles: Roles
-    users-permissions: Permissions
+    users_permissions: Permissions
     documentation: Documentation
 footer:
     about: About
@@ -20,9 +19,12 @@ footer:
     changelog: Changelog
 index:
     title: Index
-    search_placeholder: 'Search route...'
-    tip: 'This interface helps testing application routes. These are defined in'
-    route: Route
+    thor_description: "Thor is a complete framework for PHP 8.1."
+    documentation_text: "Access an API which allows you to fastly develop new features."
+    documentation_button: "Documentation page"
+    features_text: "Enjoy pre-developed features to extends according to your needs."
+    users_button: "Users management"
+    permissions_button: "Permissions management"
 users:
     title: Users
     user: User
@@ -40,7 +42,7 @@ users:
     generated_password: 'Generated password'
     min_size: 'min. 16 characters'
     connect: 'Sign in'
-users.login.connect: 'Sign in <strong>%s</strong>'
+users.login.connect: 'Sign in <strong>{appName}</strong>'
 documentation:
     alert: 'The documentation is available in the project''s wiki on Github.'
     linklabel: 'See the documentation on Github'
@@ -49,13 +51,26 @@ changelog:
     legend: Legend
 about:
     title: About
-about.body: "<strong>Thor</strong> is a PHP framework.<br>\n<strong>Current version :</strong> %s<br>\n<strong>License</strong> : MIT (&copy; Sébastien GELDREICH)<br>"
+about.body: "<strong>Thor</strong> is a PHP framework.<br>\n<strong>Current version :</strong> {version}<br>\n<strong>License</strong> : MIT (&copy; Sébastien GELDREICH)<br>"
 legal:
     title: Legal
     description: "<i class=\"far fa-copyright\"></i> 2021 Sébastien GELDREICH<br>\nLicence : MIT"
 errors:
     too-short-username: 'Username too short (4 char. min.) or too long (255 char. max.) or invalid characters.'
     too-short-password: 'Password too short (16 char. min.) or too long (255 char. max.).'
+permissions_page:
+    add: Add a permission
+    save: Save permissions
+permissions_page.text: |-
+    In <strong>Thor</strong>, a permission is a simple <code>string</code> defined in the file <code>{permissionsFile}</code>.<br>
+    The permission is then checked with the <code>authorized()</code> <strong>Twig</strong> function or the <code>#[Authorization]</code> <strong>PHP</strong> attribute.
+    <hr>
+    This forms allows you to edit the permissions available in <strong>Thor</strong>.<br>
+    It edits :
+    <ul>
+        <li>the permissions list in <code>{permissionsFile}</code> and,</li>
+        <li>the language files <code>{langsFile}</code> for translations.</li>
+    </ul>
 permissions:
     manage-user: 'Manage users'
     create-user: 'Create an user'

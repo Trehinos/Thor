@@ -6,7 +6,7 @@
                    id="permission-{{ permission.permission }}" name="permissions[]"
                    {% if user is defined and user.hasPermission(permission.permission) %}checked{% endif %}
             >
-            <label class="form-check-label" for="permission-{{ permission.permission }}">{{ permission.label[lang] }}</label>
+            <label class="form-check-label" for="permission-{{ permission.permission }}">{{ permission.label[_lang] }}</label>
         </div>
     {% endfor %}
 </div>

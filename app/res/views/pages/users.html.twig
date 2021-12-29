@@ -4,11 +4,11 @@
 
 {% block toolbar %}
     {% if authorization('manage-user', 'create-user') %}
-        <button class="btn btn-sm btn-primary"
+        <button class="btn btn-sm btn-success"
                 onclick="Modal.load('{{ url('users-create-form') }}');"
         >
             {{ icon('plus') }}
-            {{ DICT.general.create }}
+            {{ DICT.users.create_user }}
         </button>
     {% endif %}
 {% endblock %}

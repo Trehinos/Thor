@@ -7,9 +7,13 @@ use Thor\Env;
 final class ThorConfiguration extends ConfigurationFromFile
 {
 
-    public function __construct(string $thorKernel)
+    public function __construct(?string $thorKernel = null)
     {
         parent::__construct('config');
+        if ($thorKernel === null) {
+            global $thor_kernel;
+            $thorKernel = $thor_kernel;
+        }
         $this['thor_kernel'] = $thorKernel;
     }
 

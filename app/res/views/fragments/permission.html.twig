@@ -8,7 +8,7 @@
         <div class="col-6">
             <div class="tab-content">
                 {% for lang in languages %}
-                    <div class="labels-lang-{{ lang }} tab-pane fade {% if loop.index == 1 %}show active{% endif %}">
+                    <div class="labels-lang-{{ lang }} tab-pane fade {% if lang == _lang %}show active{% endif %}">
                         <input class="form-control" value="{{ permission.label[lang] }}"
                                id="label-{{ permission.permission }}-lang-{{ lang }}"
                                name="permissions[label][{{ lang }}][]"
@@ -24,7 +24,7 @@
                     onclick="deletePermission(this);"
             >
                 <i class="fas fa-times"></i>
-                Supprimer
+                {{ DICT.general.remove }}
             </button>
         </div>
     </div>
