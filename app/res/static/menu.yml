@@ -6,6 +6,9 @@
     route: users
     authorization: manage-user
     group:
+        -   icon: list
+            route: users-table
+            label: users
         -   icon: gavel
             route: manage-permissions
             label: users_permissions

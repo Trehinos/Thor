@@ -37,6 +37,7 @@ class Node implements NodeInterface
     public function addChild(Node $node): void
     {
         $this->children[] = $node;
+        $node->parent = $this;
     }
 
     /**

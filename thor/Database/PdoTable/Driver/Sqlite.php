@@ -16,8 +16,8 @@ class Sqlite implements DriverInterface
     {
         $attrs = new PdoAttributesReader($className);
         $separator = ",\n    ";
-        $tableName = $attrs->getAttributes()['row']->getTableName();
-        $autoKey = $attrs->getAttributes()['row']->getAutoColumnName();
+        $tableName = $attrs->getAttributes()['table']->getTableName();
+        $autoKey = $attrs->getAttributes()['table']->getAutoColumnName();
         $columns = implode(
             $separator,
             array_map(
@@ -25,7 +25,7 @@ class Sqlite implements DriverInterface
                 $attrs->getAttributes()['columns']
             )
         );
-        $primary = $this->primaryKeys($attrs->getAttributes()['row'], $autoKey);
+        $primary = $this->primaryKeys($attrs->getAttributes()['table'], $autoKey);
 
         if ($primary !== '') {
             $primary = "$separator$primary";
@@ -67,7 +67,7 @@ class Sqlite implements DriverInterface
     public function createIndexes(string $className): array
     {
         $attrs = new PdoAttributesReader($className);
-        $this->tableName = $attrs->getAttributes()['row']->getTableName();
+        $this->tableName = $attrs->getAttributes()['table']->getTableName();
         return array_map(
             fn(PdoIndex $index) => $this->addIndex($index),
             $attrs->getAttributes()['indexes']

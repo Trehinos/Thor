@@ -20,8 +20,8 @@ class MySql implements DriverInterface
     {
         $attrs = new PdoAttributesReader($className);
         $separator = ",\n    ";
-        $tableName = $attrs->getAttributes()['row']->getTableName();
-        $autoKey = $attrs->getAttributes()['row']->getAutoColumnName();
+        $tableName = $attrs->getAttributes()['table']->getTableName();
+        $autoKey = $attrs->getAttributes()['table']->getAutoColumnName();
         $columns = implode(
             $separator,
             array_map(
@@ -36,7 +36,7 @@ class MySql implements DriverInterface
                 $attrs->getAttributes()['indexes']
             )
         );
-        $primary = $this->primaryKeys($attrs->getAttributes()['row'], $autoKey);
+        $primary = $this->primaryKeys($attrs->getAttributes()['table'], $autoKey);
 
         if ($indexes !== '') {
             $indexes = "$separator$indexes";

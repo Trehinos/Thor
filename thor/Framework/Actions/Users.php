@@ -4,9 +4,11 @@ namespace Thor\Framework\Actions;
 
 use Thor\Globals;
 use Thor\Framework\{Managers\UserManager};
+use Thor\Tools\DataTables;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
+use Thor\Factories\ResponseFactory;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Configuration\LanguageDictionary;
@@ -33,11 +35,29 @@ final class Users extends WebController
 {
 
     private UserManager $manager;
+    private DataTables $userTable;
 
     public function __construct(WebServer $webServer)
     {
         parent::__construct($webServer);
         $this->manager = new UserManager(new CrudHelper(DbUser::class, $this->getServer()->getRequester()));
+
+        $this->userTable = new DataTables(
+            DbUser::class,
+            $this->getServer()->getHandler(),
+            ['public_id', 'id', 'username', 'permissions'],
+            [
+                'permissions' => [
+                    'get' => fn(string $permissions) => '<ul>' . implode(
+                            '',
+                            array_map(
+                                fn(string $permission) => "<li>$permission</li>",
+                                json_decode($permissions)
+                            )
+                        ) . '</ul>',
+                ],
+            ]
+        );
     }
 
     #[Authorization('manage-user')]
@@ -50,6 +70,25 @@ final class Users extends WebController
                 'users' => $this->manager->getUserCrud()->listAll(),
             ]
         );
+    }
+
+    #[Authorization('manage-user')]
+    #[Route('users-table', '/users/table', HttpMethod::GET)]
+    public function usersTable(): Response
+    {
+        return $this->twigResponse(
+            'pages/datatable.html.twig',
+            [
+                'table' => $this->userTable->getDataTable(['hash' => 'Mot de passe']),
+            ]
+        );
+    }
+
+    #[Authorization('manage-user')]
+    #[Route('users-table-actions', '/users/table/actions', HttpMethod::POST)]
+    public function usersTableActions(): Response
+    {
+        return ResponseFactory::ok($this->userTable->process($_POST));
     }
 
     #[Authorization('manage-user', 'create-user')]
@@ -82,7 +121,7 @@ final class Users extends WebController
                     $this->getLanguages(),
                     array_map(
                         fn(string $language) => LanguageDictionary::get($language)['permissions'][$permission]
-                            ?? $permission,
+                                                ?? $permission,
                         $this->getLanguages()
                     )
                 ),

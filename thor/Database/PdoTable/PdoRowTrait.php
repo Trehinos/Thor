@@ -46,7 +46,7 @@ trait PdoRowTrait
      *
      * @throws ReflectionException
      */
-    #[ArrayShape(['row' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
+    #[ArrayShape(['table' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     public static function getTableAttributes(): array
     {
         return static::$tablesAttributes[static::class] ??= PdoAttributesReader::pdoTableInformation(static::class);
@@ -102,7 +102,7 @@ trait PdoRowTrait
      */
     final public static function getPdoTable(): PdoTable
     {
-        return static::getTableAttributes()['row'];
+        return static::getTableAttributes()['table'];
     }
 
     /**

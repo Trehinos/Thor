@@ -4,6 +4,7 @@
     <title>{% block head_title %}App{% endblock %}</title>
     <link rel="icon" href="/assets/thor/thor-favicon-v2.png">
     <link rel="stylesheet" href="/vendors/bootstrap.min.css">
+    <link rel="stylesheet" href="/vendors/datatables.min.css">
     {% block head_css %}{% endblock %}
     {% block head_js %}{% endblock %}
 </head>
@@ -17,6 +18,8 @@
 <script src="/vendors/jquery.min.js"></script>
 <script src="/vendors/bootstrap.bundle.min.js"></script>
 <script src="/vendors/fontawesome.min.js"></script>
+<script src="/vendors/datatables.min.js"></script>
+<script src="/vendors/dt-langs/{{ _lang }}.js"></script>
 {% block body_js %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,26 @@
+{% extends "pages/base.html.twig" %}
+
+{% block titlebar %}{{ icon('list', 'fas', true) }} Data table{% endblock %}
+
+{% block page %}
+    {{ table.table.html|raw }}
+{% endblock %}
+
+{% block page_js %}
+    <script>
+        var datatable = null;
+
+        $(() => {
+            datatable = $(".table").dataTable({
+                language: dtLang,
+                serverSide: true,
+                ajax: {
+                    url: "{{ url('users-table-actions') }}",
+                    type: 'POST'
+                },
+                columns: {{ table.data|raw }}
+            });
+        });
+
+    </script>
+{% endblock %}
