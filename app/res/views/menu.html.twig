@@ -8,10 +8,13 @@
                         onclick="menuClick($(this));"
                         data-url="{% if item.route != '.' %}{{ url(item.route) }}{% else %}#{% endif %}"
                         data-item="{{ item.route }}"
+                        title="{{ DICT.menu[item.label] ?? item.label ?? '' }}"
                         class="flex-fill {% if server.currentRouteName == item.route %}selected{% endif %}"
                 >
                     {{ icon(item.icon, 'mr-2 fa-lg ' ~ (item.icon_col ?? 'fas'), true) }}
-                    {{ DICT.menu[item.label] ?? item.label ?? '' }}
+                    <span class="menu-label">
+                        {{ DICT.menu[item.label] ?? item.label ?? '' }}
+                    </span>
                 </button>
                 {% if is_group %}
                     {% for sub_item in item.group %}

@@ -7,12 +7,12 @@
 {% block body_html %}
     <div id="menu">
         {% block menu %}
-            <h1 class="text-center mt-4 mb-0 " style="color: #bbb;">
+            <h1 id="title" class="text-center mt-4 mb-0 " style="color: #bbb;">
                 {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;')|raw }}
                 <br>
                 <span style="color: #fa4">{{ appName|upper }}</span>
             </h1>
-            <div class="text-center mb-4" style="color: #ddd; font-size: 0.75em;">
+            <div id="subtitle" class="text-center mb-4" style="color: #ddd; font-size: 0.75em;">
                 Smart PHP framework
             </div>
             {{ render('menu') }}

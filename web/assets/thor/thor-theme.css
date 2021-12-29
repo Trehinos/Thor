@@ -154,6 +154,66 @@ html, body {
     margin: 0.4em;
 }
 
+/* */
+@media (max-width: 991.98px){
+    #content, #titlebar, #toolbar {
+        width: 100%;
+        margin-left: 0;
+    }
+    #menu {
+        z-index: 9;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 32px;
+    }
+    #menu li {
+        float: left;
+        margin-right: 1em;
+    }
+    #menu li button {
+        display: inline-block;
+    }
+    #menu li button .menu-label {
+        display: none;
+    }
+    #title, #subtitle {
+        display: none;
+    }
+    #titlebar {
+        z-index: 9;
+        top: 32px;
+    }
+    #toolbar {
+        z-index: 9;
+        top: 56px;
+    }
+    #footer {
+        z-index: 9;
+        width: 100%;
+        text-align: center;
+    }
+    #page {
+        padding-top: 128px;
+        padding-bottom: 128px;
+    }
+    #user-box {
+        top: 0;
+        right: 0;
+        left: auto;
+        padding: 2px 8px;
+        height: 32px;
+        width: 240px;
+    }
+    #user-box .mt-1 {
+        margin-top: 0 !important;
+    }
+    #users .user .btn, #users .user small {
+        opacity: 1;
+    }
+}
+
 /* ****************************************************************************************************************** */
 .fa-li {
     top: 7px;
