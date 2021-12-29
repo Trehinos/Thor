@@ -54,7 +54,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ### Environment
 
-* GNU/Linux or Windows system. Works on VMs/XAMPP.
+* `GNU/Linux` or `Windows` system. Tested on `Virtualbox`, `XAMPP` and `WSL2`.
 * PHP 8.1 + PDO + DBMS PDO drivers
 * PHP-EXT `calendar` `curl` `ftp` `intl` `json` `ldap` `mbstring` `openssl` `pdo` `ssh2` `zip`
 * PDO compatible DBMS
