@@ -12,43 +12,43 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 * Complete but lightweight framework :
     * PSR inspired interfaces (compliant but with stronger type bindings) and implementation :
-        * ```PSR-3``` Logger
-        * ```PSR-4``` Auto-loading (with **composer**)
-        * ```PSR-7``` HTTP Message
-        * ```PSR-12``` Code Style
-        * ```PSR-15``` HTTP Handler
-        * ```PSR-16``` SimpleCache (*in memory* implementation)
-        * ```PSR-18``` HTTP Client
-    * Smart databases utility classes using **PDO** :
+        * `PSR-3` Logger
+        * `PSR-4` Auto-loading (with **composer**)
+        * `PSR-7` HTTP Message
+        * `PSR-12` Code Style
+        * `PSR-15` HTTP Handler
+        * `PSR-16` SimpleCache (*in memory* implementation)
+        * `PSR-18` HTTP Client
+    * Databases utility classes using **PDO** :
         * **PdoExtension** : Connection handler, requester, transaction.
         * **PdoTable** :
-            * ```CrudHelper``` : performs CRUD operations on DB,
-            * ```SchemaHelper``` : performs DQL operations on DB,
-            * ```BasePdoRow```/```PdoRowTrait```/```PdoRowInterface``` : models to create DAOs with CrudHelper :
-            * attributes ```#[PdoRow]```, ```#[PdoIndex]```, ```#[PdoColumn]```, ```#[PdoForeignKey]```.
-    * Http cycle handling : **Router and controllers** (attribute ```#[Route]```).
+            * `CrudHelper` : performs CRUD operations on DB,
+            * `SchemaHelper` : performs DQL operations on DB,
+            * `BasePdoRow`/`PdoRowTrait`/`PdoRowInterface` : models to create DAOs with CrudHelper :
+            * attributes `#[PdoRow]`, `#[PdoIndex]`, `#[PdoColumn]`, `#[PdoForeignKey]`.
+    * Http cycle handling : **Router and controllers** (attribute `#[Route]`).
     * **CLI commands** handling, console color/formatting utility.
     * Static **logger** and **configuration**.
     * **Twig** template system.
-    * **Multilingual** static and **dynamic** strings (```|_()``` Twig filter and ```DICT``` global variable).
+    * **Multilingual** static and **dynamic** strings (`|_()` Twig filter and `DICT` global variable).
     * Extensible application with **kernels**.
 * Base **web application** to develop a corporate work :
   ![Thor web UI illustration](https://i.ibb.co/R4q28Pg/ui.png)
     * Index, legal, about and changelog pages.
-    * **Menu** system with icons.
-    * Page loading in **AJAX** (reduced payload).
+    * **Menu** system with icons and authorizations.
+    * Page loading in **AJAX**  to reduce payloads.
     * **Users** management (create/edit/change password/delete), login, logout.
+    * **Permissions** management (`#[Authorization]` PHP attribute on controllers, `autorized()` twig function in views).
 * Console commands to **control the application** :
-    * ```user/``` : ```create``` / ```edit``` / ```delete``` / ```list```.
-    * ```core/``` : ```setup```.
-    * ```clear/``` : ```cache``` / ```logs```.
-    * ```route/``` : ```set``` / ```list```.
-* Daemons and daemons control (e.g. ```daemon/status -all``` command) :  
+    * `user/` : `create` / `edit` / `delete` / `list`.
+    * `core/` : `setup` / `install` / `update` / `uninstall` / `set-env`.
+    * `clear/` : `cache` / `logs`.
+    * `route/` : `set` / `list`.
+    * `database/migrate`
+* Daemons and daemons control (e.g. `daemon/status -all` command) :  
   ![Daemons status illustration](https://i.ibb.co/y84GkDy/daemons.png)
-    * ```start``` / ```stop``` : enable or disable a daemon.
-    * ```kill``` / ```reset``` : stop execution or reset state.
-
-*more to come in new versions*
+    * `start` / `stop` / `status` : enable or disable a daemon.
+    * `kill` / `reset` : stop execution or reset state.
 
 ## Dependencies
 
@@ -56,14 +56,14 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 * GNU/Linux or Windows system. Works on VMs/XAMPP.
 * PHP 8.1 + PDO + DBMS PDO drivers
-* PHP-EXT ```calendar``` ```curl``` ```ftp``` ```pdo``` ```ssh2``` ```zip``` ```ldap```
+* PHP-EXT `calendar` `curl` `ftp` `intl` `json` `ldap` `mbstring` `openssl` `pdo` `ssh2` `zip`
 * PDO compatible DBMS
 * HTTP server
 * Composer
 
 ### Server-side vendors
 
-#### Installed with ```composer update```
+#### Installed with `composer update`
 
 * Symfony/VarDumper 5.3
 * Symfony/Yaml 5.3
@@ -83,115 +83,30 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ### Basic installation :
 
-1. **Download** and unzip or **clone** the project. Say it has been copied in ```thor/```,
-2. Go to ```thor/``` in a terminal and type ```composer update``` to **install dependencies**,
-3. **Set configuration** in```thor/app/res/config/config.yml```.
+1. **Download** and unzip or **clone** the project. Say it has been copied in `thor/`,
+2. Go to `thor/` in a terminal and type `composer update` to **install dependencies**,
+3. **Set configuration** in`thor/app/res/config/config.yml`.
 
 ### Database installation :
 
 4. **Initialize the database** :
     * **Create the database** or retrieve DB infos,
-    * **edit** ```thor/app/res/config/database.yml```, then :
-    * **run** ```php thor/bin/thor.php core/setup``` in a terminal.
+    * **edit** `thor/app/res/config/database.yml`, then :
+    * **run** `php thor/bin/thor.php core/setup` in a terminal.
 
 ### If you use Thor as a web application :
 
-5. **Create a virtualhost** which has ```thor/web/``` as *DocumentRoot*,
-6. **Edit permissions** : ```thor/var/cache``` and ```thor/var/logs``` have to be writable and ```thor/web``` readable
-   for the user who runs **PHP** (usually ```www-data```),
+5. **Create a virtualhost** which has `thor/web/` as *DocumentRoot*,
+6. **Edit permissions** : `thor/var/cache` and `thor/var/logs` have to be writable and `thor/web` readable
+   for the user who runs **PHP** (usually `www-data`),
 7. **Download** and copy **web vendors** :
-    * Fontawesome ```all.min.js``` in ```thor/web/assets/fontawesome/js/all.min.js```,
-    * ```bootstrap.min.js``` in ```thor/web/assets/bootstrap/js/bootstrap.min.js```,
-    * ```bootstrap.min.css``` in ```thor/web/assets/bootstrap/css/bootstrap.min.css```.
+    * Fontawesome `all.min.js` in `thor/web/assets/fontawesome/js/all.min.js`,
+    * `bootstrap.min.js` in `thor/web/assets/bootstrap/js/bootstrap.min.js`,
+    * `bootstrap.min.css` in `thor/web/assets/bootstrap/css/bootstrap.min.css`.
 
 ## Documentation
 
 Link : [Documentation](https://github.com/Trehinos/thor/wiki)
-
-## Releases notes
-
-### ```0.9``` OMEGA (RC) "Thor 2"
-
-* PHP 8.1
-* PSR compliance and implementation :
-    * ```PSR-3``` Logger
-    * ```PSR-4``` Auto-loading (with **composer**)
-    * ```PSR-7``` HTTP Message
-    * ```PSR-12``` Code Style
-    * ```PSR-15``` HTTP Handler
-    * ```PSR-16``` SimpleCache (*in memory* implementation)
-    * ```PSR-18``` HTTP Client
-
-#### Framework
-
-*  Rewritten modules : **Http module**, **Security module**, **Debug module** 
-*  A lot of new factories
-
-#### Web
-
-* Updated **vendors**
-* Added ```api.php``` entry point
-
-### ```0.4``` DELTA
-
-#### Framework
-
-* ```Thor\Thor``` class
-* Custom kernels
-* Dynamic lang strings
-
-#### API/Cli
-
-* ```clear/cache``` and ```clear/logs``` commands
-
-### ```0.3``` GAMMA
-
-#### Framework
-
-* **PdoTable** : CrudHelper and attributes : ```#[PdoRow]```, ```#[PdIndex]```, ```#[PdoColumn]```
-  , ```#[PdoForeignKey]```
-* **Router attribute** : ```#[Route]```
-
-#### API/Web
-
-* ```page-base.twig.html``` page template
-
-#### API/Cli
-
-* ```core``` commands (```setup```, ```route/list```, ```route/set```)
-* daemons (```start```, ```stop```, ```kill```, ```reset```, ```status```)
-
-### ```0.2``` BETA
-
-#### Framework
-
-* PHP8.0
-* CliKernel
-* Security module
-
-#### API/Web
-
-* Ajax page loading and JS ```menuClick()```
-* users can change their password
-* delete user action
-
-#### API/Web
-
-* User commands
-
-### ```0.1``` ALPHA
-
-#### Framework
-
-* Kernels, application, entry points
-* PdoExtension (PdoHandler, PdoRequester)
-* HttpKernel
-* Logger
-
-#### API/Web
-
-* user login/logout
-* list users, create user, edit user
 
 ## License
 
