@@ -79,34 +79,10 @@ This project's goal is to provide a base project for **PHP developers** to devel
 * [Fontawesome 5.13.1](https://fontawesome.com/) PRO icons **licence required**
 * [Bootstrap 5.1](https://getbootstrap.com/docs/5.1/getting-started/introduction/)
 
-## Thor setup
-
-### Basic installation :
-
-1. **Download** and unzip or **clone** the project. Say it has been copied in `thor/`,
-2. Go to `thor/` in a terminal and type `composer update` to **install dependencies**,
-3. **Set configuration** in`thor/app/res/config/config.yml`.
-
-### Database installation :
-
-4. **Initialize the database** :
-    * **Create the database** or retrieve DB infos,
-    * **edit** `thor/app/res/config/database.yml`, then :
-    * **run** `php thor/bin/thor.php core/setup` in a terminal.
-
-### If you use Thor as a web application :
-
-5. **Create a virtualhost** which has `thor/web/` as *DocumentRoot*,
-6. **Edit permissions** : `thor/var/cache` and `thor/var/logs` have to be writable and `thor/web` readable
-   for the user who runs **PHP** (usually `www-data`),
-7. **Download** and copy **web vendors** :
-    * Fontawesome `all.min.js` in `thor/web/assets/fontawesome/js/all.min.js`,
-    * `bootstrap.min.js` in `thor/web/assets/bootstrap/js/bootstrap.min.js`,
-    * `bootstrap.min.css` in `thor/web/assets/bootstrap/css/bootstrap.min.css`.
-
 ## Documentation
 
-Link : [Documentation](https://github.com/Trehinos/thor/wiki)
+* [Setup THOR](https://github.com/Trehinos/Thor/wiki/Setup) 
+* [Complete documentation](https://github.com/Trehinos/thor/wiki)
 
 ## License
 
