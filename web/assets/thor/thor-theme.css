@@ -12,94 +12,39 @@ html, body {
 Main elements of Thor
  */
 
-#menu {
-    color: #ccc;
-    background: #222;
-    position: fixed;
-    width: 320px;
-    height: 100%;
-}
-
-#menu ul, #menu li {
-    margin: 0;
-    padding: 0;
-}
-
-#menu li button {
-    display: block;
-    background: #444;
-    text-decoration: none;
-    text-align: left;
-    border: none;
-    outline: none;
-    color: #aaa;
-    padding: 4px 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    margin-right: 2px;
-}
-
-#menu li button:hover {
-    cursor: pointer;
-    color: #fff;
-}
-
-#menu li button.selected {
-    cursor: pointer;
-    background: #335;
-    color: #fff;
-}
-
-#user-box {
-    position: fixed;
-    bottom: 110px;
-    left: 0;
-    width: 320px;
-    height: 2.66em;
-    padding: 5px;
-    background: #00aa6644;
-    font-weight: 600;
-}
-
-#user-box > div > .btn {
-    font-size: 0.8em;
-    padding: 2px 6px;
-}
-
 #footer {
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 320px;
-    height: 100px;
-    background: #111;
-    color: #777;
-    line-height: 24px;
-    font-size: 0.8em;
+    width: 100%;
+    height: 64px;
+    background: #00000077;
+    color: #fff;
+    line-height: 14px;
+    font-size: 8pt;
     padding: 8px 4px;
+    text-align: center;
 }
 
 #footer button {
-    color: #77a;
+    color: #ddf;
     text-decoration: none;
     border: none;
     background: none;
     padding: 0 2px;
 }
 #footer button:hover {
-    color: #aaa;
+    color: #bbf;
 }
 
 #content {
-    margin-left: 320px;
-    width: calc(100% - 320px);
+    width: 100%;
     height: 100%;
 }
 
 #toolbar {
     z-index: 1;
-    position: fixed;
-    top: 24px;
-    width: calc(100% - 320px);
+    width: 100%;
     background: #bbb;
     color: #444;
     font-weight: 900;
@@ -110,8 +55,7 @@ Main elements of Thor
 
 #titlebar {
     z-index: 1;
-    position: fixed;
-    width: calc(100% - 320px);
+    width: 100%;
     background: #444;
     color: #ccc;
     font-weight: 900;
@@ -121,7 +65,7 @@ Main elements of Thor
 }
 
 #page {;
-    padding: 96px 16px;
+    padding: 144px 16px 96px 16px;
 }
 
 
@@ -163,66 +107,6 @@ Main elements of Thor on pages
 #versions > .card {
     min-width: 240px;
     margin: 0.4em;
-}
-
-/* Small resolutions */
-@media (max-width: 991.98px){
-    #content, #titlebar, #toolbar {
-        width: 100%;
-        margin-left: 0;
-    }
-    #menu {
-        z-index: 9;
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 32px;
-    }
-    #menu li {
-        float: left;
-        margin-right: 1em;
-    }
-    #menu li button {
-        display: inline-block;
-    }
-    #menu li button .menu-label {
-        display: none;
-    }
-    #title, #subtitle {
-        display: none;
-    }
-    #titlebar {
-        z-index: 9;
-        top: 32px;
-    }
-    #toolbar {
-        z-index: 9;
-        top: 56px;
-    }
-    #footer {
-        z-index: 9;
-        width: 100%;
-        text-align: center;
-    }
-    #page {
-        padding-top: 128px;
-        padding-bottom: 128px;
-    }
-    #user-box {
-        top: 0;
-        right: 0;
-        left: auto;
-        padding: 2px 8px;
-        height: 32px;
-        width: 240px;
-    }
-    #user-box .mt-1 {
-        margin-top: 0 !important;
-    }
-    #users .user .btn, #users .user small {
-        opacity: 1;
-    }
 }
 
 /*

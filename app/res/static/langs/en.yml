@@ -13,6 +13,8 @@ menu:
     users: Users
     users_permissions: Permissions
     documentation: Documentation
+    logout: Logout
+    profile: Profile
 footer:
     about: About
     legal: Legal

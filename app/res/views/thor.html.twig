@@ -5,45 +5,57 @@
 {% endblock %}
 
 {% block body_html %}
-    <div id="menu">
+    <nav id="menu" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
         {% block menu %}
-            <h1 id="title" class="text-center mt-4 mb-0 " style="color: #bbb;">
-                {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;')|raw }}
-                <br>
-                <span style="color: #fa4">{{ appName|upper }}</span>
-            </h1>
-            <div id="subtitle" class="text-center mb-4" style="color: #ddd; font-size: 0.75em;">
-                Smart PHP framework
-            </div>
-            {{ render('menu') }}
-            <div id="user-box">
-                <div class="float-end mt-1">
-                    <button class="btn btn-outline-info" title="user page"
-                            onclick=""
-                    >
-                        {{ icon('user', 'fas') }}
-                        {{ icon('search', 'fas') }}
-                    </button>
-                    <button class="btn btn-outline-warning" title="change password"
-                            onclick="Modal.load('{{ url('users-change-password-form', {public_id: server.security.currentIdentity.publicId}) }}');"
-                    >
-                        {{ icon('lock', 'fas') }}
-                        {{ icon('edit', 'fas') }}
-                    </button>
-                    <a class="btn btn-outline-light" title="logout"
-                       href="{{ url('logout') }}"
-                    >
-                        {{ icon('user', 'fas') }}
-                        {{ icon('sign-out', 'fas') }}
-                    </a>
-                </div>
-                <div class="mt-1">
-                    <i class="fas fa-user fa-lg"></i>
-                    {{ server.security.currentIdentity.identifier }}
+            <div class="container-fluid">
+                <span id="title" class="navbar-brand" style="color: #bbb;">
+                    {{ icon('bolt', 'fad', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;') }}
+                    <span style="color: #fa4">{{ appName|upper }}</span>
+                </span>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-navbar">
+                    {{ icon('list-alt') }}
+                </button>
+                <div class="collapse navbar-collapse" id="menu-navbar">
+                    {{ render('menu') }}
+                    <ul class="navbar-nav me-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                <i class="fas fa-user fa-lg"></i>
+                                {{ server.security.currentIdentity.identifier }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item link-danger" href="{{ url('logout') }}">
+                                        {{ icon('sign-out', 'fas') }}
+                                        {{ DICT.menu.logout }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="#"
+                                       onclick=""
+                                    >
+                                        {{ icon('user', 'fas') }}
+                                        {{ DICT.menu.profile }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="#"
+                                       onclick="Modal.load('{{ url('users-change-password-form', {public_id: server.security.currentIdentity.publicId}) }}');"
+                                    >
+                                        {{ icon('lock', 'fas') }}
+                                        {{ DICT.users.change_password }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         {% endblock %}
-    </div>
+    </nav>
     <div id="content">{% block body_content %}{% endblock %}</div>
     <div id="footer" class="pt-2">
         <div>
