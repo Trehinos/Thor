@@ -3,9 +3,12 @@
 namespace Thor\Framework\Managers;
 
 use Exception;
-use Thor\Database\PdoTable\{Criteria, CrudHelper};
+use Thor\Globals;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
+use Thor\Configuration\LanguageDictionary;
+use Thor\Configuration\ConfigurationFromFile;
+use Thor\Database\PdoTable\{Criteria, CrudHelper};
 
 
 /**
@@ -44,11 +47,44 @@ final class UserManager
         );
     }
 
+    public static function getPermissions(): array
+    {
+        return array_map(
+            self::getPermissionLabelsFunction(),
+            ConfigurationFromFile::get('permissions', true)->getArrayCopy()
+        );
+    }
+
+    public static function getPermissionLabelsFunction(): callable
+    {
+        return fn(string $permission) => [
+            'permission' => $permission,
+            'label'      =>
+                array_combine(
+                    self::getLanguages(),
+                    array_map(
+                        fn(string $language) => LanguageDictionary::get($language)['permissions'][$permission]
+                                                ?? $permission,
+                        self::getLanguages()
+                    )
+                ),
+        ];
+    }
+
+    public static function getLanguages(): array
+    {
+        return array_map(
+            fn(string $filename) => explode('.', basename($filename))[0],
+            glob(Globals::STATIC_DIR . 'langs/*.yml')
+        );
+    }
+
     /**
      * Creates a user with specified username and password and returns public ID.
      *
      * @param string $username
      * @param string $clearPassword
+     * @param array  $permissions
      *
      * @return string public_id
      *
@@ -70,8 +106,9 @@ final class UserManager
      *
      * Returns `false` if the query fail or the user has not been persisted yet.
      *
-     * @param string $public_id
-     * @param string $username
+     * @param string      $public_id
+     * @param string|null $username
+     * @param array|null  $permissions
      *
      * @return bool
      */

@@ -5,6 +5,9 @@ namespace Thor\Framework\Actions;
 use Thor\Globals;
 use Thor\Framework\{Managers\UserManager};
 use Thor\Tools\DataTables;
+use Twig\Error\SyntaxError;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
@@ -99,40 +102,8 @@ final class Users extends WebController
             'pages/users_modals/create.html.twig',
             [
                 'generatedPassword' => UserManager::generatePassword(),
-                'permissions'       => $this->getPermissions(),
+                'permissions'       => UserManager::getPermissions(),
             ]
-        );
-    }
-
-    private function getPermissions(): array
-    {
-        return array_map(
-            $this->getPermissionLabelsFunction(),
-            ConfigurationFromFile::get('permissions', true)->getArrayCopy()
-        );
-    }
-
-    private function getPermissionLabelsFunction(): callable
-    {
-        return fn(string $permission) => [
-            'permission' => $permission,
-            'label'      =>
-                array_combine(
-                    $this->getLanguages(),
-                    array_map(
-                        fn(string $language) => LanguageDictionary::get($language)['permissions'][$permission]
-                                                ?? $permission,
-                        $this->getLanguages()
-                    )
-                ),
-        ];
-    }
-
-    private function getLanguages(): array
-    {
-        return array_map(
-            fn(string $filename) => explode('.', basename($filename))[0],
-            glob(Globals::STATIC_DIR . 'langs/*.yml')
         );
     }
 
@@ -174,7 +145,7 @@ final class Users extends WebController
             'pages/users_modals/edit.html.twig',
             [
                 'user'        => $user,
-                'permissions' => $this->getPermissions(),
+                'permissions' => UserManager::getPermissions(),
             ]
         );
     }
@@ -263,64 +234,6 @@ final class Users extends WebController
         $this->manager->deleteOne($public_id);
 
         return $this->redirect('index', query: ['menuItem' => 'users']);
-    }
-
-    #[Authorization('manage-user')]
-    #[Route('manage-permissions', '/permissions/form')]
-    public function permissionsForm(): ResponseInterface
-    {
-        return $this->twigResponse(
-            'pages/permissions.html.twig',
-            [
-                'permissions' => $this->getPermissions(),
-                'languages'   => $this->getLanguages(),
-            ]
-        );
-    }
-
-    #[Authorization('manage-permissions')]
-    #[Route('permissions-update', '/permissions/action', HttpMethod::POST)]
-    public function permissionsAction(): ResponseInterface
-    {
-        $permissions = $this->post('permissions');
-        $permissionsData = [];
-        foreach ($permissions['permission'] as $permission) {
-            $permissionsData[] = $permission;
-        }
-        file_put_contents(
-            Globals::STATIC_DIR . "permissions.yml",
-            Yaml::dump($permissionsData)
-        );
-        foreach ($permissions['label'] as $language => $labels) {
-            $languageData = LanguageDictionary::get($language);
-            $languageData['permissions'] = [];
-            foreach ($labels as $key => $label) {
-                $languageData['permissions'][$permissionsData[$key]] = $label;
-            }
-            dump($languageData);
-            file_put_contents(
-                Globals::STATIC_DIR . "langs/$language.yml",
-                Yaml::dump($languageData->getArrayCopy())
-            );
-        }
-
-        return $this->redirect('index', query: ['menuItem' => 'manage-permissions']);
-    }
-
-    #[Authorization('manage-permissions', 'create-user')]
-    #[Route('permission-line', '/permission/line', HttpMethod::GET)]
-    public function addPermissionLine(): ResponseInterface
-    {
-        return $this->twigResponse(
-            'fragments/permission.html.twig',
-            [
-                'permission' => array_map(
-                    $this->getPermissionLabelsFunction(),
-                    ['']
-                ),
-                'languages'  => $this->getLanguages(),
-            ]
-        );
     }
 
 }

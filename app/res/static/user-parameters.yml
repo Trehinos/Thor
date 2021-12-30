@@ -1,0 +1,18 @@
+# User parameter
+# name:
+# type: {string / integer / float / date / color / choice-unique(type) / choice-multiple(type)}
+# choices:
+# default_value:
+
+-   name: background_color
+    label: "Background color"
+    type: color
+    default_value: #eeeeee
+
+-   name: language
+    label: "Langue"
+    type: choice-unique(string)
+    choices:
+        en: English
+        fr: Français
+    default_value: fr

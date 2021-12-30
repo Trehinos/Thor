@@ -21,12 +21,12 @@ footer:
     changelog: Changelog
 index:
     title: Index
-    thor_description: "Thor is a complete framework for PHP 8.1."
-    documentation_text: "Access an API which allows you to fastly develop new features."
-    documentation_button: "Documentation page"
-    features_text: "Enjoy pre-developed features to extends according to your needs."
-    users_button: "Users management"
-    permissions_button: "Permissions management"
+    thor_description: 'Thor is a complete framework for PHP 8.1.'
+    documentation_text: 'Access an API which allows you to fastly develop new features.'
+    documentation_button: 'Documentation page'
+    features_text: 'Enjoy pre-developed features to extends according to your needs.'
+    users_button: 'Users management'
+    permissions_button: 'Permissions management'
 users:
     title: Users
     user: User
@@ -61,18 +61,9 @@ errors:
     too-short-username: 'Username too short (4 char. min.) or too long (255 char. max.) or invalid characters.'
     too-short-password: 'Password too short (16 char. min.) or too long (255 char. max.).'
 permissions_page:
-    add: Add a permission
-    save: Save permissions
-permissions_page.text: |-
-    In <strong>Thor</strong>, a permission is a simple <code>string</code> defined in the file <code>{permissionsFile}</code>.<br>
-    The permission is then checked with the <code>authorized()</code> <strong>Twig</strong> function or the <code>#[Authorization]</code> <strong>PHP</strong> attribute.
-    <hr>
-    This forms allows you to edit the permissions available in <strong>Thor</strong>.<br>
-    It edits :
-    <ul>
-        <li>the permissions list in <code>{permissionsFile}</code> and,</li>
-        <li>the language files <code>{langsFile}</code> for translations.</li>
-    </ul>
+    add: 'Add a permission'
+    save: 'Save permissions'
+permissions_page.text: "In <strong>Thor</strong>, a permission is a simple <code>string</code> defined in the file <code>{permissionsFile}</code>.<br>\nThe permission is then checked with the <code>authorized()</code> <strong>Twig</strong> function or the <code>#[Authorization]</code> <strong>PHP</strong> attribute.\n<hr>\nThis forms allows you to edit the permissions available in <strong>Thor</strong>.<br>\nIt edits :\n<ul>\n    <li>the permissions list in <code>{permissionsFile}</code> and,</li>\n    <li>the language files <code>{langsFile}</code> for translations.</li>\n</ul>"
 permissions:
     manage-user: 'Manage users'
     create-user: 'Create an user'

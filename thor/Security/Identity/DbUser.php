@@ -21,6 +21,7 @@ use Thor\Database\PdoTable\Attributes\{PdoTable, PdoIndex, PdoColumn};
 #[PdoColumn('username', new StringType(), false)]
 #[PdoColumn('hash', new StringType(), false)]
 #[PdoColumn('permissions', new ArrayType(4096), false)]
+#[PdoColumn('parameters', new ArrayType(4096), false)]
 #[PdoIndex(['username'], true)]
 class DbUser extends BaseUser implements PdoRowInterface
 {
@@ -34,9 +35,10 @@ class DbUser extends BaseUser implements PdoRowInterface
         string $username = '',
         string $clearPassword = '',
         array $permissions = [],
+        array $parameters = [],
         ?string $public_id = null
     ) {
-        parent::__construct($username, $clearPassword, $permissions);
+        parent::__construct($username, $clearPassword, $permissions, $parameters);
         $this->traitConstructor(['id' => null]);
         $this->public_id = $public_id;
     }
@@ -50,4 +52,5 @@ class DbUser extends BaseUser implements PdoRowInterface
     {
         $this->hash = PasswordHasher::hashPassword($clearPassword);
     }
+
 }

@@ -12,7 +12,7 @@ use Thor\Security\Authorization\HasPermissions;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-class BaseUser implements IdentityInterface, HasPassword, HasPermissions
+class BaseUser implements IdentityInterface, HasPassword, HasPermissions, HasParameters
 {
 
     protected string $hash;
@@ -20,7 +20,8 @@ class BaseUser implements IdentityInterface, HasPassword, HasPermissions
     public function __construct(
         protected string $username,
         string $clearPassword,
-        protected array $permissions = []
+        protected array $permissions = [],
+        protected array $parameters = []
     ) {
         $this->hash = PasswordHasher::hashPassword($clearPassword);
     }
@@ -77,6 +78,21 @@ class BaseUser implements IdentityInterface, HasPassword, HasPermissions
     public function setPermissions(array $permissions): void
     {
         $this->permissions = $permissions;
+    }
+
+    public function setParameter(string $key, mixed $value): void
+    {
+        $this->parameters[$key] = $value;
+    }
+
+    public function getParameter(string $key): mixed
+    {
+        return $this->parameters[$key] ?? null;
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
     }
 
 }

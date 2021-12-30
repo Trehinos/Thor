@@ -21,12 +21,12 @@ footer:
     changelog: 'Notes de versions'
 index:
     title: Index
-    thor_description: "Thor est un framework complet pour PHP 8.1."
-    documentation_text: "Accédez à une API permettant de développer rapidement de nouvelles fonctionnalités."
-    documentation_button: "Page de documentation"
-    features_text: "Profitez de fonctionnalités pré-développées à étendre selon vos besoins."
-    users_button: "Gestion des utilisateurs"
-    permissions_button: "Gestion des permissions"
+    thor_description: 'Thor est un framework complet pour PHP 8.1.'
+    documentation_text: 'Accédez à une API permettant de développer rapidement de nouvelles fonctionnalités.'
+    documentation_button: 'Page de documentation'
+    features_text: 'Profitez de fonctionnalités pré-développées à étendre selon vos besoins.'
+    users_button: 'Gestion des utilisateurs'
+    permissions_button: 'Gestion des permissions'
 users:
     title: Utilisateurs
     user: Utilisateur
@@ -61,18 +61,9 @@ errors:
     too-short-username: 'Nom d''utilisateur trop court (min. 4 car.) ou trop long (max. 255 car.) ou caractères invalides.'
     too-short-password: 'Mot de passe trop court (min. 16 car.) ou trop long (max. 255 car.).'
 permissions_page:
-    add: Ajouter une permission
-    save: Enregistrer les permissions
-permissions_page.text: |-
-    Dans <strong>Thor</strong>, une permission est juste une <code>string</code> définie dans le fichier <code>{permissionsFile}</code>.<br>
-    La permission est ensuite vérifiée avec la fonction <strong>Twig</strong> <code>authorized()</code> ou l'attribut <strong>PHP</strong> <code>#[Authorization]</code>.
-    <hr>
-    Ce formulaire permet d'éditer les permissions disponibles dans <strong>Thor</strong>.<br>
-    Il édite:
-    <ul>
-        <li>le fichier <code>{permissionsFile}</code> et</li>
-        <li>les fichiers de langage <code>{langsFile}</code> pour les traductions.</li>
-    </ul>
+    add: 'Ajouter une permission'
+    save: 'Enregistrer les permissions'
+permissions_page.text: "Dans <strong>Thor</strong>, une permission est juste une <code>string</code> définie dans le fichier <code>{permissionsFile}</code>.<br>\nLa permission est ensuite vérifiée avec la fonction <strong>Twig</strong> <code>authorized()</code> ou l'attribut <strong>PHP</strong> <code>#[Authorization]</code>.\n<hr>\nCe formulaire permet d'éditer les permissions disponibles dans <strong>Thor</strong>.<br>\nIl édite:\n<ul>\n    <li>le fichier <code>{permissionsFile}</code> et</li>\n    <li>les fichiers de langage <code>{langsFile}</code> pour les traductions.</li>\n</ul>"
 permissions:
     manage-user: 'Gérer les utilisateurs'
     create-user: 'Créer un utilisateur'
