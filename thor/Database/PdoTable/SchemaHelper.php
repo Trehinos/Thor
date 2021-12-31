@@ -68,7 +68,7 @@ final class SchemaHelper
     public function dropTable(): bool|string
     {
         $attrs = (new PdoAttributesReader($this->className))->getAttributes();
-        $tableName = $attrs['row']->getTableName();
+        $tableName = $attrs['table']->getTableName();
 
         $sql = '';
 

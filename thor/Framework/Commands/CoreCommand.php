@@ -3,7 +3,6 @@
 namespace Thor\Framework\Commands;
 
 use Thor\Env;
-use Thor\Thor;
 use Thor\Globals;
 use Thor\Framework\{Managers\UserManager};
 use Thor\FileSystem\Folder;
@@ -12,9 +11,12 @@ use Symfony\Component\Yaml\Yaml;
 use Thor\Factories\RouterFactory;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
+use Thor\Configuration\ThorConfiguration;
+use Thor\Configuration\RoutesConfiguration;
+use Thor\Configuration\ConfigurationFromFile;
 use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
 use Thor\Cli\{Daemon, Console, Command, CliKernel, DaemonState};
-use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, Driver\Sqlite, SchemaHelper};
+use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, SchemaHelper, Driver\Sqlite};
 
 /**
  * This Command class Contains main commands of Thor-Api commands :
@@ -37,7 +39,7 @@ final class CoreCommand extends Command
     public function __construct(string $command, array $args, CliKernel $kernel)
     {
         parent::__construct($command, $args, $kernel);
-        $this->routes = RouterFactory::createRoutesFromConfiguration(Thor::config('web-routes', true));
+        $this->routes = RouterFactory::createRoutesFromConfiguration(RoutesConfiguration::get('web'));
     }
 
     public function routeSet(): void
@@ -76,7 +78,7 @@ final class CoreCommand extends Command
             $this->error("Usage error\n", 'Specified env is not valid.', true, true);
         }
 
-        $config = Thor::config('config');
+        $config = ThorConfiguration::get();
         $config['env'] = $env;
 
         file_put_contents(Globals::CONFIG_DIR . 'config.yml', Yaml::dump($config));
@@ -91,18 +93,25 @@ final class CoreCommand extends Command
         $databaseName = $this->get('database') ?? 'default';
         $requester = new PdoRequester($handler = $this->cli->pdos->get($databaseName));
 
-        $driver = match($driverName = $handler->getDriverName()) {
+        $driver = match ($driverName = $handler->getDriverName()) {
             'sqlite' => new Sqlite(),
-            'mysql' => new MySql(),
-            default => throw new \Exception("Unsupported driver '$driverName' for PdoTable...")
+            'mysql'  => new MySql(),
+            default  => throw new \Exception("Unsupported driver '$driverName' for PdoTable...")
         };
+        $this->console->write('Creating table ')
+                      ->fColor(Console::COLOR_BLUE, Console::MODE_BRIGHT)->write('user')
+                      ->mode()->writeln('...');
         Logger::write("SETUP : Creating table user...", LogLevel::NOTICE);
         $schema = new SchemaHelper($requester, $driver, DbUser::class);
         $schema->dropTable();
         $schema->createTable();
 
+        $this->console->write('Creating user ')
+                      ->fColor(Console::COLOR_BLUE, Console::MODE_BRIGHT)->write('admin')
+                      ->mode()->writeln('...');
         $userManager = new UserManager(new CrudHelper(DbUser::class, $requester));
-        $pid = $userManager->createUser('admin', 'password', ['manage-user', 'create-user', 'edit-user', 'remove-user']);
+        $pid =
+            $userManager->createUser('admin', 'password', ['manage-user', 'create-user', 'edit-user', 'remove-user', 'manage-permissions']);
         Logger::write("SETUP : Admin $pid created.", LogLevel::NOTICE);
     }
 
@@ -180,7 +189,7 @@ final class CoreCommand extends Command
 
     public function update(): void
     {
-        $updateConf = Thor::config('update');
+        $updateConf = new ConfigurationFromFile('update.yml');
         $source = $updateConf['source'] ?? '';
         $afterUpdate = $updateConf['after-update'] ?? null;
         $updateFolder = Globals::VAR_DIR . 'update/';
