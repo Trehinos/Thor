@@ -1,9 +1,9 @@
 {% extends "modal-base.html.twig" %}
 
-{% block modal_title %}{{ "users.parameters"|_({'username': user.identifier()}) }}{% endblock %}
+{% block modal_title %}{{ "users.parameters"|_({'username': user.identifier}) }}{% endblock %}
 
 {% block modal_body %}
-    <form id="form-parameters" action="#" method="POST">
+    <form id="form-parameters" action="{{ url('user-parameters-action', {public_id: user.publicId}) }}" method="POST">
         {% for parameter in parameters %}
             {% include 'fragments/parameter.html.twig' %}
         {% else %}

@@ -186,25 +186,6 @@ final class Users extends WebController
     }
 
     #[Route(
-        'user-parameters-form',
-        '/users/$public_id/parameters/form',
-        HttpMethod::GET,
-        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
-    )]
-    public function userParameters(string $public_id): ResponseInterface
-    {
-        $user = $this->manager->getUserCrud()->readOneBy(new Criteria(['public_id' => $public_id]));
-
-        return $this->twigResponse(
-            'pages/users_modals/parameters.html.twig',
-            [
-                'user' => $user,
-                'parameters' => (new ConfigurationFromFile('user-parameters', true))->getArrayCopy()
-            ]
-        );
-    }
-
-    #[Route(
         'users-change-password-action',
         '/users/$public_id/change-password/action',
         HttpMethod::POST,
@@ -235,6 +216,45 @@ final class Users extends WebController
     public function deleteAction(string $public_id): ResponseInterface
     {
         $this->manager->deleteOne($public_id);
+
+        return $this->redirect('index', query: ['menuItem' => 'users']);
+    }
+
+    #[Route(
+        'user-parameters-form',
+        '/users/$public_id/parameters/form',
+        HttpMethod::GET,
+        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
+    )]
+    public function userParametersFrom(string $public_id): ResponseInterface
+    {
+        $user = $this->manager->getUserCrud()->readOneBy(new Criteria(['public_id' => $public_id]));
+
+        return $this->twigResponse(
+            'pages/users_modals/parameters.html.twig',
+            [
+                'user' => $user,
+                'parameters' => (new ConfigurationFromFile('user-parameters', true))->getArrayCopy()
+            ]
+        );
+    }
+    #[Route(
+        'user-parameters-action',
+        '/users/$public_id/parameters/action',
+        HttpMethod::POST,
+        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
+    )]
+    public function userParametersAction(string $public_id): ResponseInterface
+    {
+        $user = $this->manager->getUserCrud()->readOneBy(new Criteria(['public_id' => $public_id]));
+        $parameters = (new ConfigurationFromFile('user-parameters', true))->getArrayCopy();
+
+        foreach ($parameters as $parameter) {
+            $userParameterValue = $this->post("parameter-{$parameter['name']}");
+            $user->setParameter($parameter['name'], $userParameterValue);
+        }
+
+        $this->manager->getUserCrud()->updateOne($user);
 
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }

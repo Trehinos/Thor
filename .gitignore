@@ -1,0 +1,22 @@
+# Vendors (created by composer install/update)
+/vendors/
+
+# Web vendors (to be installed manually)
+# see https://github.com/Trehinos/Thor#web-vendors-not-included
+/web/vendors
+
+# Variables files (created on runtime by the application)
+/var/*/
+
+# Vendors Binaries
+/bin/var-dump-server
+/bin/var-dump-server.bat
+/bin/yaml-lint
+/bin/yaml-lint.bat
+/bin/php-parse
+/bin/php-parse.bat
+/bin/phpunit
+/bin/phpunit.bat
+
+# PHP Unit cache
+.phpunit.result.cache
