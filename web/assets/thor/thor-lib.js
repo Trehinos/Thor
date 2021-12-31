@@ -33,6 +33,10 @@ const Modal = {
             Modal.$elem.html(response);
         });
         return Modal;
+    },
+    message: (title, message) => {
+        Modal.title(title).body(message).open();
+        return Modal;
     }
 };
 

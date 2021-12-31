@@ -2,20 +2,13 @@
 
 namespace Thor\Framework\Actions;
 
-use Thor\Globals;
 use Thor\Framework\{Managers\UserManager};
 use Thor\Tools\DataTables;
-use Twig\Error\SyntaxError;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Symfony\Component\Yaml\Yaml;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
 use Thor\Factories\ResponseFactory;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
-use Thor\Configuration\LanguageDictionary;
-use Thor\Configuration\ConfigurationFromFile;
 use Thor\Security\Authorization\Authorization;
 use Thor\Http\{Routing\Route,
     Server\WebServer,
@@ -71,7 +64,8 @@ final class Users extends WebController
             'pages/users.html.twig',
             [
                 'users' => $this->manager->getUserCrud()->listAll(),
-            ]
+            ],
+            retrieveMessages: true
         );
     }
 
@@ -111,19 +105,18 @@ final class Users extends WebController
     #[Route('users-create-action', '/users/create/action', HttpMethod::POST)]
     public function createAction(): ResponseInterface
     {
-        $username = $this->post('username');
-        $clearPassword = $this->post('password');
+        $username = $this->post('username', '');
+        $clearPassword = $this->post('password', '');
         $permissions = $this->post('permissions', []);
 
-        $errors = [];
-        if (!$username) {
-            $errors[] = 'too-short-username';
+        if (strlen($username) < 8) {
+            $this->error('too-short-username');
         }
-        if (!$clearPassword || strlen($clearPassword) < 16) {
-            $errors[] = 'too-short-password';
+        if (strlen($clearPassword) < 16) {
+            $this->error('too-short-password');
         }
 
-        if (empty($errors)) {
+        if (!$this->hasMessages()) {
             $this->manager->createUser($username, $clearPassword, $permissions);
         }
 
@@ -159,19 +152,16 @@ final class Users extends WebController
     )]
     public function editAction(string $public_id): ResponseInterface
     {
-        $username = $this->post('username');
+        $username = $this->post('username', '');
         $permissions = $this->post('permissions', []);
 
-        $errors = [];
-        if (!$username) {
-            $errors[] = 'too-short-username';
+        if (strlen($username) < 8) {
+            $this->error('too-short-username');
         }
 
-        if (!empty($errors)) {
-            Logger::write(print_r($errors, true), LogLevel::DEBUG);
-            exit;
+        if (!$this->hasMessages()) {
+            $this->manager->updateUser($public_id, $username, $permissions);
         }
-        $this->manager->updateUser($public_id, $username, $permissions);
 
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }
@@ -207,17 +197,12 @@ final class Users extends WebController
         $password = $this->post('password');
         $confirmPassword = $this->post('confirm-password');
 
-        $errors = [];
-        if ($password !== $confirmPassword || strlen($password) < 16) {
-            $errors[] = 'bad-password';
-            Logger::write("$password <> $confirmPassword");
+        if ($password !== $confirmPassword) {
+            $this->error('bad-password');
         }
-
-        if (!empty($errors)) {
-            Logger::write(print_r($errors, true), LogLevel::DEBUG);
-            exit;
+        if (!$this->hasMessages()) {
+            $this->manager->setPassword($public_id, $password);
         }
-        $this->manager->setPassword($public_id, $password);
 
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }

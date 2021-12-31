@@ -4,7 +4,6 @@ namespace Thor\Http\Server;
 
 use Twig\Environment;
 use Thor\Debug\Logger;
-use Thor\Security\Security;
 use JetBrains\PhpStorm\Pure;
 use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
@@ -37,6 +36,16 @@ class WebServer extends HttpServer
     }
 
     /**
+     * Gets the Twig Environment of the server.
+     *
+     * @return Environment
+     */
+    public function getTwig(): Environment
+    {
+        return $this->twig;
+    }
+
+    /**
      * @inheritDoc
      */
     protected function route(ServerRequestInterface $request): Route|false|null
@@ -48,16 +57,6 @@ class WebServer extends HttpServer
         ]);
 
         return $this->getRouter()->match($request, 'index.php');
-    }
-
-    /**
-     * Gets the Twig Environment of the server.
-     *
-     * @return Environment
-     */
-    public function getTwig(): Environment
-    {
-        return $this->twig;
     }
 
 }

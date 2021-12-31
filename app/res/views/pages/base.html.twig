@@ -2,3 +2,18 @@
 <div id="toolbar" class="fixed-top" style="top: 80px;">{% block toolbar %}{% endblock %}</div>
 <div id="page">{% block page %}{% endblock %}</div>
 {% block page_js %}{% endblock %}
+<script>
+    $(() => {
+        {% if _messages is not empty %}
+        let message = `
+            {% for message in _messages %}
+            <div class="alert alert-danger">
+                {{ icon('exclamation-triangle') }}
+                {{ message }}
+            </div>
+            {% endfor %}
+            `;
+        Modal.message("{{ DICT.errors.error }}", message);
+        {% endif %}
+    });
+</script>

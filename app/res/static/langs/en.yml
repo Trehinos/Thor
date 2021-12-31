@@ -58,8 +58,10 @@ legal:
     title: Legal
     description: "<i class=\"far fa-copyright\"></i> 2021 Sébastien GELDREICH<br>\nLicence : MIT"
 errors:
+    error: Error
     too-short-username: 'Username too short (4 char. min.) or too long (255 char. max.) or invalid characters.'
     too-short-password: 'Password too short (16 char. min.) or too long (255 char. max.).'
+    bad-password: 'The passwords are not the same.'
 permissions_page:
     add: 'Add a permission'
     save: 'Save permissions'
