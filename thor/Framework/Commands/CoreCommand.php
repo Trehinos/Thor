@@ -189,7 +189,7 @@ final class CoreCommand extends Command
 
     public function update(): void
     {
-        $updateConf = new ConfigurationFromFile('update.yml');
+        $updateConf = new ConfigurationFromFile('update');
         $source = $updateConf['source'] ?? '';
         $afterUpdate = $updateConf['after-update'] ?? null;
         $updateFolder = Globals::VAR_DIR . 'update/';

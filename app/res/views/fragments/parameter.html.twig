@@ -1,3 +1,22 @@
 <div class="form-group">
-    <label for="parameter-{{ parameter.name }}"></label>
+    <label for="parameter-{{ parameter.name }}">{{ DICT.parameters[parameter.name] }}</label>
+    {% if parameter.type == "input" %}
+        <input class="form-control"
+               type="{{ parameter['input-type'] }}" id="parameter-{{ parameter.name }}"
+               name="parameter-{{ parameter.name }}"
+               value="{{ user.parameter(parameter.name) ?? parameter.default_value ?? "" }}">
+    {% endif %}
+    {% if parameter.type == "select" %}
+        <select class="form-select" id="parameter-{{ parameter.name }}"
+                {% if parameter.multiple %}multiple size="4"{% endif %}
+                name="parameter-{{ parameter.name }}"
+        >
+            {% for value, label in parameter.choices %}
+                <option {% if value == (user.parameter(parameter.name) ?? parameter.default_value ?? "") %}
+                            selected
+                        {% endif %}
+                        value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+    {% endif %}
 </div>

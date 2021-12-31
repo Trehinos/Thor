@@ -4,11 +4,11 @@ namespace Thor\Framework\Actions;
 
 use Thor\Framework\{Managers\UserManager};
 use Thor\Tools\DataTables;
-use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
 use Thor\Factories\ResponseFactory;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
+use Thor\Configuration\ConfigurationFromFile;
 use Thor\Security\Authorization\Authorization;
 use Thor\Http\{Routing\Route,
     Server\WebServer,
@@ -166,7 +166,6 @@ final class Users extends WebController
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }
 
-    #[Authorization('manage-user', 'edit-user')]
     #[Route(
         'users-change-password-form',
         '/users/$public_id/change-password/form',
@@ -182,6 +181,25 @@ final class Users extends WebController
             [
                 'user'              => $user,
                 'generatedPassword' => UserManager::generatePassword(),
+            ]
+        );
+    }
+
+    #[Route(
+        'user-parameters-form',
+        '/users/$public_id/parameters/form',
+        HttpMethod::GET,
+        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
+    )]
+    public function userParameters(string $public_id): ResponseInterface
+    {
+        $user = $this->manager->getUserCrud()->readOneBy(new Criteria(['public_id' => $public_id]));
+
+        return $this->twigResponse(
+            'pages/users_modals/parameters.html.twig',
+            [
+                'user' => $user,
+                'parameters' => (new ConfigurationFromFile('user-parameters', true))->getArrayCopy()
             ]
         );
     }

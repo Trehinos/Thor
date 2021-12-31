@@ -32,17 +32,15 @@
                                 </li>
                                 <li class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item"
-                                       href="#"
-                                       onclick=""
+                                    <a class="dropdown-item" href="#"
+                                       onclick="Modal.load('{{ url('user-parameters-form', {public_id: server.security.currentIdentity.publicId}) }}');"
                                     >
                                         {{ icon('user', 'fas') }}
                                         {{ DICT.menu.profile }}
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item"
-                                       href="#"
+                                    <a class="dropdown-item" href="#"
                                        onclick="Modal.load('{{ url('users-change-password-form', {public_id: server.security.currentIdentity.publicId}) }}');"
                                     >
                                         {{ icon('lock', 'fas') }}

@@ -8,6 +8,7 @@ general:
     hide: Cacher
     clean_fields: 'Vider les champs'
     label: Libellé
+    save: Enregistrer
 menu:
     index: Index
     users: Utilisateurs
@@ -45,6 +46,7 @@ users:
     min_size: 'min. 16 caractères'
     connect: 'Se connecter'
 users.login.connect: 'Connexion à <strong>{appName}</strong>'
+users.parameters: "Paramètres de {username}"
 documentation:
     alert: 'La documentation est disponible dans le Wiki du projet sur Github.'
     linklabel: 'Voir la documentation sur Github'
@@ -72,3 +74,6 @@ permissions:
     edit-user: 'Editer un utilisateur'
     remove-user: 'Supprimer un utilisateur'
     manage-permissions: 'Gérer les permissions'
+parameters:
+    background_color: Couleur de fond
+    language: Langue
