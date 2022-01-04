@@ -1,7 +1,7 @@
 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
     {% for item in menu %}
         {% set is_group = item.group is defined %}
-        {% if (item.authorization is defined and authorization(item.authorization)) or item.authorization is not defined %}
+        {% if (item.authorization is defined and authorized(item.authorization)) or item.authorization is not defined %}
             {% if not is_group %}
                 <li class="nav-item">
                     <a
@@ -48,7 +48,7 @@
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         {% for sub_item in item.group %}
-                            {% if (sub_item.authorization is defined and authorization(sub_item.authorization)) or sub_item.authorization is not defined %}
+                            {% if (sub_item.authorization is defined and authorized(sub_item.authorization)) or sub_item.authorization is not defined %}
                                 <li>
                                     <a
                                             href="#"

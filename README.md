@@ -38,7 +38,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
     * **Menu** system with icons and authorizations.
     * Page loading in **AJAX**  to reduce payloads.
     * **Users** management (create/edit/change password/delete), login, logout.
-    * **Permissions** management (`#[Authorization]` PHP attribute on controllers, `autorized()` twig function in views).
+    * **Permissions** management (`#[Authorization]` PHP attribute on controllers, `authorized()` twig function in views).
 * Console commands to **control the application** :
     * `user/` : `create` / `edit` / `delete` / `list`.
     * `core/` : `setup` / `install` / `update` / `uninstall` / `set-env`.

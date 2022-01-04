@@ -3,7 +3,7 @@
 {% block titlebar %}{{ icon('users', 'fas', true)|raw }} {{ DICT.users.title }}{% endblock %}
 
 {% block toolbar %}
-    {% if authorization('manage-user', 'create-user') %}
+    {% if authorized('manage-user', 'create-user') %}
         <button class="btn btn-sm btn-success"
                 onclick="Modal.load('{{ url('users-create-form') }}');"
         >
@@ -22,7 +22,7 @@
                 <span class="text-info">#{{ user.publicId|slice(0, 9) }}</span><br>
                 <small class="text-muted">{{ user.publicId|slice(10) }}</small>
                 <hr class="mt-1 mb-2">
-                {% if authorization('manage-user', 'edit-user') %}
+                {% if authorized('manage-user', 'edit-user') %}
                     <button class="btn btn-sm btn-secondary"
                             onclick="Modal.load('{{ url('users-edit-form', {public_id: user.publicId}) }}');"
                     >
@@ -36,7 +36,7 @@
                         {{ DICT.users.change_password }}
                     </button>
                 {% endif %}
-                {% if authorization('manage-user', 'remove-user') %}
+                {% if authorized('manage-user', 'remove-user') %}
                     <button class="btn btn-sm btn-danger"
                             onclick="confirmPost('{{ url('users-delete-action', {public_id: user.publicId}) }}', {}, '{{ DICT.users.remove_user }} ?', () => {$(this).parent().remove();})"
                     >

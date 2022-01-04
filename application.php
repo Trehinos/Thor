@@ -20,7 +20,7 @@ use Thor\Application;
 use Thor\Debug\Logger;
 
 ini_set('log_errors', E_ALL);
-ini_set('error_log', Globals::VAR_DIR);
+ini_set('error_log', Globals::VAR_DIR . 'errors.log');
 
 $application = Application::create();
 Logger::write('#APP:START#');
