@@ -10,8 +10,28 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ## Key features
 
-* Complete but lightweight framework :
-    * PSR inspired interfaces (compliant but with stronger type bindings) and implementation :
+* Main modules of **Thor** :
+    * **Database** module :
+        * **PdoExtension** module : Connection handler, requester, transaction, *extends PDO*.
+        * **PdoTable** module :
+            * Concept of `PdoTable`, an Entity-like object representing a table row.
+                * attributes `#[PdoRow]`, `#[PdoIndex]`, `#[PdoColumn]`, `#[PdoForeignKey]`.
+            * `CrudHelper` : performs CRUD operations on DB,
+            * `SchemaHelper` : performs DQL operations on DB,
+            * `BasePdoRow`/`PdoRowTrait`/`PdoRowInterface` : models to create DAOs with CrudHelper.
+    * **Http** module (with `PSR-7`) : **Request** -> **Server** -> **Router** -> **Controller** -> **Response**.
+        * Use the `#[Route]` attribute,
+        * **Security** module : with the `#[Authorization]` attribute to protect routes within a simple permission
+          system,
+    * **CLI** module : performs custom CLI commands ; offers a console color/formatting utility.
+    * **Daemons** scheduler module.
+
+
+* Other features :
+    * **Twig** template system.
+    * **Multilingual** static and **dynamic** strings (`"xxx"|_()` Twig filter and `DICT` global variable).
+    * Extensible application with custom **kernels**.
+    * PSR inspired interfaces
         * `PSR-3` Logger
         * `PSR-4` Auto-loading (with **composer**)
         * `PSR-7` HTTP Message
@@ -19,36 +39,22 @@ This project's goal is to provide a base project for **PHP developers** to devel
         * `PSR-15` HTTP Handler
         * `PSR-16` SimpleCache (*in memory* implementation)
         * `PSR-18` HTTP Client
-    * Databases utility classes using **PDO** :
-        * **PdoExtension** : Connection handler, requester, transaction.
-        * **PdoTable** :
-            * `CrudHelper` : performs CRUD operations on DB,
-            * `SchemaHelper` : performs DQL operations on DB,
-            * `BasePdoRow`/`PdoRowTrait`/`PdoRowInterface` : models to create DAOs with CrudHelper :
-            * attributes `#[PdoRow]`, `#[PdoIndex]`, `#[PdoColumn]`, `#[PdoForeignKey]`.
-    * Http cycle handling : **Router and controllers** (attribute `#[Route]`).
-    * **CLI commands** handling, console color/formatting utility.
-    * Static **logger** and **configuration**.
-    * **Twig** template system.
-    * **Multilingual** static and **dynamic** strings (`|_()` Twig filter and `DICT` global variable).
-    * Extensible application with **kernels**.
-* Base **web application** to develop a corporate work :
-  ![Thor web UI illustration](https://i.ibb.co/R4q28Pg/ui.png)
-    * Index, legal, about and changelog pages.
-    * **Menu** system with icons and authorizations.
-    * Page loading in **AJAX**  to reduce payloads.
-    * **Users** management (create/edit/change password/delete), login, logout.
-    * **Permissions** management (`#[Authorization]` PHP attribute on controllers, `authorized()` twig function in views).
-* Console commands to **control the application** :
-    * `user/` : `create` / `edit` / `delete` / `list`.
-    * `core/` : `setup` / `install` / `update` / `uninstall` / `set-env`.
-    * `clear/` : `cache` / `logs`.
-    * `route/` : `set` / `list`.
-    * `database/migrate`
-* Daemons and daemons control (e.g. `daemon/status -all` command) :  
-  ![Daemons status illustration](https://i.ibb.co/y84GkDy/daemons.png)
-    * `start` / `stop` / `status` : enable or disable a daemon.
-    * `kill` / `reset` : stop execution or reset state.
+    * Base **web application** to develop a corporate work :
+        * Index, legal, about and changelog pages.
+        * **Menu** system with icons and authorizations.
+        * Page loading in **AJAX**  to reduce payloads.
+        * **Users** management (create/edit/change password/delete), login, logout.
+        * **Permissions** management (`#[Authorization]` PHP attribute on controllers, `authorized()` twig function in
+          views).
+    * Console commands to **control the application** :
+        * `user/` : `create` / `edit` / `delete` / `list`.
+        * `core/` : `setup` / `install` / `update` / `uninstall` / `set-env`.
+        * `clear/` : `cache` / `logs`.
+        * `route/` : `set` / `list`.
+        * `database/migrate`
+    * Daemons and daemons control :
+        * `start` / `stop` / `status` : enable or disable a daemon.
+        * `kill` / `reset` : stop execution or reset state.
 
 ## Dependencies
 
@@ -56,7 +62,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 * `GNU/Linux` or `Windows` system. Tested on `Virtualbox`, `XAMPP` and `WSL2`.
 * PHP 8.1 + PDO + DBMS PDO drivers
-* PHP-EXT `calendar` `curl` `ftp` `intl` `json` `ldap` `mbstring` `openssl` `pdo` `ssh2` `zip`
+* PHP-EXT `calendar` `curl` `ftp` `intl` `json` `mbstring` `openssl` `pdo` `ssh2` `zip`
 * PDO compatible DBMS
 * HTTP server
 * Composer
@@ -68,9 +74,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 * Symfony/VarDumper 5.3
 * Symfony/Yaml 5.3
 * Twig/Twig 3.3
-* NuSphere/NuSoap 0.9.6
 * Datatables/Editor 2.0.5
-* PhpOffice/PhpSpreadsheet 1.19
 
 ### Web vendors (not included)
 
@@ -81,7 +85,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ## Documentation
 
-* [Setup THOR](https://github.com/Trehinos/Thor/wiki/Setup) 
+* [Setup THOR](https://github.com/Trehinos/Thor/wiki/Setup)
 * [Complete documentation](https://github.com/Trehinos/thor/wiki)
 
 ## License
