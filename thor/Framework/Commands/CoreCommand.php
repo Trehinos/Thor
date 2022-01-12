@@ -67,7 +67,8 @@ final class CoreCommand extends Command
         $this->console
             ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
             ->writeln("Done.")
-            ->mode();
+            ->mode()
+        ;
     }
 
     public function setEnv(): void
@@ -85,7 +86,8 @@ final class CoreCommand extends Command
         $this->console
             ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
             ->writeln("Done.")
-            ->mode();
+            ->mode()
+        ;
     }
 
     public function setup(): void
@@ -95,8 +97,8 @@ final class CoreCommand extends Command
 
         $driver = match ($driverName = $handler->getDriverName()) {
             'sqlite' => new Sqlite(),
-            'mysql'  => new MySql(),
-            default  => throw new \Exception("Unsupported driver '$driverName' for PdoTable...")
+            'mysql' => new MySql(),
+            default => throw new \Exception("Unsupported driver '$driverName' for PdoTable...")
         };
         $this->console->write('Creating table ')
                       ->fColor(Console::COLOR_BLUE, Console::MODE_BRIGHT)->write('user')
@@ -111,7 +113,11 @@ final class CoreCommand extends Command
                       ->mode()->writeln('...');
         $userManager = new UserManager(new CrudHelper(DbUser::class, $requester));
         $pid =
-            $userManager->createUser('admin', 'password', ['manage-user', 'create-user', 'edit-user', 'remove-user', 'manage-permissions']);
+            $userManager->createUser(
+                'admin',
+                'password',
+                ['manage-user', 'create-user', 'edit-user', 'remove-user', 'manage-permissions']
+            );
         Logger::write("SETUP : Admin $pid created.", LogLevel::NOTICE);
     }
 
@@ -124,7 +130,8 @@ final class CoreCommand extends Command
             $this->console
                 ->fColor(Console::COLOR_YELLOW, Console::MODE_BRIGHT)
                 ->write("$routeName : ")
-                ->mode();
+                ->mode()
+            ;
 
             $c = $route->getControllerClass();
             $m = $route->getControllerMethod();
@@ -135,7 +142,8 @@ final class CoreCommand extends Command
                 ->write('::')
                 ->fColor(Console::COLOR_BLUE, Console::MODE_RESET)
                 ->write($m . '()')
-                ->mode();
+                ->mode()
+            ;
 
             $path = $route->getPath();
             if (null !== $path) {
@@ -154,7 +162,8 @@ final class CoreCommand extends Command
                     ->write(' ' . $path ?? '')
                     ->fColor(Console::COLOR_GRAY, Console::MODE_DIM)
                     ->write(']')
-                    ->mode();
+                    ->mode()
+                ;
             }
             $this->console->writeln();
         }
@@ -164,7 +173,8 @@ final class CoreCommand extends Command
     {
         $this->console->fColor(Console::COLOR_CYAN)
                       ->writeln('Clearing the cache...')
-                      ->mode();
+                      ->mode()
+        ;
         $deleted = Folder::removeTree(Globals::VAR_DIR . 'cache', removeFirst: false);
         foreach ($deleted as $file) {
             $this->console->writeln(" - $file deleted.");
@@ -178,7 +188,8 @@ final class CoreCommand extends Command
 
         $this->console->fColor(Console::COLOR_CYAN)
                       ->writeln("Clearing the $env logs...")
-                      ->mode();
+                      ->mode()
+        ;
         $deleted = Folder::removeTree(Globals::VAR_DIR . 'logs', "{$env}_.*[.]log", false, false);
         foreach ($deleted as $file) {
             $this->console->writeln(" - $file deleted.");
@@ -196,6 +207,7 @@ final class CoreCommand extends Command
         $resourcesBackupFolder = $updateFolder . 'resources/';
         $target = $updateFolder . 'repo/';
         $composer = $updateConf['composer-command'] ?? 'composer';
+        $composerOptions = $updateConf['composer-options'] ?? '';
 
         // 1. Copy static files
         Logger::write('[1/11] Backup resources', print: true);
@@ -219,7 +231,6 @@ final class CoreCommand extends Command
         }
 
         // 3. Git clone
-        Folder::removeTree($updateFolder);
         Logger::write('[3/11] Git clone', print: true);
         CliKernel::executeProgram("git clone $source $target");
 
@@ -229,7 +240,6 @@ final class CoreCommand extends Command
             [
                 $target . 'thor'    => Globals::CODE_DIR . 'thor',
                 $target . 'bin'     => Globals::CODE_DIR . 'bin',
-                $target . 'docs'    => Globals::CODE_DIR . 'docs',
                 $target . 'app/src' => Globals::CODE_DIR . 'app/src',
             ] as $sourceFolder => $targetFolder
         ) {
@@ -250,7 +260,11 @@ final class CoreCommand extends Command
             $instanceYml = Yaml::parseFile($file);
             file_put_contents(
                 $restorePath,
-                Yaml::dump($instanceYml + $restoreYml)
+                Yaml::dump(
+                            $instanceYml + $restoreYml,
+                    inline: 5,
+                    flags:  Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE | Yaml::DUMP_NULL_AS_TILDE | Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK
+                )
             );
         };
         $configBackup = $resourcesBackupFolder . 'config/';
@@ -272,7 +286,7 @@ final class CoreCommand extends Command
         // 8. Composer update
         Logger::write('[8/11] Composer update', print: true);
         chdir(Globals::CODE_DIR);
-        CliKernel::executeProgram("$composer update");
+        CliKernel::executeProgram("$composer update $composerOptions");
 
         // 9. Clear cache
         Logger::write('[9/11] Composer update', print: true);

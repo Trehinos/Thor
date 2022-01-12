@@ -1,21 +1,10 @@
-# User parameter
-# name:
-# type: {input / select}
-# default_value:
-
-# type === input
-# input-type:
-
-# type === select
-# choices:
-# multiple: true/(false)
-
--   name: background_color
+-
+    name: background_color
     type: input
     input-type: color
-    default_value: #eeeeee
-
--   name: language
+    default_value: ~
+-
+    name: language
     type: select
     choices:
         en: English

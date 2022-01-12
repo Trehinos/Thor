@@ -2,27 +2,63 @@ user/create:
     class: Thor\Framework\Commands\UserCommand
     command: createUser
     description: 'create a new user in DB'
-    arguments: { username: { hasValue: true, description: 'user''s login' }, password: { hasValue: true, description: 'user''s clear password. Will be hashed before insertion' } }
+    arguments:
+        username:
+            hasValue: true
+            description: 'user''s login'
+        password:
+            hasValue: true
+            description: 'user''s clear password. Will be hashed before insertion'
 user/list:
     class: Thor\Framework\Commands\UserCommand
     command: listUsers
     description: 'list all users in DB'
-    arguments: { search: { hasValue: true, description: 'User login search request' } }
+    arguments:
+        search:
+            hasValue: true
+            description: 'User login search request'
 user/edit:
     class: Thor\Framework\Commands\UserCommand
     command: editUser
     description: 'create a new user in DB'
-    arguments: { pid: { hasValue: true, description: 'user''s PID. Needed to identify the user in DB' }, username: { hasValue: true, description: 'user''s new login' }, password: { hasValue: true, description: 'user''s new clear password. Will be hashed before insertion' } }
+    arguments:
+        pid:
+            hasValue: true
+            description: 'user''s PID. Needed to identify the user in DB'
+        username:
+            hasValue: true
+            description: 'user''s new login'
+        password:
+            hasValue: true
+            description: 'user''s new clear password. Will be hashed before insertion'
 user/delete:
     class: Thor\Framework\Commands\UserCommand
     command: deleteUser
     description: 'delete an existing user in DB'
-    arguments: { pid: { hasValue: true, description: 'user''s PID. Needed to identify the user in DB' } }
+    arguments:
+        pid:
+            hasValue: true
+            description: 'user''s PID. Needed to identify the user in DB'
 route/set:
     class: Thor\Framework\Commands\CoreCommand
     command: routeSet
     description: 'add or edit a route in app/res/static/routes.yml'
-    arguments: { name: { hasValue: true, description: 'route identifier' }, path: { hasValue: true, description: 'route PATH' }, method: { hasValue: true, description: 'the request method GET, POST, ...' }, action-class: { hasValue: true, description: 'the controller class' }, action-method: { hasValue: true, description: 'the controller method' } }
+    arguments:
+        name:
+            hasValue: true
+            description: 'route identifier'
+        path:
+            hasValue: true
+            description: 'route PATH'
+        method:
+            hasValue: true
+            description: 'the request method GET, POST, ...'
+        action-class:
+            hasValue: true
+            description: 'the controller class'
+        action-method:
+            hasValue: true
+            description: 'the controller method'
 route/list:
     class: Thor\Framework\Commands\CoreCommand
     command: routeList
@@ -31,27 +67,45 @@ daemon/start:
     class: Thor\Framework\Commands\DaemonCommand
     command: daemonStart
     description: 'start a daemon'
-    arguments: { name: { hasValue: true, description: 'the daemon name' } }
+    arguments:
+        name:
+            hasValue: true
+            description: 'the daemon name'
 daemon/stop:
     class: Thor\Framework\Commands\DaemonCommand
     command: daemonStop
     description: 'stop a daemon'
-    arguments: { name: { hasValue: true, description: 'the daemon name' } }
+    arguments:
+        name:
+            hasValue: true
+            description: 'the daemon name'
 daemon/status:
     class: Thor\Framework\Commands\DaemonCommand
     command: daemonStatus
     description: 'get the status of a daemon'
-    arguments: { name: { hasValue: true, description: 'the daemon name' }, all: { hasValue: false, description: 'if present, display all daemons status' } }
+    arguments:
+        name:
+            hasValue: true
+            description: 'the daemon name'
+        all:
+            hasValue: false
+            description: 'if present, display all daemons status'
 daemon/reset:
     class: Thor\Framework\Commands\DaemonCommand
     command: daemonReset
     description: 'reset the daemon state'
-    arguments: { name: { hasValue: true, description: 'the daemon name' } }
+    arguments:
+        name:
+            hasValue: true
+            description: 'the daemon name'
 daemon/kill:
     class: Thor\Framework\Commands\DaemonCommand
     command: daemonKill
     description: 'stop the daemon immediately'
-    arguments: { name: { hasValue: true, description: 'the daemon name' } }
+    arguments:
+        name:
+            hasValue: true
+            description: 'the daemon name'
 clear/cache:
     class: Thor\Framework\Commands\CoreCommand
     command: clearCache
@@ -60,12 +114,18 @@ clear/logs:
     class: Thor\Framework\Commands\CoreCommand
     command: clearLogs
     description: 'clear all logs'
-    arguments: { env: { hasValue: true, description: 'prod|verbose|debug|[dev] : the environment to clear' } }
+    arguments:
+        env:
+            hasValue: true
+            description: 'prod|verbose|debug|[dev] : the environment to clear'
 core/setup:
     class: Thor\Framework\Commands\CoreCommand
     command: setup
     description: 'create the PdoRows tables'
-    arguments: { database: { hasValue: true, description: '(default = default)' } }
+    arguments:
+        database:
+            hasValue: true
+            description: '(default = default)'
 core/install:
     class: Thor\Framework\Commands\CoreCommand
     command: install
@@ -82,9 +142,15 @@ database/migrate:
     class: Thor\Framework\Commands\DatabaseCommand
     command: migrate
     description: 'run a migration file with multiple SQL queries'
-    arguments: { index: { hasValue: true, description: 'the new migration index' } }
+    arguments:
+        index:
+            hasValue: true
+            description: 'the new migration index'
 core/set-env:
     class: Thor\Framework\Commands\CoreCommand
     command: setEnv
     description: 'set the environnement'
-    arguments: { env: { hasValue: true, description: 'PROD | DEBUG | DEV' } }
+    arguments:
+        env:
+            hasValue: true
+            description: 'PROD | DEBUG | DEV'

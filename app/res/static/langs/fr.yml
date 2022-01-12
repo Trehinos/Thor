@@ -46,7 +46,7 @@ users:
     min_size: 'min. 16 caractères'
     connect: 'Se connecter'
 users.login.connect: 'Connexion à <strong>{appName}</strong>'
-users.parameters: "Paramètres de {username}"
+users.parameters: 'Paramètres de {username}'
 documentation:
     alert: 'La documentation est disponible dans le Wiki du projet sur Github.'
     linklabel: 'Voir la documentation sur Github'
@@ -55,10 +55,15 @@ changelog:
     legend: Légende
 about:
     title: 'A propos'
-about.body: "<strong>Thor</strong> est un framework PHP.<br>\n<strong>Version courante :</strong> {version}<br>\n<strong>License</strong> : MIT (&copy; Sébastien GELDREICH)<br>"
+about.body: |-
+    <strong>Thor</strong> est un framework PHP.<br>
+    <strong>Version courante :</strong> {version}<br>
+    <strong>License</strong> : MIT (&copy; Sébastien GELDREICH)<br>
 legal:
     title: 'Mentions légales'
-    description: "<i class=\"far fa-copyright\"></i> 2021 Sébastien GELDREICH<br>\nLicense : MIT"
+    description: |-
+        <i class="far fa-copyright"></i> 2021 Sébastien GELDREICH<br>
+        License : MIT
 errors:
     error: Erreur
     too-short-username: 'Nom d''utilisateur trop court (min. 4 car.) ou trop long (max. 255 car.) ou caractères invalides.'
@@ -67,7 +72,16 @@ errors:
 permissions_page:
     add: 'Ajouter une permission'
     save: 'Enregistrer les permissions'
-permissions_page.text: "Dans <strong>Thor</strong>, une permission est juste une <code>string</code> définie dans le fichier <code>{permissionsFile}</code>.<br>\nLa permission est ensuite vérifiée avec la fonction <strong>Twig</strong> <code>authorized()</code> ou l'attribut <strong>PHP</strong> <code>#[Authorization]</code>.\n<hr>\nCe formulaire permet d'éditer les permissions disponibles dans <strong>Thor</strong>.<br>\nIl édite:\n<ul>\n    <li>le fichier <code>{permissionsFile}</code> et</li>\n    <li>les fichiers de langage <code>{langsFile}</code> pour les traductions.</li>\n</ul>"
+permissions_page.text: |-
+    Dans <strong>Thor</strong>, une permission est juste une <code>string</code> définie dans le fichier <code>{permissionsFile}</code>.<br>
+    La permission est ensuite vérifiée avec la fonction <strong>Twig</strong> <code>authorized()</code> ou l'attribut <strong>PHP</strong> <code>#[Authorization]</code>.
+    <hr>
+    Ce formulaire permet d'éditer les permissions disponibles dans <strong>Thor</strong>.<br>
+    Il édite:
+    <ul>
+        <li>le fichier <code>{permissionsFile}</code> et</li>
+        <li>les fichiers de langage <code>{langsFile}</code> pour les traductions.</li>
+    </ul>
 permissions:
     manage-user: 'Gérer les utilisateurs'
     create-user: 'Créer un utilisateur'
@@ -75,5 +89,5 @@ permissions:
     remove-user: 'Supprimer un utilisateur'
     manage-permissions: 'Gérer les permissions'
 parameters:
-    background_color: Couleur de fond
+    background_color: 'Couleur de fond'
     language: Langue
