@@ -207,7 +207,7 @@ class Stream implements StreamInterface
      */
     public static function createFromFile(string $filename, string $mode): self
     {
-        return new self(self::fileOpen($filename, $mode));
+        return new self(self::openFile($filename, $mode));
     }
 
     /**
@@ -222,7 +222,7 @@ class Stream implements StreamInterface
      *
      * @throws RuntimeException
      */
-    public static function fileOpen(string $filename, string $mode)
+    public static function openFile(string $filename, string $mode)
     {
         $ex = null;
         set_error_handler(static function (int $errno, string $errstr) use ($filename, $mode, &$ex): bool {

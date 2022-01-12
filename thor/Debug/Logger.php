@@ -4,6 +4,7 @@ namespace Thor\Debug;
 
 use Thor\Thor;
 use Throwable;
+use Stringable;
 use JsonException;
 use Thor\Tools\Strings;
 use Thor\FileSystem\Folder;
@@ -70,7 +71,7 @@ final class Logger implements LoggerInterface
      * Writes a message with the static Logger.
      */
     public static function write(
-        string $message,
+        Stringable|string $message,
         LogLevel $level = LogLevel::INFO,
         array $context = [],
         bool $print = false
@@ -84,7 +85,7 @@ final class Logger implements LoggerInterface
     /**
      * @inheritDoc
      */
-    public function log(LogLevel $level, string $message, array $context = []): void
+    public function log(LogLevel $level, Stringable|string $message, array $context = []): void
     {
         if ($level->value >= $this->logLevel->value) {
             $strLevel = str_pad($level->name, 10);
@@ -132,7 +133,7 @@ final class Logger implements LoggerInterface
     /**
      * @inheritDoc
      */
-    public function emergency(string $message, array $context = []): void
+    public function emergency(Stringable|string $message, array $context = []): void
     {
         $this->log(LogLevel::EMERGENCY, $message, $context);
     }
@@ -140,7 +141,7 @@ final class Logger implements LoggerInterface
     /**
      * @inheritDoc
      */
-    public function alert(string $message, array $context = []): void
+    public function alert(Stringable|string $message, array $context = []): void
     {
         $this->log(LogLevel::ALERT, $message, $context);
     }
@@ -148,7 +149,7 @@ final class Logger implements LoggerInterface
     /**
      * @inheritDoc
      */
-    public function critical(string $message, array $context = []): void
+    public function critical(Stringable|string $message, array $context = []): void
     {
         $this->log(LogLevel::CRITICAL, $message, $context);
     }
@@ -156,7 +157,7 @@ final class Logger implements LoggerInterface
     /**
      * @inheritDoc
      */
-    public function error(string $message, array $context = []): void
+    public function error(Stringable|string $message, array $context = []): void
     {
         $this->log(LogLevel::ERROR, $message, $context);
     }
@@ -164,7 +165,7 @@ final class Logger implements LoggerInterface
     /**
      * @inheritDoc
      */
-    public function warning(string $message, array $context = []): void
+    public function warning(Stringable|string $message, array $context = []): void
     {
         $this->log(LogLevel::WARNING, $message, $context);
     }
@@ -172,7 +173,7 @@ final class Logger implements LoggerInterface
     /**
      * @inheritDoc
      */
-    public function notice(string $message, array $context = []): void
+    public function notice(Stringable|string $message, array $context = []): void
     {
         $this->log(LogLevel::NOTICE, $message, $context);
     }
@@ -180,7 +181,7 @@ final class Logger implements LoggerInterface
     /**
      * @inheritDoc
      */
-    public function info(string $message, array $context = []): void
+    public function info(Stringable|string $message, array $context = []): void
     {
         $this->log(LogLevel::INFO, $message, $context);
     }
@@ -188,7 +189,7 @@ final class Logger implements LoggerInterface
     /**
      * @inheritDoc
      */
-    public function debug(string $message, array $context = []): void
+    public function debug(Stringable|string $message, array $context = []): void
     {
         $this->log(LogLevel::DEBUG, $message, $context);
     }

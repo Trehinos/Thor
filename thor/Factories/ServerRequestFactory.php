@@ -31,7 +31,7 @@ final class ServerRequestFactory
         return new ServerRequest(
                            ProtocolVersion::from($version),
                            getallheaders(),
-                           new Stream(Stream::fileOpen('php://temp', 'r+')),
+                           new Stream(Stream::openFile('php://temp', 'r+')),
                            HttpMethod::from($_SERVER['REQUEST_METHOD'] ?? 'GET'),
                            Uri::fromGlobals(),
             cookies:       $_COOKIE,

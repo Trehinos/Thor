@@ -30,7 +30,6 @@ final class Main extends WebController
         return $this->twigResponse(
             'pages/index.html.twig',
             [
-                'routes' => $this->getServer()->getRouter()->getRoutes(),
             ]
         );
     }
