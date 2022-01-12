@@ -66,13 +66,18 @@ final class Folder
      */
     public static function copyTree(string $path, string $dest): void
     {
-        self::mapFiles(
-            $path,
-            function (string $fileToCopy, string $destPath) {
-                copy($fileToCopy, "$destPath/" . basename($fileToCopy));
-            },
-            $dest
-        );
+        $files = scandir($path);
+        foreach ($files as $file) {
+            if (self::isSpecial($file)) {
+                continue;
+            }
+            if (is_dir("$path/$file")) {
+                Folder::createIfNotExists("$dest/$file");
+                self::copyTree("$path/$file", "$dest/$file");
+                continue;
+            }
+            copy("$path/$file", "$dest/$file");
+        }
     }
 
     /**

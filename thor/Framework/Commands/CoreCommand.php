@@ -199,6 +199,7 @@ final class CoreCommand extends Command
 
         // 1. Copy static files
         Logger::write('[1/11] Backup resources', print: true);
+        Folder::createIfNotExists($resourcesBackupFolder);
         Folder::copyTree(Globals::RESOURCES_DIR, $resourcesBackupFolder);
 
         // 2. Disable all daemons
