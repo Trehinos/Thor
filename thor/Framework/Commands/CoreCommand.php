@@ -195,6 +195,7 @@ final class CoreCommand extends Command
         $updateFolder = Globals::VAR_DIR . 'update/';
         $resourcesBackupFolder = $updateFolder . 'resources/';
         $target = $updateFolder . 'repo/';
+        $composer = $updateConf['composer-command'] ?? 'composer';
 
         // 1. Copy static files
         Logger::write('[1/11] Backup resources', print: true);
@@ -270,7 +271,7 @@ final class CoreCommand extends Command
         // 8. Composer update
         Logger::write('[8/11] Composer update', print: true);
         chdir(Globals::CODE_DIR);
-        CliKernel::executeProgram('composer update');
+        CliKernel::executeProgram("$composer update");
 
         // 9. Clear cache
         Logger::write('[9/11] Composer update', print: true);
@@ -281,6 +282,7 @@ final class CoreCommand extends Command
         // 10. Restore daemons state
         Logger::write('[10/11] Restore daemons', print: true);
         $daemons = self::loadDaemons();
+
         /**
          * @var Daemon      $daemon
          * @var DaemonState $state
@@ -294,6 +296,7 @@ final class CoreCommand extends Command
 
         // 11. Clear update folder
         Logger::write('[11/11] Clear update folder', print: true);
+        sleep(2);
         Folder::removeTree($updateFolder);
     }
 

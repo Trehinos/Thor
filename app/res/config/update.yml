@@ -1,4 +1,5 @@
 source: 'git@github.com:/Trehinos/Thor.git'
+composer-command: '~/composer.phar'
 migration-folder: migrations/
 migration-index: 0
 after-update: thor/after-update
