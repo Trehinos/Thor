@@ -22,11 +22,14 @@ final class TwigFunctionFactory
     {
     }
 
-    public static function authorized(SecurityInterface $security): TwigFunction
+    public static function authorized(?SecurityInterface $security = null): TwigFunction
     {
         return new TwigFunction(
             'authorized',
             function (string ...$permissions) use ($security): bool {
+                if ($security === null) {
+                    return  true;
+                }
                 $identity = $security->getCurrentIdentity();
                 foreach ($permissions as $permission) {
                     if (!$identity->hasPermission($permission)) {
