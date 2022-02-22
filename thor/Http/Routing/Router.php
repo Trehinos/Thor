@@ -4,6 +4,7 @@ namespace Thor\Http\Routing;
 
 use Thor\Http\Uri;
 use RuntimeException;
+use Thor\Tools\Strings;
 use Thor\Http\UriInterface;
 use Thor\Http\Request\RequestInterface;
 
@@ -41,10 +42,7 @@ final class Router
             throw new RuntimeException("Route $routeName not found...");
         }
 
-        $path = $route->getPath();
-        foreach ($params as $paramName => $paramValue) {
-            $path = str_replace("\$$paramName", "$paramValue", $path);
-        }
+        $path = Strings::interpolate($route->getPath(), $params, true);
         return Uri::fromGlobals()->withPath("index.php$path")->withQuery($queryArguments);
     }
 

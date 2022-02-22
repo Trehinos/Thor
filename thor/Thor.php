@@ -2,8 +2,6 @@
 
 namespace Thor;
 
-use Thor\Factories\Configurations;
-use Thor\Configuration\Configuration;
 use Thor\Configuration\ThorConfiguration;
 
 /**
