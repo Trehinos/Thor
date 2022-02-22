@@ -16,7 +16,6 @@ use Thor\Stream\StreamInterface;
  */
 class UploadedFile implements UploadedFileInterface
 {
-
     private bool $moved = false;
 
     /**
@@ -46,7 +45,6 @@ class UploadedFile implements UploadedFileInterface
     public static function normalizeFiles(array $files): array
     {
         $normalized = [];
-
         foreach ($files as $key => $value) {
             if ($value instanceof UploadedFileInterface) {
                 $normalized[$key] = $value;
@@ -58,7 +56,6 @@ class UploadedFile implements UploadedFileInterface
                 throw new InvalidArgumentException('Invalid value in files specification');
             }
         }
-
         return $normalized;
     }
 
@@ -67,9 +64,8 @@ class UploadedFile implements UploadedFileInterface
         if (is_array($value['tmp_name'])) {
             return self::normalizeNestedFileSpec($value);
         }
-
         return new self(
-            $value['tmp_name'],
+            Stream::createFromFile($value['tmp_name'], 'r'),
             (int)$value['size'],
             UploadError::from((int)$value['error']),
             $value['name'],
@@ -80,7 +76,6 @@ class UploadedFile implements UploadedFileInterface
     private static function normalizeNestedFileSpec(array $files = []): array
     {
         $normalizedFiles = [];
-
         foreach (array_keys($files['tmp_name']) as $key) {
             $spec = [
                 'tmp_name' => $files['tmp_name'][$key],
@@ -91,7 +86,6 @@ class UploadedFile implements UploadedFileInterface
             ];
             $normalizedFiles[$key] = self::createUploadedFileFromSpec($spec);
         }
-
         return $normalizedFiles;
     }
 
