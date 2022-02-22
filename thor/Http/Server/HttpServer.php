@@ -138,6 +138,16 @@ class HttpServer implements RequestHandlerInterface
     }
 
     /**
+     * Gets the PdoCollection.
+     *
+     * @return PdoCollection
+     */
+    public function getPdos(): PdoCollection
+    {
+        return $this->pdoCollection;
+    }
+
+    /**
      * Sets the security context of the server.
      */
     public function setSecurity(SecurityInterface|null $security): void
