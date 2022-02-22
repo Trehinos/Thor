@@ -128,7 +128,7 @@ final class Users extends WebController
         'users-edit-form',
         '/users/$public_id/edit/form',
         HttpMethod::GET,
-        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
+        ['public_id' => '[A-Za-z0-9-]+']
     )]
     public function editForm(string $public_id): ResponseInterface
     {
@@ -148,7 +148,7 @@ final class Users extends WebController
         'users-edit-action',
         '/users/$public_id/edit/action',
         HttpMethod::POST,
-        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
+        ['public_id' => '[A-Za-z0-9-]+']
     )]
     public function editAction(string $public_id): ResponseInterface
     {
@@ -170,7 +170,7 @@ final class Users extends WebController
         'users-change-password-form',
         '/users/$public_id/change-password/form',
         HttpMethod::GET,
-        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
+        ['public_id' => '[A-Za-z0-9-]+']
     )]
     public function passwordForm(string $public_id): ResponseInterface
     {
@@ -189,7 +189,7 @@ final class Users extends WebController
         'users-change-password-action',
         '/users/$public_id/change-password/action',
         HttpMethod::POST,
-        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
+        ['public_id' => '[A-Za-z0-9-]+']
     )]
     public function passwordAction(string $public_id): ResponseInterface
     {
@@ -211,7 +211,7 @@ final class Users extends WebController
         'users-delete-action',
         '/users/$public_id/delete/action',
         HttpMethod::POST,
-        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
+        ['public_id' => '[A-Za-z0-9-]+']
     )]
     public function deleteAction(string $public_id): ResponseInterface
     {
@@ -224,7 +224,7 @@ final class Users extends WebController
         'user-parameters-form',
         '/users/$public_id/parameters/form',
         HttpMethod::GET,
-        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
+        ['public_id' => '[A-Za-z0-9-]+']
     )]
     public function userParametersFrom(string $public_id): ResponseInterface
     {
@@ -242,7 +242,7 @@ final class Users extends WebController
         'user-parameters-action',
         '/users/$public_id/parameters/action',
         HttpMethod::POST,
-        ['public_id' => ['regex' => '[A-Za-z0-9-]+']]
+        ['public_id' => '[A-Za-z0-9-]+']
     )]
     public function userParametersAction(string $public_id): ResponseInterface
     {
