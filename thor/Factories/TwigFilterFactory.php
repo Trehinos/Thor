@@ -28,12 +28,12 @@ final class TwigFilterFactory
             '_', // (lang) interpolate
             function (string $str, array $args = []) use ($server) {
                 $foundStr = $server->getLanguage()[$str] ?? null;
-                if ($foundStr && !empty($args[0])) {
-                    $foundStr = Strings::interpolate($foundStr, $args[0]);
+                if ($foundStr && !empty($args)) {
+                    $foundStr = Strings::interpolate($foundStr, $args);
                 }
                 return $foundStr ?? $str;
             },
-            ['is_safe' => ['html'], 'is_variadic' => true]
+            ['is_safe' => ['html']]
         );
     }
 
