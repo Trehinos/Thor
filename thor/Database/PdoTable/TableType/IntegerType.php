@@ -2,21 +2,12 @@
 
 namespace Thor\Database\PdoTable\TableType;
 
-class IntegerType implements TableTypeInterface
+class IntegerType extends BaseType
 {
 
-    public function __construct(private int $size = 10)
+    public function __construct(public readonly int $size = 10)
     {
-    }
-
-    public function phpType(): string
-    {
-        return 'int';
-    }
-
-    public function sqlType(): string
-    {
-        return "INTEGER({$this->size})";
+        parent::__construct("INTEGER({$this->size})", 'int');
     }
 
     public function toPhpValue(mixed $sqlValue): int
@@ -28,4 +19,5 @@ class IntegerType implements TableTypeInterface
     {
         return (int)$phpValue;
     }
+
 }

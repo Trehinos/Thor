@@ -2,21 +2,12 @@
 
 namespace Thor\Database\PdoTable\TableType;
 
-class StringType implements TableTypeInterface
+class StringType extends BaseType
 {
 
-    public function __construct(private int $size = 255, private string $sqlType = 'VARCHAR')
+    public function __construct(public readonly int $size = 255, string $sqlType = 'VARCHAR')
     {
-    }
-
-    public function phpType(): string
-    {
-        return 'string';
-    }
-
-    public function sqlType(): string
-    {
-        return "{$this->sqlType}({$this->size})";
+        parent::__construct("$sqlType({$this->size})", 'string');
     }
 
     public function toPhpValue(mixed $sqlValue): string
@@ -26,6 +17,6 @@ class StringType implements TableTypeInterface
 
     public function toSqlValue(mixed $phpValue): string
     {
-        return (string)$phpValue;
+        return "$phpValue";
     }
 }

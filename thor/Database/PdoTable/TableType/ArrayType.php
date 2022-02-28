@@ -2,21 +2,14 @@
 
 namespace Thor\Database\PdoTable\TableType;
 
-class ArrayType implements TableTypeInterface
+class ArrayType extends BaseType
 {
 
-    public function __construct(private int $sqlStringSize = 4096, private string $sqlType = 'VARCHAR')
-    {
-    }
-
-    public function phpType(): string
-    {
-        return 'array';
-    }
-
-    public function sqlType(): string
-    {
-        return "{$this->sqlType}({$this->sqlStringSize})";
+    public function __construct(
+        int $sqlStringSize = 4096,
+        string $sqlStringType = 'VARCHAR'
+    ) {
+        parent::__construct("$sqlStringType($sqlStringSize)", 'int');
     }
 
     public function toPhpValue(mixed $sqlValue): array
