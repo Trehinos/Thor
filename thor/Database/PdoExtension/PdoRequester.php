@@ -31,10 +31,10 @@ class PdoRequester
     final public function execute(string $sql, array $parameters = []): bool
     {
         Logger::write("DB execute ($sql).");
-        Logger::writeData('DB parameters', $parameters);
+        Logger::writeData('DB parameters', array_values($parameters));
         $stmt = $this->handler->getPdo()->prepare($sql);
 
-        return $stmt->execute($parameters);
+        return $stmt->execute(array_values($parameters));
     }
 
     /**
@@ -53,8 +53,8 @@ class PdoRequester
         $result = true;
 
         foreach ($parameters as $pdoRowsArray) {
-            Logger::writeData(' -> DB parameters', $pdoRowsArray);
-            $result = $result && $stmt->execute($pdoRowsArray);
+            Logger::writeData(' -> DB parameters', array_values($pdoRowsArray));
+            $result = $result && $stmt->execute(array_values($pdoRowsArray));
         }
 
         return $result;
@@ -71,9 +71,9 @@ class PdoRequester
     final public function request(string $sql, array $parameters = []): PDOStatement
     {
         Logger::write("DB request ($sql).");
-        Logger::writeData('DB parameters', $parameters);
+        Logger::writeData('DB parameters', array_values($parameters));
         $stmt = $this->handler->getPdo()->prepare($sql);
-        $stmt->execute($parameters);
+        $stmt->execute(array_values($parameters));
 
         return $stmt;
     }
