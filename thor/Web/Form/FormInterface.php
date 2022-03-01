@@ -6,11 +6,11 @@
  * @license MIT
  */
 
-namespace Thor\Html\Form;
+namespace Thor\Web\Form;
 
-use Thor\Html\NodeInterface;
+use Thor\Web\NodeInterface;
 use Thor\Http\Request\HttpMethod;
-use Thor\Html\Form\Field\FieldInterface;
+use Thor\Web\Form\Field\FieldInterface;
 
 interface FormInterface extends NodeInterface
 {

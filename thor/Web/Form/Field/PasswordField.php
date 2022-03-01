@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-namespace Thor\Html\Form\Field;
+namespace Thor\Web\Form\Field;
 
 class PasswordField extends InputField
 {
