@@ -42,7 +42,7 @@ class HttpKernel implements KernelInterface
         self::guardHttp();
         Logger::write('Start HTTP context');
 
-        return self::createFromConfiguration(Configurations::getHttpConfiguration());
+        return static::createFromConfiguration(Configurations::getHttpConfiguration());
     }
 
     /**
@@ -70,7 +70,7 @@ class HttpKernel implements KernelInterface
      */
     public static function createFromConfiguration(Configuration $config): static
     {
-        return new self(HttpServerFactory::createHttpServerFromConfiguration($config));
+        return new static(HttpServerFactory::createHttpServerFromConfiguration($config));
     }
 
     /**
@@ -88,8 +88,8 @@ class HttpKernel implements KernelInterface
     {
         ob_start();
         Logger::write('Server handle the HTTP request');
-        $request = ServerRequestFactory::createFromGlobals();
-        $response = $this->handle($request);
+        $request = $this->alterRequest(ServerRequestFactory::createFromGlobals());
+        $response = $this->alterResponse($this->handle($request));
         $responseStatus = $response->getStatus()->normalized();
         $responseCode = $response->getStatus()->value;
         Logger::write("HTTP Response generated ($responseCode : $responseStatus).", LogLevel::DEBUG);
@@ -117,6 +117,16 @@ class HttpKernel implements KernelInterface
             Logger::write("Send body");
             echo $body;                                                         // Print body
         }
+    }
+
+    protected function alterResponse(ResponseInterface $response): ResponseInterface
+    {
+        return $response;
+    }
+
+    protected function alterRequest(ServerRequestInterface $request): ServerRequestInterface
+    {
+        return $request;
     }
 
     /**
