@@ -7,6 +7,7 @@ use ReflectionMethod;
 use ReflectionException;
 use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
+use InvalidArgumentException;
 use Thor\Http\Request\HttpMethod;
 use Thor\Configuration\Configuration;
 use Thor\Configuration\RoutesConfiguration;
@@ -29,6 +30,16 @@ final class RouterFactory
     public static function createRouterFromConfiguration(RoutesConfiguration $routes): Router
     {
         return new Router(self::createRoutesFromConfiguration($routes));
+    }
+
+    /**
+     * @param Route[] $routes
+     *
+     * @return Router
+     */
+    public static function createRouterFromRoutes(array $routes): Router
+    {
+        return new Router($routes);
     }
 
     /**
@@ -58,6 +69,42 @@ final class RouterFactory
                 $rMethod
             );
         }
+        return $routesObj;
+    }
+
+    /**
+     * @param RoutesConfiguration $routes
+     *
+     * @return Route[]
+     *
+     * @throws ReflectionException
+     */
+    public static function createRoute(
+        string $routeName,
+        string $className,
+        ?string $methodName = null,
+        ?string $path = null,
+        ?string $method = null,
+        ?array $parameters = null
+    ): array {
+        $routesObj = [];
+        if ($routeName === 'load') {
+            return self::loadRouteAttr($routesObj, [$className]);
+        }
+
+        if (in_array(null, [$methodName, $path, $method])) {
+            throw new InvalidArgumentException();
+        }
+        $parameters ??= [];
+
+        $routesObj[$routeName] = new Route(
+            $routeName,
+            $routeInfo['path'] ?? '',
+            HttpMethod::tryFrom($routeInfo['method'] ?? 'GET'),
+            $routeInfo['parameters'] ?? [],
+            $className,
+            $methodName
+        );
         return $routesObj;
     }
 

@@ -2,6 +2,9 @@
 
 namespace Thor\Web\Assets;
 
+use Thor\Http\Response\Response;
+use Thor\Factories\ResponseFactory;
+
 final class Asset
 {
 
@@ -32,6 +35,21 @@ final class Asset
             AssetType::SCRIPT => "<script src=\"{$this->url}\"></script>",
             default => ''
         };
+    }
+
+    public function getResponse(): Response
+    {
+        $type = match ($this->type) {
+            AssetType::STYLE => 'style/css',
+            AssetType::SCRIPT => "application/js",
+            default => ''
+        };
+
+        if (file_exists($this->filePath)) {
+            return ResponseFactory::ok($this->getContent(), ['Content-Type' => $type]);
+        }
+
+        return ResponseFactory::notFound("[{$this->url}] Asset not found...");
     }
 
 }

@@ -11,6 +11,7 @@ use Thor\Configuration\LanguageDictionary;
 use Thor\Configuration\RoutesConfiguration;
 use Thor\Configuration\SecurityConfiguration;
 use Thor\Configuration\CommandsConfiguration;
+use Thor\Configuration\ConfigurationFromFile;
 use Thor\Configuration\DatabasesConfiguration;
 
 /**
@@ -61,6 +62,21 @@ final class Configurations
                 [
                     'routes' => RoutesConfiguration::get('web'),
                     'twig'   => TwigConfiguration::get(),
+                ]
+            )
+        );
+    }
+
+    /**
+     * Loads the configuration for Web context (index.php entry point).
+     */
+    public static function getAssetsConfiguration(): Configuration
+    {
+        return self::getWebConfiguration()->merge(
+            new Configuration(
+                [
+                    'twig'   => TwigConfiguration::get(),
+                    'assets' => ConfigurationFromFile::fromFile('assets/assets', true)
                 ]
             )
         );

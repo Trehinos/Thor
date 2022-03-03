@@ -5,6 +5,8 @@ namespace Thor\Factories;
 use Twig\TwigFunction;
 use Thor\Http\Routing\Router;
 use Thor\Http\Server\WebServer;
+use Thor\Web\Assets\AssetsList;
+use Thor\Web\Assets\AssetsManager;
 use Thor\Security\SecurityInterface;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -20,6 +22,11 @@ final class TwigFunctionFactory
 
     private function __construct()
     {
+    }
+
+    public static function asset(AssetsManager $assetsManager): TwigFunction
+    {
+        return $assetsManager->twigFunction();
     }
 
     public static function authorized(?SecurityInterface $security = null): TwigFunction

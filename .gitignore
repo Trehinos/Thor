@@ -3,7 +3,8 @@
 
 # Web vendors (to be installed manually)
 # see https://github.com/Trehinos/Thor#web-vendors-not-included
-/web/vendors/
+/web/cache/
+/app/res/static/assets/vendors
 
 # Variables files (created on runtime by the application)
 /var/

@@ -23,7 +23,7 @@ use Thor\Http\{Server\WebServer, Response\ResponseInterface, Request\ServerReque
 class WebKernel extends HttpKernel
 {
 
-    public function __construct(WebServer $webServer)
+    public function __construct(protected WebServer $webServer)
     {
         parent::__construct($webServer);
         Logger::write('Instantiate WebKernel');

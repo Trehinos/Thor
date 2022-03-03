@@ -1,0 +1,18 @@
+enabled: true
+merge: true
+cache: true
+static-dir: assets
+cache-dir: cache
+lists:
+    general:
+          css:
+              - vendors/bootstrap.min.css
+              - assets/thor-theme.css
+          js:
+              - vendors/jquery.min.js
+              - vendors/bootstrap.bundle.min.js
+              - vendors/fontawesome.min.js
+              - vendors/dt-langs/fr.js
+              - assets/thor-lib.js
+          png:
+              - assets/thor-favicon-v2.png
