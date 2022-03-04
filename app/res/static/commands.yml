@@ -154,3 +154,7 @@ core/set-env:
         env:
             hasValue: true
             description: 'PROD | DEBUG | DEV'
+core/repl:
+    class: Thor\Cli\Repl
+    command: repl
+    description: "launch a REPL"

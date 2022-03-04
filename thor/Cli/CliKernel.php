@@ -9,6 +9,7 @@ use Thor\KernelInterface;
 use Thor\Debug\{Logger, LogLevel};
 use JetBrains\PhpStorm\ArrayShape;
 use Thor\Factories\Configurations;
+use Thor\Cli\Console\{Console, Color, CursorControl, Mode};
 use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;
 
@@ -172,18 +173,18 @@ final class CliKernel implements KernelInterface
             if ($displayCommand === null) {
                 $this->console
                     ->clear()
-                    ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)->writeln(
+                    ->fColor(Color::GREEN, Mode::BRIGHT)->writeln(
                         Thor::appName() . ' v' . Thor::version()
                     )
                     ->mode()->fColor()->write('Console help. ')
-                    ->fColor(Console::COLOR_CYAN)->write('bin/thor.php')
+                    ->fColor(Color::CYAN)->write('bin/thor.php')
                     ->fColor()->writeln(" command usage :")
-                    ->fColor(Console::COLOR_CYAN)->write("\tbin/thor.php ")
+                    ->fColor(Color::CYAN)->write("\tbin/thor.php ")
                     ->fColor()->write("-help ")
-                    ->fColor(Console::COLOR_YELLOW)->write("[command]")
-                    ->fColor(mode: Console::MODE_DIM)->write(" | ")
-                    ->mode()->fColor(Console::COLOR_GREEN)->write("command ")
-                    ->fColor(Console::COLOR_YELLOW)->writeln("[-options]\n");
+                    ->fColor(Color::YELLOW)->write("[command]")
+                    ->fColor(mode: Mode::DIM)->write(" | ")
+                    ->mode()->fColor(Color::GREEN)->write("command ")
+                    ->fColor(Color::YELLOW)->writeln("[-options]\n");
             } else {
                 foreach ($this->commands as $commandName => $command) {
                     if ($displayCommand !== $commandName) {
@@ -210,16 +211,16 @@ final class CliKernel implements KernelInterface
         $commandSpecs = $this->commands[$command] ?? null;
         if (null === $commandSpecs) {
             $this->console
-                ->mode(Console::MODE_BRIGHT)
-                ->fColor(Console::COLOR_YELLOW)->write("The command ")
-                ->fColor(Console::COLOR_BLUE)->write($command)
-                ->fColor(Console::COLOR_YELLOW)->writeln(" doesn't exist...")
+                ->mode(Mode::BRIGHT)
+                ->fColor(Color::YELLOW)->write("The command ")
+                ->fColor(Color::BLUE)->write($command)
+                ->fColor(Color::YELLOW)->writeln(" doesn't exist...")
                 ->writeln()
                 ->mode()
-                ->mode(Console::MODE_UNDERSCORE)
+                ->mode(Mode::UNDERSCORE)
                 ->write('Write ')
-                ->fColor(Console::COLOR_GREEN)->write('-help')
-                ->fColor(Console::COLOR_GRAY)->writeln(' to see a list of valid commands.')
+                ->fColor(Color::GREEN)->write('-help')
+                ->fColor(Color::GRAY)->writeln(' to see a list of valid commands.')
                 ->writeln()
             ;
             return;
@@ -228,10 +229,10 @@ final class CliKernel implements KernelInterface
         $commandAction = $commandSpecs['command'] ?? null;
         if (null === $commandClass || $commandAction === null) {
             $this->console
-                ->mode(Console::MODE_BRIGHT)
-                ->fColor(Console::COLOR_YELLOW)->write("The command ")
-                ->fColor(Console::COLOR_RED)->write($command)
-                ->fColor(Console::COLOR_YELLOW)->writeln(" doesn't have a corresponding class...")
+                ->mode(Mode::BRIGHT)
+                ->fColor(Color::YELLOW)->write("The command ")
+                ->fColor(Color::RED)->write($command)
+                ->fColor(Color::YELLOW)->writeln(" doesn't have a corresponding class...")
                 ->writeln()
                 ->mode()
             ;
@@ -282,10 +283,8 @@ final class CliKernel implements KernelInterface
         $spanCommand = str_repeat(' ', max(16 - strlen($command), 1));
         $span16 = str_repeat(' ', 16);
         $this->console
-            ->home()
-            ->fColor(Console::COLOR_GREEN)->write("\t$command" . $spanCommand)
-            ->fColor(mode: Console::MODE_UNDERSCORE)->writeln($description)
-            ->mode()
+            ->echoes(CursorControl::home(), Color::FG_GREEN, "\t$command$spanCommand")
+            ->echoes(Mode::UNDERSCORE, "$description\n")
         ;
 
         foreach ($args as $argName => $arg) {
@@ -301,8 +300,8 @@ final class CliKernel implements KernelInterface
             );
             $this->console
                 ->write("\t$span16")
-                ->fColor(Console::COLOR_YELLOW)->write("$argName$vSpan")
-                ->fColor(mode: Console::MODE_UNDERSCORE)->writeln("$spanArg{$arg['description']}")
+                ->fColor(Color::YELLOW)->write("$argName$vSpan")
+                ->fColor(mode: Mode::UNDERSCORE)->writeln("$spanArg{$arg['description']}")
                 ->mode()
             ;
         }
@@ -333,15 +332,13 @@ final class CliKernel implements KernelInterface
         )] array $args = []
     ): self {
         $this->console
-            ->home()
-            ->fColor(Console::COLOR_YELLOW)->write("$command")
-            ->fColor()->writeln(" usage :\n")
+            ->echoes(CursorControl::home(), Color::FG_YELLOW, $command, Color::FG_GRAY, " usage :\n\n")
             ->mode()
         ;
 
         $this->console
             ->home()
-            ->fColor(Console::COLOR_GREEN)->write("\t$command ")
+            ->fColor(Color::GREEN)->write("\t$command ")
             ->mode()
         ;
 
@@ -350,7 +347,7 @@ final class CliKernel implements KernelInterface
             $value = ($arg['hasValue'] ?? false) ? ' value' : '';
             $this->console
                 ->write('[')
-                ->fColor(Console::COLOR_YELLOW)->write("$argName")
+                ->fColor(Color::YELLOW)->write("$argName")
                 ->fColor()->write($value)
                 ->write('] ')
                 ->mode()

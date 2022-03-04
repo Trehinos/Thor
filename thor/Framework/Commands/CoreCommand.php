@@ -15,7 +15,7 @@ use Thor\Configuration\ThorConfiguration;
 use Thor\Configuration\RoutesConfiguration;
 use Thor\Configuration\ConfigurationFromFile;
 use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
-use Thor\Cli\{Daemon, Console, Command, CliKernel, DaemonState};
+use Thor\Cli\{Daemon, Command, CliKernel, DaemonState, Console\Console};
 use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, SchemaHelper, Driver\Sqlite};
 
 /**
