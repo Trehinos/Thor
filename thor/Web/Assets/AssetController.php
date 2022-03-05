@@ -2,10 +2,10 @@
 
 namespace Thor\Web\Assets;
 
+use Thor\Web\WebServer;
+use Thor\Web\WebController;
 use Thor\Http\Routing\Route;
-use Thor\Http\Server\WebServer;
 use Thor\Http\Response\Response;
-use Thor\Http\Controllers\WebController;
 
 final class AssetController extends WebController
 {

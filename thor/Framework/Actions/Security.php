@@ -2,8 +2,9 @@
 
 namespace Thor\Framework\Actions;
 
+use Thor\Web\WebController;
 use Thor\Debug\{Logger, LogLevel};
-use Thor\Http\{Routing\Route, Request\HttpMethod, Controllers\WebController, Response\ResponseInterface};
+use Thor\Http\{Routing\Route, Request\HttpMethod, Response\ResponseInterface};
 
 /**
  * WebController of security routes (login, check and logout).

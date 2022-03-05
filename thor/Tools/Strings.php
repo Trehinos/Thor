@@ -2,6 +2,8 @@
 
 namespace Thor\Tools;
 
+use Stringable;
+
 /**
  * Provides static methods to operate on strings.
  *
@@ -42,7 +44,7 @@ final class Strings
     {
         $replace = [];
         foreach ($context as $key => $val) {
-            if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString'))) {
+            if (is_string($val) || $val instanceof Stringable) {
                 if ($phpStyle) {
                     $replace["\$$key"] = $val;
                     continue;

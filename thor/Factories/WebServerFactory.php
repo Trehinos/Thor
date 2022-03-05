@@ -2,8 +2,8 @@
 
 namespace Thor\Factories;
 
+use Thor\Web\WebServer;
 use Thor\Http\Routing\Router;
-use Thor\Http\Server\WebServer;
 use Thor\Security\SecurityInterface;
 use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;

@@ -1,17 +1,14 @@
 <?php
 
-namespace Thor\Http;
+namespace Thor\Web\Assets;
 
 use Thor\Debug\Logger;
-use Thor\Web\Assets\AssetsList;
-use Thor\Http\Server\WebServer;
+use Thor\Web\WebKernel;
+use Thor\Web\WebServer;
 use Thor\Factories\Configurations;
-use Thor\Web\Assets\AssetsManager;
-use Thor\Factories\WebServerFactory;
 use Thor\Configuration\Configuration;
 use Thor\Factories\AssetServerFactory;
 use Thor\Factories\TwigFunctionFactory;
-use Thor\Configuration\ConfigurationFromFile;
 
 class AssetsKernel extends WebKernel
 {
