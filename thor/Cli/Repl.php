@@ -49,7 +49,7 @@ final class Repl extends Command
         $this->console->fColor(Color::BLACK, Mode::BRIGHT)->writeln($this->prompt)->mode();
         readline_add_history($line = readline(""));
         $this->console->echoes(CursorControl::moveUp(1), Mode::BRIGHT, Color::FG_YELLOW, "Run > ", Color::FG_BLUE, "$line\n");
-        return $line;
+        return trim($line);
     }
 
 }
