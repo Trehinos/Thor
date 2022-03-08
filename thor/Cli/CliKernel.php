@@ -151,7 +151,13 @@ final class CliKernel implements KernelInterface
         if (self::isWindows()) {
             pclose(popen($cmd, "r"));
         } else {
-            exec($cmd);
+            $output = [];
+            exec($cmd, $output);
+            if (!empty($output)) {
+                echo implode("\n", $output);
+            } else {
+                echo "Ok\n";
+            }
         }
     }
 
@@ -337,7 +343,7 @@ final class CliKernel implements KernelInterface
         ;
 
         $this->console
-            ->home()
+            ->echoes(CursorControl::home())
             ->fColor(Color::GREEN)->write("\t$command ")
             ->mode()
         ;

@@ -6,6 +6,7 @@ namespace Thor\Cli;
 use Thor\Thor;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
+use Thor\Cli\Console\CursorControl;
 
 final class Repl extends Command
 {
@@ -15,7 +16,7 @@ final class Repl extends Command
     /**
      * @var Command[]
      */
-    private array $commands = [];
+    private array $commands;
 
     public string $prompt;
 
@@ -23,7 +24,7 @@ final class Repl extends Command
     {
         parent::__construct($command, $args, $kernel);
         $this->commands = $kernel->commands;
-        $this->prompt = 'Thor ' . Thor::version() . ' > ';
+        $this->prompt = '[Thor ' . Thor::version() . '] Enter command :';
     }
 
     public function repl(): void
@@ -31,23 +32,24 @@ final class Repl extends Command
         while ($this->continue) {
             $command = $this->read();
             if ($command === 'exit') {
-                return;
+                $this->continue = false;
             } else {
                 $arguments = preg_split('/("[^"]*")|\h+/', $command, flags: PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
                 $command = trim(array_shift($arguments));
                 $commandArgs = Command::getArgs($arguments, $this->commands[$command]['arguments'] ?? []);
-                CliKernel::executeCommand($command, $commandArgs); // TODO : obtains output
+                CliKernel::executeCommand($command, $commandArgs);
             }
         }
+
+        $this->console->writeln("Exiting...");
     }
 
     public function read(): string
     {
-        $this->console->fColor(Color::BLUE, Mode::BRIGHT)->write($this->prompt)->fColor(mode: Mode::DIM);
-        readline_add_history($line = readline());
-        $this->console->mode();
+        $this->console->fColor(Color::BLACK, Mode::BRIGHT)->writeln($this->prompt)->mode();
+        readline_add_history($line = readline(""));
+        $this->console->echoes(CursorControl::moveUp(1), Mode::BRIGHT, Color::FG_YELLOW, "Run > ", Color::FG_BLUE, "$line\n");
         return $line;
     }
-
 
 }

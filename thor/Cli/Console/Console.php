@@ -22,6 +22,8 @@ class Console
     /** CLEAR SCREEN SEQUENCE */
     public const CLEAR = "\033[H\033[J";
 
+    private int $mode = 0;
+
     /**
      * Constructs a new Console with default mode.
      */
@@ -39,7 +41,8 @@ class Console
      */
     public function mode(Mode $mode = Mode::RESET): self
     {
-        echo self::COLOR_START . $mode->value . self::COLOR_END;
+        $this->mode = $mode->value;
+        echo self::COLOR_START . $this->mode . self::COLOR_END;
 
         return $this;
     }
@@ -62,8 +65,9 @@ class Console
      */
     public function color(Color $color = Color::FG_GRAY, ?Mode $mode = null): self
     {
-        $str_mode = (null === $mode ? '' : ";{$mode->value}");
-        echo self::COLOR_START . "{$color->value}$str_mode" . self::COLOR_END;
+        $mode ??= Mode::tryFrom($this->mode);
+        $str_mode = (null === $mode ? '' : "{$mode->value};");
+        echo self::COLOR_START . "$str_mode{$color->value}" . self::COLOR_END;
 
         return $this;
     }
