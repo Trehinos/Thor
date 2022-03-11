@@ -2,7 +2,6 @@
 
 namespace Thor\Cli;
 
-// TODO
 use Thor\Thor;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
@@ -34,7 +33,11 @@ final class Repl extends Command
             if ($command === 'exit') {
                 $this->continue = false;
             } else {
-                $arguments = preg_split('/("[^"]*")|\h+/', $command, flags: PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
+                $arguments = preg_split(
+                           '/("[^"]*")|\h+/',
+                           $command,
+                    flags: PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
+                );
                 $command = trim(array_shift($arguments));
                 $commandArgs = Command::getArgs($arguments, $this->commands[$command]['arguments'] ?? []);
                 CliKernel::executeCommand($command, $commandArgs);
@@ -46,9 +49,16 @@ final class Repl extends Command
 
     public function read(): string
     {
-        $this->console->fColor(Color::BLACK, Mode::BRIGHT)->writeln($this->prompt)->mode();
+        $this->console->fColor(Color::BLACK, Mode::BRIGHT)->writeln("\n" . $this->prompt)->mode();
         readline_add_history($line = readline(""));
-        $this->console->echoes(CursorControl::moveUp(1), Mode::BRIGHT, Color::FG_YELLOW, "Run > ", Color::FG_BLUE, "$line\n");
+        $this->console->echoes(
+            CursorControl::moveUp(1),
+            Mode::BRIGHT,
+            Color::FG_YELLOW,
+            "Run > ",
+            Color::FG_BLUE,
+            "$line\n"
+        );
         return trim($line);
     }
 

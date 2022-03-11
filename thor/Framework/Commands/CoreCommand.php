@@ -15,7 +15,7 @@ use Thor\Configuration\ThorConfiguration;
 use Thor\Configuration\RoutesConfiguration;
 use Thor\Configuration\ConfigurationFromFile;
 use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
-use Thor\Cli\{Daemon, Command, CliKernel, DaemonState, Console\Console};
+use Thor\Cli\{Console\Color, Console\Mode, Daemon, Command, CliKernel, DaemonState, Console\Console};
 use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, SchemaHelper, Driver\Sqlite};
 
 /**
@@ -65,7 +65,7 @@ final class CoreCommand extends Command
 
         file_put_contents(Globals::STATIC_DIR . 'web-routes.yml', Yaml::dump($this->routes));
         $this->console
-            ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
+            ->fColor(Color::GREEN, Mode::BRIGHT)
             ->writeln("Done.")
             ->mode()
         ;
@@ -84,7 +84,7 @@ final class CoreCommand extends Command
 
         file_put_contents(Globals::CONFIG_DIR . 'config.yml', Yaml::dump($config));
         $this->console
-            ->fColor(Console::COLOR_GREEN, Console::MODE_BRIGHT)
+            ->fColor(Color::GREEN, Mode::BRIGHT)
             ->writeln("Done.")
             ->mode()
         ;
@@ -101,7 +101,7 @@ final class CoreCommand extends Command
             default => throw new \Exception("Unsupported driver '$driverName' for PdoTable...")
         };
         $this->console->write('Creating table ')
-                      ->fColor(Console::COLOR_BLUE, Console::MODE_BRIGHT)->write('user')
+                      ->fColor(Color::BLUE, Mode::BRIGHT)->write('user')
                       ->mode()->writeln('...');
         Logger::write("SETUP : Creating table user...", LogLevel::NOTICE);
         $schema = new SchemaHelper($requester, $driver, DbUser::class);
@@ -109,7 +109,7 @@ final class CoreCommand extends Command
         $schema->createTable();
 
         $this->console->write('Creating user ')
-                      ->fColor(Console::COLOR_BLUE, Console::MODE_BRIGHT)->write('admin')
+                      ->fColor(Color::BLUE, Mode::BRIGHT)->write('admin')
                       ->mode()->writeln('...');
         $userManager = new UserManager(new CrudHelper(DbUser::class, $requester));
         $pid =
@@ -128,20 +128,25 @@ final class CoreCommand extends Command
             $routeName = $route->getRouteName();
 
             $this->console
-                ->fColor(Console::COLOR_YELLOW, Console::MODE_BRIGHT)
-                ->write("$routeName : ")
                 ->mode()
+                ->write("$routeName : ")
             ;
 
             $c = $route->getControllerClass();
             $m = $route->getControllerMethod();
             $this->console
-                ->fColor(Console::COLOR_BLUE, Console::MODE_RESET)
+                ->mode()
+                ->fColor(Color::YELLOW)
                 ->write($c)
-                ->fColor(Console::COLOR_GRAY, Console::MODE_DIM)
+                ->mode()
+                ->fColor(Color::GRAY, Mode::DIM)
                 ->write('::')
-                ->fColor(Console::COLOR_BLUE, Console::MODE_RESET)
-                ->write($m . '()')
+                ->mode()
+                ->fColor(Color::BLUE, Mode::BRIGHT)
+                ->write($m)
+                ->mode()
+                ->mode(Mode::DIM)
+                ->write('()')
                 ->mode()
             ;
 
@@ -149,18 +154,18 @@ final class CoreCommand extends Command
             if (null !== $path) {
                 $parameters = $route->getParameters();
                 foreach ($parameters as $pKey => $pValue) {
-                    $path = str_replace("\$$pKey", "\e[0;32m\$$pKey\e[0m", $path);
+                    $path = str_replace("\$$pKey", "\e[3;1;32m\$$pKey\e[0m", $path);
                 }
                 $this->console
-                    ->fColor(Console::COLOR_GRAY, Console::MODE_DIM)
+                    ->fColor()
                     ->write(' <- ')
-                    ->fColor(Console::COLOR_GRAY, Console::MODE_DIM)
+                    ->fColor(Color::GRAY, Mode::DIM)
                     ->write('[')
-                    ->fColor(Console::COLOR_CYAN, Console::MODE_BRIGHT)
+                    ->fColor(Color::CYAN, Mode::BRIGHT)
                     ->write($route->getMethod()->value ?? '')
-                    ->fColor(Console::COLOR_GRAY, Console::MODE_RESET)
+                    ->fColor(Color::GRAY, Mode::RESET)
                     ->write(' ' . $path ?? '')
-                    ->fColor(Console::COLOR_GRAY, Console::MODE_DIM)
+                    ->fColor(Color::GRAY, Mode::DIM)
                     ->write(']')
                     ->mode()
                 ;
@@ -171,7 +176,7 @@ final class CoreCommand extends Command
 
     public function clearCache(): void
     {
-        $this->console->fColor(Console::COLOR_CYAN)
+        $this->console->fColor(Color::CYAN)
                       ->writeln('Clearing the cache...')
                       ->mode()
         ;
@@ -186,7 +191,7 @@ final class CoreCommand extends Command
     {
         $env = $this->get('env') ?? 'dev';
 
-        $this->console->fColor(Console::COLOR_CYAN)
+        $this->console->fColor(Color::CYAN)
                       ->writeln("Clearing the $env logs...")
                       ->mode()
         ;
