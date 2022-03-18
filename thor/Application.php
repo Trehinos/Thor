@@ -56,12 +56,12 @@ final class Application implements KernelInterface
     /**
      * Sets the static logger level.
      *
-     * @param LogLevel $logLevel
-     * @param string   $logPath
+     * @param string $logLevel
+     * @param string $logPath
      *
      * @return void
      */
-    public static function setLoggerLevel(LogLevel $logLevel, string $logPath): void
+    public static function setLoggerLevel(string $logLevel, string $logPath): void
     {
         Logger::setDefaultLogger($logLevel, $logPath);
         if (LogLevel::INFO === $logLevel) {

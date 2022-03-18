@@ -2,50 +2,11 @@
 
 namespace Thor\Debug;
 
+use Psr\Log\LogLevel as PsrLogLevel;
 use Thor\Env;
 
-/**
- * ## INFO
- * Interesting events.
- *
- * ## NOTICE
- * Normal but significant events.
- *
- * ## DEBUG
- * Detailed debug information.
- *
- * ## WARNING
- * Exceptional occurrences that are not errors.
- *
- * ## ERROR
- * Runtime errors to be logged
- *
- * ## CRITICAL
- * Critical condition.
- *
- * Application component unavailable, unexpected exception.
- *
- * ## ALERT
- * Action must be taken immediately.
- *
- * Example: Entire website down, database unavailable, etc. This should
- * trigger the SMS alerts and wake you up.
- *
- * ## EMERGENCY
- * System is unusable.
- *
- */
-enum LogLevel: int
+class LogLevel extends PsrLogLevel
 {
-    case INFO = 0;
-    case NOTICE = 1;
-    case DEBUG = 2;
-    case WARNING = 3;
-    case ERROR = 4;
-    case CRITICAL = 5;
-    case ALERT = 6;
-    case EMERGENCY = 7;
-
     /**
      * Returns **minimum** LogLevel according to En :
      *  - DEV --> INFO
@@ -54,9 +15,9 @@ enum LogLevel: int
      *
      * @param Env $env
      *
-     * @return static
+     * @return string
      */
-    public static function fromEnv(Env $env): self
+    public static function fromEnv(Env $env): string
     {
         return match ($env) {
             Env::DEV   => self::INFO,

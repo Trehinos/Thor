@@ -6,6 +6,8 @@ use Thor\Thor;
 use Throwable;
 use Stringable;
 use JsonException;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LogLevel;
 use Thor\Tools\Strings;
 use Thor\FileSystem\Folder;
 
@@ -17,13 +19,23 @@ use Thor\FileSystem\Folder;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class Logger implements LoggerInterface
+final class Logger extends AbstractLogger
 {
+    const LEVELS = [
+        LogLevel::DEBUG     => 100,
+        LogLevel::INFO      => 200,
+        LogLevel::NOTICE    => 250,
+        LogLevel::WARNING   => 300,
+        LogLevel::ERROR     => 400,
+        LogLevel::CRITICAL  => 500,
+        LogLevel::ALERT     => 550,
+        LogLevel::EMERGENCY => 600
+    ];
 
     private static ?self $logger = null;
 
     public function __construct(
-        private LogLevel $logLevel = LogLevel::DEBUG,
+        private string $logLevel = LogLevel::DEBUG,
         private string $basePath = __DIR__ . '/../',
         private string $dateFormat = 'Y-m-d H:i:s.v',
         private ?string $filename = null,
@@ -34,7 +46,7 @@ final class Logger implements LoggerInterface
      * Sets the static Logger.
      */
     public static function setDefaultLogger(
-        LogLevel $level = LogLevel::DEBUG,
+        string $level = LogLevel::DEBUG,
         string $basePath = __DIR__ . '/../',
         string $dateFormat = 'Y-m-d H:i:s.v'
     ): self {
@@ -72,7 +84,7 @@ final class Logger implements LoggerInterface
      */
     public static function write(
         Stringable|string $message,
-        LogLevel $level = LogLevel::INFO,
+        string $level = LogLevel::INFO,
         array $context = [],
         bool $print = false
     ): void {
@@ -85,10 +97,10 @@ final class Logger implements LoggerInterface
     /**
      * @inheritDoc
      */
-    public function log(LogLevel $level, Stringable|string $message, array $context = []): void
+    public function log($level, Stringable|string $message, array $context = []): void
     {
-        if ($level->value >= $this->logLevel->value) {
-            $strLevel = str_pad($level->name, 10);
+        if ($this->shouldLogMessage($level)) {
+            $strLevel = str_pad($level, 10);
             $now = new \DateTime();
             $nowStr = $now->format($this->dateFormat);
             $message = "$nowStr $strLevel : " . Strings::interpolate($message, $context);
@@ -107,11 +119,16 @@ final class Logger implements LoggerInterface
         }
     }
 
+    private function shouldLogMessage(string $level): bool
+    {
+        return self::LEVELS[$level] >= self::LEVELS[$this->logLevel];
+    }
+
     /**
      * Gets the current static Logger.
      */
     public static function get(
-        LogLevel $level = LogLevel::INFO,
+        string $level = LogLevel::INFO,
         string $basePath = __DIR__ . '/../',
         string $dateFormat = 'Y-m-d H:i:s.v'
     ): self {
@@ -121,76 +138,12 @@ final class Logger implements LoggerInterface
     /**
      * Writes data encoded into JSON with the static Logger.
      */
-    public static function writeData(string $dataName, mixed $data, LogLevel $level = LogLevel::INFO): void
+    public static function writeData(string $dataName, mixed $data, string $level = LogLevel::INFO): void
     {
         try {
             $message = "DATA:$dataName= " . json_encode($data, JSON_THROW_ON_ERROR);
             self::get()->log($level, $message);
         } catch (JsonException) {
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function emergency(Stringable|string $message, array $context = []): void
-    {
-        $this->log(LogLevel::EMERGENCY, $message, $context);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function alert(Stringable|string $message, array $context = []): void
-    {
-        $this->log(LogLevel::ALERT, $message, $context);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function critical(Stringable|string $message, array $context = []): void
-    {
-        $this->log(LogLevel::CRITICAL, $message, $context);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function error(Stringable|string $message, array $context = []): void
-    {
-        $this->log(LogLevel::ERROR, $message, $context);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warning(Stringable|string $message, array $context = []): void
-    {
-        $this->log(LogLevel::WARNING, $message, $context);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function notice(Stringable|string $message, array $context = []): void
-    {
-        $this->log(LogLevel::NOTICE, $message, $context);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function info(Stringable|string $message, array $context = []): void
-    {
-        $this->log(LogLevel::INFO, $message, $context);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function debug(Stringable|string $message, array $context = []): void
-    {
-        $this->log(LogLevel::DEBUG, $message, $context);
     }
 }
