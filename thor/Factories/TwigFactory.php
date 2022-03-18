@@ -74,6 +74,7 @@ final class TwigFactory
         $this->twig->addFunction(TwigFunctionFactory::render($server));
         $this->twig->addFunction(TwigFunctionFactory::dump());
         $this->twig->addFunction(TwigFunctionFactory::uuid());
+        $this->twig->addFunction(TwigFunctionFactory::option());
 
         $this->twig->addFilter(TwigFilterFactory::classname());
         $this->twig->addFilter(TwigFilterFactory::_($server));

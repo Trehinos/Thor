@@ -6,6 +6,7 @@ use Twig\TwigFunction;
 use Thor\Web\WebServer;
 use Thor\Web\Assets\Asset;
 use Thor\Http\Routing\Router;
+use Thor\Http\Server\WebServer;
 use Thor\Security\SecurityInterface;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -13,7 +14,7 @@ use Symfony\Component\VarDumper\VarDumper;
  * A factory to create twig Functions.
  *
  * @package          Thor/Database/PdoTable
- * @copyright (2022) Sébastien Geldreich
+ * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
 final class TwigFunctionFactory
@@ -21,6 +22,19 @@ final class TwigFunctionFactory
 
     private function __construct()
     {
+    }
+
+    public static function option(): TwigFunction
+    {
+        return new TwigFunction(
+            'option',
+            function (?string $current, ?string $optionValue, ?string $optionLabel = null) {
+                $optionLabel ??= $optionValue;
+                $selected = $current === $optionValue ? 'selected' : '';
+                return "<option $selected value=\"$optionValue\">$optionLabel</option>";
+            },
+            ['is_safe' => ['html']]
+        );
     }
 
     /**

@@ -30,23 +30,25 @@
                         {{ DICT.menu[item.label] ?? item.label ?? '' }}
                     </a>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a
-                                    href="#"
-                                    id="btn-{{ item.route }}"
-                                    onclick="menuClick($(this));"
-                                    data-url="{% if item.route != '.' %}{{ url(item.route) }}{% else %}#{% endif %}"
-                                    data-item="{{ item.route }}"
-                                    title="{{ DICT.menu[item.label] ?? item.label ?? '' }}"
-                                    class="dropdown-item {% if server.currentRouteName == item.route %}active{% endif %}"
-                            >
-                                {{ icon(item.icon, (item.icon_col ?? 'fas'), true) }}
-                                <span class="menu-label">
-                                    {{ DICT.menu[item.label] ?? item.label ?? '' }}
-                                </span>
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
+                        {% if item.route is defined %}
+                            <li>
+                                <a
+                                        href="#"
+                                        id="btn-{{ item.route }}"
+                                        onclick="menuClick($(this));"
+                                        data-url="{% if item.route != '.' %}{{ url(item.route) }}{% else %}#{% endif %}"
+                                        data-item="{{ item.route }}"
+                                        title="{{ DICT.menu[item.label] ?? item.label ?? '' }}"
+                                        class="dropdown-item {% if server.currentRouteName == item.route %}active{% endif %}"
+                                >
+                                    {{ icon(item.icon, (item.icon_col ?? 'fas'), true) }}
+                                    <span class="menu-label">
+                                        {{ DICT.menu[item.label] ?? item.label ?? '' }}
+                                    </span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                        {% endif %}
                         {% for sub_item in item.group %}
                             {% if sub_item == 'divider' %}
                                 <li><hr class="dropdown-divider"></li>

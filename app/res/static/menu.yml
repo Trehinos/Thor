@@ -1,11 +1,10 @@
 -
     label: Configuration
     icon: cogs
-    route: index-page
     group:
         -
             icon: database
-            route: index-page
+            route: config-database
             label: Bases de données
         -
             icon: shield-alt
