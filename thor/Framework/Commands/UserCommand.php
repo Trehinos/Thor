@@ -5,7 +5,7 @@ namespace Thor\Framework\Commands;
 use Exception;
 use Thor\Framework\{Managers\UserManager};
 use Thor\Security\Identity\DbUser;
-use Thor\Cli\{Command, Console, CliKernel};
+use Thor\Cli\{Command, CliKernel, Console\Console};
 use Thor\Database\{PdoTable\Criteria, PdoTable\CrudHelper, PdoExtension\PdoRequester};
 
 /**

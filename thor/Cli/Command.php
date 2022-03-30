@@ -2,7 +2,12 @@
 
 namespace Thor\Cli;
 
+use Stringable;
+use Thor\Cli\Console\Mode;
+use Thor\Cli\Console\Color;
+use Thor\Cli\Console\Console;
 use JetBrains\PhpStorm\ArrayShape;
+use Thor\Cli\Console\CursorControl;
 
 /**
  * Base class for any Thor command.
@@ -27,7 +32,7 @@ abstract class Command
      */
     public function __construct(
         protected string $name,
-        private array $args,
+        protected array $args,
         protected CliKernel $cli
     ) {
         $this->console = new Console();
@@ -114,8 +119,8 @@ abstract class Command
         bool $displayUsage = false,
         bool $displayHelp = false
     ): never {
-        $this->console->fColor(Console::COLOR_RED)->writeln('ERROR')->mode();
-        $this->console->fColor(Console::COLOR_YELLOW)->write($title)
+        $this->console->fColor(Color::RED)->writeln('ERROR')->mode();
+        $this->console->fColor(Color::YELLOW)->write($title)
                       ->fColor()->writeln($message)
                       ->mode();
 
@@ -146,7 +151,7 @@ abstract class Command
         if (null === $commandInfos) {
             $this->console
                 ->write('(usage error) Command ')
-                ->fColor(Console::COLOR_RED)
+                ->fColor(Color::RED)
                 ->write($name)
                 ->fColor()
                 ->writeln(" not found...\n");
@@ -171,7 +176,7 @@ abstract class Command
         if (null === $commandInfos) {
             $this->console
                 ->write('(usage error) Command ')
-                ->fColor(Console::COLOR_RED)
+                ->fColor(Color::RED)
                 ->write($name)
                 ->fColor()
                 ->writeln(" not found...\n");

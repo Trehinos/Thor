@@ -5,7 +5,7 @@ namespace Thor\Framework\Commands;
 use Thor\Globals;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Factories\Configurations;
-use Thor\Cli\{Daemon, Console, Command, CliKernel, DaemonState, DaemonScheduler};
+use Thor\Cli\{Daemon, Command, CliKernel, DaemonState, Console\Console, DaemonScheduler};
 
 
 /**
