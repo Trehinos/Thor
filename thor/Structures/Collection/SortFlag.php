@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Php;
+namespace Thor\Structures\Collection;
 
 enum SortFlag:int
 {

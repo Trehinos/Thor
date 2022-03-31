@@ -1,16 +1,28 @@
 <?php
 
-namespace Thor\Php;
+namespace Thor\Structures\Collection;
 
 use Iterator;
 use Countable;
 use ArrayAccess;
+use JetBrains\PhpStorm\ArrayShape;
 
 class Collection implements ArrayAccess, Iterator, Countable
 {
 
     public function __construct(private array $data = [])
     {
+    }
+
+    #[ArrayShape(['data' => "array"])]
+    public function __serialize(): array
+    {
+        return ['data' => $this->data];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->data = $data['data'];
     }
 
     public static function combine(self $keys, self $values): static
@@ -33,6 +45,11 @@ class Collection implements ArrayAccess, Iterator, Countable
         return new static(range($start, $end, $step));
     }
 
+    public function toArray(): array
+    {
+        return $this->data;
+    }
+
     public function offsetExists(mixed $offset): bool
     {
         return isset($this->data[$offset]);
@@ -45,6 +62,10 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
+        if (null === $offset) {
+            $this->data[] = $value;
+            return;
+        }
         $this->data[$offset] = $value;
     }
 
@@ -52,6 +73,36 @@ class Collection implements ArrayAccess, Iterator, Countable
     {
         $this->data[$offset] = null;
         unset($this->data[$offset]);
+    }
+
+    public function count(bool $recursive = false): int
+    {
+        return count($this->data, $recursive ? COUNT_RECURSIVE : COUNT_NORMAL);
+    }
+
+    public function current(): mixed
+    {
+        return current($this->data);
+    }
+
+    public function next(): void
+    {
+        next($this->data);
+    }
+
+    public function key(): string|int|null
+    {
+        return key($this->data);
+    }
+
+    public function valid(): bool
+    {
+        return $this->offsetExists($this->key());
+    }
+
+    public function rewind(): void
+    {
+        reset($this->data);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -303,6 +354,11 @@ class Collection implements ArrayAccess, Iterator, Countable
         return array_reduce($this->data, $callback, $initial);
     }
 
+    public function in(mixed $needle, bool $strict = false): bool
+    {
+        return in_array($needle, $this->data, $strict);
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     /// Mutators
 
@@ -339,16 +395,6 @@ class Collection implements ArrayAccess, Iterator, Countable
     public function shuffle(): bool
     {
         return shuffle($this->data);
-    }
-
-    public function count(bool $recursive = false): int
-    {
-        return count($this->data, $recursive ? COUNT_RECURSIVE : COUNT_NORMAL);
-    }
-
-    public function in(mixed $needle, bool $strict = false): bool
-    {
-        return in_array($needle, $this->data, $strict);
     }
 
     /**
@@ -405,30 +451,5 @@ class Collection implements ArrayAccess, Iterator, Countable
                 false => usort($this->data, $compare)
             }
         };
-    }
-
-    public function current(): mixed
-    {
-        return current($this->data);
-    }
-
-    public function next(): void
-    {
-        next($this->data);
-    }
-
-    public function key(): string|int|null
-    {
-        return key($this->data);
-    }
-
-    public function valid(): bool
-    {
-        return $this->offsetExists($this->key());
-    }
-
-    public function rewind(): void
-    {
-        reset($this->data);
     }
 }
