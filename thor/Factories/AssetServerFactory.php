@@ -37,7 +37,7 @@ final class AssetServerFactory
             $config['twig']
         );
 
-        $server->getRequest()->withAttribute('assetsManager', AssetsManagerFactory::produce($config['assets']));
+        $server->getRequest()->withAttribute('assetsManager', AssetsListFactory::produce($config['assets']));
 
         $server->setSecurity(HttpServerFactory::produceSecurity($server, $config['security']));
         $server->getTwig()->addFunction(TwigFunctionFactory::authorized($server->getSecurity()));

@@ -13,12 +13,9 @@ use Thor\Factories\TwigFunctionFactory;
 class AssetsKernel extends WebKernel
 {
 
-    private AssetsManager $assetsManager;
-
     public function __construct(WebServer $server) {
         parent::__construct($server);
-        $this->assetsManager = new AssetsManager();
-        $this->webServer->getTwig()->addFunction(TwigFunctionFactory::asset($this->assetsManager));
+        $this->webServer->getTwig()->addFunction(TwigFunctionFactory::asset());
     }
 
     /**

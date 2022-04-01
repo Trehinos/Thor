@@ -23,9 +23,14 @@ final class TwigFunctionFactory
     {
     }
 
-    public static function asset(AssetsManager $assetsManager): TwigFunction
+    public static function asset(array $assetsList): TwigFunction
     {
-        return $assetsManager->twigFunction();
+        return new TwigFunction(
+            'asset',
+            function (string $assetName) use ($assetsList) {
+
+            }
+        );
     }
 
     public static function authorized(?SecurityInterface $security = null): TwigFunction

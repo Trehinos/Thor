@@ -10,7 +10,7 @@ use Thor\Http\Response\Response;
 final class AssetController extends WebController
 {
 
-    public function __construct(WebServer $webServer, private AssetsManager $assetsManager)
+    public function __construct(WebServer $webServer)
     {
         parent::__construct($webServer);
     }

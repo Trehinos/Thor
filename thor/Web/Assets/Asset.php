@@ -2,54 +2,62 @@
 
 namespace Thor\Web\Assets;
 
-use Thor\Http\Response\Response;
-use Thor\Factories\ResponseFactory;
+use Thor\Thor;
+use Thor\Globals;
+use Thor\Http\Uri;
+use Thor\Configuration\Configuration;
+use Thor\Configuration\ConfigurationFromFile;
 
 final class Asset
 {
 
-    public readonly string $url;
+    private static Configuration $assetsConfiguration;
+    private string $path;
+    private Uri $uri;
 
     public function __construct(
-        public readonly AssetType $type,
-        public readonly string $identifier,
-        public readonly string $filePath,
-        ?string $url = null,
+        private readonly AssetType $type,
+        private readonly string $name,
+        private readonly array $fileList
     ) {
-        $this->url = $url ?? $this->filePath;
+        self::$assetsConfiguration ??= ConfigurationFromFile::fromFile('assets/assets', true);
+        $filename = "{$this->name}.{$this->type->getExtension()}";
+        $this->path = Globals::WEB_DIR . self::$assetsConfiguration['cache-dir'] . "/{$filename}";
+        $this->uri = Uri::fromGlobals()->withPath(self::$assetsConfiguration['cache-dir'] . "/{$filename}");
+        if (Thor::isDev()) {
+            $this->uri = $this->uri->withQuery(['v' => date('YmdHis')]);
+        }
     }
 
-    public function getContent(): string
+    public function getFiles(): array
     {
-        if (!file_exists($this->filePath)) {
-            return '';
-        }
+        return $this->fileList;
+    }
 
-        return file_get_contents($this->filePath);
+    public function merge(): string
+    {
+        return array_reduce(
+            $this->fileList,
+            function (?string $mergedAssets, string $filename) {
+                return ($mergedAssets ?? '') . file_get_contents(Globals::STATIC_DIR . 'assets/' . $filename);
+            }
+        );
+    }
+
+    public function cache(): void
+    {
+        if (file_exists($this->path) && !Thor::isDev()) {
+            return;
+        }
+        file_put_contents($this->path, $this->merge());
     }
 
     public function getHtml(): string
     {
         return match ($this->type) {
-            AssetType::STYLE => "<link rel=\"stylesheet\" href=\"{$this->url}\">",
-            AssetType::SCRIPT => "<script src=\"{$this->url}\"></script>",
-            default => ''
+            AssetType::JAVASCRIPT => "<script src=\"{$this->uri}\"></script>",
+            AssetType::STYLESHEET => "<link rel=\"stylesheet\" href=\"{$this->uri}\">"
         };
-    }
-
-    public function getResponse(): Response
-    {
-        $type = match ($this->type) {
-            AssetType::STYLE => 'style/css',
-            AssetType::SCRIPT => "application/js",
-            default => ''
-        };
-
-        if (file_exists($this->filePath)) {
-            return ResponseFactory::ok($this->getContent(), ['Content-Type' => $type]);
-        }
-
-        return ResponseFactory::notFound("[{$this->url}] Asset not found...");
     }
 
 }
