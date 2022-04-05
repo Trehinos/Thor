@@ -4,8 +4,8 @@ namespace Thor\Factories;
 
 use Twig\TwigFunction;
 use Thor\Web\WebServer;
+use Thor\Web\Assets\Asset;
 use Thor\Http\Routing\Router;
-use Thor\Web\Assets\AssetsManager;
 use Thor\Security\SecurityInterface;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -13,7 +13,7 @@ use Symfony\Component\VarDumper\VarDumper;
  * A factory to create twig Functions.
  *
  * @package          Thor/Database/PdoTable
- * @copyright (2021) Sébastien Geldreich
+ * @copyright (2022) Sébastien Geldreich
  * @license          MIT
  */
 final class TwigFunctionFactory
@@ -23,6 +23,11 @@ final class TwigFunctionFactory
     {
     }
 
+    /**
+     * @param Asset[] $assetsList
+     *
+     * @return TwigFunction
+     */
     public static function asset(array $assetsList): TwigFunction
     {
         return new TwigFunction(
