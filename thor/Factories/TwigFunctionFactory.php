@@ -6,7 +6,6 @@ use Twig\TwigFunction;
 use Thor\Web\WebServer;
 use Thor\Web\Assets\Asset;
 use Thor\Http\Routing\Router;
-use Thor\Http\Server\WebServer;
 use Thor\Security\SecurityInterface;
 use Symfony\Component\VarDumper\VarDumper;
 

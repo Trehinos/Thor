@@ -4,7 +4,7 @@ namespace Thor\Structures;
 
 enum BinaryOrder
 {
-    case PREFIX;
-    case POSTFIX;
-    case INFIX;
+    case PRE;
+    case POST;
+    case IN;
 }

@@ -5,7 +5,7 @@ namespace Thor\Framework\Actions;
 use PDOException;
 use Thor\Http\Routing\Route;
 use Thor\Http\Response\Response;
-use Thor\Http\Controllers\WebController;
+use Thor\Web\WebController;
 use Thor\Configuration\ThorConfiguration;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Configuration\DatabasesConfiguration;
