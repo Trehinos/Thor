@@ -1,0 +1,30 @@
+{% extends "pages/base.html.twig" %}
+
+{% block titlebar %}{{ icon('cog', 'fas', true) }} Configuration{% endblock %}
+
+{% block toolbar %}
+    <button type="submit" class="btn btn-sm btn-primary" form="config-form">
+        <i class="fas fa-save"></i> Sauvegarder
+    </button>
+{% endblock %}
+
+{% block page %}
+    <form id="config-form">
+        {% for label, value in configuration %}
+            <div class="row align-items-end align-items-md-center">
+                <div class="col-md-3 col-lg-2 text-md-end">
+                    <label for="{{ label }}" class="col-form-label">{{ label }}</label>
+                </div>
+                <div class="col-md-3 col-lg-2">
+                    <input type="text" id="{{ label }}" class="form-control" name="{{ label }}"
+                           value="{{ value }}">
+                </div>
+                <div class="col-md-auto">
+                    <span id="passwordHelpInline" class="form-text">
+                        {{ info[label]|raw }}
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    </form>
+{% endblock %}

@@ -3,6 +3,11 @@
     icon: cogs
     group:
         -
+            icon: cog
+            route: config-config
+            label: Configuration globale
+        - divider
+        -
             icon: database
             route: config-database
             label: Bases de données
