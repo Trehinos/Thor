@@ -5,8 +5,8 @@ namespace Thor\Factories;
 use DateTime;
 use Twig\TwigFilter;
 use Thor\Tools\Strings;
+use Thor\Web\WebServer;
 use Thor\Tools\DateTimes;
-use Thor\Http\Server\WebServer;
 
 /**
  * A factory to create twig Filters.
@@ -26,10 +26,10 @@ final class TwigFilterFactory
     {
         return new TwigFilter(
             '_', // (lang) interpolate
-            function (string $str, array $args = []) use ($server) {
+            function (string $str, array $context = []) use ($server) {
                 $foundStr = $server->getLanguage()[$str] ?? null;
-                if ($foundStr && !empty($args)) {
-                    $foundStr = Strings::interpolate($foundStr, $args);
+                if ($foundStr && !empty($context)) {
+                    $foundStr = Strings::interpolate($foundStr, $context);
                 }
                 return $foundStr ?? $str;
             },

@@ -4,23 +4,12 @@ namespace Thor\Framework\Actions;
 
 use Thor\Globals;
 use Thor\Framework\{Managers\UserManager};
-use Thor\Tools\DataTables;
+use Thor\Web\WebServer;
+use Thor\Web\WebController;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Debug\{Logger, LogLevel};
-use Thor\Security\Identity\DbUser;
-use Thor\Factories\ResponseFactory;
-use Thor\Database\PdoTable\Criteria;
-use Thor\Database\PdoTable\CrudHelper;
 use Thor\Configuration\LanguageDictionary;
-use Thor\Configuration\ConfigurationFromFile;
 use Thor\Security\Authorization\Authorization;
-use Thor\Http\{Routing\Route,
-    Server\WebServer,
-    Response\Response,
-    Request\HttpMethod,
-    Controllers\WebController,
-    Response\ResponseInterface
-};
+use Thor\Http\{Routing\Route, Request\HttpMethod, Response\ResponseInterface};
 
 /**
  * User permissions view and action and list WebController.

@@ -31,7 +31,7 @@ class ConfigurationFromFile extends Configuration
      */
     public static function fromFile(string $name, bool $staticResource = false): static
     {
-        return new static(self::loadYml($name, $staticResource));
+        return new static($name, $staticResource);
     }
 
     public static function loadYml(string $name, bool $staticResource = false): array

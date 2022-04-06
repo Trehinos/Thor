@@ -37,7 +37,14 @@ final class Globals
     const STATIC_DIR = self::RESOURCES_DIR . 'static/';
 
     /**
+     * The folder where lies web files.
+     */
+    const WEB_DIR = self::CODE_DIR . 'var/';
+
+    /**
      * The default folder where lies vendor libraries.
+     *
+     * This files can be deleted without implication on project's features.
      */
     const VENDORS_DIR = self::CODE_DIR . 'vendors/';
 

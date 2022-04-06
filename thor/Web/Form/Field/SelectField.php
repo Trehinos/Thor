@@ -6,10 +6,10 @@
  * @license          MIT
  */
 
-namespace Thor\Html\Form\Field;
+namespace Thor\Web\Form\Field;
 
-use Thor\Html\Node;
-use Thor\Html\TextNode;
+use Thor\Web\Node;
+use Thor\Web\TextNode;
 
 class SelectField extends AbstractField
 {

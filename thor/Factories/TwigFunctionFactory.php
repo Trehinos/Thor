@@ -3,6 +3,8 @@
 namespace Thor\Factories;
 
 use Twig\TwigFunction;
+use Thor\Web\WebServer;
+use Thor\Web\Assets\Asset;
 use Thor\Http\Routing\Router;
 use Thor\Http\Server\WebServer;
 use Thor\Security\SecurityInterface;
@@ -20,6 +22,34 @@ final class TwigFunctionFactory
 
     private function __construct()
     {
+    }
+
+    public static function option(): TwigFunction
+    {
+        return new TwigFunction(
+            'option',
+            function (?string $current, ?string $optionValue, ?string $optionLabel = null) {
+                $optionLabel ??= $optionValue;
+                $selected = $current === $optionValue ? 'selected' : '';
+                return "<option $selected value=\"$optionValue\">$optionLabel</option>";
+            },
+            ['is_safe' => ['html']]
+        );
+    }
+
+    /**
+     * @param Asset[] $assetsList
+     *
+     * @return TwigFunction
+     */
+    public static function asset(array $assetsList): TwigFunction
+    {
+        return new TwigFunction(
+            'asset',
+            function (string $assetName) use ($assetsList) {
+
+            }
+        );
     }
 
     public static function authorized(?SecurityInterface $security = null): TwigFunction

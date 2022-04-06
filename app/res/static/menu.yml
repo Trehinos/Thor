@@ -1,22 +1,85 @@
 -
-    label: index
-    icon: book
-    route: index-page
--
-    label: users
-    icon: users
-    route: users
-    authorization: manage-user
+    label: Configuration
+    icon: cogs
     group:
+        -
+            icon: database
+            route: config-database
+            label: Bases de données
+        -
+            icon: shield-alt
+            route: index-page
+            label: Securité
+        -
+            icon: sync
+            route: index-page
+            label: Mises à jour
+        -
+            icon: cog
+            route: index-page
+            label: Twig
+-
+    label: Données statiques
+    icon: file-alt
+    route: index-page
+    group:
+        -
+            icon: atom
+            route: index-page
+            label: Kernels
+        -
+            icon: globe
+            route: index-page
+            label: Langues
+        -
+            icon: gavel
+            route: index-page
+            label: users_permissions
+        -
+            icon: cogs
+            route: index-page
+            label: Paramètres utilisateurs
+        - divider
+        -
+            icon: play
+            route: index-page
+            label: Tâches
+        -
+            icon: terminal
+            route: index-page
+            label: Commandes
+        - divider
+        -
+            icon: route
+            route: index-page
+            label: Routes
+        -
+            icon: list
+            route: index-page
+            label: Menu
+-
+    label: Données
+    icon: database
+    route: index-page
+    group:
+        -
+            label: users
+            icon: users
+            route: users
         -
             icon: list
             route: users-table
-            label: users
+            label: Tableau utilisateurs (test)
+        - divider
         -
-            icon: gavel
-            route: manage-permissions
-            label: users_permissions
-            authorization: manage-permissions
+            icon: cube
+            route: index-page
+            label: Classes PdoTables
+        -
+            icon: table
+            route: index-page
+            label: Crud
+
 -
     label: documentation
     icon: books

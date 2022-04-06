@@ -1,13 +1,12 @@
 <?php
 
-namespace Thor\Http;
+namespace Thor\Web;
 
-use Thor\Thor;
 use Thor\Debug\Logger;
 use Thor\Factories\Configurations;
 use Thor\Factories\WebServerFactory;
 use Thor\Configuration\Configuration;
-use Thor\Http\{Server\WebServer, Response\ResponseInterface, Request\ServerRequestInterface};
+use Thor\Http\{HttpKernel, Response\ResponseInterface, Request\ServerRequestInterface};
 
 /**
  * WebKernel of Thor. It is by default instantiated with the `index.php` entry point.
@@ -23,7 +22,7 @@ use Thor\Http\{Server\WebServer, Response\ResponseInterface, Request\ServerReque
 class WebKernel extends HttpKernel
 {
 
-    public function __construct(WebServer $webServer)
+    public function __construct(protected WebServer $webServer)
     {
         parent::__construct($webServer);
         Logger::write('Instantiate WebKernel');

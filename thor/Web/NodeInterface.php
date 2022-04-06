@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Html;
+namespace Thor\Web;
 
 interface NodeInterface
 {

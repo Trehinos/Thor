@@ -3,10 +3,11 @@
 namespace Thor\Factories;
 
 use Thor\Thor;
+use Thor\Http\{Routing\Router};
 use Thor\Globals;
 use Twig\Environment;
+use Thor\Web\WebServer;
 use Twig\Loader\FilesystemLoader;
-use Thor\Http\{Routing\Router, Server\WebServer};
 use Thor\Configuration\Configuration;
 use Thor\Configuration\ThorConfiguration;
 
@@ -65,7 +66,7 @@ final class TwigFactory
         $this->twig->addGlobal('appVendor', Thor::vendor());
         $this->twig->addGlobal('version', Thor::version());
         $this->twig->addGlobal('versionName', Thor::versionName());
-        $this->twig->addGlobal('_lang', ThorConfiguration::get()->lang());
+        $this->twig->addGlobal('_', ThorConfiguration::get()->lang());
         $this->twig->addGlobal('DICT', $server->getLanguage());
 
         $this->twig->addFunction(TwigFunctionFactory::url($router));
@@ -73,6 +74,7 @@ final class TwigFactory
         $this->twig->addFunction(TwigFunctionFactory::render($server));
         $this->twig->addFunction(TwigFunctionFactory::dump());
         $this->twig->addFunction(TwigFunctionFactory::uuid());
+        $this->twig->addFunction(TwigFunctionFactory::option());
 
         $this->twig->addFilter(TwigFilterFactory::classname());
         $this->twig->addFilter(TwigFilterFactory::_($server));

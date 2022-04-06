@@ -2,8 +2,8 @@
 
 namespace Thor\Factories;
 
-use Thor\Html\Node;
-use Thor\Html\TextNode;
+use Thor\Web\Node;
+use Thor\Web\TextNode;
 
 final class Html
 {

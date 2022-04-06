@@ -3,7 +3,9 @@
 namespace Thor\Framework\Commands;
 
 use Thor\Env;
+use Exception;
 use Thor\Globals;
+use ReflectionException;
 use Thor\Framework\{Managers\UserManager};
 use Thor\FileSystem\Folder;
 use Thor\Http\Routing\Route;
@@ -90,6 +92,9 @@ final class CoreCommand extends Command
         ;
     }
 
+    /**
+     * @throws Exception
+     */
     public function setup(): void
     {
         $databaseName = $this->get('database') ?? 'default';
@@ -98,7 +103,7 @@ final class CoreCommand extends Command
         $driver = match ($driverName = $handler->getDriverName()) {
             'sqlite' => new Sqlite(),
             'mysql' => new MySql(),
-            default => throw new \Exception("Unsupported driver '$driverName' for PdoTable...")
+            default => throw new Exception("Unsupported driver '$driverName' for PdoTable...")
         };
         $this->console->write('Creating table ')
                       ->fColor(Color::BLUE, Mode::BRIGHT)->write('user')

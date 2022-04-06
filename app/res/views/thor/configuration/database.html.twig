@@ -1,0 +1,68 @@
+{% extends "pages/base.html.twig" %}
+
+{% block titlebar %}{{ icon('database', 'fas', true) }} Bases de données{% endblock %}
+
+{% block toolbar %}
+    <button type="button" class="btn btn-sm btn-success">
+        <i class="fas fa-plus"></i> Ajouter une connexion
+    </button>
+    <button type="submit" class="btn btn-sm btn-primary float-end" form="databases-form">
+        <i class="fas fa-save"></i> Sauvegarder
+    </button>
+{% endblock %}
+
+{% block page %}
+    <form id="databases-form">
+        {% for name, database in databases %}
+            <div class="row mb-3 connection">
+                <div class="col-md-2">
+                    <label for="name-{{ loop.index }}">Nom</label>
+                    <input id="name-{{ loop.index }}" name="name[{{ loop.index }}]" class="form-control"
+                           value="{{ name }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="dsn-{{ loop.index }}">DSN</label>
+                    <input id="dsn-{{ loop.index }}" name="dsn[{{ loop.index }}]" class="form-control"
+                           value="{{ database.dsn }}">
+                </div>
+                <div class="col-md-2">
+                    <label for="user-{{ loop.index }}">Utilisateur</label>
+                    <input id="user-{{ loop.index }}" name="user[{{ loop.index }}]" class="form-control"
+                           value="{{ database.user }}">
+                </div>
+                <div class="col-md-2">
+                    <label for="password-{{ loop.index }}">Mot de passe</label>
+                    <input id="password-{{ loop.index }}" name="password[{{ loop.index }}]" class="form-control"
+                           value="{{ database.password }}">
+                </div>
+                <div class="col-md-2">
+                    <label for="case-{{ loop.index }}"><code>PDO::ATTR_CASE</code></label>
+                    <select id="case-{{ loop.index }}" name="case[{{ loop.index }}]" class="form-select">
+                        <option {% if database.case is not defined or database.case is null %}selected{% endif %}></option>
+                        {{ option(database.case|lower, 'lower', 'PDO::CASE_LOWER') }}
+                        {{ option(database.case|lower, 'upper', 'PDO::CASE_UPPER') }}
+                        {{ option(database.case|lower, 'natural', 'PDO::CASE_NATURAL') }}
+                    </select>
+                </div>
+                <div class="col-md-1 pt-4">
+                    <div class="pt-2">
+                        {% if status[name] %}
+                            <i class="fas fa-check text-success"></i>
+                        {% else %}
+                            <i class="fas fa-times text-danger"></i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </form>
+{% endblock %}
+
+{% block page_js %}
+    <script>
+        let $truc = $("#truc");
+        $truc.html().html();
+        $truc.val();
+
+    </script>
+{% endblock %}

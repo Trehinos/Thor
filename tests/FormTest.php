@@ -2,9 +2,9 @@
 
 namespace Tests;
 
-use Thor\Html\Form\Form;
+use Thor\Web\Form\Form;
 use PHPUnit\Framework\TestCase;
-use Thor\Html\Form\Field\{TextField, SelectField, PasswordField};
+use Thor\Web\Form\Field\{TextField, SelectField, PasswordField};
 
 final class FormTest extends TestCase
 {

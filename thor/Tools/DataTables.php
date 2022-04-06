@@ -3,7 +3,7 @@
 namespace Thor\Tools;
 
 use Exception;
-use Thor\Html\Node;
+use Thor\Web\Node;
 use ReflectionException;
 use Thor\Factories\Html;
 use JetBrains\PhpStorm\ArrayShape;

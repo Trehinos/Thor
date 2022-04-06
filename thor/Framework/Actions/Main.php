@@ -3,8 +3,9 @@
 namespace Thor\Framework\Actions;
 
 use Thor\Globals;
+use Thor\Web\WebController;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod, Controllers\WebController};
+use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod};
 
 /**
  * WebController, this is the main controller to serve Responses for the main routes of Thor.

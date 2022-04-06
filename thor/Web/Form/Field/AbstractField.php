@@ -1,8 +1,8 @@
 <?php
 
-namespace Thor\Html\Form\Field;
+namespace Thor\Web\Form\Field;
 
-use Thor\Html\Node;
+use Thor\Web\Node;
 
 abstract class AbstractField extends Node implements FieldInterface
 {

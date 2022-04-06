@@ -2,5 +2,6 @@ default:
     dsn: 'mysql:host=localhost;dbname=thor'
     user: thor
     password: thor
+    case: natural
 sqlite:
     dsn: 'sqlite:/var/www/thor2/var/db'

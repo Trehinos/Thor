@@ -3,6 +3,7 @@
 namespace Thor\Database\PdoExtension;
 
 use PDO;
+use PDOException;
 
 /**
  * This class offer a PDO wrapper, to differ the database connection from the object instantiation.
@@ -51,6 +52,8 @@ final class PdoHandler
 
     /**
      * Returns the current PDO object or constructs it with the PdoHandler parameters.
+     *
+     * @throws PDOException
      */
     public function getPdo(): PDO
     {

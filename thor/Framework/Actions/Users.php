@@ -3,20 +3,16 @@
 namespace Thor\Framework\Actions;
 
 use Thor\Framework\{Managers\UserManager};
+use Thor\Web\WebServer;
 use Thor\Tools\DataTables;
+use Thor\Web\WebController;
 use Thor\Security\Identity\DbUser;
 use Thor\Factories\ResponseFactory;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Configuration\ConfigurationFromFile;
 use Thor\Security\Authorization\Authorization;
-use Thor\Http\{Routing\Route,
-    Server\WebServer,
-    Response\Response,
-    Request\HttpMethod,
-    Controllers\WebController,
-    Response\ResponseInterface
-};
+use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod, Response\ResponseInterface};
 
 /**
  * User forms view and action and list WebController.

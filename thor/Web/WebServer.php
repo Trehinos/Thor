@@ -1,12 +1,13 @@
 <?php
 
-namespace Thor\Http\Server;
+namespace Thor\Web;
 
 use Twig\Environment;
 use Thor\Debug\Logger;
 use JetBrains\PhpStorm\Pure;
 use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
+use Thor\Http\Server\HttpServer;
 use Thor\Security\SecurityInterface;
 use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;

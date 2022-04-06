@@ -15,23 +15,29 @@ use Thor\Database\PdoExtension\PdoCollection;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class WebServerFactory
+final class AssetServerFactory
 {
 
     private function __construct()
     {
     }
 
-    public static function creatWebServerFromConfiguration(Configuration $config): WebServer
+    public static function creatAssetServerFromConfiguration(Configuration $config): WebServer
     {
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
         $server = self::produce(
-            $router = RouterFactory::createRouterFromConfiguration($config['routes']),
+            $router = RouterFactory::createRouterFromRoutes(
+                [
+                    RouterFactory::createRoute('load-asset', '', '', '/$asset', 'GET', []),
+                ]
+            ),
             null,
             $pdoCollection,
             $config['language'],
             $config['twig']
         );
+
+        $server->getRequest()->withAttribute('assetsManager', AssetsListFactory::produce($config['assets']));
 
         $server->setSecurity(HttpServerFactory::produceSecurity($server, $config['security']));
         $server->getTwig()->addFunction(TwigFunctionFactory::authorized($server->getSecurity()));
