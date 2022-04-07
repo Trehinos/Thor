@@ -3,16 +3,25 @@
 {% block titlebar %}{{ icon('database', 'fas', true) }} Bases de données{% endblock %}
 
 {% block toolbar %}
-    <button type="button" class="btn btn-sm btn-success">
-        <i class="fas fa-plus"></i> Ajouter une connexion
-    </button>
-    <button type="submit" class="btn btn-sm btn-primary float-end" form="databases-form">
-        <i class="fas fa-save"></i> Sauvegarder
-    </button>
+    {% if writable %}
+        <button type="button" class="btn btn-sm btn-success">
+            <i class="fas fa-plus"></i> Ajouter une connexion
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary float-end" form="databases-form">
+            <i class="fas fa-save"></i> Sauvegarder
+        </button>
+    {% endif %}
 {% endblock %}
 
 {% block page %}
-    <form id="databases-form">
+    <form id="databases-form" {% if writable %}{% endif %}>
+        {% if not writable %}
+            <div class="alert alert-warning">
+                {{ icon('exclamation-triangle') }} Le fichier <code>{{ filename }}</code> n'est pas accessible
+                en écriture. Impossible de modifier la configuration.<br>
+                Notez qu'en production, il s'agit d'une configuration normale.
+            </div>
+        {% endif %}
         {% for name, database in databases %}
             <div class="row mb-3 connection">
                 <div class="col-md-2">
@@ -47,22 +56,17 @@
                 <div class="col-md-1 pt-4">
                     <div class="pt-2">
                         {% if status[name] %}
-                            <i class="fas fa-check text-success"></i>
+                            <span class="text-success">
+                                {{ icon('check', fixed= true) }} ok
+                            </span>
                         {% else %}
-                            <i class="fas fa-times text-danger"></i>
+                        <span class="text-danger">
+                            {{ icon('times', fixed= true) }} ko
+                        </span>
                         {% endif %}
                     </div>
                 </div>
             </div>
         {% endfor %}
     </form>
-{% endblock %}
-
-{% block page_js %}
-    <script>
-        let $truc = $("#truc");
-        $truc.html().html();
-        $truc.val();
-
-    </script>
 {% endblock %}
