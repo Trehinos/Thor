@@ -116,27 +116,4 @@ class BinaryNode
         return $ret;
     }
 
-    public static function test(): static
-    {
-        return
-            (new static(1))
-                ->left(
-                    (new static(2))
-                        ->left(4)
-                        ->right(
-                            (new static(5))
-                                ->left(7)
-                                ->right(8)
-                        )
-                )
-                ->right(
-                    (new static(3))
-                        ->right(
-                            (new static(6))
-                                ->left(9)
-                        )
-                )
-        ;
-    }
-
 }
