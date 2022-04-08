@@ -1,0 +1,75 @@
+{% extends "pages/base.html.twig" %}
+
+{% block titlebar %}{{ icon('shield-alt', 'fas', true) }} Sécurité{% endblock %}
+
+{% block toolbar %}
+    {% if writable %}
+        <button type="submit" class="btn btn-sm btn-primary" form="security-form">
+            <i class="fas fa-save"></i> Sauvegarder
+        </button>
+    {% endif %}
+{% endblock %}
+
+{% block page %}
+    <form id="security-form" {% if writable %}method="post" action="{{ url('security-save') }}"{% endif %}>
+        {% if not writable %}
+            <div class="alert alert-warning">
+                {{ icon('exclamation-triangle') }} Le fichier <code>{{ filename }}</code> n'est pas accessible
+                en écriture. Impossible de modifier la configuration.
+            </div>
+        {% else %}
+            <div class="row align-items-end align-items-md-center">
+                <div class="col-md-7 col-lg-5 text-md-end">
+                    <div class="form-check pe-1">
+                        <label for="security-enabled" class="form-check-label">
+                            <input type="checkbox" id="security-enabled" class="form-check-input"
+                                   name="config[security]"
+                                   {% if security.security %}checked{% endif %}
+                            >
+                            Sécurité active
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-auto"><span class="form-text">
+                    Activer ou désactiver la sécurité web
+                </span></div>
+            </div>
+            <div class="row align-items-end align-items-md-center">
+                <div class="col-md-3 col-lg-2 text-md-end">
+                    <label for="pdo-handler" class="col-form-label">PdoHandler</label>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <input type="text" id="pdo-handler" class="form-control" name="config[pdo-handler]"
+                           value="{{ security['pdo-handler'] }}"
+                    >
+                </div>
+                <div class="col-md-auto"><span class="form-text">
+                    Nom de la connexion BDD
+                </span></div>
+            </div>
+            <div class="row align-items-end align-items-md-center">
+                <div class="col-md-3 col-lg-2 text-md-end">
+                    <label for="security-factory" class="col-form-label">Security factory</label>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <input type="text" id="security-factory" class="form-control" name="config[security-factory]"
+                           value="{{ security['security-factory'] }}"
+                    >
+                </div>
+                <div class="col-md-auto"><span class="form-text">
+                    Méthode à appeler pour construire le contexte de sécurité. Format :
+                    <code>Classe:méthode</code>
+                </span></div>
+            </div>
+            <hr>
+            <h2>Firewalls</h2>
+            {% for firewall in security.firewalls %}
+                <button class="btn btn-secondary">
+                    Firewall sur {{ firewall.pattern }}
+                </button>
+            {% else %}
+                <p class="text-warning">Aucun firewall défini...</p>
+            {% endfor %}
+        {% endif %}
+    </form>
+{% endblock %}

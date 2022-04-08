@@ -11,6 +11,7 @@ use Thor\Http\Request\HttpMethod;
 use Thor\Configuration\ThorConfiguration;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Configuration\ConfigurationFromFile;
+use Thor\Configuration\SecurityConfiguration;
 use Thor\Configuration\DatabasesConfiguration;
 use Thor\Configuration\Configuration as YmlConfiguration;
 
@@ -19,6 +20,7 @@ final class Configuration extends WebController
 
     private const CONFIG_YML = Globals::CONFIG_DIR . 'config.yml';
     private const DATABASE_YML = Globals::CONFIG_DIR . 'database.yml';
+    private const SECURITY_YML = Globals::CONFIG_DIR . 'security.yml';
 
     #[Route('config-config', '/config/general')]
     public function configView(): Response
@@ -81,16 +83,39 @@ final class Configuration extends WebController
         $databases = [];
         foreach (range(1, intval($this->post('size'))) as $index) {
             $databases[$this->post('name', [])[$index]] = [
-                'dsn' => $this->post('dsn', [])[$index],
-                'user' => $this->post('user', [])[$index],
+                'dsn'      => $this->post('dsn', [])[$index],
+                'user'     => $this->post('user', [])[$index],
                 'password' => $this->post('password', [])[$index],
-                'case' => $this->post('case', [])[$index],
+                'case'     => $this->post('case', [])[$index],
             ];
         }
 
         ConfigurationFromFile::writeTo(new YmlConfiguration($databases), 'database');
 
         return $this->redirect('index', query: ['menuItem' => 'database-config']);
+    }
+
+    #[Route('security-config', '/config/security')]
+    public function securityView(): Response
+    {
+        $securityConfig = SecurityConfiguration::get();
+
+        return $this->twigResponse(
+            'thor/configuration/security.html.twig',
+            [
+                'security' => $securityConfig,
+                'writable'  => is_writeable(self::SECURITY_YML),
+                'filename'  => realpath(self::SECURITY_YML),
+            ]
+        );
+    }
+
+    #[Route('security-save', '/config-save/security', HttpMethod::POST)]
+    public function saveSecurity(): Response
+    {
+        // TODO
+
+        return $this->redirect('index', query: ['menuItem' => 'security-config']);
     }
 
 }

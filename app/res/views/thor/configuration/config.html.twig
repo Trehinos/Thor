@@ -15,8 +15,7 @@
         {% if not writable %}
             <div class="alert alert-warning">
                 {{ icon('exclamation-triangle') }} Le fichier <code>{{ filename }}</code> n'est pas accessible
-                en écriture. Impossible de modifier la configuration.<br>
-                Notez qu'en production, il s'agit d'une configuration normale.
+                en écriture. Impossible de modifier la configuration.
             </div>
         {% endif %}
         {% for label, value in configuration %}
@@ -31,7 +30,7 @@
                     >
                 </div>
                 <div class="col-md-auto">
-                    <span id="passwordHelpInline" class="form-text">
+                    <span class="form-text">
                         {{ info[label]|raw }}
                     </span>
                 </div>

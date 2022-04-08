@@ -13,7 +13,7 @@
             label: Bases de données
         -
             icon: shield-alt
-            route: index-page
+            route: security-config
             label: Securité
         -
             icon: sync
