@@ -10,3 +10,6 @@ dummy:
     case: natural
 sqlite:
     dsn: 'sqlite:/var/www/thor2/var/db'
+    user: ''
+    password: ''
+    case: ''

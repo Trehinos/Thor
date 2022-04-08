@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block page %}
-    <form id="databases-form" {% if writable %}{% endif %}>
+    <form id="databases-form" {% if writable %}method="post" action="{{ url('database-save') }}"{% endif %}>
         {% if not writable %}
             <div class="alert alert-warning">
                 {{ icon('exclamation-triangle') }} Le fichier <code>{{ filename }}</code> n'est pas accessible
@@ -22,6 +22,7 @@
                 Notez qu'en production, il s'agit d'une configuration normale.
             </div>
         {% endif %}
+        <input type="hidden" name="size" value="{{ databases|length }}">
         {% for name, database in databases %}
             <div class="row mb-3 connection">
                 <div class="col-md-2">

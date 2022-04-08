@@ -9,7 +9,7 @@
         - divider
         -
             icon: database
-            route: config-database
+            route: database-config
             label: Bases de données
         -
             icon: shield-alt

@@ -4,11 +4,9 @@ namespace Thor\Framework\Actions;
 
 use PDOException;
 use Thor\Globals;
-use Thor\FileSystem\File;
 use Thor\Http\Routing\Route;
 use Thor\Http\Response\Response;
 use Thor\Web\WebController;
-use Symfony\Component\Yaml\Yaml;
 use Thor\Http\Request\HttpMethod;
 use Thor\Configuration\ThorConfiguration;
 use Thor\Database\PdoExtension\PdoCollection;
@@ -54,7 +52,7 @@ final class Configuration extends WebController
         return $this->redirect('index', query: ['menuItem' => 'config-config']);
     }
 
-    #[Route('config-database', '/config/database')]
+    #[Route('database-config', '/config/database')]
     public function databaseView(): Response
     {
         $dbConfig = DatabasesConfiguration::get();
@@ -75,6 +73,24 @@ final class Configuration extends WebController
             'filename'  => realpath(self::DATABASE_YML),
             'status'    => $status,
         ]);
+    }
+
+    #[Route('database-save', '/config-save/database', HttpMethod::POST)]
+    public function saveDatabase(): Response
+    {
+        $databases = [];
+        foreach (range(1, intval($this->post('size'))) as $index) {
+            $databases[$this->post('name', [])[$index]] = [
+                'dsn' => $this->post('dsn', [])[$index],
+                'user' => $this->post('user', [])[$index],
+                'password' => $this->post('password', [])[$index],
+                'case' => $this->post('case', [])[$index],
+            ];
+        }
+
+        ConfigurationFromFile::writeTo(new YmlConfiguration($databases), 'database');
+
+        return $this->redirect('index', query: ['menuItem' => 'database-config']);
     }
 
 }
