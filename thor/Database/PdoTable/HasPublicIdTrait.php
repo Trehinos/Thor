@@ -3,6 +3,7 @@
 namespace Thor\Database\PdoTable;
 
 use Exception;
+use Thor\Tools\Guid;
 use Thor\Database\PdoTable\{Attributes\PdoIndex, Attributes\PdoColumn, TableType\StringType};
 
 /**
@@ -30,20 +31,13 @@ trait HasPublicIdTrait
     }
 
     /**
-     * Generates a new public_id in this hexadecimal form :
-     *
-     * xxxx-xxxx-xxxx-xxxx-xxxxxxxx-xxxxxxxx
+     * Generates a new GUID formatted public_id..
      *
      * @throws Exception
      */
     public function generatePublicId(): void
     {
-        $this->public_id = bin2hex(random_bytes(2)) .
-                           '-' . bin2hex(random_bytes(2)) .
-                           '-' . bin2hex(random_bytes(2)) .
-                           '-' . bin2hex(random_bytes(2)) .
-                           '-' . bin2hex(random_bytes(4)) .
-                           '-' . bin2hex(random_bytes(4));
+        $this->public_id = Guid::hex();
     }
 
 }
