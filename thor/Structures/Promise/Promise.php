@@ -9,7 +9,7 @@ class Promise
 
     private PromiseState $state = PromiseState::PENDING;
 
-    public function __construct(private mixed $value = null)
+    public function __construct(private readonly mixed $value = null)
     {
     }
 
