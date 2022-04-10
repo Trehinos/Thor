@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Tools\Promise;
+namespace Thor\Structures\Promise;
 
 use Exception;
 

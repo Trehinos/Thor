@@ -39,6 +39,7 @@
     "ext-pdo": "*",
     "ext-ssh2": "*",
     "ext-zip": "*",
+    "phpoffice/phpspreadsheet": "1.*",
     "datatables.net/editor-php": "2.*",
     "symfony/var-dumper": "5.*",
     "symfony/yaml": "5.*",
