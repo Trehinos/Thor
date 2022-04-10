@@ -17,55 +17,55 @@
             label: Securité
         -
             icon: sync
-            route: index-page
+            route: config-not-implemented
             label: Mises à jour
         -
             icon: cog
-            route: index-page
+            route: config-not-implemented
             label: Twig
 -
     label: Données statiques
     icon: file-alt
-    route: index-page
+    route: config-not-implemented
     group:
         -
             icon: atom
-            route: index-page
+            route: config-not-implemented
             label: Kernels
         -
             icon: globe
-            route: index-page
+            route: config-not-implemented
             label: Langues
         -
             icon: gavel
-            route: index-page
+            route: manage-permissions
             label: users_permissions
         -
             icon: cogs
-            route: index-page
+            route: config-not-implemented
             label: Paramètres utilisateurs
         - divider
         -
             icon: play
-            route: index-page
+            route: config-not-implemented
             label: Tâches
         -
             icon: terminal
-            route: index-page
+            route: config-not-implemented
             label: Commandes
         - divider
         -
             icon: route
-            route: index-page
+            route: config-not-implemented
             label: Routes
         -
             icon: list
-            route: index-page
+            route: config-not-implemented
             label: Menu
 -
     label: Données
     icon: database
-    route: index-page
+    route: config-not-implemented
     group:
         -
             label: users
@@ -78,11 +78,11 @@
         - divider
         -
             icon: cube
-            route: index-page
+            route: config-not-implemented
             label: Classes PdoTables
         -
             icon: table
-            route: index-page
+            route: config-not-implemented
             label: Crud
 
 -

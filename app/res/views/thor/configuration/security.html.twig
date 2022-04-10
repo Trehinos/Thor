@@ -63,6 +63,7 @@
             </div>
             <hr>
             <h2>Firewalls</h2>
+            {#
             {% for firewall in security.firewalls %}
                 <button class="btn btn-secondary">
                     Firewall sur {{ firewall.pattern }}
@@ -70,6 +71,8 @@
             {% else %}
                 <p class="text-warning">Aucun firewall défini...</p>
             {% endfor %}
+            #}
+            {% include "thor/not-implemented.html.twig" %}
         {% endif %}
     </form>
 {% endblock %}

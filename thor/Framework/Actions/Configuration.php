@@ -118,4 +118,10 @@ final class Configuration extends WebController
         return $this->redirect('index', query: ['menuItem' => 'security-config']);
     }
 
+    #[Route('config-not-implemented', '/config/not-implemented')]
+    public function notImplemented(): Response
+    {
+        return $this->twigResponse('thor/page-not-implemented.html.twig');
+    }
+
 }
