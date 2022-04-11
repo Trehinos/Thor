@@ -10,7 +10,8 @@ final class Builder
 
     public function __construct(
         private ?Spreadsheet $spreadsheet = null,
-        public readonly FileType $type = FileType::XLSX
+        public readonly FileType $type = FileType::XLSX,
+        public readonly StyleCollection $styles = new StyleCollection()
     ) {
         $this->spreadsheet ??= new Spreadsheet();
     }
@@ -23,7 +24,7 @@ final class Builder
     /**
      * @throws PhpSpreadsheetException
      */
-    public function cell(mixed $value, string $coordinates, ?int $sheetIndex = null, ?Style $style = null): self
+    public function cell(mixed $value, string $coordinates, ?int $sheetIndex = null, ?string $style = null): self
     {
         $worksheet = $sheetIndex === null
             ? $this->spreadsheet->getActiveSheet()
@@ -31,7 +32,9 @@ final class Builder
 
         $cell = $worksheet->getCell($coordinates);
         $cell->setValue($value);
-        $style?->apply($cell);
+        if ($style !== null) {
+            $this->styles->getStyle($style)?->apply($cell);
+        }
 
         return $this;
     }

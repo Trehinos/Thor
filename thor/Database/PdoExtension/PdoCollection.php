@@ -4,6 +4,7 @@ namespace Thor\Database\PdoExtension;
 
 use PDO;
 use Thor\Configuration\Configuration;
+use Thor\Structures\Collection\Collection;
 use Thor\Configuration\DatabasesConfiguration;
 
 /**
@@ -15,17 +16,12 @@ use Thor\Configuration\DatabasesConfiguration;
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-final class PdoCollection
+final class PdoCollection extends Collection
 {
-
-    /**
-     * @var PdoHandler[]
-     */
-    private array $handlers;
 
     public function __construct()
     {
-        $this->handlers = [];
+        parent::__construct();
     }
 
     /**
@@ -35,7 +31,7 @@ final class PdoCollection
      */
     public function add(string $connectionName, PdoHandler $handler): self
     {
-        $this->handlers[$connectionName] = $handler;
+        $this[$connectionName] = $handler;
         return $this;
     }
 
@@ -46,7 +42,7 @@ final class PdoCollection
      */
     public function get(string $connectionName = 'default'): ?PdoHandler
     {
-        return $this->handlers[$connectionName] ?? null;
+        return $this[$connectionName] ?? null;
     }
 
     /**
@@ -56,7 +52,7 @@ final class PdoCollection
      */
     public function all(): array
     {
-        return $this->handlers;
+        return $this->toArray();
     }
 
     /**
