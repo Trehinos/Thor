@@ -65,7 +65,7 @@ class Console
      */
     public function color(Color $color = Color::FG_GRAY, ?Mode $mode = null): self
     {
-        $mode ??= Mode::tryFrom($this->mode);
+        //$mode ??= Mode::tryFrom($this->mode);
         $str_mode = (null === $mode ? '' : "{$mode->value};");
         echo self::COLOR_START . "$str_mode{$color->value}" . self::COLOR_END;
 

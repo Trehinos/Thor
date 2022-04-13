@@ -63,6 +63,14 @@ route/list:
     class: Thor\Framework\Commands\CoreCommand
     command: routeList
     description: 'list all routes in app/res/static/routes.yml'
+daemon/run:
+    class: Thor\Framework\Commands\DaemonCommand
+    command: daemonRun
+    description: 'run a daemon'
+    arguments:
+        name:
+            hasValue: true
+            description: 'the daemon name'
 daemon/start:
     class: Thor\Framework\Commands\DaemonCommand
     command: daemonStart

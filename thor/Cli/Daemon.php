@@ -168,12 +168,13 @@ abstract class Daemon implements Executable
      * and throws it again.
      *
      * @param DaemonState $state
+     * @param bool        $force
      *
      * @throws Throwable
      */
-    final public function executeIfRunnable(DaemonState $state): void
+    final public function executeIfRunnable(DaemonState $state, bool $force = false): void
     {
-        if ($this->isNowRunnable($state->getLastRun())) {
+        if ($this->isNowRunnable($state->getLastRun()) || $force) {
             if (!$state->isRunning()) {
                 $state->setRunning(true);
                 $state->setPid(getmypid());

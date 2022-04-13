@@ -5,7 +5,16 @@ namespace Thor\Framework\Commands;
 use Thor\Globals;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Factories\Configurations;
-use Thor\Cli\{Daemon, Command, CliKernel, DaemonState, Console\Console, DaemonScheduler};
+use Thor\Cli\{Console\Color,
+    Console\FixedOutput,
+    Console\Mode,
+    Daemon,
+    Command,
+    CliKernel,
+    DaemonState,
+    Console\Console,
+    DaemonScheduler
+};
 
 
 /**
@@ -61,6 +70,48 @@ final class DaemonCommand extends Command
         $this->daemonResetState($daemonName);
     }
 
+    public function daemonRun()
+    {
+        $daemonName = $this->get('name');
+        $scheduler = DaemonScheduler::create();
+        $daemon = $scheduler->getDaemon($daemonName);
+        $this->console->mode(Mode::BRIGHT);
+        if (null === $daemon) {
+            $this->console
+                ->fColor(Color::RED)
+                ->write("Daemon ")
+                ->fColor(Color::BLUE)
+                ->write($daemonName)
+                ->fColor(Color::RED)
+                ->writeln(" does not exist.")
+                ->mode();
+            return;
+        }
+        $state = new DaemonState($daemon);
+        $state->load();
+        if ($state->isRunning()) {
+            $this->console
+                ->fColor(Color::RED)
+                ->write("Daemon ")
+                ->fColor(Color::BLUE)
+                ->write($daemonName)
+                ->fColor(Color::RED)
+                ->writeln(" already running.")
+                ->mode();
+            return;
+        }
+        $daemon->executeIfRunnable($state, true);
+        $this->console
+            ->mode(Mode::BRIGHT)
+            ->fColor(Color::GREEN)
+            ->write("Daemon ")
+            ->fColor(Color::RED)
+            ->write($daemonName)
+            ->fColor(Color::GREEN)
+            ->writeln(" executed.")
+            ->mode();
+    }
+
     private function daemonResetState(?string $daemonName)
     {
         if (null === $daemonName) {
@@ -105,29 +156,30 @@ final class DaemonCommand extends Command
         }
 
         $this->console
-            ->fColor(Console::COLOR_BLACK)
-            ->bColor(Console::COLOR_GRAY)
-            ->writeFix('Status', 10)
-            ->writeFix('Last period run', 17)
-            ->writeFix('', 4, STR_PAD_LEFT)
-            ->writeFix('Daemon', 24)
-            ->writeFix('Active period / Info', 32)
-            ->mode()
+            ->echoes(
+                Color::FG_BLACK,
+                Color::BG_GRAY,
+                new FixedOutput('Status', 10),
+                new FixedOutput('Last period run', 17),
+                new FixedOutput('', 4, STR_PAD_LEFT),
+                new FixedOutput('Daemon', 24),
+                new FixedOutput('Active period / Info', 32)
+            )
             ->writeln();
         foreach ($daemons as $daemon) {
             $state = new DaemonState($daemon);
             $state->load();
 
-            $status_color = Console::COLOR_YELLOW;
+            $status_color = Color::YELLOW;
             $status = 'DISABLED';
             if ($state->getError() !== null) {
-                $status_color = Console::COLOR_RED;
+                $status_color = Color::RED;
                 $status = 'ERROR';
             } elseif ($daemon->isActive()) {
-                $status_color = Console::COLOR_CYAN;
+                $status_color = Color::CYAN;
                 $status = 'ACTIVE';
             } elseif ($daemon->isEnabled()) {
-                $status_color = Console::COLOR_GREEN;
+                $status_color = Color::GREEN;
                 $status = 'ENABLED';
             }
 
@@ -137,13 +189,13 @@ final class DaemonCommand extends Command
                 ->mode()
                 ->writeFix($state->getLastRun()?->format('Y-m-d H:i') ?? 'never', 17)->fColor(
                     $state->getError()
-                        ? Console::COLOR_RED
+                        ? Color::RED
                         :
                         ($state->isRunning()
                             ?
-                            Console::COLOR_CYAN
+                            Color::CYAN
                             :
-                            Console::COLOR_YELLOW)
+                            Color::YELLOW)
                 )
                 ->writeFix(
                     $state->getError()
@@ -163,14 +215,14 @@ final class DaemonCommand extends Command
 
             if ($state->getError() ?? false) {
                 $this->console
-                    ->fColor(Console::COLOR_RED)
+                    ->fColor(Color::RED)
                     ->writeln(substr($state->getError(), 0, 32))
                     ->mode();
                 continue;
             }
             if ($state->isRunning()) {
                 $this->console
-                    ->fColor(Console::COLOR_CYAN)
+                    ->fColor(Color::CYAN)
                     ->writeln("PID : {$state->getPid()}")
                     ->mode();
             } else {

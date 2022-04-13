@@ -81,11 +81,14 @@ final class DaemonScheduler implements KernelInterface
     /**
      * Executes the specified daemon.
      *
+     * @param Daemon|null $daemon
+     * @param bool        $force
+     *
      * @return bool false if ($daemon === null)
      *
      * @throws Throwable
      */
-    private function executeDaemon(?Daemon $daemon): bool
+    public function executeDaemon(?Daemon $daemon, bool $force = false): bool
     {
         if (null === $daemon) {
             return false;
@@ -99,7 +102,7 @@ final class DaemonScheduler implements KernelInterface
         Application::setLoggerLevel(LogLevel::fromEnv(Thor::getEnv()), "$logPath{$daemon->getName()}/");
         Logger::write("Start {$daemon->getName()} daemon");
 
-        $daemon->executeIfRunnable($state);
+        $daemon->executeIfRunnable($state, $force);
         return true;
     }
 
@@ -129,5 +132,15 @@ final class DaemonScheduler implements KernelInterface
     public function getDaemons(): array
     {
         return $this->daemons;
+    }
+
+    public function getDaemon(string $daemonName): ?Daemon
+    {
+        foreach ($this->daemons as $daemon) {
+            if ($daemonName === $daemon->getName()) {
+                return $daemon;
+            }
+        }
+        return null;
     }
 }
