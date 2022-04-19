@@ -3,10 +3,8 @@
 namespace Thor\Factories;
 
 use Thor\Globals;
-use Thor\Stream\Stream;
 use Thor\Web\Assets\Asset;
 use Thor\Web\Assets\AssetType;
-use Thor\Web\Assets\CachedAsset;
 use Thor\Web\Assets\MergedAsset;
 use Thor\Configuration\Configuration;
 use Thor\Configuration\TwigConfiguration;
