@@ -18,8 +18,15 @@ final class AssetsListFactory
     public static function produce(Configuration $assetsConfiguration): array
     {
         $assetsList = [];
-        foreach ($assetsConfiguration->getArrayCopy()['lists'] as $name => $data) {
-            $assetsList[$name] = new Asset(AssetType::fromType($data['type']), $name, $data['list']);
+        foreach ($assetsConfiguration->getArrayCopy() as $name => $data) {
+            if (is_string($data)) {
+                $type = explode(".", $data)[1];
+                $data = [
+                    'type' => $type,
+                    'filename' => $data
+                ];
+            }
+            $assetsList[$name] = new Asset(AssetType::fromExtension($data['type']), $name, $data['list']);
         }
 
         return $assetsList;
@@ -30,7 +37,7 @@ final class AssetsListFactory
      */
     public static function listFromConfiguration(): array
     {
-        return self::produce(ConfigurationFromFile::fromFile('assets/assets.yml'));
+        return self::produce(ConfigurationFromFile::fromFile('assets/list.yml'));
     }
 
 }

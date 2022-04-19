@@ -5,7 +5,6 @@ namespace Thor;
 use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
 use Throwable;
-use Thor\Factories\Configurations;
 use Thor\Configuration\Configuration;
 use Thor\Configuration\ThorConfiguration;
 use Thor\Configuration\KernelsConfiguration;
@@ -46,9 +45,10 @@ final class Application implements KernelInterface
      */
     public static function createFromConfiguration(Configuration $config): static
     {
+        $kernel = $config->thorKernel() ?? '';
         Application::setLoggerLevel(
             LogLevel::fromEnv($config->env()) ?? LogLevel::DEBUG,
-            Globals::VAR_DIR . ($config->logPath())
+            Globals::VAR_DIR . ($config->logPath()) . "{$kernel}/"
         );
         return new self(Application::getKernel($config->thorKernel()));
     }

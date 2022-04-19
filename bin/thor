@@ -1,0 +1,2 @@
+#!/bin/sh
+php /home/seb/thor2/bin/thor.php $@

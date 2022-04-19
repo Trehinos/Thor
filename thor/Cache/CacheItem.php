@@ -21,6 +21,7 @@ class CacheItem extends Item
 
     /**
      * Constructs a new CacheItem.
+     * .
      *
      * @param string                $key
      * @param mixed                 $value
@@ -37,13 +38,13 @@ class CacheItem extends Item
     }
 
     /**
-     * Returns true if this item can expire.
+     * Returns false if this item can't expire.
      *
-     * @return ?DateTimeImmutable
+     * @return DateTimeImmutable|false
      */
     public function expires(): ?DateTimeImmutable
     {
-        return $this->expires;
+        return $this->expires ?? false;
     }
 
     /**

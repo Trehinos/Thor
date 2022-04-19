@@ -17,7 +17,7 @@ final class ThorConfiguration extends ConfigurationFromFile
         $this['thor_kernel'] = $thorKernel;
     }
 
-    public function thorKernel(): string
+    public function thorKernel(): ?string
     {
         return $this['thor_kernel'];
     }

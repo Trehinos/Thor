@@ -17,16 +17,15 @@ final class AssetController extends WebController
         parent::__construct($webServer);
     }
 
-    #[Route('load-asset', '/$asset', parameters: ['asset' => '.+'])]
+    #[Route('load-asset', '/asset/$asset', parameters: ['asset' => '.+'])]
     public function asset(string $identifier): Response
     {
-        $list = AssetsListFactory::listFromConfiguration();
-        $asset = $list[$identifier] ?? null;
+        $asset = AssetsListFactory::listFromConfiguration()[$identifier] ?? null;
         if ($asset === null) {
-            return ResponseFactory::notFound();
+            return ResponseFactory::notFound("Asset '$identifier' not found");
         }
 
-        return ResponseFactory::ok(); // TODO
+        return ResponseFactory::ok($asset->getContent(), ['type' => $asset->type->getMimeType()]);
     }
 
 }

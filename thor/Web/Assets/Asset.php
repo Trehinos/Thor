@@ -5,59 +5,50 @@ namespace Thor\Web\Assets;
 use Thor\Thor;
 use Thor\Globals;
 use Thor\Http\Uri;
+use Thor\Web\Node;
+use Thor\Stream\Stream;
+use Thor\Stream\StreamInterface;
 use Thor\Configuration\Configuration;
-use Thor\Configuration\ConfigurationFromFile;
+use Thor\Configuration\TwigConfiguration;
 
-final class Asset
+class Asset extends Node implements AssetInterface
 {
 
     private static Configuration $assetsConfiguration;
-    private string $path;
     private Uri $uri;
 
     public function __construct(
-        private readonly AssetType $type,
-        private readonly string $name,
-        private readonly array $fileList
+        public readonly AssetType $type,
+        public readonly string $filename,
+        protected ?StreamInterface $file = null
     ) {
-        self::$assetsConfiguration ??= ConfigurationFromFile::fromFile('assets/assets', true);
-        $filename = "{$this->name}.{$this->type->getExtension()}";
-        $this->path = Globals::WEB_DIR . self::$assetsConfiguration['cache-dir'] . "/{$filename}";
-        $this->uri = Uri::fromGlobals()->withPath(self::$assetsConfiguration['cache-dir'] . "/{$filename}");
+        $attrs = $this->getType()->getHtmlArguments();
+        parent::__construct($attrs['tag']);
+        foreach (array_merge($attrs['attrs'], [$attrs['src'] => "{$this->uri}"]) as $attr => $value) {
+            $this->setAttribute($attr, $value);
+        }
+
+        self::$assetsConfiguration ??= TwigConfiguration::get();
+        $this->file ??= Stream::createFromFile("{$this->filename}", "r");
+        $this->uri = Uri::fromGlobals()->withPath(self::$assetsConfiguration['assets_cache'] . "/{$filename}");
         if (Thor::isDev()) {
-            $this->uri = $this->uri->withQuery(['v' => date('YmdHis')]);
+            $this->uri = $this->uri->withQuery(['version' => date('YmdHis')]);
         }
     }
 
-    public function getFiles(): array
+    public function getContent(): string
     {
-        return $this->fileList;
+        $this->file->rewind();
+        return $this->file->getContents();
     }
 
-    public function merge(): string
+    public function getFilename(): string
     {
-        return array_reduce(
-            $this->fileList,
-            function (?string $mergedAssets, string $filename) {
-                return ($mergedAssets ?? '') . file_get_contents(Globals::STATIC_DIR . 'assets/' . $filename);
-            }
-        );
+        return $this->filename;
     }
 
-    public function cache(): void
+    public function getType(): AssetType
     {
-        if (file_exists($this->path) && !Thor::isDev()) {
-            return;
-        }
-        file_put_contents($this->path, $this->merge());
+        return $this->type;
     }
-
-    public function getHtml(): string
-    {
-        return match ($this->type) {
-            AssetType::JAVASCRIPT => "<script src=\"{$this->uri}\"></script>",
-            AssetType::STYLESHEET => "<link rel=\"stylesheet\" href=\"{$this->uri}\">"
-        };
-    }
-
 }

@@ -39,7 +39,7 @@ final class Globals
     /**
      * The folder where lies web files.
      */
-    const WEB_DIR = self::CODE_DIR . 'var/';
+    const WEB_DIR = self::CODE_DIR . 'web/';
 
     /**
      * The default folder where lies vendor libraries.
