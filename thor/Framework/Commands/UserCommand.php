@@ -5,7 +5,7 @@ namespace Thor\Framework\Commands;
 use Exception;
 use Thor\Framework\{Managers\UserManager};
 use Thor\Security\Identity\DbUser;
-use Thor\Cli\{Command, CliKernel, Console\Console};
+use Thor\Cli\{Command, CliKernel, Console\Color, Console\Mode};
 use Thor\Database\{PdoTable\Criteria, PdoTable\CrudHelper, PdoExtension\PdoRequester};
 
 /**
@@ -46,7 +46,7 @@ final class UserCommand extends Command
         $password = $this->get('password');
 
         if (null === $username || null === $password) {
-            $this->console->fColor(Console::COLOR_RED)
+            $this->console->fColor(Color::RED)
                           ->writeln('ERROR');
             $this->console->fColor()
                           ->writeln('Username or password not provided...');
@@ -54,7 +54,7 @@ final class UserCommand extends Command
         }
 
         $pid = $this->userManager->createUser($username, $password);
-        $this->console->fColor(Console::COLOR_GREEN)
+        $this->console->fColor(Color::GREEN)
                       ->writeln('Success');
         $this->console->fColor()->writeln("User PID=$pid created.");
     }
@@ -78,7 +78,7 @@ final class UserCommand extends Command
             $this->userManager->setPassword($pid, $password);
         }
 
-        $this->console->fColor(Console::COLOR_GREEN)->writeln('Success');
+        $this->console->fColor(Color::GREEN)->writeln('Success');
         $this->console->fColor()->writeln("User $pid edited.");
     }
 
@@ -90,14 +90,14 @@ final class UserCommand extends Command
     public function guardPid(?string $pid)
     {
         if (null === $pid) {
-            $this->console->fColor(Console::COLOR_RED)->writeln('ERROR');
+            $this->console->fColor(Color::RED)->writeln('ERROR');
             $this->console->fColor()->writeln('PID not provided...');
             throw new Exception("Command error : edit-user : PID not provided by user.");
         }
 
         $user = $this->userManager->getFromPublicId($pid);
         if (null === $user) {
-            $this->console->fColor(Console::COLOR_RED)->writeln('ERROR');
+            $this->console->fColor(Color::RED)->writeln('ERROR');
             $this->console->fColor()->writeln('User not found...');
             throw new Exception("Command error : edit-user : User ($pid) not found.");
         }
@@ -114,7 +114,7 @@ final class UserCommand extends Command
         $this->guardPid($pid);
         $this->userManager->deleteOne($pid);
 
-        $this->console->fColor(Console::COLOR_GREEN)->writeln('Success');
+        $this->console->fColor(Color::GREEN)->writeln('Success');
         $this->console->fColor()->writeln("User $pid deleted.");
     }
 
@@ -140,18 +140,18 @@ final class UserCommand extends Command
             $pid = $user->getPublicId();
             $username = $user->getIdentifier();
             $hash = $user->toPdoArray()['password'];
-            $this->console->fColor(mode: Console::MODE_DIM)
+            $this->console->fColor(mode: Mode::DIM)
                           ->write("[$pid] ")
                           ->mode()->fColor()->write('username:')
-                          ->fColor(Console::COLOR_CYAN)
+                          ->fColor(Color::CYAN)
                           ->writeln($username)
                           ->mode()->fColor()->write("password:")
-                          ->fColor(Console::COLOR_MAGENTA)
+                          ->fColor(Color::MAGENTA)
                           ->writeln($hash)
                           ->mode();
         }
 
-        $this->console->writeln()->fColor(Console::COLOR_GREEN)->write(count($users))
+        $this->console->writeln()->fColor(Color::GREEN)->write(count($users))
                       ->fColor()->writeln(" user(s) listed");
     }
 

@@ -3,13 +3,8 @@ default:
     user: thor
     password: thor
     case: natural
-dummy:
-    dsn: 'mysql:host=localhost;dbname=thor'
-    user: thorfzeg
-    password: thor
-    case: natural
 sqlite:
-    dsn: 'sqlite:/var/www/thor2/var/db'
+    dsn: 'sqlite:/var/www/thor/var/db'
     user: ''
     password: ''
     case: ''

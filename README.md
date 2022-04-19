@@ -6,7 +6,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 **This project is still in active development** : public API may change, but tagged versions are usable as is.  
 **In further releases, the installation process will be simplified.**
 
-&copy; 2020-2021 Sébastien GELDREICH
+&copy; 2020-2022 Sébastien GELDREICH
 
 ## Key features
 
@@ -25,7 +25,6 @@ This project's goal is to provide a base project for **PHP developers** to devel
           system,
     * **CLI** module : performs custom CLI commands ; offers a console color/formatting utility.
     * **Daemons** scheduler module.
-
 
 * Other features :
     * **Twig** template system.
@@ -91,4 +90,4 @@ This project's goal is to provide a base project for **PHP developers** to devel
 ## License
 
 License : [MIT](LICENSE)  
-&copy; 2020-2021 Sébastien Geldreich
+&copy; 2020-2022 Sébastien Geldreich
