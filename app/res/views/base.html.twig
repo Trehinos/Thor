@@ -4,9 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>{% block head_title %}App{% endblock %}</title>
-    <link rel="icon" href="/assets/thor/thor-favicon-v2.png">
-    <link rel="stylesheet" href="/vendors/bootstrap.min.css">
-    <link rel="stylesheet" href="/vendors/datatables.css">
+    <link rel="icon" href="/thor-favicon-v2.png">
+    {{ asset('general-css') }}
     {% block head_css %}{% endblock %}
     {% block head_js %}{% endblock %}
 </head>
@@ -17,11 +16,7 @@
         <p>{% block body_text %}{% endblock %}</p>
     </div>
 {% endblock %}
-<script src="/vendors/jquery.js"></script>
-<script src="/vendors/bootstrap.bundle.min.js"></script>
-<script src="/vendors/fontawesome.min.js"></script>
-<script src="/vendors/datatables.js"></script>
-<script src="/vendors/dt-langs/{{ _lang }}.js"></script>
+{{ asset('general-js') }}
 {% block body_js %}{% endblock %}
 </body>
 </html>

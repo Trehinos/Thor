@@ -21,7 +21,7 @@ enum AssetType
     public function getMimeType(): string
     {
         return match ($this) {
-            self::STYLESHEET => 'stylesheet/css',
+            self::STYLESHEET => 'text/css',
             self::JAVASCRIPT => 'application/javascript'
         };
     }
@@ -32,7 +32,7 @@ enum AssetType
         return array_combine(['tag', 'src', 'attrs'],
             match ($this) {
                 self::STYLESHEET => ['link', 'href', ['rel' => 'stylesheet']],
-                self::JAVASCRIPT => ['script', 'src', ['type' => 'javascript']]
+                self::JAVASCRIPT => ['script', 'src', ['type' => 'application/javascript']]
             }
         );
     }

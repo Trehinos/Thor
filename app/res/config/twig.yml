@@ -2,4 +2,5 @@ cache_dir: cache/twig/
 views_dir:
     - app/res/views/
 assets_dir: assets/
-assets_cache: assets/
+assets_cache: cache/
+assets_route: load-asset

@@ -73,7 +73,12 @@ final class RouterFactory
     }
 
     /**
-     * @param RoutesConfiguration $routes
+     * @param string      $routeName
+     * @param string      $className
+     * @param string|null $methodName
+     * @param string|null $path
+     * @param string|null $method
+     * @param array|null  $parameters
      *
      * @return Route[]
      *

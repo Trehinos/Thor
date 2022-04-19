@@ -23,19 +23,6 @@ final class TwigFunctionFactory
     {
     }
 
-    public static function option(): TwigFunction
-    {
-        return new TwigFunction(
-            'option',
-            function (?string $current, ?string $optionValue, ?string $optionLabel = null) {
-                $optionLabel ??= $optionValue;
-                $selected = $current === $optionValue ? 'selected' : '';
-                return "<option $selected value=\"$optionValue\">$optionLabel</option>";
-            },
-            ['is_safe' => ['html']]
-        );
-    }
-
     /**
      * @param Asset[] $assetsList
      *
@@ -46,8 +33,26 @@ final class TwigFunctionFactory
         return new TwigFunction(
             'asset',
             function (string $assetName) use ($assetsList) {
+                $asset = $assetsList[$assetName];
+                if ($asset === null) {
+                    return '';
+                }
+                return $asset->getHtml();
+            },
+            ['is_safe' => ['html']]
+        );
+    }
 
-            }
+    public static function option(): TwigFunction
+    {
+        return new TwigFunction(
+            'option',
+            function (?string $current, ?string $optionValue, ?string $optionLabel = null) {
+                $optionLabel ??= $optionValue;
+                $selected = $current === $optionValue ? 'selected' : '';
+                return "<option $selected value=\"$optionValue\">$optionLabel</option>";
+            },
+            ['is_safe' => ['html']]
         );
     }
 

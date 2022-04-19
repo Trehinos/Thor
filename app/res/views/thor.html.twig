@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block head_css %}
-    <link rel="stylesheet" href="/assets/thor/thor-theme.css">
+    {{ asset('thor-css' ) }}
 {% endblock %}
 
 {% block body_html %}
@@ -97,8 +97,8 @@
 {% endblock %}
 
 {% block body_js %}
-    <script src="/assets/thor/thor-lib.js"></script>
-    <script>
+    {{ asset('thor-js' ) }}
+    <script defer>
         $(() => {
             Modal.$elem = $("#modal");
         });

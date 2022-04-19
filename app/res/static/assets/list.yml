@@ -1,4 +1,5 @@
-favicon:  thor/thor-favicon-v2.png
+thor-css: thor/thor-theme.css
+thor-js: thor/thor-lib.js
 general-css:
     type: css
     list:
@@ -6,9 +7,7 @@ general-css:
 general-js:
     type: js
     list:
-        - vendors/jquery.min.js
+        - vendors/jquery.js
         - vendors/bootstrap.bundle.min.js
         - vendors/fontawesome.min.js
         - vendors/dt-langs/fr.js
-thor-css: thor/thor-theme.css
-thor-js: thor/thor-lib.js

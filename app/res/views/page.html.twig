@@ -4,7 +4,7 @@
 
 {% block body_js %}
     {{ parent() }}
-    <script>
+    <script defer>
         $(() => {
             let menuItem = "{{ menuItem ? menuItem : 'index-page' }}"
             menuClick($(`#btn-${menuItem}`));

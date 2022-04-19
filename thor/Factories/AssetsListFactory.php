@@ -2,9 +2,14 @@
 
 namespace Thor\Factories;
 
+use Thor\Globals;
+use Thor\Stream\Stream;
 use Thor\Web\Assets\Asset;
 use Thor\Web\Assets\AssetType;
+use Thor\Web\Assets\CachedAsset;
+use Thor\Web\Assets\MergedAsset;
 use Thor\Configuration\Configuration;
+use Thor\Configuration\TwigConfiguration;
 use Thor\Configuration\ConfigurationFromFile;
 
 final class AssetsListFactory
@@ -18,15 +23,29 @@ final class AssetsListFactory
     public static function produce(Configuration $assetsConfiguration): array
     {
         $assetsList = [];
+        $twigConfig = TwigConfiguration::get();
         foreach ($assetsConfiguration->getArrayCopy() as $name => $data) {
             if (is_string($data)) {
                 $type = explode(".", $data)[1];
                 $data = [
-                    'type' => $type,
-                    'filename' => $data
+                    'type'     => $type,
+                    'filename' => Globals::STATIC_DIR . $twigConfig['assets_dir'] . $data,
                 ];
+                $assetsList[$name] = new Asset(
+                    AssetType::fromExtension($data['type']),
+                    $name,
+                    $data['filename']
+                );
+            } else {
+                $assetsList[$name] = new MergedAsset(
+                    AssetType::fromExtension($data['type']),
+                    $name,
+                    array_map(
+                        fn(string $filename) => Globals::STATIC_DIR . $twigConfig['assets_dir'] . $filename,
+                        $data['list']
+                    )
+                );
             }
-            $assetsList[$name] = new Asset(AssetType::fromExtension($data['type']), $name, $data['list']);
         }
 
         return $assetsList;
@@ -37,7 +56,7 @@ final class AssetsListFactory
      */
     public static function listFromConfiguration(): array
     {
-        return self::produce(ConfigurationFromFile::fromFile('assets/list.yml'));
+        return self::produce(ConfigurationFromFile::fromFile('assets/list', true));
     }
 
 }

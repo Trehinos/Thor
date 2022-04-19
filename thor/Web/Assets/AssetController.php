@@ -25,7 +25,7 @@ final class AssetController extends WebController
             return ResponseFactory::notFound("Asset '$identifier' not found");
         }
 
-        return ResponseFactory::ok($asset->getContent(), ['type' => $asset->type->getMimeType()]);
+        return ResponseFactory::ok($asset->getContent(), ['Content-Type' => $asset->type->getMimeType()]);
     }
 
 }
