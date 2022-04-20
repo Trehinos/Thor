@@ -36,7 +36,10 @@ final class Folder
                 continue;
             }
             if (is_dir("$path/$file")) {
-                $ret = array_merge($ret, self::removeTree("$path/$file", $mask, $removeDirs, $removeDirs, $removeCondition));
+                $ret = array_merge(
+                    $ret,
+                    self::removeTree("$path/$file", $mask, $removeDirs, $removeDirs, $removeCondition)
+                );
                 continue;
             }
             if ($mask !== false && preg_match("#^$mask$#", $file) === 0) {
@@ -117,6 +120,22 @@ final class Folder
             if (null !== $user) {
                 File::chown($name, $user);
             }
+        }
+    }
+
+    public static function fileList(string $path): array
+    {
+        $files = scandir($path);
+        return array_filter($files, fn(string $filename) => !in_array($filename, ['.', '..']));
+    }
+
+    /**
+     * Creates (a) folder(s) recursively if the path does not exist.
+     */
+    public static function removeIfEmpty(string $name): void
+    {
+        if (File::exists($name) && empty(self::fileList($name))) {
+            rmdir($name);
         }
     }
 

@@ -40,6 +40,10 @@ final class WebCacheCleaner extends Daemon
                         filemtime($filename)
                     )
             );
+            Folder::removeTree(
+                             Globals::VAR_DIR . $configuration['cache_dir'],
+                removeCondition: fn(string $filename) => is_dir($filename) && empty(Folder::fileList($filename))
+            );
         }
     }
 }
