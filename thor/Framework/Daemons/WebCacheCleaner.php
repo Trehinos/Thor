@@ -32,15 +32,13 @@ final class WebCacheCleaner extends Daemon
             );
         }
         if (file_exists(Globals::VAR_DIR . $configuration['cache_dir'])) {
-            dump(
-                Folder::removeTree(
-                                 Globals::VAR_DIR . $configuration['cache_dir'],
-                    removeFirst: false,
-                    removeCondition: fn(string $filename) => $limit->format('YmdHis') >= date(
-                            'YmdHis',
-                            filemtime($filename)
-                        )
-                )
+            Folder::removeTree(
+                             Globals::VAR_DIR . $configuration['cache_dir'],
+                removeFirst: false,
+                removeCondition: fn(string $filename) => $limit->format('YmdHis') >= date(
+                        'YmdHis',
+                        filemtime($filename)
+                    )
             );
         }
     }
