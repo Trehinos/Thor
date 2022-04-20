@@ -12,7 +12,6 @@ use Thor\Cli\{Console\Color,
     Command,
     CliKernel,
     DaemonState,
-    Console\Console,
     DaemonScheduler
 };
 

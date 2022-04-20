@@ -1,0 +1,6 @@
+name: web-cleaner
+class: Thor\Framework\Daemons\WebCacheCleaner
+periodicity: 1
+start: '0300'
+end: '2359'
+enabled: true

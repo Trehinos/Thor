@@ -11,7 +11,7 @@ use Thor\{Configuration\ThorConfiguration,
     Debug\LogLevel,
     KernelInterface,
     FileSystem\Folder,
-    Factories\Configurations,
+    Framework\Factories\Configurations,
     Configuration\Configuration};
 
 /**

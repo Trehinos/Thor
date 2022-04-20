@@ -25,7 +25,8 @@ final class Folder
         string $path,
         string|false $mask = false,
         bool $removeDirs = true,
-        bool $removeFirst = true
+        bool $removeFirst = true,
+        ?callable $removeCondition = null
     ): array {
         $files = scandir($path);
 
@@ -35,10 +36,13 @@ final class Folder
                 continue;
             }
             if (is_dir("$path/$file")) {
-                $ret = array_merge($ret, self::removeTree("$path/$file", $mask, $removeDirs, $removeDirs));
+                $ret = array_merge($ret, self::removeTree("$path/$file", $mask, $removeDirs, $removeDirs, $removeCondition));
                 continue;
             }
             if ($mask !== false && preg_match("#^$mask$#", $file) === 0) {
+                continue;
+            }
+            if ($removeCondition !== null && $removeCondition("$path/$file") !== true) {
                 continue;
             }
             $result = unlink("$path/$file");
@@ -48,7 +52,10 @@ final class Folder
         }
 
         if ($removeDirs && $removeFirst) {
-            $result = rmdir("$path");
+            $result = false;
+            if ($removeCondition === null || $removeCondition("$path") === true) {
+                $result = rmdir("$path");
+            }
             if ($result) {
                 $ret[] = "$path";
             }
