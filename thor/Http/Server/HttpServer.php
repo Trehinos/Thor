@@ -4,7 +4,7 @@ namespace Thor\Http\Server;
 
 use InvalidArgumentException;
 use Thor\Debug\{Logger, LogLevel};
-use Thor\Factories\ResponseFactory;
+use Thor\Framework\Factories\ResponseFactory;
 use Thor\Security\SecurityInterface;
 use Thor\Configuration\Configuration;
 use JetBrains\PhpStorm\ExpectedValues;

@@ -5,9 +5,9 @@ namespace Thor\Http\Client;
 use Thor\Http\Uri;
 use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
-use Thor\Factories\Headers;
+use Thor\Framework\Factories\Headers;
 use Thor\Http\Request\HttpMethod;
-use Thor\Factories\RequestFactory;
+use Thor\Framework\Factories\RequestFactory;
 use Thor\Http\Request\RequestInterface;
 use Thor\Http\Response\ResponseInterface;
 

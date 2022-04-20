@@ -2,8 +2,8 @@
 
 namespace Thor\Web\Assets;
 
+use Thor\Http\Uri;
 use Thor\Stream\Stream;
-use Thor\Stream\StreamInterface;
 
 class MergedAsset extends Asset
 {
@@ -11,12 +11,14 @@ class MergedAsset extends Asset
     public function __construct(
         AssetType $type,
         string $filename,
+        Uri $uri,
         protected array $fileList = []
     ) {
         parent::__construct(
             $type,
             $filename,
             $filename,
+            $uri,
             Stream::create(
                 implode(
                     '',

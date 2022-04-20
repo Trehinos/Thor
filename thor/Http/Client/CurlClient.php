@@ -3,7 +3,7 @@
 namespace Thor\Http\Client;
 
 use CurlHandle;
-use Thor\Factories\ResponseFactory;
+use Thor\Framework\Factories\ResponseFactory;
 use Thor\Http\{Response\Response,
     Request\HttpMethod,
     Response\HttpStatus,

@@ -8,7 +8,7 @@ use Thor\Globals;
 use Thor\KernelInterface;
 use Thor\Debug\{Logger, LogLevel};
 use JetBrains\PhpStorm\ArrayShape;
-use Thor\Factories\Configurations;
+use Thor\Framework\Factories\Configurations;
 use Thor\Cli\Console\{Console, Color, CursorControl, Mode};
 use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;

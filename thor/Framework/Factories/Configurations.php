@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Factories;
+namespace Thor\Framework\Factories;
 
 use Thor\Globals;
 use Symfony\Component\Yaml\Yaml;

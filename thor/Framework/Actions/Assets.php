@@ -1,15 +1,15 @@
 <?php
 
-namespace Thor\Web\Assets;
+namespace Thor\Framework\Actions;
 
 use Thor\Web\WebServer;
 use Thor\Web\WebController;
 use Thor\Http\Routing\Route;
 use Thor\Http\Response\Response;
-use Thor\Factories\ResponseFactory;
-use Thor\Factories\AssetsListFactory;
+use Thor\Framework\Factories\ResponseFactory;
+use Thor\Framework\Factories\AssetsListFactory;
 
-final class AssetController extends WebController
+final class Assets extends WebController
 {
 
     public function __construct(WebServer $webServer)

@@ -9,7 +9,7 @@ use thor\Http\UriInterface;
 use JetBrains\PhpStorm\Pure;
 use Thor\Http\ProtocolVersion;
 use Thor\Stream\StreamInterface;
-use Thor\Factories\ServerRequestFactory;
+use Thor\Framework\Factories\ServerRequestFactory;
 
 
 /**

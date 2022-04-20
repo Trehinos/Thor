@@ -3,9 +3,8 @@
 namespace Thor\Web;
 
 use Thor\Debug\Logger;
-use Thor\Factories\Configurations;
-use Thor\Factories\WebServerFactory;
 use Thor\Configuration\Configuration;
+use Thor\Framework\Factories\{Configurations, WebServerFactory};
 use Thor\Http\{HttpKernel, Response\ResponseInterface, Request\ServerRequestInterface};
 
 /**

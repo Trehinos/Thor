@@ -3,8 +3,8 @@
 
 namespace Thor\Framework\Actions;
 
-use Thor\Factories\RequestFactory;
-use Thor\Factories\ResponseFactory;
+use Thor\Framework\Factories\RequestFactory;
+use Thor\Framework\Factories\ResponseFactory;
 use Thor\Http\{Controllers\HttpController, Request\HttpMethod, Response\Response, Routing\Route, Uri};
 
 /**

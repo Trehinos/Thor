@@ -4,10 +4,12 @@ general-css:
     type: css
     list:
         - vendors/bootstrap.min.css
+        - vendors/datatables.css
 general-js:
     type: js
     list:
         - vendors/jquery.js
         - vendors/bootstrap.bundle.min.js
         - vendors/fontawesome.min.js
+        - vendors/datatables.js
         - vendors/dt-langs/fr.js

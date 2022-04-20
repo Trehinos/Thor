@@ -4,15 +4,12 @@ namespace Thor\Web\Assets;
 
 use Thor\Thor;
 use Thor\Globals;
-use Thor\Http\Uri;
 use Thor\Web\Node;
+use Thor\Http\Uri;
 use Thor\Web\TextNode;
 use Thor\Stream\Stream;
 use Thor\Stream\StreamInterface;
-use Thor\Factories\RouterFactory;
 use Thor\Configuration\Configuration;
-use Thor\Configuration\TwigConfiguration;
-use Thor\Configuration\RoutesConfiguration;
 
 class Asset extends Node implements AssetInterface
 {
@@ -23,13 +20,10 @@ class Asset extends Node implements AssetInterface
         public readonly AssetType $type,
         public readonly string $name,
         public readonly string $filename,
-        protected ?StreamInterface $file = null
+        public Uri $uri,
+        protected ?StreamInterface $file = null,
     ) {
-
-        self::$assetsConfiguration ??= TwigConfiguration::get();
         $this->file ??= Stream::createFromFile("{$this->filename}", "r");
-        $router = RouterFactory::createRouterFromConfiguration(RoutesConfiguration::get('web'));
-        $this->uri = $router->getUrl(self::$assetsConfiguration['assets_route'], ['asset' => $this->name]);
         if (Thor::isDev()) {
             $this->uri = $this->uri->withQuery(['version' => date('YmdHis')]);
         }

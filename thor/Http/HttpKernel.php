@@ -6,9 +6,9 @@ use Thor\Env;
 use Thor\Thor;
 use Thor\KernelInterface;
 use Thor\Debug\{Logger, LogLevel};
-use Thor\Factories\Configurations;
+use Thor\Framework\Factories\Configurations;
 use Thor\Configuration\Configuration;
-use Thor\Factories\{HttpServerFactory, ServerRequestFactory};
+use Thor\Framework\Factories\{HttpServerFactory, ServerRequestFactory};
 use Thor\Http\{Server\HttpServer,
     Controllers\HttpController,
     Response\ResponseInterface,

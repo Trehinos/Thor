@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Factories;
+namespace Thor\Framework\Factories;
 
 use Thor\Http\Uri;
 use Thor\Stream\Stream;

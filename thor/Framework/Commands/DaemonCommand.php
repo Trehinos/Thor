@@ -4,7 +4,7 @@ namespace Thor\Framework\Commands;
 
 use Thor\Globals;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Factories\Configurations;
+use Thor\Framework\Factories\Configurations;
 use Thor\Cli\{Console\Color,
     Console\FixedOutput,
     Console\Mode,

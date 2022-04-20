@@ -7,7 +7,7 @@ use Thor\Web\WebServer;
 use Thor\Tools\DataTables;
 use Thor\Web\WebController;
 use Thor\Security\Identity\DbUser;
-use Thor\Factories\ResponseFactory;
+use Thor\Framework\Factories\ResponseFactory;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Configuration\ConfigurationFromFile;

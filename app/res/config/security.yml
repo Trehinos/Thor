@@ -1,6 +1,6 @@
 security: true
 pdo-handler: default
-security-factory: 'Thor\Factories\SecurityFactory:produceSecurity'
+security-factory: 'Thor\Framework\Factories\SecurityFactory:produceSecurity'
 firewalls:
     -
         pattern: /index.php

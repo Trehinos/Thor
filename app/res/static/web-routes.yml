@@ -1,5 +1,5 @@
 load:
-    - Thor\Web\Assets\AssetController
+    - Thor\Framework\Actions\Assets
     - Thor\Framework\Actions\Main
     - Thor\Framework\Actions\Configuration
     - Thor\Framework\Actions\Users
