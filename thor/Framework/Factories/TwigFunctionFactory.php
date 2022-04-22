@@ -52,10 +52,20 @@ final class TwigFunctionFactory
     {
         return new TwigFunction(
             'asset',
-            function (string $assetName) use ($assetsList) {
-                $asset = $assetsList[$assetName];
+            function (string $assetName, array $attrs = []) use ($assetsList) {
+                $asset = $assetsList[$assetName] ?? null;
                 if ($asset === null) {
                     return '';
+                }
+                $attrNames = array_keys($asset->getAttributes());
+                $attrValues = array_values($asset->getAttributes());
+                array_map(
+                    fn(string $attributes, mixed $value) => '',
+                    $attrNames,
+                    $attrValues
+                );
+                foreach ($attrs + [] as $key => $value) {
+                    $asset->setAttribute($key, $value);
                 }
                 return $asset->getHtml();
             },
@@ -82,7 +92,7 @@ final class TwigFunctionFactory
             'authorized',
             function (string ...$permissions) use ($security): bool {
                 if ($security === null) {
-                    return  true;
+                    return true;
                 }
                 $identity = $security->getCurrentIdentity();
                 foreach ($permissions as $permission) {

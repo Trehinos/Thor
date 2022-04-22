@@ -105,7 +105,7 @@
     <script>
         let helpUrl = "{{ url('help') }}";
     </script>
-    {{ asset('thor-js' ) }}
+    {{ asset('thor-js', {defer: true}) }}
     <script defer>
         $(() => {
             Modal.$elem = $("#modal");

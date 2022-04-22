@@ -21,7 +21,7 @@ class MergedAsset extends Asset
             $uri,
             Stream::create(
                 implode(
-                    '',
+                    "\n",
                     array_map(
                         fn(string $filename) => file_get_contents($filename),
                         $this->fileList

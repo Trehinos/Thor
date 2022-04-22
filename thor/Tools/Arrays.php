@@ -10,7 +10,20 @@ final class Arrays
     }
 
     /**
-     * Transform an array [0 => ['KEY' => 'VALUE'], 1 ...] into an array ['KEY' => [0 => 'VALUE', 1 ...]]
+     * Transform an array
+     * [
+     *      0 => ['KEY' => 'VALUE', 'KEY2' => '', ...],
+     *      1 => ['KEY' => 'VALUE', 'KEY2' => '', ...],
+     *      2 => ['KEY' => 'VALUE', 'KEY2' => '', ...],
+     *      3 => ['KEY' => 'VALUE', 'KEY2' => '', ...],
+     *      ...
+     * ]
+     * into an array
+     * [
+     *      'KEY' => [0 => 'VALUE', 1 => '', 2 => '', 3 => ''...],
+     *      'KEY2' => [0 => 'VALUE', 1 => '', 2 => '', 3 => ''...],
+     *      ...
+     * ]
      *
      * @param array $input
      *
