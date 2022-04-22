@@ -54,13 +54,18 @@
             </div>
         {% endblock %}
     </nav>
+    <div class="toast-container">
+        {% for message in messages %}
+            {{ toast('Message', message) }}
+        {% endfor %}
+    </div>
     <div id="content">{% block body_content %}{% endblock %}</div>
     <div id="footer" class="pt-2">
         <div>
             {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;')|raw }}
-            Trehinos/Thor {{ versionName|raw }} [{{ version }}]
+            {{ appVendor }}/{{ appName }} {{ versionName|raw }} [{{ version }}]
         </div>
-        <div>{{ icon('copyright', 'far fa-lg', true)|raw }} 2022 Sébastien GELDREICH</div>
+        <div>{{ icon('copyright', 'far fa-lg', true)|raw }} 2022 {{ appVendor }}</div>
         {% block footer %}
             <div class="mt-1 pt-1 border-top border-secondary" style="font-size: 0.9em;">
                 {{ icon('info-circle', 'fas fa-lg', true)|raw }}
@@ -104,6 +109,11 @@
     <script defer>
         $(() => {
             Modal.$elem = $("#modal");
+            let toastElList = [].slice.call(document.querySelectorAll('.toast'));
+            let toastList = toastElList.map(function (toastEl) {
+                return new bootstrap.Toast(toastEl);
+            })
+
         });
     </script>
 {% endblock %}

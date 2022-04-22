@@ -116,8 +116,6 @@ final class CurlClient implements ClientInterface
             array_keys($headers),
             array_values($headers),
         );
-
-        dump($headersLines);
         return $headersLines;
     }
 

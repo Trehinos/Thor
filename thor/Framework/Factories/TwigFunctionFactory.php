@@ -23,6 +23,26 @@ final class TwigFunctionFactory
     {
     }
 
+    public static function toast(): TwigFunction
+    {
+        return new TwigFunction(
+            'toast',
+            function (string $title, string $message, string $muted = '') {
+                return <<<§
+                    <div class="toast" role="alert">
+                        <div class="toast-header">
+                            <i class="fas fa-info-circle text-info"></i>
+                            <strong class="me-auto">$title</strong>
+                            <small class="text-muted">$muted</small>
+                        </div>
+                        <div class="toast-body">$message</div>
+                    </div>
+                    §;
+            },
+            ['is_safe' => ['html']]
+        );
+    }
+
     /**
      * @param Asset[] $assetsList
      *

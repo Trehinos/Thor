@@ -69,13 +69,14 @@ final class TwigFactory
         $this->twig->addGlobal('_lang', ThorConfiguration::get()->lang());
         $this->twig->addGlobal('DICT', $server->getLanguage());
 
+        $this->twig->addFunction(TwigFunctionFactory::uuid());
         $this->twig->addFunction(TwigFunctionFactory::url($router));
         $this->twig->addFunction(TwigFunctionFactory::icon());
-        $this->twig->addFunction(TwigFunctionFactory::render($server));
         $this->twig->addFunction(TwigFunctionFactory::dump());
-        $this->twig->addFunction(TwigFunctionFactory::uuid());
-        $this->twig->addFunction(TwigFunctionFactory::option());
+        $this->twig->addFunction(TwigFunctionFactory::render($server));
         $this->twig->addFunction(TwigFunctionFactory::asset(AssetsListFactory::listFromConfiguration()));
+        $this->twig->addFunction(TwigFunctionFactory::option());
+        $this->twig->addFunction(TwigFunctionFactory::toast());
 
         $this->twig->addFilter(TwigFilterFactory::classname());
         $this->twig->addFilter(TwigFilterFactory::_($server));

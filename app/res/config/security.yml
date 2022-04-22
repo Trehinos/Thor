@@ -8,5 +8,5 @@ firewalls:
         login-route: login
         logout-route: logout
         check-route: check
-        exclude-route: []
+        exclude-route: ["load-asset"]
         exclude-path: []
