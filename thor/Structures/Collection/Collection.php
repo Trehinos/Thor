@@ -16,7 +16,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     /**
      * @param array<string|int|null, TValue> $data
      */
-    public function __construct(private array $data = [])
+    public function __construct(protected array $data = [])
     {
     }
 

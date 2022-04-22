@@ -42,7 +42,7 @@ class CacheItem extends Item
      *
      * @return DateTimeImmutable|false
      */
-    public function expires(): ?DateTimeImmutable
+    public function expires(): DateTimeImmutable|false
     {
         return $this->expires ?? false;
     }

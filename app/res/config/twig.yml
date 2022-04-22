@@ -1,6 +1,6 @@
 cache_dir: cache/twig/
 views_dir:
     - app/res/views/
-assets_dir: assets/
-assets_cache: cache/
+assets_dir: assets/     # thor/app/res/static/$
+assets_cache: assets/   # thor/web/$
 assets_route: load-asset

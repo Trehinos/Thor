@@ -11,12 +11,34 @@ use JetBrains\PhpStorm\Pure;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class File
+final class FileSystem
 {
 
     public const SET_UID = 04000;
     public const SET_GID = 02000;
     public const STICKY_BIT = 01000;
+
+    /**
+     *
+     * 0140000 => 's', // Socket
+     * 0120000 => 'l', // Symlink
+     * 0100000 => '-', // Regular
+     * 0060000 => 'b', // Special block
+     * 0040000 => 'd', // Directory
+     * 0020000 => 'c', // Special character
+     * 0010000 => 'p', // Pipe
+     * default => 'u', // Unknown
+     */
+
+    public const SOCKET = 0140000;
+    public const SYMLINK = 0120000;
+    public const REGULAR = 0100000;
+    public const SPECIAL_BLOCK = 0060000;
+    public const DIRECTORY = 0040000;
+    public const SPECIAL_CHAR = 0020000;
+    public const PIPE = 0010000;
+    public const UNKNOWN = 0770000;
+
     public const OWNER_READ = 0400;
     public const OWNER_WRITE = 0200;
     public const OWNER_EXEC = 0100;
@@ -26,22 +48,32 @@ final class File
     public const OTHER_READ = 0004;
     public const OTHER_WRITE = 0002;
     public const OTHER_EXEC = 0001;
+
     public const ALL_READ = self::OWNER_READ | self::GROUP_READ | self::OTHER_READ;
     public const ALL_WRITE = self::OWNER_WRITE | self::GROUP_WRITE | self::OTHER_WRITE;
     public const ALL_EXEC = self::OWNER_EXEC | self::GROUP_EXEC | self::OTHER_EXEC;
+
     public const OWNER_READWRITE = self::OWNER_READ | self::OWNER_WRITE;
     public const OWNER_READEXEC = self::OWNER_READ | self::OWNER_EXEC;
     public const OWNER_ALL = self::OWNER_READWRITE | self::OWNER_EXEC;
+
     public const GROUP_READWRITE = self::GROUP_READ | self::GROUP_WRITE;
     public const GROUP_READEXEC = self::GROUP_READ | self::GROUP_EXEC;
     public const GROUP_ALL = self::GROUP_READWRITE | self::GROUP_EXEC;
+
     public const OTHER_READWRITE = self::OTHER_READ | self::OTHER_WRITE;
     public const OTHER_READEXEC = self::OTHER_READ | self::OTHER_EXEC;
     public const OTHER_ALL = self::OTHER_READWRITE | self::OTHER_EXEC;
+
     public const ALL_ALL = self::ALL_READ | self::ALL_WRITE | self::ALL_EXEC;
 
     private function __construct()
     {
+    }
+
+    public static function isDir(string $name): bool
+    {
+        return self::exists($name) && is_dir($name);
     }
 
     /**
@@ -107,10 +139,9 @@ final class File
      * Reads from a file.
      * Returns null if the file doesn't exist.
      */
-    #[Pure]
     public static function read(string $name): ?string
     {
-        if (!File::exists($name)) {
+        if (!FileSystem::exists($name)) {
             return null;
         }
         return file_get_contents($name);
@@ -130,13 +161,27 @@ final class File
         return (0777 & $perm) === $permission;
     }
 
+
+    /**
+     * Returns the last part of a (*.{ext}) string.
+     * Returns null if no '.' is found.
+     */
+    public static function getExtension(string $filename): ?string
+    {
+        if (!str_contains($filename, '.')) {
+            return null;
+        }
+        $chunks = explode('.', $filename);
+
+        return $chunks[count($chunks) - 1];
+    }
+
     /**
      * Gets the file's permissions. If the file is not found, returns null. Returns false if an error occurs.
      */
-    #[Pure]
     public static function permissions(string $name): int|false|null
     {
-        if (!File::exists($name)) {
+        if (!FileSystem::exists($name)) {
             return null;
         }
         return fileperms($name);
@@ -149,24 +194,23 @@ final class File
      *
      * @link    https://www.php.net/manual/fr/function.fileperms.php#example-2167
      */
-    #[Pure]
     public static function permissionsString(string $name): ?string
     {
-        $perms = File::permissions($name);
+        $perms = FileSystem::permissions($name);
 
         if (!is_int($perms)) {
             return null;
         }
 
         return match ($perms & 0770000) {
-                0140000 => 's', // Socket
-                0120000 => 'l', // Symlink
-                0100000 => '-', // Regular
-                0060000 => 'b', // Special block
-                0040000 => 'd', // Directory
-                0020000 => 'c', // Special character
-                0010000 => 'p', // Pipe
-                default => 'u', // Unknown
+                self::SOCKET        => 's', // Socket
+                self::SYMLINK       => 'l', // Symlink
+                self::REGULAR       => '-', // Regular
+                self::SPECIAL_BLOCK => 'b', // Special block
+                self::DIRECTORY     => 'd', // Directory
+                self::SPECIAL_CHAR  => 'c', // Special character
+                self::PIPE          => 'p', // Pipe
+                default             => 'u', // Unknown
             } . self::permissionsStringFor(
                 $perms,
                 self::OWNER_READ,

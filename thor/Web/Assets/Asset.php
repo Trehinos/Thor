@@ -3,24 +3,20 @@
 namespace Thor\Web\Assets;
 
 use Thor\Thor;
-use Thor\Globals;
 use Thor\Web\Node;
-use Thor\Http\Uri;
 use Thor\Web\TextNode;
 use Thor\Stream\Stream;
+use Thor\Http\UriInterface;
 use Thor\Stream\StreamInterface;
-use Thor\Configuration\Configuration;
 
 class Asset extends Node implements AssetInterface
 {
-
-    private static Configuration $assetsConfiguration;
 
     public function __construct(
         public readonly AssetType $type,
         public readonly string $name,
         public readonly string $filename,
-        public Uri $uri,
+        public UriInterface $uri,
         protected ?StreamInterface $file = null,
     ) {
         $this->file ??= Stream::createFromFile("{$this->filename}", "r");
@@ -35,11 +31,6 @@ class Asset extends Node implements AssetInterface
         if ($this->type === AssetType::JAVASCRIPT) {
             $this->addChild(new TextNode('', $this));
         }
-    }
-
-    public function getCachePath(string $basePath = ''): string
-    {
-        return Globals::WEB_DIR . $basePath . "{$this->filename}.{$this->type->getExtension()}";
     }
 
     public function getContent(): string

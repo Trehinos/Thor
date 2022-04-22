@@ -2,6 +2,8 @@
 
 namespace Thor\Structures;
 
+use Thor\Structures\Collection\Collection;
+
 /**
  * This is NOT the PSR's interface of Container.
  *
@@ -17,23 +19,22 @@ class Container extends Item implements ContainerInterface
 {
 
     /**
-     * @var ItemInterface[]
+     * @param string                    $key
+     * @param Collection<ItemInterface> $data
      */
-    private array $data = [];
-
-    public function __construct(string $key)
+    public function __construct(string $key, Collection $data = new Collection())
     {
-        parent::__construct($key, null);
+        parent::__construct($key, $data);
     }
 
     /**
      * Gets the container items.
      *
-     * @return ItemInterface[]
+     * @return Collection<ItemInterface>
      */
-    public function getValue(): array
+    public function getValue(): Collection
     {
-        return $this->data;
+        return parent::getValue();
     }
 
     /**
@@ -41,7 +42,7 @@ class Container extends Item implements ContainerInterface
      */
     public function setItem(ItemInterface $child): static
     {
-        $this->data[$child->getKey()] = $child;
+        $this->value[$child->getKey()] = $child;
         return $this;
     }
 
@@ -50,7 +51,7 @@ class Container extends Item implements ContainerInterface
      */
     public function getItem(string $key): ?ItemInterface
     {
-        return $this->data[$key] ?? null;
+        return $this->value[$key] ?? null;
     }
 
     /**
@@ -58,7 +59,7 @@ class Container extends Item implements ContainerInterface
      */
     public function hasItem(string $key): bool
     {
-        return array_key_exists($key, $this->data);
+        return array_key_exists($key, $this->value);
     }
 
     /**
@@ -73,8 +74,8 @@ class Container extends Item implements ContainerInterface
                 }
                 return $operation($key, $item);
             },
-            array_keys($this->data),
-            array_values($this->data)
+            array_keys($this->value),
+            array_values($this->value)
         );
     }
 
@@ -111,8 +112,8 @@ class Container extends Item implements ContainerInterface
             return false;
         }
 
-        $this->data[$key] = null;
-        unset($this->data[$key]);
+        $this->value[$key] = null;
+        unset($this->value[$key]);
         return true;
     }
 }

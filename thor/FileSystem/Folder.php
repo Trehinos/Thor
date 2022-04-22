@@ -112,13 +112,13 @@ final class Folder
     /**
      * Creates (a) folder(s) recursively if the path does not exist.
      */
-    public static function createIfNotExists(string $name, int $permissions = File::ALL_ALL, ?string $user = null): void
+    public static function createIfNotExists(string $name, int $permissions = FileSystem::ALL_ALL, ?string $user = null): void
     {
-        if (!File::exists($name)) {
+        if (!FileSystem::exists($name)) {
             mkdir($name, recursive: true);
             chmod($name, $permissions);
             if (null !== $user) {
-                File::chown($name, $user);
+                FileSystem::chown($name, $user);
             }
         }
     }
@@ -134,7 +134,7 @@ final class Folder
      */
     public static function removeIfEmpty(string $name): void
     {
-        if (File::exists($name) && empty(self::fileList($name))) {
+        if (FileSystem::exists($name) && empty(self::fileList($name))) {
             rmdir($name);
         }
     }
