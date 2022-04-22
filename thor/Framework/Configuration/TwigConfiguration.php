@@ -1,8 +1,9 @@
 <?php
 
-namespace Thor\Configuration;
+namespace Thor\Framework\Configuration;
 
 use Thor\Globals;
+use Thor\Configuration\ConfigurationFromFile;
 
 final class TwigConfiguration extends ConfigurationFromFile
 {

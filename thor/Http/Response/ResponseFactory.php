@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Framework\Factories;
+namespace Thor\Http\Response;
 
 use DateTime;
 use DateInterval;
@@ -9,7 +9,7 @@ use DateTimeInterface;
 use DateTimeImmutable;
 use Thor\Stream\Stream;
 use JetBrains\PhpStorm\ExpectedValues;
-use Thor\Http\{UriInterface, ProtocolVersion, Response\Response, Response\HttpStatus};
+use Thor\Http\{UriInterface, ProtocolVersion};
 
 /**
  * A factory to create standard Responses.

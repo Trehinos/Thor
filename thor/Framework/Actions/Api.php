@@ -3,9 +3,9 @@
 
 namespace Thor\Framework\Actions;
 
-use Thor\Framework\Factories\RequestFactory;
-use Thor\Framework\Factories\ResponseFactory;
-use Thor\Http\{Controllers\HttpController, Request\HttpMethod, Response\Response, Routing\Route, Uri};
+use Thor\Http\Request\RequestFactory;
+use Thor\Http\Response\ResponseFactory;
+use Thor\Http\{Uri, Routing\Route, Response\Response, Request\HttpMethod, Controllers\HttpController};
 
 /**
  * HttpController to test the api.php entry point.

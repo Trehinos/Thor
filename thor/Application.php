@@ -2,12 +2,12 @@
 
 namespace Thor;
 
+use Throwable;
 use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
-use Throwable;
 use Thor\Configuration\Configuration;
 use Thor\Configuration\ThorConfiguration;
-use Thor\Configuration\KernelsConfiguration;
+use Thor\Framework\Configuration\KernelsConfiguration;
 
 /**
  * Main class of the framework. It loads the global configuration, sets the logger level

@@ -2,11 +2,8 @@
 
 namespace Thor\Database\PdoExtension;
 
-use Thor\{Configuration\Configuration,
-    Configuration\ConfigurationFromFile,
-    Configuration\DatabasesConfiguration,
-    Globals};
 use Symfony\Component\Yaml\Yaml;
+use Thor\{Globals, Configuration\ConfigurationFromFile, Framework\Configuration\DatabasesConfiguration};
 
 /**
  * Defines a class which updates current schema with a set of DQL queries.

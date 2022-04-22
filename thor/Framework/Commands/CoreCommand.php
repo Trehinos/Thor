@@ -5,20 +5,19 @@ namespace Thor\Framework\Commands;
 use Thor\Env;
 use Exception;
 use Thor\Globals;
-use ReflectionException;
 use Thor\Framework\{Managers\UserManager};
 use Thor\FileSystem\Folder;
 use Thor\Http\Routing\Route;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Framework\Factories\RouterFactory;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
 use Thor\Configuration\ThorConfiguration;
-use Thor\Configuration\RoutesConfiguration;
+use Thor\Framework\Factories\RouterFactory;
 use Thor\Configuration\ConfigurationFromFile;
+use Thor\Framework\Configuration\RoutesConfiguration;
 use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
-use Thor\Cli\{Console\Color, Console\Mode, Daemon, Command, CliKernel, DaemonState, Console\Console};
 use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, SchemaHelper, Driver\Sqlite};
+use Thor\Cli\{Daemon, Command, CliKernel, DaemonState, Console\Mode, Console\Color};
 
 /**
  * This Command class Contains main commands of Thor-Api commands :

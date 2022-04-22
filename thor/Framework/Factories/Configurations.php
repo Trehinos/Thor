@@ -6,13 +6,13 @@ use Thor\Globals;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Configuration\Configuration;
 use Thor\Configuration\ThorConfiguration;
-use Thor\Configuration\TwigConfiguration;
-use Thor\Configuration\LanguageDictionary;
-use Thor\Configuration\RoutesConfiguration;
-use Thor\Configuration\SecurityConfiguration;
 use Thor\Configuration\CommandsConfiguration;
 use Thor\Configuration\ConfigurationFromFile;
-use Thor\Configuration\DatabasesConfiguration;
+use Thor\Framework\Configuration\TwigConfiguration;
+use Thor\Framework\Configuration\LanguageDictionary;
+use Thor\Framework\Configuration\RoutesConfiguration;
+use Thor\Framework\Configuration\SecurityConfiguration;
+use Thor\Framework\Configuration\DatabasesConfiguration;
 
 /**
  * This class loads configuration files from thor/res/{static/config}/*yml files

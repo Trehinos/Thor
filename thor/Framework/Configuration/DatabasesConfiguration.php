@@ -1,10 +1,12 @@
 <?php
 
-namespace Thor\Configuration;
+namespace Thor\Framework\Configuration;
 
 use PDO;
+use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoExtension\PdoCollection;
+use Thor\Configuration\ConfigurationFromFile;
 
 final class DatabasesConfiguration extends ConfigurationFromFile
 {

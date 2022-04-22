@@ -8,7 +8,7 @@ use DateInterval;
 use Thor\Globals;
 use Thor\Cli\Daemon;
 use Thor\FileSystem\Folder;
-use Thor\Configuration\TwigConfiguration;
+use Thor\Framework\Configuration\TwigConfiguration;
 
 final class WebCacheCleaner extends Daemon
 {

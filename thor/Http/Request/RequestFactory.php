@@ -1,12 +1,11 @@
 <?php
 
-namespace Thor\Framework\Factories;
+namespace Thor\Http\Request;
 
 use Thor\Thor;
 use Thor\Tools\Strings;
 use Thor\Http\UriInterface;
-use Thor\Http\Request\Request;
-use Thor\Http\Request\HttpMethod;
+use Thor\Framework\Factories\Headers;
 
 class RequestFactory
 {

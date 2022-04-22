@@ -2,13 +2,12 @@
 
 namespace Thor\Framework\Factories;
 
-use Thor\Configuration\Configuration;
-use Thor\Database\PdoExtension\PdoCollection;
-use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Http\Routing\Router;
 use Thor\Http\Server\HttpServer;
 use Thor\Security\SecurityInterface;
-use Thor\Configuration\SecurityConfiguration;
+use Thor\Configuration\Configuration;
+use Thor\Database\PdoExtension\PdoCollection;
+use Thor\Framework\Configuration\SecurityConfiguration;
 
 /**
  * A factory to create HttpServers.

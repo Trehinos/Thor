@@ -7,8 +7,8 @@ use Thor\Framework\{Managers\UserManager};
 use Thor\Web\WebServer;
 use Thor\Web\WebController;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Configuration\LanguageDictionary;
 use Thor\Security\Authorization\Authorization;
+use Thor\Framework\Configuration\LanguageDictionary;
 use Thor\Http\{Routing\Route, Request\HttpMethod, Response\ResponseInterface};
 
 /**

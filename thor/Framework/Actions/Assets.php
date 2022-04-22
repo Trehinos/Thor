@@ -6,7 +6,7 @@ use Thor\Web\WebServer;
 use Thor\Web\WebController;
 use Thor\Http\Routing\Route;
 use Thor\Http\Response\Response;
-use Thor\Framework\Factories\ResponseFactory;
+use Thor\Http\Response\ResponseFactory;
 use Thor\Framework\Factories\AssetsListFactory;
 
 final class Assets extends WebController

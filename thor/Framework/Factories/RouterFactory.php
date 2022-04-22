@@ -9,9 +9,8 @@ use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
 use InvalidArgumentException;
 use Thor\Http\Request\HttpMethod;
-use Thor\Configuration\Configuration;
-use Thor\Configuration\RoutesConfiguration;
 use Thor\Security\Authorization\Authorization;
+use Thor\Framework\Configuration\RoutesConfiguration;
 
 /**
  * The router from configuration.

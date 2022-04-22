@@ -3,13 +3,12 @@
 namespace Thor\Security;
 
 use JetBrains\PhpStorm\Immutable;
-use Thor\Framework\Factories\ResponseFactory;
+use Thor\Http\Response\ResponseFactory;
 use Thor\Framework\Factories\SecurityFactory;
 use Thor\Http\{Routing\Router,
     Response\ResponseInterface,
     Request\ServerRequestInterface,
-    Server\RequestHandlerInterface
-};
+    Server\RequestHandlerInterface};
 
 /**
  * Thor firewall.

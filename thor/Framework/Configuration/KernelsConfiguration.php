@@ -1,6 +1,8 @@
 <?php
 
-namespace Thor\Configuration;
+namespace Thor\Framework\Configuration;
+
+use Thor\Configuration\ConfigurationFromFile;
 
 final class KernelsConfiguration extends ConfigurationFromFile
 {

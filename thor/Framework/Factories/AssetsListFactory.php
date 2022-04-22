@@ -11,9 +11,9 @@ use Thor\FileSystem\FileSystem;
 use Thor\Web\Assets\MergedAsset;
 use Thor\Web\Assets\AssetInterface;
 use Thor\Configuration\Configuration;
-use Thor\Configuration\TwigConfiguration;
-use Thor\Configuration\RoutesConfiguration;
 use Thor\Configuration\ConfigurationFromFile;
+use Thor\Framework\Configuration\TwigConfiguration;
+use Thor\Framework\Configuration\RoutesConfiguration;
 
 final class AssetsListFactory
 {

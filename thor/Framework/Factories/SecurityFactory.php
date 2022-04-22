@@ -5,8 +5,8 @@ namespace Thor\Framework\Factories;
 use Thor\Http\Routing\Router;
 use Thor\Http\Server\HttpServer;
 use Thor\Configuration\Configuration;
+use Thor\Framework\Configuration\SecurityConfiguration;
 use Thor\Security\{Firewall, HttpSecurity, SecurityInterface};
-use Thor\Configuration\SecurityConfiguration;
 
 /**
  * A factory to create the security context and firewalls from configuration.

@@ -4,15 +4,15 @@ namespace Thor\Framework\Actions;
 
 use PDOException;
 use Thor\Globals;
+use Thor\Web\WebController;
 use Thor\Http\Routing\Route;
 use Thor\Http\Response\Response;
-use Thor\Web\WebController;
 use Thor\Http\Request\HttpMethod;
 use Thor\Configuration\ThorConfiguration;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Configuration\ConfigurationFromFile;
-use Thor\Configuration\SecurityConfiguration;
-use Thor\Configuration\DatabasesConfiguration;
+use Thor\Framework\Configuration\SecurityConfiguration;
+use Thor\Framework\Configuration\DatabasesConfiguration;
 use Thor\Configuration\Configuration as YmlConfiguration;
 
 final class Configuration extends WebController

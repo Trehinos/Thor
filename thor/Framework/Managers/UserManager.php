@@ -6,9 +6,9 @@ use Exception;
 use Thor\Globals;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Security\Identity\DbUser;
-use Thor\Configuration\LanguageDictionary;
 use Thor\Configuration\ConfigurationFromFile;
 use Thor\Database\PdoTable\{Criteria, CrudHelper};
+use Thor\Framework\Configuration\LanguageDictionary;
 
 
 /**

@@ -3,13 +3,12 @@
 namespace Thor\Http\Client;
 
 use CurlHandle;
-use Thor\Framework\Factories\ResponseFactory;
+use Thor\Http\Response\ResponseFactory;
 use Thor\Http\{Response\Response,
     Request\HttpMethod,
     Response\HttpStatus,
     Request\RequestInterface,
-    Response\ResponseInterface
-};
+    Response\ResponseInterface};
 
 /**
  * Provides an implementation of ClientInterface to send requests with Curl.
