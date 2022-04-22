@@ -1,4 +1,8 @@
 -
+    label: Index
+    icon: home
+    route: index-page
+-
     label: Configuration
     icon: cogs
     group:

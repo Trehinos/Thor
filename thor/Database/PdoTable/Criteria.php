@@ -54,7 +54,7 @@ final class Criteria
      *
      *                         Write '=operator' to test the equality with one of these special operators.
      */
-    public function __construct(private array $criteria = [], private string $glue = self::GLUE_AND)
+    public function __construct(public readonly array $criteria = [], private string $glue = self::GLUE_AND)
     {
     }
 

@@ -1,0 +1,32 @@
+{% extends "modal-base.html.twig" %}
+
+{% block modal_title %}
+    Raccourcis
+{% endblock %}
+
+{% block modal_body %}
+    <div class="row">
+        <div class="col-3 text-end">
+            <kbd>F1</kbd>
+        </div>
+        <div class="col-9">
+            Affiche l'aide
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3 text-end">
+            <kbd>CTRL</kbd> + <kbd>F2</kbd>
+        </div>
+        <div class="col-9">
+            Affiche l'index
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3 text-end">
+            <kbd>CTRL</kbd> + <kbd>F3</kbd>
+        </div>
+        <div class="col-9">
+            Affiche l'interface des utilisateurs
+        </div>
+    </div>
+{% endblock %}

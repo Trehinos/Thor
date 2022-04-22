@@ -29,11 +29,13 @@ final class Main extends WebController
     #[Route('index-page', '/index', HttpMethod::GET)]
     public function indexPage(): Response
     {
-        return $this->twigResponse(
-            'pages/index.html.twig',
-            [
-            ]
-        );
+        return $this->twigResponse('pages/index.html.twig');
+    }
+
+    #[Route('help', '/help', HttpMethod::GET)]
+    public function help(): Response
+    {
+        return $this->twigResponse('thor/help.html.twig');
     }
 
     #[Route('documentation', '/documentation', HttpMethod::GET)]

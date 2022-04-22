@@ -97,6 +97,9 @@
 {% endblock %}
 
 {% block body_js %}
+    <script>
+        let helpUrl = "{{ url('help') }}";
+    </script>
     {{ asset('thor-js' ) }}
     <script defer>
         $(() => {
