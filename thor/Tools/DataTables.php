@@ -105,8 +105,9 @@ final class DataTables
                                         'th',
                                         ['class' => 'bg-dark text-light'],
                                         [
-                                        $labels[$column->getName()] ?? $column->getName(),
-                                    ]),
+                                            $labels[$column->getName()] ?? $column->getName(),
+                                        ]
+                                    ),
                                     $this->getColumns()
                                 )
                             ),

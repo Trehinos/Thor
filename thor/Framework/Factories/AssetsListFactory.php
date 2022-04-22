@@ -6,7 +6,6 @@ use Exception;
 use Thor\Globals;
 use Thor\Web\Assets\Asset;
 use Thor\Http\UriInterface;
-use Thor\Http\Routing\Router;
 use Thor\Web\Assets\AssetType;
 use Thor\FileSystem\FileSystem;
 use Thor\Web\Assets\MergedAsset;

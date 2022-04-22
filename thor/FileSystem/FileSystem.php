@@ -77,15 +77,24 @@ final class FileSystem
     }
 
     /**
-     * Deletes a file if it exists. Do nothing otherwise (no error thrown).
-     *
-     * @param string $name
+     * Deletes a file if it exists. Do nothing otherwise.
      */
-    public static function deleteIfExists(string $name): void
+    public static function deleteIfExists(string $name): bool
     {
         if (self::exists($name)) {
-            unlink($name);
+            return unlink($name);
         }
+        return false;
+    }
+
+    public static function readable(string $filename): bool
+    {
+        return self::exists($filename) && is_readable($filename);
+    }
+
+    public static function writable(string $filename): bool
+    {
+        return self::exists($filename) && is_writable($filename);
     }
 
     /**

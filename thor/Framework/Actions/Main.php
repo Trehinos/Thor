@@ -3,7 +3,6 @@
 namespace Thor\Framework\Actions;
 
 use Thor\Globals;
-use Thor\Tools\Guid;
 use Thor\Web\WebController;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod};

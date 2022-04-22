@@ -17,7 +17,7 @@ final class Folder
     }
 
     /**
-     * Removes all elements in the corresponding $path.
+     * Removes all elements in the corresponding $path and returns an array of all files effectively deleted.
      *
      * @param bool $removeFirst ignored if $removeDirs is false
      */
@@ -28,14 +28,11 @@ final class Folder
         bool $removeFirst = true,
         ?callable $removeCondition = null
     ): array {
-        $files = scandir($path);
+        $files = self::fileList($path);
 
         $ret = [];
         foreach ($files as $file) {
-            if (self::isSpecial($file)) {
-                continue;
-            }
-            if (is_dir("$path/$file")) {
+            if (FileSystem::isDir("$path/$file")) {
                 $ret = array_merge(
                     $ret,
                     self::removeTree("$path/$file", $mask, $removeDirs, $removeDirs, $removeCondition)
@@ -57,7 +54,7 @@ final class Folder
         if ($removeDirs && $removeFirst) {
             $result = false;
             if ($removeCondition === null || $removeCondition("$path") === true) {
-                $result = rmdir("$path");
+                $result = self::removeIfEmpty("$path");
             }
             if ($result) {
                 $ret[] = "$path";
@@ -76,12 +73,9 @@ final class Folder
      */
     public static function copyTree(string $path, string $dest): void
     {
-        $files = scandir($path);
+        $files = self::fileList($path);
         foreach ($files as $file) {
-            if (self::isSpecial($file)) {
-                continue;
-            }
-            if (is_dir("$path/$file")) {
+            if (FileSystem::isDir("$path/$file")) {
                 Folder::createIfNotExists("$dest/$file");
                 self::copyTree("$path/$file", "$dest/$file");
                 continue;
@@ -95,13 +89,10 @@ final class Folder
      */
     public static function mapFiles(string $path, callable $mappedFunction, mixed ...$functionArguments): void
     {
-        $files = scandir($path);
+        $files = self::fileList($path);
 
         foreach ($files as $file) {
-            if (self::isSpecial($file)) {
-                continue;
-            }
-            if (is_dir("$path/$file")) {
+            if (FileSystem::isDir("$path/$file")) {
                 self::mapFiles("$path/$file", $mappedFunction, ...$functionArguments);
                 continue;
             }
@@ -112,8 +103,11 @@ final class Folder
     /**
      * Creates (a) folder(s) recursively if the path does not exist.
      */
-    public static function createIfNotExists(string $name, int $permissions = FileSystem::ALL_ALL, ?string $user = null): void
-    {
+    public static function createIfNotExists(
+        string $name,
+        int $permissions = FileSystem::ALL_ALL,
+        ?string $user = null
+    ): void {
         if (!FileSystem::exists($name)) {
             mkdir($name, recursive: true);
             chmod($name, $permissions);
@@ -126,17 +120,21 @@ final class Folder
     public static function fileList(string $path): array
     {
         $files = scandir($path);
-        return array_filter($files, fn(string $filename) => !in_array($filename, ['.', '..']));
+        return array_filter($files, fn(string $filename) => !self::isSpecial($filename));
     }
 
     /**
-     * Creates (a) folder(s) recursively if the path does not exist.
+     * Removes a folder if it is empty.
+     *
+     * Returns true if the folder is effectively deleted.
      */
-    public static function removeIfEmpty(string $name): void
+    public static function removeIfEmpty(string $name): bool
     {
         if (FileSystem::exists($name) && empty(self::fileList($name))) {
-            rmdir($name);
+            return FileSystem::deleteIfExists($name);
         }
+
+        return false;
     }
 
 }
