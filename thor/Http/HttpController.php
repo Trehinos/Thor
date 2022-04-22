@@ -1,15 +1,18 @@
 <?php
 
-namespace Thor\Http;
+namespace Thor\Http\Controllers;
 
 use JetBrains\PhpStorm\Pure;
-use JetBrains\PhpStorm\ExpectedValues;
-use Thor\Http\{Server\HttpServer,
+use Thor\Http\{Routing\Route,
+    Server\ControllerHandler,
+    UriInterface,
+    Server\HttpServer,
     Request\HttpMethod,
     Response\HttpStatus,
     Response\ResponseInterface,
     Request\UploadedFileInterface,
     Request\ServerRequestInterface};
+use JetBrains\PhpStorm\ExpectedValues;
 
 /**
  * This abstract class is a base class for every controller of an HttpServer.
@@ -20,7 +23,7 @@ use Thor\Http\{Server\HttpServer,
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-abstract class HttpController
+abstract class HttpController extends ControllerHandler
 {
 
     /**
@@ -41,10 +44,7 @@ abstract class HttpController
     private array $headers;
     private array $queryAttributes;
 
-    /**
-     * @param HttpServer $httpServer
-     */
-    public function __construct(protected HttpServer $httpServer)
+    public function __construct(HttpServer $httpServer, Route $route)
     {
         $this->method = $this->getRequest()->getMethod();
         $this->uri = $this->getRequest()->getUri();
@@ -55,6 +55,7 @@ abstract class HttpController
         $this->cookies = $this->getRequest()->getCookieParams();
         $this->headers = $this->getRequest()->getHeaders();
         $this->queryAttributes = $this->getRequest()->getAttributes();
+        parent::__construct($httpServer, $route);
     }
 
     /**

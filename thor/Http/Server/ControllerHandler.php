@@ -18,11 +18,7 @@ use Thor\Http\Request\ServerRequestInterface;
 class ControllerHandler implements RequestHandlerInterface
 {
 
-    /**
-     * @param HttpServer $server
-     * @param Route      $route
-     */
-    public function __construct(private HttpServer $server, private Route $route)
+    public function __construct(protected HttpServer $httpServer, protected Route $route)
     {
     }
 
@@ -41,7 +37,8 @@ class ControllerHandler implements RequestHandlerInterface
             'controller' => $cClass,
             'method'     => $cMethod,
         ]);
-        $controller = new $cClass($this->server);
+        $controller = new $cClass($this->httpServer);
         return $controller->$cMethod(...array_values($this->route->getFilledParams()));
     }
+
 }
