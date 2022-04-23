@@ -4,6 +4,7 @@ namespace Thor\Framework\Factories;
 
 use Thor\Web\WebServer;
 use Thor\Http\Routing\Router;
+use JetBrains\PhpStorm\ArrayShape;
 use Thor\Security\SecurityInterface;
 use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;
@@ -22,7 +23,10 @@ final class WebServerFactory
     {
     }
 
-    public static function creatWebServerFromConfiguration(Configuration $config): WebServer
+    public static function creatWebServerFromConfiguration(
+        #[ArrayShape(['database' => '', 'routes' => '', 'language' => '', 'twig' => ''])]
+        Configuration $config
+    ): WebServer
     {
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
         $server = self::produce(

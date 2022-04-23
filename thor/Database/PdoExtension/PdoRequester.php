@@ -2,9 +2,12 @@
 
 namespace Thor\Database\PdoExtension;
 
+use Thor\Thor;
 use PDOStatement;
 
+use PDOException;
 use Thor\Debug\Logger;
+use Thor\Debug\LogLevel;
 
 /**
  * Defines a class which performs SQL queries on a PDO connection wrapped in a PdoHandler.
@@ -31,7 +34,7 @@ class PdoRequester
     final public function execute(string $sql, array $parameters = []): bool
     {
         Logger::write("DB execute ($sql).");
-        Logger::writeData('DB parameters', array_values($parameters));
+        Logger::writeDebug('DB parameters', array_values($parameters), LogLevel::INFO);
         $stmt = $this->handler->getPdo()->prepare($sql);
 
         return $stmt->execute(array_values($parameters));
@@ -40,12 +43,13 @@ class PdoRequester
     /**
      * Executes a parameterized SQL-query with the PdoHandler multiple times (one time for each array in $parameters).
      *
-     * @param string $sql
+     * @param string  $sql
      * @param array[] $parameters
+     * @param bool    $continueIfError
      *
      * @return bool
      */
-    final public function executeMultiple(string $sql, array $parameters): bool
+    final public function executeMultiple(string $sql, array $parameters, bool $continueIfError = false): bool
     {
         $size = count($parameters);
         Logger::write("DB execute $size x ($sql).");
@@ -53,8 +57,19 @@ class PdoRequester
         $result = true;
 
         foreach ($parameters as $pdoRowsArray) {
-            Logger::writeData(' -> DB parameters', array_values($pdoRowsArray));
-            $result = $result && $stmt->execute(array_values($pdoRowsArray));
+            Logger::writeDebug(' -> DB parameters', array_values($pdoRowsArray), LogLevel::INFO);
+            try {
+                $result = $result && $stmt->execute(array_values($pdoRowsArray));
+            } catch (PDOException $e) {
+                if (!Thor::isDebug()) {
+                    Logger::writeDebug(' -> DB parameters', array_values($pdoRowsArray), LogLevel::WARNING);
+                }
+                Logger::logThrowable($e->getMessage());
+                Logger::writeDebug(' -> DB execution failed : ', array_values($pdoRowsArray), LogLevel::ERROR);
+                if (!$continueIfError) {
+                    throw $e;
+                }
+            }
         }
 
         return $result;
@@ -71,7 +86,7 @@ class PdoRequester
     final public function request(string $sql, array $parameters = []): PDOStatement
     {
         Logger::write("DB request ($sql).");
-        Logger::writeData('DB parameters', array_values($parameters));
+        Logger::writeDebug('DB parameters', array_values($parameters), LogLevel::INFO);
         $stmt = $this->handler->getPdo()->prepare($sql);
         $stmt->execute(array_values($parameters));
 

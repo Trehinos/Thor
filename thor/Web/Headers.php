@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Framework\Factories;
+namespace Thor\Web;
 
 use Exception;
 use DateTimeInterface;

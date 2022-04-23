@@ -5,10 +5,10 @@ namespace Thor\Debug;
 use Thor\Env;
 
 /**
- * ## INFO
+ * ## INFO (dev)
  * Interesting events.
  *
- * ## NOTICE
+ * ## NOTICE (dev)
  * Normal but significant events.
  *
  * ## DEBUG
@@ -64,4 +64,5 @@ enum LogLevel: int
             Env::PROD  => self::ERROR
         };
     }
+
 }

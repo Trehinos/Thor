@@ -130,8 +130,8 @@ final class Folder
      */
     public static function removeIfEmpty(string $name): bool
     {
-        if (FileSystem::exists($name) && empty(self::fileList($name))) {
-            return FileSystem::deleteIfExists($name);
+        if (FileSystem::exists($name) && FileSystem::isDir($name) && empty(self::fileList($name))) {
+            return rmdir($name);
         }
 
         return false;

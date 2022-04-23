@@ -1,9 +1,6 @@
 <?php
 
-namespace Thor\Framework\Factories;
-
-use Thor\Web\Node;
-use Thor\Web\TextNode;
+namespace Thor\Web;
 
 final class Html
 {

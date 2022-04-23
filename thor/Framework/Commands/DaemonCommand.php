@@ -99,7 +99,7 @@ final class DaemonCommand extends Command
                 ->mode();
             return;
         }
-        $daemon->executeIfRunnable($state, true);
+        $scheduler->executeDaemon($daemon, true);
         $this->console
             ->mode(Mode::BRIGHT)
             ->fColor(Color::GREEN)
@@ -121,6 +121,7 @@ final class DaemonCommand extends Command
         $state = new DaemonState(Daemon::instantiate($daemonInfo));
         $state->load();
         $state->setLastRun(null);
+        $state->setNextRun(null);
         $state->setRunning(false);
         $state->error(null);
         $state->write();
@@ -159,7 +160,8 @@ final class DaemonCommand extends Command
                 Color::FG_BLACK,
                 Color::BG_GRAY,
                 new FixedOutput('Status', 10),
-                new FixedOutput('Last period run', 17),
+                new FixedOutput('Last run', 17),
+                new FixedOutput('Next run', 17),
                 new FixedOutput('', 4, STR_PAD_LEFT),
                 new FixedOutput('Daemon', 24),
                 new FixedOutput('Active period / Info', 32)
@@ -186,15 +188,17 @@ final class DaemonCommand extends Command
                 ->fColor($status_color)
                 ->writeFix($status, 10)
                 ->mode()
-                ->writeFix($state->getLastRun()?->format('Y-m-d H:i') ?? 'never', 17)->fColor(
+                ->writeFix($state->getLastRun()?->format('Y-m-d H:i') ?? 'never', 17)
+                ->writeFix($state->getNextRun()?->format('Y-m-d H:i') ?? 'never', 17)
+                ->fColor(
                     $state->getError()
                         ? Color::RED
                         :
-                        ($state->isRunning()
-                            ?
-                            Color::CYAN
-                            :
-                            Color::YELLOW)
+                        (
+                        $state->isRunning()
+                            ? Color::CYAN
+                            : Color::YELLOW
+                        )
                 )
                 ->writeFix(
                     $state->getError()
@@ -202,10 +206,8 @@ final class DaemonCommand extends Command
                         :
                         (
                         $state->isRunning()
-                            ?
-                            "  > "
-                            :
-                            "  • "
+                            ? "  > "
+                            : "  • "
                         ),
                     4,
                     STR_PAD_LEFT
@@ -252,7 +254,7 @@ final class DaemonCommand extends Command
         }
         $pid = $state->getPid();
         $state->setPid(null);
-        if (substr(php_uname(), 0, 7) === "Windows") {
+        if (str_starts_with(php_uname(), "Windows")) {
             CliKernel::executeProgram("taskkill /F /PID $pid");
         } else {
             CliKernel::executeProgram("kill -15 $pid");

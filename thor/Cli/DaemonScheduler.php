@@ -114,7 +114,7 @@ final class DaemonScheduler implements KernelInterface
         Logger::write("Cycle {$daemon->getName()}");
         $state = new DaemonState($daemon);
         $state->load();
-        if (!$state->isRunning() && $daemon->isNowRunnable($state->getLastRun())) {
+        if (!$state->isRunning() && $daemon->isNowRunnable($state->getNextRun())) {
             $logPath = Globals::VAR_DIR . ThorConfiguration::get()->logPath();
             Folder::createIfNotExists($logPath . "{$logPath}daemon/{$daemon->getName()}/");
             CliKernel::executeBackgroundProgram(

@@ -46,9 +46,10 @@ final class Application implements KernelInterface
     public static function createFromConfiguration(Configuration $config): static
     {
         $kernel = $config->thorKernel() ?? '';
+        $env = $config->env()->value ?? '';
         Application::setLoggerLevel(
-            LogLevel::fromEnv($config->env()) ?? LogLevel::DEBUG,
-            Globals::VAR_DIR . ($config->logPath()) . "{$kernel}/"
+            LogLevel::fromEnv(Thor::getEnv()),
+            Globals::VAR_DIR . ($config->logPath()) . "$kernel/$env/"
         );
         return new self(Application::getKernel($config->thorKernel()));
     }
@@ -72,6 +73,8 @@ final class Application implements KernelInterface
             ini_set('display_errors', 0);
         }
         ini_set('date.timezone', $config['timezone'] ?? 'Europe/Paris');
+        ini_set('log_errors', true);
+        ini_set('error_log', Globals::VAR_DIR . 'logs/errors.log');
     }
 
     /**

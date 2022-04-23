@@ -68,21 +68,6 @@ final class Configurations
     }
 
     /**
-     * Loads the configuration for Web context (index.php entry point).
-     */
-    public static function getAssetsConfiguration(): Configuration
-    {
-        return self::getWebConfiguration()->merge(
-            new Configuration(
-                [
-                    'twig'   => TwigConfiguration::get(),
-                    'assets' => ConfigurationFromFile::fromFile('assets/assets', true)
-                ]
-            )
-        );
-    }
-
-    /**
      * Loads the configuration for Http context (api.php entry point).
      */
     public static function getHttpConfiguration(): Configuration

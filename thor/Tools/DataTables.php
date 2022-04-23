@@ -4,8 +4,8 @@ namespace Thor\Tools;
 
 use Exception;
 use Thor\Web\Node;
+use Thor\Web\Html;
 use ReflectionException;
-use Thor\Framework\Factories\Html;
 use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoExtension\PdoHandler;
 use DataTables\{Editor, Database, Editor\Field};

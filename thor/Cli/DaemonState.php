@@ -3,6 +3,7 @@
 namespace Thor\Cli;
 
 use DateTime;
+use DateTimeImmutable;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Yaml\Yaml;
 use Thor\FileSystem\Folder;
@@ -11,9 +12,9 @@ use Thor\Globals;
 /**
  * Represents the current state of a Thor daemon.
  *
- * @package Thor/Cli
+ * @package          Thor/Cli
  * @copyright (2021) Sébastien Geldreich
- * @license MIT
+ * @license          MIT
  */
 final class DaemonState
 {
@@ -22,6 +23,7 @@ final class DaemonState
 
     private ?bool $isRunning = null;
     private ?DateTime $lastRun = null;
+    private ?DateTime $nextRun = null;
     private ?string $error = null;
     private ?string $pid = null;
 
@@ -69,10 +71,12 @@ final class DaemonState
         $data = Yaml::parseFile($this->getFileName());
         $this->isRunning = $data['isRunning'] ?? false;
         $lr = $data['lastRun'] ?? null;
+        $nr = $data['nextRun'] ?? null;
         $this->error = $data['error'] ?? null;
         $this->pid = $data['pid'] ?? null;
 
         $this->lastRun = (($lr === null) ? null : DateTime::createFromFormat(self::DATE_FORMAT, $lr));
+        $this->nextRun = (($nr === null) ? null : DateTime::createFromFormat(self::DATE_FORMAT, $nr));
     }
 
     /**
@@ -86,9 +90,10 @@ final class DaemonState
             Yaml::dump(
                 [
                     'isRunning' => $this->isRunning(),
-                    'lastRun' => $this->getLastRun()?->format(self::DATE_FORMAT),
-                    'error' => $this->error,
-                    'pid' => $this->pid
+                    'lastRun'   => $this->getLastRun()?->format(self::DATE_FORMAT),
+                    'nextRun'   => $this->getNextRun()?->format(self::DATE_FORMAT),
+                    'error'     => $this->error,
+                    'pid'       => $this->pid,
                 ]
             )
         );
@@ -117,18 +122,28 @@ final class DaemonState
      */
     public function setRunning(bool $running): void
     {
+        $now = new DateTimeImmutable();
         if ($running) {
-            $lr = new DateTime();
-            $diff = intval(($lr->format('U') - $this->daemon->getStartToday()->format('U')) / 60);
-            $delta = $diff % $this->daemon->getPeriodicity();
-            $diff = $diff - $delta;
-            $lastRun = $this->daemon->getStartToday();
-            $lastRun->add(new \DateInterval("PT{$diff}M"));
+            $lastRun = $now;
             $this->lastRun = DateTime::createFromFormat(
                 self::DATE_FORMAT,
                 $lastRun->format('YmdHi') . '00'
             );
         }
+
+
+        $nextRun = clone $this->lastRun;
+        $delta = $now->format('YmdHi') % $this->daemon->getPeriodicity();
+        $nextRun->sub(new \DateInterval("PT{$delta}M"));
+        $nextRun->add(new \DateInterval("PT{$this->daemon->getPeriodicity()}M"));
+        if ($this->daemon->getStartToday() < $this->daemon->getEndToday()) {
+
+        }
+
+        $this->nextRun = DateTime::createFromFormat(
+            self::DATE_FORMAT,
+            $nextRun->format('YmdHi') . '00'
+        );
         $this->isRunning = $running;
     }
 
@@ -140,9 +155,11 @@ final class DaemonState
         return $this->isRunning ?? false;
     }
 
-    /**
-     * Returns the last run period starts. It is not the effective time when the daemon was executed.
-     */
+    public function getNextRun(): ?DateTime
+    {
+        return $this->nextRun;
+    }
+
     public function getLastRun(): ?DateTime
     {
         return $this->lastRun;
@@ -154,6 +171,14 @@ final class DaemonState
     public function setLastRun(?DateTime $lastRun): void
     {
         $this->lastRun = $lastRun;
+    }
+
+    /**
+     * Sets the lastRun field.
+     */
+    public function setNextRun(?DateTime $nextRun): void
+    {
+        $this->nextRun = $nextRun;
     }
 
 }

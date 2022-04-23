@@ -57,6 +57,16 @@ final class Thor
     }
 
     /**
+     * Returns true if the current Thor's environment is Env::DEBUG or Env::DEV.
+     *
+     * @return bool
+     */
+    public static function isDebug(): bool
+    {
+        return self::isDev() || self::getEnv() === Env::DEBUG;
+    }
+
+    /**
      * Gets the current Thor's environment.
      *
      * @return Env

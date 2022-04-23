@@ -2,6 +2,7 @@
 
 namespace Thor\Debug;
 
+use Thor\Env;
 use Thor\Thor;
 use Throwable;
 use Stringable;
@@ -25,7 +26,7 @@ final class Logger implements LoggerInterface
     public function __construct(
         private LogLevel $logLevel = LogLevel::DEBUG,
         private string $basePath = __DIR__ . '/../',
-        private string $dateFormat = 'Y-m-d H:i:s.v',
+        private string $dateFormat = '',
         private ?string $filename = null,
     ) {
     }
@@ -41,25 +42,49 @@ final class Logger implements LoggerInterface
         return self::$logger = new self($level, $basePath, $dateFormat);
     }
 
+    public static function getLogLevel(): LogLevel
+    {
+        return self::get()->logLevel;
+    }
+
     /**
      * Logs a Throwable : the message is written with an LogLevel::ERROR level.
      * The details are written with the LogLevel::DEBUG level.
      */
     public static function logThrowable(Throwable $e): string
     {
-        $pad = str_repeat(' ', 37);
+        $pad = str_repeat(' ', 38);
         $traceStr = '';
 
-        foreach ($e->getTrace() as $trace) {
-            $traceStr .= "$pad  • Location : {$trace['file']}:{$trace['line']}\n$pad    Function : {$trace['function']}\n";
+        foreach (array_reverse($e->getTrace()) as $trace) {
+            $traceStr .= "$pad • Location : {$trace['file']}:{$trace['line']}\n";
+
+            $traceClass = $trace['class'] ?? null;
+            $traceObject = $trace['object'] ?? null;
+            $traceFunction = $trace['function'] ?? '';
+            $traceType = $trace['type'] ?? '';
+            $traceArgs = $trace['args'] ?? [];
+            if ($traceClass !== null) {
+                $traceStr .= "$pad •         : $traceClass$traceType" .
+                    $traceFunction;
+            } else {
+                $traceStr .= "$pad • Call     : -> $traceFunction";
+            }
+            if (!empty($traceArgs)) {
+                $traceStr .= '(' . implode(', ', $traceArgs) . ')';
+            }
+            $traceStr .= "\n";
+            if ($traceObject !== null) {
+                "$pad " . json_encode($traceObject) . "\n";
+            }
         }
 
         self::write(
-            "ERROR THROWN IN FILE {$e->getFile()} LINE {$e->getLine()} : {$e->getMessage()}",
+            "ERROR THROWN IN FILE {$e->getFile()} :  {$e->getLine()}\n$pad{$e->getMessage()}",
             LogLevel::ERROR
         );
         $message = <<<EOT
-            $pad Trace :
+            Chronological trace :
             $traceStr                 
             EOT;
         self::write($message, LogLevel::DEBUG);
@@ -72,7 +97,7 @@ final class Logger implements LoggerInterface
      */
     public static function write(
         Stringable|string $message,
-        LogLevel $level = LogLevel::INFO,
+        LogLevel $level = LogLevel::NOTICE,
         array $context = [],
         bool $print = false
     ): void {
@@ -94,15 +119,24 @@ final class Logger implements LoggerInterface
             $message = "$nowStr $strLevel : " . Strings::interpolate($message, $context);
 
             if (null === $this->filename) {
-                $nowFileName = $now->format('Ymd');
-                $thorEnv = Thor::getEnv()->value;
-                $this->filename = "{$this->basePath}{$thorEnv}_{$nowFileName}.log";
+                $appName = Thor::appName();
+                $version = Thor::version();
+                $thorEnv = Thor::getEnv();
+                $nowFileName = $now->format(
+                    match ($thorEnv) {
+                        Env::DEV   => 'Ymd',
+                        Env::DEBUG => 'YW',
+                        Env::PROD  => 'Ym',
+                    }
+                );
+                $this->filename = "{$this->basePath}{$appName}_{$version}_{$nowFileName}.log";
             }
 
             try {
                 Folder::createIfNotExists(dirname($this->filename));
                 file_put_contents($this->filename, "$message\n", FILE_APPEND);
             } catch (Throwable $t) {
+                echo "LOGGER ERROR : {$t->getMessage()}\n";
             }
         }
     }
@@ -121,12 +155,13 @@ final class Logger implements LoggerInterface
     /**
      * Writes data encoded into JSON with the static Logger.
      */
-    public static function writeData(string $dataName, mixed $data, LogLevel $level = LogLevel::INFO): void
+    public static function writeDebug(string $label, mixed $data, LogLevel $level = LogLevel::DEBUG): void
     {
         try {
-            $message = "DATA:$dataName= " . json_encode($data, JSON_THROW_ON_ERROR);
+            $message = "DEBUG : $label= " . json_encode($data, JSON_THROW_ON_ERROR);
             self::get()->log($level, $message);
-        } catch (JsonException) {
+        } catch (JsonException $e) {
+            echo "LOGGER ERROR : {$e->getMessage()}\n";
         }
     }
 

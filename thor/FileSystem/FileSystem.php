@@ -81,7 +81,7 @@ final class FileSystem
      */
     public static function deleteIfExists(string $name): bool
     {
-        if (self::exists($name)) {
+        if (self::exists($name) && !self::isDir($name)) {
             return unlink($name);
         }
         return false;

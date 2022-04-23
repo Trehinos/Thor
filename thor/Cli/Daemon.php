@@ -102,11 +102,11 @@ abstract class Daemon implements Executable
     /**
      * Returns true if it is active and lastTime + periodicity > now.
      *
-     * @param DateTime|null $lastTime
+     * @param DateTime|null $nextTime
      *
      * @return bool
      */
-    public function isNowRunnable(?DateTime $lastTime = null): bool
+    public function isNowRunnable(?DateTime $nextTime = null): bool
     {
         if (!$this->isEnabled()) {
             return false;
@@ -120,13 +120,11 @@ abstract class Daemon implements Executable
             return false;
         }
 
-        if (null === $lastTime) {
+        if (null === $nextTime) {
             return true;
         }
 
-        $next = clone $lastTime;
-        $next->add(new DateInterval("PT{$this->periodicityInMinutes}M"));
-        return $next <= $now;
+        return $nextTime <= $now;
     }
 
     /**
@@ -174,25 +172,23 @@ abstract class Daemon implements Executable
      */
     final public function executeIfRunnable(DaemonState $state, bool $force = false): void
     {
-        if ($this->isNowRunnable($state->getLastRun()) || $force) {
-            if (!$state->isRunning()) {
+        if (!$state->isRunning() && ($force || $this->isNowRunnable($state->getNextRun()))) {
+            try {
                 $state->setRunning(true);
                 $state->setPid(getmypid());
                 $state->error(null);
                 $state->write();
-                try {
-                    $this->execute();
-                } catch (Throwable $e) {
-                    $state->error($e->getMessage());
-                    $state->setPid(null);
-                    $state->setRunning(false);
-                    $state->write();
-                    throw $e;
-                }
+                $this->execute();
+            } catch (Throwable $e) {
+                $state->error($e->getMessage());
                 $state->setPid(null);
                 $state->setRunning(false);
                 $state->write();
+                throw $e;
             }
+            $state->setPid(null);
+            $state->setRunning(false);
+            $state->write();
         }
     }
 
