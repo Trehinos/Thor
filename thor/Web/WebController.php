@@ -3,13 +3,8 @@
 namespace Thor\Web;
 
 use Thor\Debug\Logger;
-use Thor\Http\Session;
-use Twig\Error\SyntaxError;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Thor\Http\Response\Response;
-use Thor\Http\Response\HttpStatus;
-use Thor\Http\Controllers\HttpController;
+use Twig\Error\{SyntaxError, LoaderError, RuntimeError};
+use Thor\Http\{Session, HttpController, Response\Response, Response\HttpStatus};
 
 /**
  * Base controller for web context.

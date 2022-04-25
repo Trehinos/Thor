@@ -31,7 +31,7 @@ class PdoRequester
      *
      * @return bool
      */
-    final public function execute(string $sql, array $parameters = []): bool
+    public function execute(string $sql, array $parameters = []): bool
     {
         Logger::write("DB execute ($sql).");
         Logger::writeDebug('DB parameters', array_values($parameters), LogLevel::INFO);
@@ -49,7 +49,7 @@ class PdoRequester
      *
      * @return bool
      */
-    final public function executeMultiple(string $sql, array $parameters, bool $continueIfError = false): bool
+    public function executeMultiple(string $sql, array $parameters, bool $continueIfError = false): bool
     {
         $size = count($parameters);
         Logger::write("DB execute $size x ($sql).");
@@ -64,7 +64,7 @@ class PdoRequester
                 if (!Thor::isDebug()) {
                     Logger::writeDebug(' -> DB parameters', array_values($pdoRowsArray), LogLevel::WARNING);
                 }
-                Logger::logThrowable($e->getMessage());
+                Logger::logThrowable($e);
                 Logger::writeDebug(' -> DB execution failed : ', array_values($pdoRowsArray), LogLevel::ERROR);
                 if (!$continueIfError) {
                     throw $e;
@@ -83,7 +83,7 @@ class PdoRequester
      *
      * @return PDOStatement
      */
-    final public function request(string $sql, array $parameters = []): PDOStatement
+    public function request(string $sql, array $parameters = []): PDOStatement
     {
         Logger::write("DB request ($sql).");
         Logger::writeDebug('DB parameters', array_values($parameters), LogLevel::INFO);

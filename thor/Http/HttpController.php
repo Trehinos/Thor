@@ -1,17 +1,15 @@
 <?php
 
-namespace Thor\Http\Controllers;
+namespace Thor\Http;
 
 use JetBrains\PhpStorm\Pure;
-use Thor\Http\{UriInterface,
-    Server\HttpServer,
+use JetBrains\PhpStorm\ExpectedValues;
+use Thor\Http\{Server\HttpServer,
     Request\HttpMethod,
     Response\HttpStatus,
     Response\ResponseInterface,
     Request\UploadedFileInterface,
-    Request\ServerRequestInterface
-};
-use JetBrains\PhpStorm\ExpectedValues;
+    Request\ServerRequestInterface};
 
 /**
  * This abstract class is a base class for every controller of an HttpServer.

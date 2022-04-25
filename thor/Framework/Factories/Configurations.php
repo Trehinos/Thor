@@ -7,7 +7,6 @@ use Symfony\Component\Yaml\Yaml;
 use Thor\Configuration\Configuration;
 use Thor\Configuration\ThorConfiguration;
 use Thor\Configuration\CommandsConfiguration;
-use Thor\Configuration\ConfigurationFromFile;
 use Thor\Framework\Configuration\TwigConfiguration;
 use Thor\Framework\Configuration\LanguageDictionary;
 use Thor\Framework\Configuration\RoutesConfiguration;

@@ -6,13 +6,10 @@ use Thor\Env;
 use Thor\Thor;
 use Thor\KernelInterface;
 use Thor\Debug\{Logger, LogLevel};
-use Thor\Framework\Factories\Configurations;
 use Thor\Configuration\Configuration;
+use Thor\Framework\Factories\Configurations;
 use Thor\Framework\Factories\{HttpServerFactory, ServerRequestFactory};
-use Thor\Http\{Server\HttpServer,
-    Controllers\HttpController,
-    Response\ResponseInterface,
-    Request\ServerRequestInterface};
+use Thor\Http\{Server\HttpServer, Response\ResponseInterface, Request\ServerRequestInterface};
 
 /**
  * HttpKernel of Thor. It is by default instantiated with the `api.php` entry point.
