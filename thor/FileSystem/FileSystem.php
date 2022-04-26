@@ -200,6 +200,7 @@ final class FileSystem
      * Returns a permissions string like in a `ls -la` command.
      *
      * @example -rwxrw-r--
+     * @example drwxr-x--x
      *
      * @link    https://www.php.net/manual/fr/function.fileperms.php#example-2167
      */
