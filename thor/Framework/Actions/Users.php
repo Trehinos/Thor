@@ -6,7 +6,7 @@ use Thor\Framework\{Managers\UserManager};
 use Thor\Web\WebServer;
 use Thor\Tools\DataTables;
 use Thor\Web\WebController;
-use Thor\Security\Identity\DbUser;
+use Thor\Framework\Security\DbUser;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Http\Response\ResponseFactory;

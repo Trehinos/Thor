@@ -10,7 +10,7 @@ use Thor\FileSystem\Folder;
 use Thor\Http\Routing\Route;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Debug\{Logger, LogLevel};
-use Thor\Security\Identity\DbUser;
+use Thor\Framework\Security\DbUser;
 use Thor\Configuration\ThorConfiguration;
 use Thor\Framework\Factories\RouterFactory;
 use Thor\Configuration\ConfigurationFromFile;

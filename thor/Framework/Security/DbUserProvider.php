@@ -1,7 +1,8 @@
 <?php
 
-namespace Thor\Security\Identity;
+namespace Thor\Framework\Security;
 
+use Thor\Security\Identity\ProviderInterface;
 use Thor\Database\PdoTable\{Criteria, CrudHelper};
 
 /**

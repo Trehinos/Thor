@@ -2,8 +2,10 @@
 
 namespace Thor\Security;
 
+use Thor\Security\{Authentication\SessionAuthenticator};
+use Thor\Framework\Security\DbUser;
+use Thor\Framework\Security\DbUserProvider;
 use Thor\Database\{PdoTable\CrudHelper, PdoExtension\PdoRequester};
-use Thor\Security\{Identity\DbUser, Identity\DbUserProvider, Authentication\SessionAuthenticator};
 
 /**
  * Default HTTP security context.

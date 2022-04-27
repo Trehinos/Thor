@@ -5,7 +5,7 @@ namespace Thor\Framework\Managers;
 use Exception;
 use Thor\Globals;
 use Thor\Debug\{Logger, LogLevel};
-use Thor\Security\Identity\DbUser;
+use Thor\Framework\Security\DbUser;
 use Thor\Configuration\ConfigurationFromFile;
 use Thor\Database\PdoTable\{Criteria, CrudHelper};
 use Thor\Framework\Configuration\LanguageDictionary;
@@ -212,7 +212,7 @@ final class UserManager
      *
      * @param string $public_id
      *
-     * @return DbUser|null
+     * @return \Thor\Framework\Security\DbUser|null
      */
     public function getFromPublicId(string $public_id): ?DbUser
     {
@@ -222,7 +222,7 @@ final class UserManager
     /**
      * Gets the CrudHelper of this manager.
      *
-     * @return CrudHelper<DbUser>
+     * @return CrudHelper<\Thor\Framework\Security\DbUser>
      */
     public function getUserCrud(): CrudHelper
     {

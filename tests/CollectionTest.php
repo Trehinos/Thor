@@ -3,7 +3,7 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use Thor\Security\Identity\DbUser;
+use Thor\Framework\Security\DbUser;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Structures\Collection\Collection;
 use Thor\Database\PdoExtension\PdoHandler;

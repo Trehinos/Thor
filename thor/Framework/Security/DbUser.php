@@ -1,13 +1,14 @@
 <?php
 
-namespace Thor\Security\Identity;
+namespace Thor\Framework\Security;
 
 use Thor\Security\PasswordHasher;
+use Thor\Security\Identity\BaseUser;
 use Thor\Database\PdoTable\PdoRowTrait;
 use Thor\Database\PdoTable\PdoRowInterface;
 use Thor\Database\PdoTable\HasPublicIdTrait;
-use Thor\Database\PdoTable\TableType\{ArrayType, StringType, IntegerType};
 use Thor\Database\PdoTable\Attributes\{PdoTable, PdoIndex, PdoColumn};
+use Thor\Database\PdoTable\TableType\{ArrayType, StringType, IntegerType};
 
 /**
  * This extension of BaseUser gives a way to have an Identity stored in DB.
