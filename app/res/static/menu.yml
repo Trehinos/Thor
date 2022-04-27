@@ -1,95 +1,70 @@
--
-    label: Index
+-   label: Index
     icon: home
     route: index-page
--
-    label: Configuration
+-   label: Configuration
+    route: config-config
     icon: cogs
     group:
-        -
-            icon: cog
-            route: config-config
-            label: Configuration globale
-        - divider
-        -
-            icon: database
+        -   icon: database
             route: database-config
             label: Bases de données
-        -
-            icon: shield-alt
+        -   icon: shield-alt
             route: security-config
             label: Securité
-        -
-            icon: sync
+        -   icon: sync
             route: config-not-implemented
             label: Mises à jour
-        -
-            icon: cog
+        -   icon: cog
             route: config-not-implemented
             label: Twig
--
-    label: Données statiques
-    icon: file-alt
-    route: config-not-implemented
-    group:
-        -
-            icon: atom
+        - divider
+        -   label: Données statiques
+            icon: file-alt
+            route: config-not-implemented
+        -   icon: atom
             route: config-not-implemented
             label: Kernels
-        -
-            icon: globe
+        -   icon: globe
             route: config-not-implemented
             label: Langues
-        -
-            icon: gavel
+        -   icon: gavel
             route: manage-permissions
             label: users_permissions
-        -
-            icon: cogs
+        -   icon: cogs
             route: config-not-implemented
             label: Paramètres utilisateurs
         - divider
-        -
-            icon: play
+        -   icon: play
             route: config-not-implemented
             label: Tâches
-        -
-            icon: terminal
+        -   icon: terminal
             route: config-not-implemented
             label: Commandes
         - divider
-        -
-            icon: route
+        -   icon: route
             route: config-not-implemented
             label: Routes
-        -
-            icon: list
+        -   icon: list
             route: config-not-implemented
             label: Menu
--
-    label: Données
-    icon: database
-    route: config-not-implemented
-    group:
-        -
-            label: users
+        - divider
+        -   label: Données
+            icon: database
+            route: config-not-implemented
+        -   label: users
             icon: users
             route: users
-        -
-            icon: list
+        -   icon: list
             route: users-table
             label: Tableau utilisateurs (test)
         - divider
-        -
-            icon: cube
+        -   icon: cube
             route: config-not-implemented
             label: Classes PdoTables
-        -
-            icon: table
+        -   icon: table
             route: config-not-implemented
             label: Crud
-
--
-    label: documentation
-    icon: books
-    route: documentation
+        - divider
+        -   label: documentation
+            icon: books
+            route: documentation
