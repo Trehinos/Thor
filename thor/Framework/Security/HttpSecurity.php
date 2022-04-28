@@ -1,11 +1,9 @@
 <?php
 
-namespace Thor\Security;
+namespace Thor\Framework\Security;
 
-use Thor\Security\{Authentication\SessionAuthenticator};
-use Thor\Framework\Security\DbUser;
-use Thor\Framework\Security\DatabaseUserProvider;
 use Thor\Database\{PdoTable\CrudHelper, PdoExtension\PdoRequester};
+use Thor\Security\{Security, ProtectWithFirewalls, Authentication\SessionAuthenticator};
 
 /**
  * Default HTTP security context.

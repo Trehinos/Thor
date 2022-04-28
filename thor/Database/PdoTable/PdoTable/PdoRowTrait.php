@@ -34,7 +34,7 @@ trait PdoRowTrait
     }
 
     /**
-     * @return \Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex[] an array of PdoIndex containing indexes information.
+     * @return PdoIndex[] an array of PdoIndex containing indexes information.
      *
      * @throws ReflectionException
      */
@@ -149,7 +149,7 @@ trait PdoRowTrait
     }
 
     /**
-     * Copy formerPrimary on primary array
+     * Sets the PdoRowTrait SQL table row primary key  as synced with the DB
      */
     final public function reset(): void
     {

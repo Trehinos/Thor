@@ -9,6 +9,7 @@ use JetBrains\PhpStorm\Pure;
 use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
 use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoColumn;
 use Thor\Database\PdoTable\PdoTable\Attributes\PdoForeignKey;
 
 /**
@@ -35,7 +36,7 @@ final class PdoAttributesReader
     private static function parseAttributes(
         ReflectionClass $rc
     ): array {
-        /** @var \Thor\Database\PdoTable\PdoTable\Attributes\PdoTable $table */
+        /** @var PdoTable $table */
         $table = ($rc->getAttributes(PdoTable::class)[0] ?? null)?->newInstance();
         $columns = array_map(
             fn(ReflectionAttribute $ra) => $ra->newInstance(),
@@ -46,7 +47,7 @@ final class PdoAttributesReader
             fn(ReflectionAttribute $ra) => $ra->newInstance(),
             $rc->getAttributes(PdoIndex::class)
         );
-        /** @var \Thor\Database\PdoTable\PdoTable\Attributes\PdoForeignKey[] $fks */
+        /** @var PdoForeignKey[] $fks */
         $fks = array_map(
             fn(ReflectionAttribute $ra) => $ra->newInstance(),
             $rc->getAttributes(PdoForeignKey::class)

@@ -4,6 +4,7 @@ namespace Thor\Framework\Security;
 
 use Thor\Security\PasswordHasher;
 use Thor\Security\Identity\BaseUser;
+use Thor\Database\PdoTable\HasPublicId;
 use Thor\Database\PdoTable\HasPublicIdTrait;
 use Thor\Database\PdoTable\PdoTable\PdoRowTrait;
 use Thor\Database\PdoTable\PdoTable\Attributes\{PdoColumn};
@@ -26,7 +27,7 @@ use Thor\Database\PdoTable\TableType\{ArrayType, StringType, IntegerType};
 #[PdoColumn('permissions', new ArrayType(4096), false)]
 #[PdoColumn('parameters', new ArrayType(4096), false)]
 #[PdoIndex(['username'], true)]
-class DbUser extends BaseUser implements PdoRowInterface
+class DbUser extends BaseUser implements PdoRowInterface, HasPublicId
 {
 
     use PdoRowTrait {
@@ -35,6 +36,7 @@ class DbUser extends BaseUser implements PdoRowInterface
     use HasPublicIdTrait;
 
     public function __construct(
+        ?int $id = null,
         string $username = '',
         string $clearPassword = '',
         array $permissions = [],
@@ -42,7 +44,7 @@ class DbUser extends BaseUser implements PdoRowInterface
         ?string $public_id = null
     ) {
         parent::__construct($username, $clearPassword, $permissions, $parameters);
-        $this->traitConstructor(['id' => null]);
+        $this->traitConstructor(['id' => $id]);
         $this->public_id = $public_id;
     }
 
