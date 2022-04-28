@@ -4,7 +4,7 @@ namespace Thor\Database\PdoTable;
 
 use ReflectionException;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\{Attributes\PdoIndex, Driver\DriverInterface, Attributes\PdoAttributesReader};
+use Thor\Database\PdoTable\{Driver\DriverInterface, PdoTable\Attributes\PdoIndex, PdoTable\PdoAttributesReader};
 
 /**
  * This class provides methods to execute DQL statements from a PdoAttributesReader.

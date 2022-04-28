@@ -12,6 +12,9 @@ use Exception;
 use TypeError;
 use JetBrains\PhpStorm\Pure;
 use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoTable\PdoTable\AbstractPdoRow;
+use Thor\Database\PdoTable\PdoTable\PdoRowException;
+use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
 
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRows.
@@ -32,10 +35,10 @@ final class CrudHelper implements CrudInterface
      * @param class-string<T> $className which implements PdoRowInterface and use PdoRowTrait trait.
      */
     public function __construct(
-        private string $className,
-        private PdoRequester $requester,
-        private array $excludeColumnsFromInsert = [],
-        private array $excludeColumnsFromUpdate = [],
+        private readonly string $className,
+        private readonly PdoRequester $requester,
+        private readonly array $excludeColumnsFromInsert = [],
+        private readonly array $excludeColumnsFromUpdate = [],
     ) {
         if (!class_exists($this->className) || !in_array(PdoRowInterface::class, class_implements($this->className))) {
             throw new TypeError("{$this->className} class not found or not implementing PdoRowInterface...");
@@ -126,17 +129,11 @@ final class CrudHelper implements CrudInterface
         if ($row instanceof AbstractPdoRow && $row->getPublicId() === null) {
             $row->generatePublicId();
         }
-        $pdoArray = $row->toPdoArray();
-
-        if (!empty($excludeColumns)) {
-            $pdo = [];
-            foreach ($pdoArray as $column => $value) {
-                if (!in_array($column, $excludeColumns)) {
-                    $pdo[$column] = $value;
-                }
-            }
-            $pdoArray = $pdo;
-        }
+        $pdoArray = array_filter(
+            $row->toPdoArray(),
+            fn(string $column) => !in_array($column, $excludeColumns),
+            ARRAY_FILTER_USE_KEY
+        );
 
         $columns = implode(', ', array_keys($pdoArray));
         $values = implode(', ', array_fill(0, count($pdoArray), '?'));

@@ -4,7 +4,7 @@ namespace Thor\Database\PdoTable;
 
 use Exception;
 use Thor\Tools\Guid;
-use Thor\Database\PdoTable\{Attributes\PdoIndex, Attributes\PdoColumn, TableType\StringType};
+use Thor\Database\PdoTable\{TableType\StringType, PdoTable\Attributes\PdoIndex, PdoTable\Attributes\PdoColumn};
 
 /**
  * Adds a "public_id" column to a PdoRowInterface.

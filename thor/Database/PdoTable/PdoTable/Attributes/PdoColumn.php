@@ -1,9 +1,8 @@
 <?php
 
-namespace Thor\Database\PdoTable\Attributes;
+namespace Thor\Database\PdoTable\PdoTable\Attributes;
 
 use Attribute;
-use JetBrains\PhpStorm\Pure;
 use Thor\Database\PdoTable\TableType\TableTypeInterface;
 
 /**

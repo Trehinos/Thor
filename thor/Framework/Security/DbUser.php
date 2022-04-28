@@ -4,10 +4,12 @@ namespace Thor\Framework\Security;
 
 use Thor\Security\PasswordHasher;
 use Thor\Security\Identity\BaseUser;
-use Thor\Database\PdoTable\PdoRowTrait;
-use Thor\Database\PdoTable\PdoRowInterface;
 use Thor\Database\PdoTable\HasPublicIdTrait;
-use Thor\Database\PdoTable\Attributes\{PdoTable, PdoIndex, PdoColumn};
+use Thor\Database\PdoTable\PdoTable\PdoRowTrait;
+use Thor\Database\PdoTable\PdoTable\Attributes\{PdoColumn};
+use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
 use Thor\Database\PdoTable\TableType\{ArrayType, StringType, IntegerType};
 
 /**

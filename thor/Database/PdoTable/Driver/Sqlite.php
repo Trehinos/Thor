@@ -2,10 +2,10 @@
 
 namespace Thor\Database\PdoTable\Driver;
 
-use Thor\Database\PdoTable\Attributes\PdoIndex;
-use Thor\Database\PdoTable\Attributes\PdoTable;
-use Thor\Database\PdoTable\Attributes\PdoColumn;
-use Thor\Database\PdoTable\Attributes\PdoAttributesReader;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
+use Thor\Database\PdoTable\PdoTable\PdoAttributesReader;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoColumn;
 
 class Sqlite implements DriverInterface
 {

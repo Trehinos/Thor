@@ -9,7 +9,9 @@ use ReflectionException;
 use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoExtension\PdoHandler;
 use DataTables\{Editor, Database, Editor\Field};
-use Thor\Database\PdoTable\Attributes\{PdoTable, PdoColumn, PdoAttributesReader};
+use Thor\Database\PdoTable\PdoTable\Attributes\{PdoColumn};
+use Thor\Database\PdoTable\PdoTable\PdoAttributesReader;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
 
 /**
  * Bridge for DataTables and PdoTable.

@@ -1,6 +1,8 @@
 <?php
 
-namespace Thor\Database\PdoTable;
+namespace Thor\Database\PdoTable\PdoTable;
+
+use Thor\Database\PdoTable\CrudHelper;
 
 /**
  * This class is made to convert various forms of data around PdoRowInterface.

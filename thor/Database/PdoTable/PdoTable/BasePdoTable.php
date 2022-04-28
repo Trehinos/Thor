@@ -1,6 +1,9 @@
 <?php
 
-namespace Thor\Database\PdoTable;
+namespace Thor\Database\PdoTable\PdoTable;
+
+use Thor\Database\PdoTable\HasId;
+use Thor\Database\PdoTable\HasIdTrait;
 
 /**
  * Default implementor of PdoRowInterface.

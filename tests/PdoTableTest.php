@@ -11,8 +11,8 @@ use Thor\Database\PdoTable\CrudHelper;
 use Thor\Database\PdoTable\SchemaHelper;
 use Thor\Database\PdoTable\Driver\Sqlite;
 use Thor\Database\PdoExtension\PdoHandler;
-use Thor\Database\PdoTable\PdoRowInterface;
 use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
 
 final class PdoTableTest extends TestCase
 {

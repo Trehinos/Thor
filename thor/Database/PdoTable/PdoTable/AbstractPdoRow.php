@@ -1,6 +1,9 @@
 <?php
 
-namespace Thor\Database\PdoTable;
+namespace Thor\Database\PdoTable\PdoTable;
+
+use Thor\Database\PdoTable\HasPublicId;
+use Thor\Database\PdoTable\HasPublicIdTrait;
 
 /**
  * Merges BasePdoRow and HasPublicId.

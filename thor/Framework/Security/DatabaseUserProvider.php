@@ -12,7 +12,7 @@ use Thor\Database\PdoTable\{Criteria, CrudHelper};
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-class DbUserProvider implements ProviderInterface
+class DatabaseUserProvider implements ProviderInterface
 {
 
     public function __construct(

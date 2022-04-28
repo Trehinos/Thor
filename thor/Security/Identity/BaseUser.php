@@ -34,6 +34,11 @@ class BaseUser implements IdentityInterface, HasPassword, HasPermissions, HasPar
         return $this->username;
     }
 
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
     /**
      * Returns true if the specified clear password correspond this user's password.
      *
@@ -62,6 +67,15 @@ class BaseUser implements IdentityInterface, HasPassword, HasPermissions, HasPar
     public function addPermission(string $permission): void
     {
         $this->permissions[] = $permission;
+    }
+
+    public function removePermission(string $permission): void
+    {
+        if (!$this->hasPermission($permission)) {
+            return;
+        }
+        $this->permissions[$permission] = null;
+        unset($this->permissions[$permission]);
     }
 
     /**

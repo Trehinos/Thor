@@ -1,9 +1,6 @@
 <?php
 
-namespace Thor\Security;
-
-use Thor\Security\Identity\ProviderInterface;
-use Thor\Security\Identity\IdentityInterface;
+namespace Thor\Security\Identity;
 
 /**
  * Gives a way to look for an Identity in multiple Providers.
@@ -18,7 +15,7 @@ class MultipleProvider implements ProviderInterface
     /**
      * @param ProviderInterface[] $providers
      */
-    public function __construct(private array $providers)
+    public function __construct(private readonly array $providers)
     {
     }
 

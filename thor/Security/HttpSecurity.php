@@ -4,7 +4,7 @@ namespace Thor\Security;
 
 use Thor\Security\{Authentication\SessionAuthenticator};
 use Thor\Framework\Security\DbUser;
-use Thor\Framework\Security\DbUserProvider;
+use Thor\Framework\Security\DatabaseUserProvider;
 use Thor\Database\{PdoTable\CrudHelper, PdoExtension\PdoRequester};
 
 /**
@@ -24,7 +24,7 @@ class HttpSecurity extends Security
         array $firewalls = []
     ) {
         parent::__construct(
-            new DbUserProvider(new CrudHelper(DbUser::class, $requester), 'username'),
+            new DatabaseUserProvider(new CrudHelper(DbUser::class, $requester), 'username'),
             new SessionAuthenticator(),
             $firewalls
         );

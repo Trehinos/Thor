@@ -1,12 +1,15 @@
 <?php
 
-namespace Thor\Database\PdoTable\Attributes;
+namespace Thor\Database\PdoTable\PdoTable;
 
+use ReflectionClass;
+use ReflectionAttribute;
 use ReflectionException;
 use JetBrains\PhpStorm\Pure;
 use JetBrains\PhpStorm\ArrayShape;
-use ReflectionAttribute;
-use ReflectionClass;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoForeignKey;
 
 /**
  * Class used to read PdoTable\Attributes of a class extending PdoRowInterface.
@@ -32,7 +35,7 @@ final class PdoAttributesReader
     private static function parseAttributes(
         ReflectionClass $rc
     ): array {
-        /** @var PdoTable $table */
+        /** @var \Thor\Database\PdoTable\PdoTable\Attributes\PdoTable $table */
         $table = ($rc->getAttributes(PdoTable::class)[0] ?? null)?->newInstance();
         $columns = array_map(
             fn(ReflectionAttribute $ra) => $ra->newInstance(),
@@ -43,7 +46,7 @@ final class PdoAttributesReader
             fn(ReflectionAttribute $ra) => $ra->newInstance(),
             $rc->getAttributes(PdoIndex::class)
         );
-        /** @var PdoForeignKey[] $fks */
+        /** @var \Thor\Database\PdoTable\PdoTable\Attributes\PdoForeignKey[] $fks */
         $fks = array_map(
             fn(ReflectionAttribute $ra) => $ra->newInstance(),
             $rc->getAttributes(PdoForeignKey::class)

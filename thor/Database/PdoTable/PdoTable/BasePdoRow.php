@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Database\PdoTable;
+namespace Thor\Database\PdoTable\PdoTable;
 
 /**
  * Default implementor of PdoRowInterface.

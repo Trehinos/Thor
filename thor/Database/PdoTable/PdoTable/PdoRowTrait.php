@@ -1,11 +1,13 @@
 <?php
 
-namespace Thor\Database\PdoTable;
+namespace Thor\Database\PdoTable\PdoTable;
 
 use ReflectionException;
 use JetBrains\PhpStorm\Pure;
 use JetBrains\PhpStorm\ArrayShape;
-use Thor\Database\PdoTable\Attributes\{PdoIndex, PdoTable, PdoColumn, PdoAttributesReader};
+use Thor\Database\PdoTable\PdoTable\Attributes\{PdoIndex};
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoColumn;
 
 /**
  * Trait PdoRowTrait: implements PdoRowInterface with Pdo Attributes.
@@ -32,7 +34,7 @@ trait PdoRowTrait
     }
 
     /**
-     * @return PdoIndex[] an array of PdoIndex containing indexes information.
+     * @return \Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex[] an array of PdoIndex containing indexes information.
      *
      * @throws ReflectionException
      */
