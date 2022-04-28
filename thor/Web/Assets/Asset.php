@@ -23,8 +23,14 @@ class Asset extends Node implements AssetInterface
         if (Thor::isDev()) {
             $this->uri = $this->uri->withQuery(['version' => date('YmdHis')]);
         }
+        parent::__construct('');
+        $this->setNode();
+    }
+
+    public function setNode(): void
+    {
         $attrs = $this->getType()->getHtmlArguments();
-        parent::__construct($attrs['tag']);
+        $this->setName($attrs['tag']);
         foreach (array_merge($attrs['attrs'], [$attrs['src'] => "{$this->uri}"]) as $attr => $value) {
             $this->setAttribute($attr, $value);
         }

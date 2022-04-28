@@ -87,7 +87,7 @@ class Cache extends Container implements CacheInterface
      */
     public function set(string $key, mixed $value, DateInterval|int|null $ttl = null): bool
     {
-        $this->setItem(new CacheItem($key, $value, $ttl));
+        $this->setItem(new CacheItem($key, $value, $ttl ?? $this->defaultTtl));
         return true;
     }
 
