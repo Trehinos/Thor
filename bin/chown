@@ -1,0 +1,15 @@
+#!/bin/bash
+DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+echo "Mise à jour du dossier $DIR"
+
+# Global configuration
+chmod -R 644 "$DIR/.."
+chmod -R +X "$DIR/.."
+chown -R seb:www-data "$DIR/.."
+
+# Per folder configuration
+chmod -R g+w "$DIR/../var"
+chmod -R g+w "$DIR/../web/assets"
+chmod -R u+x "$DIR/../bin"
+chmod -R g+w "$DIR/../app/res" # ONLY IN DEV ENV.

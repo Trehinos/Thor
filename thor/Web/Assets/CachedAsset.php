@@ -5,18 +5,21 @@ namespace Thor\Web\Assets;
 use DateInterval;
 use Thor\Http\Uri;
 use DateTimeImmutable;
+use Thor\Debug\Logger;
+use Thor\Stream\Stream;
+use Thor\Debug\LogLevel;
 
 class CachedAsset extends MergedAsset
 {
-
-    protected ?DateTimeImmutable $expires;
 
     public function __construct(
         AssetType $type,
         string $filename,
         Uri $uri,
         array $fileList = [],
-        DateInterval|int|null $ttl = null
+        protected DateInterval|int|null $ttl = null,
+        protected string $cacheHostPath = '',
+        protected string $cacheFilePath = '',
     ) {
         parent::__construct(
             $type,
@@ -24,22 +27,12 @@ class CachedAsset extends MergedAsset
             $uri,
             $fileList,
         );
-        if (is_integer($ttl)) {
-            $ttl = new DateInterval("PT{$ttl}M");
+        $this->uri = $uri->withPath($this->cacheHostPath . $this->getFilename());
+        $this->setNode();
+        if (is_integer($this->ttl)) {
+            $this->ttl = new DateInterval("PT{$this->ttl}M");
         }
-        $this->expires = ($ttl === null)
-            ? null
-            : (new DateTimeImmutable())->add($ttl);
-    }
-
-    /**
-     * Returns false if this item can't expire.
-     *
-     * @return DateTimeImmutable|false
-     */
-    public function expires(): DateTimeImmutable|false
-    {
-        return $this->expires ?? false;
+        $this->cache();
     }
 
     /**
@@ -49,21 +42,37 @@ class CachedAsset extends MergedAsset
      */
     public function hasExpired(): bool
     {
-        return $this->expires !== null && $this->expires <= (new DateTimeImmutable());
+        return !file_exists($this->getCacheFilename())
+               || (
+                   $this->ttl !== null &&
+                   (new \DateTimeImmutable())->sub($this->ttl) > DateTimeImmutable::createFromFormat(
+                       'U',
+                       filemtime($this->getCacheFilename())
+                   )
+               );
     }
 
-    public function cache(string $path): void
+    public function getCacheFilename(): string
+    {
+        return "{$this->cacheFilePath}/{$this->getFilename()}";
+    }
+
+    public function cache(): void
     {
         if ($this->hasExpired()) {
-            // TODO
-            $filename = "$path/{$this->name}";
+            Logger::write("Writing web cache for file {$this->filename}", LogLevel::INFO);
+            Stream::createFromFile($this->getCacheFilename(), 'w')->write($this->getContent());
         }
     }
 
     public function getFilename(): string
     {
+        return "{$this->name}.{$this->type->getExtension()}";
+    }
 
-        return parent::getFilename();
+    public function getContent(): string
+    {
+        return parent::getContent();
     }
 
 }

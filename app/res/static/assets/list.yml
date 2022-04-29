@@ -1,3 +1,13 @@
+thor-css:
+    type: css
+    cache: true
+    list:
+        - thor/thor-theme.css
+thor-js:
+    type: js
+    cache: true
+    list:
+        - thor/thor-lib.js
 general-css:
     type: css
     cache: true
@@ -13,5 +23,3 @@ general-js:
         - vendors/fontawesome.min.js
         - vendors/datatables.min.js
         - vendors/dt-langs/fr.js
-thor-css: thor/thor-theme.css
-thor-js: thor/thor-lib.js

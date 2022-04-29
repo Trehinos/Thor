@@ -3,12 +3,14 @@
 namespace Thor\Framework\Factories;
 
 use Exception;
+use Thor\Thor;
 use Thor\Globals;
 use Thor\Web\Assets\Asset;
 use Thor\Http\UriInterface;
 use Thor\Web\Assets\AssetType;
 use Thor\FileSystem\FileSystem;
 use Thor\Web\Assets\MergedAsset;
+use Thor\Web\Assets\CachedAsset;
 use Thor\Web\Assets\AssetInterface;
 use Thor\Configuration\Configuration;
 use Thor\Configuration\ConfigurationFromFile;
@@ -36,29 +38,6 @@ final class AssetsListFactory
                 $name,
                 $data,
             );
-            if (is_string($data)) {
-                $type = explode(".", $data)[1];
-                $data = [
-                    'type'     => $type,
-                    'filename' => Globals::STATIC_DIR . $twigConfig['assets_dir'] . $data,
-                ];
-                $assetsList[$name] = new Asset(
-                    AssetType::fromExtension($data['type']),
-                    $name,
-                    $data['filename'],
-                    $uri
-                );
-            } else {
-                $assetsList[$name] = new MergedAsset(
-                    AssetType::fromExtension($data['type']),
-                    $name,
-                    $uri,
-                    array_map(
-                        fn(string $filename) => Globals::STATIC_DIR . $twigConfig['assets_dir'] . $filename,
-                        $data['list']
-                    )
-                );
-            }
         }
 
         return $assetsList;
@@ -74,11 +53,13 @@ final class AssetsListFactory
         string|array $file,
         ?string $type = null
     ): AssetInterface {
+        $twigConfig = TwigConfiguration::get();
         $type ??= is_string($file)
             ? (FileSystem::getExtension($file) ?? throw new Exception("No extension in filename \"$file\""))
             : ($file['type'] ?? throw new Exception('Asset type cannot be inferred from assets data.'));
         $filename = $path . (is_string($file) ? $file : '');
         $list = is_string($file) ? [$file] : $file['list'];
+        $cached = is_string($file) ? false : ($file['cache'] ?? false);
 
         return is_string($file)
             ? new Asset(
@@ -87,15 +68,28 @@ final class AssetsListFactory
                 $filename,
                 $uri
             )
-            : new MergedAsset(
-                AssetType::fromExtension($type),
-                $name,
-                $uri,
-                array_map(
-                    fn(string $filename) => $path . $filename,
-                    $list
+            : ($cached
+                ? new CachedAsset(
+                    AssetType::fromExtension($type),
+                    $name,
+                    $uri,
+                    array_map(
+                        fn(string $filename) => $path . $filename,
+                        $list
+                    ),
+                    !Thor::isDebug() ? 600 : 1,
+                    $twigConfig['assets_cache'],
+                    Globals::WEB_DIR . $twigConfig['assets_cache']
                 )
-            );
+                : new MergedAsset(
+                    AssetType::fromExtension($type),
+                    $name,
+                    $uri,
+                    array_map(
+                        fn(string $filename) => $path . $filename,
+                        $list
+                    )
+                ));
     }
 
     /**
