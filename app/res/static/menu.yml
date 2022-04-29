@@ -1,6 +1,7 @@
 -   label: Index
     icon: home
     route: index-page
+    key: CTRL+F2
 -   label: Configuration
     route: config-config
     icon: cogs
@@ -54,6 +55,7 @@
         -   label: users
             icon: users
             route: users
+            key: CTRL+F3
         -   icon: list
             route: users-table
             label: Tableau utilisateurs (test)

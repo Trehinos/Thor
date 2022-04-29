@@ -14,9 +14,9 @@
                             class="nav-link {% if server.currentRouteName == item.route %}active{% endif %}"
                     >
                         {{ icon(item.icon, (item.icon_col ?? 'fas'), true) }}
-                        <span class="menu-label">
-                        {{ DICT.menu[item.label] ?? item.label ?? '' }}
-                    </span>
+                        <span class="menu-label" title="{{ item.key }}">
+                            {{ DICT.menu[item.label] ?? item.label ?? '' }}
+                        </span>
                     </a>
                 </li>
             {% else %}
@@ -64,6 +64,11 @@
                                                 title="{{ DICT.menu[sub_item.label] ?? sub_item.label ?? '' }}"
                                                 class="dropdown-item {% if server.currentRouteName == sub_item.route %}active{% endif %}"
                                         >
+                                            {% if sub_item.key is defined %}
+                                                <span class="keys float-end">
+                                                    {% for k in sub_item.key|split('+') %}<kbd>{{ k }}</kbd>{% if not loop.last %}+{% endif %}{% endfor %}
+                                                </span>
+                                            {% endif %}
                                             {{ icon(sub_item.icon, (sub_item.icon_col ?? 'fas'), true) }}
                                             {{ DICT.menu[sub_item.label] ?? sub_item.label ?? '' }}
                                         </a>

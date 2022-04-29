@@ -109,6 +109,19 @@ Main elements of Thor on pages
     margin: 0.4em;
 }
 
+#menu kbd {
+    padding: 1px;
+    vertical-align: middle;
+}
+
+#menu .dropdown-menu li span.keys {
+    opacity: 0.1;
+    transition: opacity ease 300ms;
+}
+#menu .dropdown-menu li:hover span.keys {
+    opacity: 1;
+}
+
 /*
 Bootstrap overrides
  */
