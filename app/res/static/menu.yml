@@ -2,10 +2,13 @@
     icon: home
     route: index-page
     key: CTRL+F2
--   label: Configuration
-    route: config-config
+-   label: Configurations
+    route: config-not-implemented
     icon: cogs
     group:
+        -   label: Configuration générale
+            route: config-config
+            icon: cog
         -   icon: database
             route: database-config
             label: Bases de données

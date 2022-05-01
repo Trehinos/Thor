@@ -57,21 +57,20 @@
                     >
                 </div>
                 <div class="col-md-auto"><span class="form-text">
-                    Méthode à appeler pour construire le contexte de sécurité. Format :
-                    <code>Classe:méthode</code>
+                    Méthode à appeler pour construire le contexte de sécurité. Format : <code>Class:method</code><br>
+                    Permet à <strong>Thor</strong> d'instancier les <code>ProviderInterface</code> et <code>AuthenticatorInterface</code>.
                 </span></div>
             </div>
             <hr>
             <h2>Firewalls</h2>
-            {#
             {% for firewall in security.firewalls %}
                 <button class="btn btn-secondary">
                     Firewall sur {{ firewall.pattern }}
                 </button>
-            {% else %}
+                {{ dump(firewall) }}
+        {% else %}
                 <p class="text-warning">Aucun firewall défini...</p>
             {% endfor %}
-            #}
             {% include "thor/not-implemented.html.twig" %}
         {% endif %}
     </form>
