@@ -66,7 +66,7 @@ legal:
         Licence : MIT
 errors:
     error: Error
-    too-short-username: 'Username too short (4 char. min.) or too long (255 char. max.) or invalid characters.'
+    too-short-username: 'Username too short (8 char. min.) or too long (255 char. max.) or invalid characters.'
     too-short-password: 'Password too short (16 char. min.) or too long (255 char. max.).'
     bad-password: 'The passwords are not the same.'
 permissions_page:

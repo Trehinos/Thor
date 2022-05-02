@@ -241,6 +241,9 @@ class Collection implements ArrayAccess, Iterator, Countable
      */
     public function keys(mixed $searchValue = null, bool $strict = false): static
     {
+        if ($searchValue === null) {
+            return new static(array_keys($this->data));
+        }
         return new static(array_keys($this->data, $searchValue, $strict));
     }
 

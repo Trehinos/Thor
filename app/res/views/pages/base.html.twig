@@ -1,19 +1,23 @@
+<div class="position-fixed float-start w-100 h-100" style="padding: 144px 16px 96px 16px;">
+    <div class="position-relative w-100 h-100">
+    <div class="toast-container position-absolute bottom-0 end-0 p-3" style="max-height: 100%; overflow: auto;">
+        {% for message in _messages %}
+            {{ toast(message) }}
+        {% endfor %}
+    </div>
+    </div>
+</div>
 <div id="titlebar" class="fixed-top" style="top: 56px">{% block titlebar %}{% endblock %}</div>
 <div id="toolbar" class="fixed-top" style="top: 80px;">{% block toolbar %}{% endblock %}</div>
 <div id="page">{% block page %}{% endblock %}</div>
 {% block page_js %}{% endblock %}
 <script>
     $(() => {
-        {% if _messages is not empty %}
-        let message = `
-            {% for message in _messages %}
-            <div class="alert alert-danger">
-                {{ icon('exclamation-triangle') }}
-                {{ message }}
-            </div>
-            {% endfor %}
-            `;
-        Modal.message("{{ DICT.errors.error }}", message);
-        {% endif %}
+        let toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        let toastList = toastElList.map(function (toastEl) {
+            let toast = new bootstrap.Toast(toastEl);
+            toast.show();
+            return toast;
+        });
     });
 </script>

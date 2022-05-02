@@ -54,11 +54,6 @@
             </div>
         {% endblock %}
     </nav>
-    <div class="toast-container">
-        {% for message in messages %}
-            {{ toast('Message', message) }}
-        {% endfor %}
-    </div>
     <div id="content">{% block body_content %}{% endblock %}</div>
     <div id="footer" class="pt-2">
         <div>
@@ -109,11 +104,6 @@
     <script defer>
         $(() => {
             Modal.$elem = $("#modal");
-            let toastElList = [].slice.call(document.querySelectorAll('.toast'));
-            let toastList = toastElList.map(function (toastEl) {
-                return new bootstrap.Toast(toastEl);
-            })
-
         });
     </script>
 {% endblock %}

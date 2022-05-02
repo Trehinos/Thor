@@ -66,7 +66,7 @@ legal:
         License : MIT
 errors:
     error: Erreur
-    too-short-username: 'Nom d''utilisateur trop court (min. 4 car.) ou trop long (max. 255 car.) ou caractères invalides.'
+    too-short-username: 'Nom d''utilisateur trop court (min. 8 car.) ou trop long (max. 255 car.) ou caractères invalides.'
     too-short-password: 'Mot de passe trop court (min. 16 car.) ou trop long (max. 255 car.).'
     bad-password: 'Les mots de passes ne correspondent pas...'
 permissions_page:

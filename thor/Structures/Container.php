@@ -18,6 +18,8 @@ use Thor\Structures\Collection\Collection;
 class Container extends Item implements ContainerInterface
 {
 
+    /** @var Collection<ItemInterface> $value */
+
     /**
      * @param string                    $key
      * @param Collection<ItemInterface> $data
@@ -59,7 +61,7 @@ class Container extends Item implements ContainerInterface
      */
     public function hasItem(string $key): bool
     {
-        return array_key_exists($key, $this->value);
+        return $this->value->keyExists($key);
     }
 
     /**
@@ -68,14 +70,14 @@ class Container extends Item implements ContainerInterface
     public function eachItem(callable $operation, ?array $keys = null): array
     {
         return array_map(
-            function (string $key, ContainerInterface|ItemInterface|null $item) use ($operation, $keys) {
+            function (string|int|null $key, ContainerInterface|ItemInterface|null $item) use ($operation, $keys) {
                 if ($keys !== null && !in_array($key, $keys)) {
                     return $item;
                 }
                 return $operation($key, $item);
             },
-            array_keys($this->value),
-            array_values($this->value)
+            $this->value->keys()->toArray(),
+            $this->value->values()->toArray()
         );
     }
 
@@ -112,7 +114,6 @@ class Container extends Item implements ContainerInterface
             return false;
         }
 
-        $this->value[$key] = null;
         unset($this->value[$key]);
         return true;
     }

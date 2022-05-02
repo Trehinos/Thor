@@ -22,7 +22,6 @@ final class Main extends WebController
     #[Route('index', '/', HttpMethod::GET)]
     public function index(): Response
     {
-        $this->addMessage('Test');
         return $this->twigResponse('page.html.twig', ['menuItem' => $this->get('menuItem')]);
     }
 

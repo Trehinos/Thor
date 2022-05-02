@@ -26,10 +26,10 @@ abstract class WebController extends HttpController
         return !empty(Session::read('controller.messages', []));
     }
 
-    public function error(string $languageKey): void
+    public function error(string $languageKey, string $hint = ''): void
     {
-        $message = $this->getServer()->getLanguage()['errors'][$languageKey] ?? '';
-        $this->addMessage($message);
+        $message = $this->getServer()->getLanguage()['errors'][$languageKey] ?? $languageKey;
+        $this->addMessage($message, 'Error', 'error', $hint);
     }
 
     /**
@@ -40,9 +40,19 @@ abstract class WebController extends HttpController
         return $this->webServer;
     }
 
-    public function addMessage(string $message): void
+    public function addMessage(string $message, string $title = '', string $type = 'info', string $muted = ''): void
     {
-        Session::write('controller.messages', array_merge($this->getMessages(), [$message]));
+        Session::write(
+            'controller.messages',
+            array_merge($this->getMessages(), [
+                [
+                    'title'   => $title,
+                    'message' => $message,
+                    'type'    => $type,
+                    'muted'   => $muted,
+                ],
+            ])
+        );
     }
 
     public function getMessages(): array

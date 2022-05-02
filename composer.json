@@ -37,14 +37,13 @@
     "ext-mbstring": "*",
     "ext-openssl": "*",
     "ext-pdo": "*",
-    "ext-ssh2": "*",
     "ext-zip": "*",
+    "ext-readline": "*",
     "phpoffice/phpspreadsheet": "1.*",
     "datatables.net/editor-php": "2.*",
     "symfony/var-dumper": "5.*",
     "symfony/yaml": "5.*",
-    "twig/twig": "3.*",
-    "ext-readline": "*"
+    "twig/twig": "3.*"
   },
   "require-dev": {
     "phpunit/phpunit": "^9"

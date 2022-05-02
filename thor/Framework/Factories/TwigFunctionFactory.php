@@ -27,15 +27,31 @@ final class TwigFunctionFactory
     {
         return new TwigFunction(
             'toast',
-            function (string $title, string $message, string $muted = '') {
+            function (array|string $message) {
+                $type = 'info';
+                $muted = '';
+                $title = 'Message';
+                if (is_array($message)) {
+                    $type = $message['type'] ?? 'info';
+                    $title = $message['title'] ?? '';
+                    $muted = $message['muted'] ?? '';
+                    $message = $message['message'] ?? '';
+                }
+                [$icon, $color, $bg] = match ($type) {
+                    'info' => ['info-circle', 'text-info', 'bg-light'],
+                    'warning' => ['exclamation-triangle', 'text-warning', 'bg-light'],
+                    'error', 'danger' => ['exclamation-triangle', 'text-danger', 'bg-danger text-light'],
+                    'success', 'ok' => ['check', 'text-success', 'bg-success text-light'],
+                };
                 return <<<§
                     <div class="toast" role="alert">
                         <div class="toast-header">
-                            <i class="fas fa-info-circle text-info"></i>
+                            <i class="fas fa-$icon $color fa-fw me-2"></i>
                             <strong class="me-auto">$title</strong>
                             <small class="text-muted">$muted</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
                         </div>
-                        <div class="toast-body">$message</div>
+                        <div class="toast-body $bg">$message</div>
                     </div>
                     §;
             },

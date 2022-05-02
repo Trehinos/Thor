@@ -106,10 +106,10 @@ final class Users extends WebController
         $permissions = $this->post('permissions', []);
 
         if (strlen($username) < 8) {
-            $this->error('too-short-username');
+            $this->error('too-short-username', 'Utilisateur non créé');
         }
         if (strlen($clearPassword) < 16) {
-            $this->error('too-short-password');
+            $this->error('too-short-password', 'Utilisateur non créé');
         }
 
         if (!$this->hasMessages()) {
@@ -152,7 +152,7 @@ final class Users extends WebController
         $permissions = $this->post('permissions', []);
 
         if (strlen($username) < 8) {
-            $this->error('too-short-username');
+            $this->error('too-short-username', "Utilisateur $username non modifié");
         }
 
         if (!$this->hasMessages()) {
