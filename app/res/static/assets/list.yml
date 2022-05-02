@@ -7,7 +7,10 @@ thor-js:
     type: js
     cache: true
     list:
-        - thor/thor-lib.js
+        - thor/thor.general.js
+        - thor/thor.modal.js
+        - thor/thor.toast.js
+        - thor/thor.keys.js
 general-css:
     type: css
     cache: true
