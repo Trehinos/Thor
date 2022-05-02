@@ -92,7 +92,7 @@ final class UserManager
      */
     public function createUser(string $username, string $clearPassword, array $permissions = []): string
     {
-        $user = new DbUser($username, $clearPassword, $permissions);
+        $user = new DbUser(username: $username, clearPassword: $clearPassword, permissions: $permissions);
         $user->generatePublicId();
         $public_id = $user->getPublicId();
         $this->userCrud->createOne($user);
@@ -212,7 +212,7 @@ final class UserManager
      *
      * @param string $public_id
      *
-     * @return \Thor\Framework\Security\DbUser|null
+     * @return DbUser|null
      */
     public function getFromPublicId(string $public_id): ?DbUser
     {
@@ -222,7 +222,7 @@ final class UserManager
     /**
      * Gets the CrudHelper of this manager.
      *
-     * @return CrudHelper<\Thor\Framework\Security\DbUser>
+     * @return CrudHelper<DbUser>
      */
     public function getUserCrud(): CrudHelper
     {
