@@ -14,8 +14,9 @@
 <script>
     $(() => {
         let toastElList = [].slice.call(document.querySelectorAll('.toast'));
-        let toastList = toastElList.map(function (toastEl) {
+        toastList = toastElList.map(function (toastEl) {
             let toast = new bootstrap.Toast(toastEl);
+            $("#btn-show-toasts").find(".fa-lg").addClass("text-danger");
             toast.show();
             return toast;
         });

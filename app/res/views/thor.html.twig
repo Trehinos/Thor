@@ -18,6 +18,15 @@
                 <div class="collapse navbar-collapse" id="menu-navbar">
                     {{ render('menu') }}
                     <ul class="navbar-nav me-0">
+                        <li class="nav-item dropdown"
+                            title="Revoir les notifications"
+                        >
+                            <a class="nav-link" href="#" data-bs-toggle="dropdown"
+                               onclick="showToasts();" id="btn-show-toasts"
+                            >
+                                <i class="fas fa-comment-alt-exclamation {% if _messages|length > 0 %}text-danger{% endif %} fa-lg"></i>
+                            </a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                 <i class="fas fa-user fa-lg"></i>

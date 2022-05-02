@@ -40,6 +40,8 @@ const Modal = {
     }
 };
 
+let toastList = [];
+
 const KeyMapper = {
     SHIFT: "SHIFT",
     CTRL: "CTRL",
@@ -108,5 +110,11 @@ function loadPage(url, params, callback) {
         if (callback) {
             callback(response);
         }
+    });
+}
+
+function showToasts() {
+    toastList.forEach((toast) => {
+        toast.show();
     });
 }
