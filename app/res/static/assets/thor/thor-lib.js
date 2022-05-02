@@ -104,6 +104,7 @@ function displayHelp() {
 }
 
 function loadPage(url, params, callback) {
+    $("#btn-show-toasts").find(".fa-lg").removeClass("text-danger");
     let $page = $("#content");
     $page.html("<div id='page'><div style='padding-top: 48px; text-align: center;'><i class='fas fa-4x fa-spin fa-spinner'></i></div></div>");
     $page.load(url, params, (response) => {
@@ -114,6 +115,7 @@ function loadPage(url, params, callback) {
 }
 
 function showToasts() {
+    $("#btn-show-toasts").find(".fa-lg").removeClass("text-danger");
     toastList.forEach((toast) => {
         toast.show();
     });

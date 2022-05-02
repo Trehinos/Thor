@@ -1,11 +1,9 @@
-<div class="position-fixed float-start w-100 h-100" style="padding: 144px 16px 96px 16px;">
-    <div class="position-relative w-100 h-100">
-    <div class="toast-container position-absolute bottom-0 end-0 p-3" style="max-height: 100%; overflow: auto;">
-        {% for message in _messages %}
-            {{ toast(message) }}
-        {% endfor %}
-    </div>
-    </div>
+<div class="toast-container position-absolute bottom-0 end-0 align-items-end"
+     style="max-height: 100%; overflow: auto; padding: 144px 16px 96px 16px;"
+>
+    {% for message in _messages %}
+        {{ toast(message) }}
+    {% endfor %}
 </div>
 <div id="titlebar" class="fixed-top" style="top: 56px">{% block titlebar %}{% endblock %}</div>
 <div id="toolbar" class="fixed-top" style="top: 80px;">{% block toolbar %}{% endblock %}</div>
@@ -16,8 +14,13 @@
         let toastElList = [].slice.call(document.querySelectorAll('.toast'));
         toastList = toastElList.map(function (toastEl) {
             let toast = new bootstrap.Toast(toastEl);
-            $("#btn-show-toasts").find(".fa-lg").addClass("text-danger");
+            $("#btn-show-toasts").find(".fa-lg").removeClass("text-danger");
             toast.show();
+            toastEl.addEventListener('hidden.bs.toast', () => {
+                if ($(".toast.show").length < 1) {
+                    $("#btn-show-toasts").find(".fa-lg").addClass("text-danger");
+                }
+            });
             return toast;
         });
     });
