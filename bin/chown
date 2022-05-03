@@ -1,15 +1,41 @@
 #!/bin/bash
-DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+# Configuration :
+# °°°°°°°°°°°°°°°
+#
+# This command sets this modes, owner and group :
+#
+# drwxr-xr-x $USER:$PHP_GROUP : $DIR/
+# drw-r--r-- $USER:$PHP_GROUP : $DIR/*.*
+# drwxr--r-- $USER:$PHP_GROUP : $DIR/bin/*.*
+#
+# drwxrwxr-x $USER:$PHP_GROUP : $DIR/var
+# drw-rw-r-- $USER:$PHP_GROUP : $DIR/var/*.*
+#
+# drwxrwxr-x $USER:$PHP_GROUP : $DIR/app/res
+# drw-rw-r-- $USER:$PHP_GROUP : $DIR/app/res/*.*
+#
+# drwxrwxr-x $USER:$PHP_GROUP : $DIR/web/assets
+# drw-rw-r-- $USER:$PHP_GROUP : $DIR/web/assets/*.*
 
+# Current user
+PHP_USER=$SUDO_USER
+
+# PHP group (usually "www-data" on Apache2)
+PHP_GROUP="www-data"
+# This script's parent directory is the Thor main folder
+DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+DIR="${DIR}/.."
+
+# ######################################################################################################################
 echo "Mise à jour du dossier $DIR"
 
-# Global configuration
-chmod -R 644 "$DIR/.."
-chmod -R +X "$DIR/.."
-chown -R seb:www-data "$DIR/.."
+# Global folder
+chmod -R 644 "$DIR"
+chmod -R +X "$DIR"
+chown -R "$PHP_USER":"$PHP_GROUP" "$DIR"
 
 # Per folder configuration
-chmod -R g+w "$DIR/../var"
-chmod -R g+w "$DIR/../web/assets"
-chmod -R u+x "$DIR/../bin"
-chmod -R g+w "$DIR/../app/res" # ONLY IN DEV ENV.
+chmod -R g+w "$DIR/var"
+chmod -R g+w "$DIR/web/assets"
+chmod -R u+x "$DIR/bin"
+chmod -R g+w "$DIR/app/res" # ONLY IN DEV ENV
