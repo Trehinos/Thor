@@ -19,7 +19,7 @@ class File
         };
     }
 
-    public static function fromDisk(string $path): static
+    public static function readFromDisk(string $path): static
     {
         $fd = new static($path, Stream::createFromFile($path, 'r'));
         $fd->syncWithDisk = true;
@@ -31,7 +31,7 @@ class File
         return $this->syncWithDisk;
     }
 
-    public function toDisk(): void
+    public function writeToDisk(): void
     {
         $this->syncWithDisk = true;
         Stream::copyToStream(

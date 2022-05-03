@@ -183,7 +183,7 @@ class Stream implements StreamInterface
     }
 
     /**
-     * Creates a new readable Stream with specified data.
+     * Creates a new readable Stream on `php://temp` with specified data.
      *
      * @param string $data
      *
@@ -228,7 +228,7 @@ class Stream implements StreamInterface
         set_error_handler(static function (int $errno, string $errstr) use ($filename, $mode, &$ex): bool {
             $ex = new RuntimeException(
                 sprintf(
-                    'Unable to open "%s" using mode "%s": %s',
+                    'Unable to open "%s" using mode "%s" : %s',
                     $filename,
                     $mode,
                     $errstr
@@ -243,7 +243,7 @@ class Stream implements StreamInterface
         } catch (\Throwable $e) {
             $ex = new RuntimeException(
                 sprintf(
-                    'Unable to open "%s" using mode "%s": %s',
+                    'Unable to open "%s" using mode "%s" : %s',
                     $filename,
                     $mode,
                     $e->getMessage()

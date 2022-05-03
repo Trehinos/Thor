@@ -67,6 +67,9 @@ final class ToolsTest extends TestCase
         $this->assertSame('', Strings::prefix('prefix', null));
         $this->assertSame('', Strings::suffix(null, 'suffix'));
 
+        $this->assertSame('', Strings::prefix('prefix', ''));
+        $this->assertSame('', Strings::suffix('', 'suffix'));
+
         $this->assertSame('prefixed', Strings::prefix('prefix', 'ed'));
         $this->assertSame('the suffix', Strings::suffix('the ', 'suffix'));
     }
