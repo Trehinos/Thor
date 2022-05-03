@@ -39,7 +39,7 @@
                                         data-url="{% if item.route != '.' %}{{ url(item.route) }}{% else %}#{% endif %}"
                                         data-item="{{ item.route }}"
                                         title="{{ DICT.menu[item.label] ?? item.label ?? '' }}"
-                                        class="dropdown-item {% if server.currentRouteName == item.route %}active{% endif %}"
+                                        class="dropdown-item {% if server.currentRouteName == item.route %}active{% endif %}}"
                                 >
                                     {{ icon(item.icon, (item.icon_col ?? 'fas'), true) }}
                                     <span class="menu-label">
@@ -58,11 +58,15 @@
                                         <a
                                                 href="#"
                                                 id="btn-{{ sub_item.route }}"
-                                                onclick="menuClick($(this));"
-                                                data-url="{% if sub_item.route != '.' %}{{ url(sub_item.route) }}{% else %}#{% endif %}"
-                                                data-item="{{ sub_item.route }}"
                                                 title="{{ DICT.menu[sub_item.label] ?? sub_item.label ?? '' }}"
-                                                class="dropdown-item {% if server.currentRouteName == sub_item.route %}active{% endif %}"
+                                                {% if sub_item.disabled %}
+                                                    class="dropdown-item disabled"
+                                                {% else %}
+                                                    onclick="menuClick($(this));"
+                                                    data-url="{% if sub_item.route != '.' %}{{ url(sub_item.route) }}{% else %}#{% endif %}"
+                                                    data-item="{{ sub_item.route }}"
+                                                    class="dropdown-item {% if server.currentRouteName == sub_item.route %}active{% endif %}"
+                                                {% endif %}
                                         >
                                             {% if sub_item.key is defined %}
                                                 <span class="keys float-end">

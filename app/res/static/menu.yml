@@ -18,19 +18,24 @@
         -   icon: sync
             route: config-not-implemented
             label: Mises à jour
-        -   icon: cog
+            disabled: true
+        -   icon: image
             route: config-not-implemented
-            label: Twig
+            label: Twig et assets
+            disabled: true
         - divider
         -   label: Données statiques
             icon: file-alt
             route: config-not-implemented
+            disabled: true
         -   icon: atom
             route: config-not-implemented
             label: Kernels
+            disabled: true
         -   icon: globe
             route: config-not-implemented
             label: Langues
+            disabled: true
         -   icon: gavel
             route: manage-permissions
             label: users_permissions
@@ -41,20 +46,25 @@
         -   icon: play
             route: config-not-implemented
             label: Tâches
+            disabled: true
         -   icon: terminal
             route: config-not-implemented
             label: Commandes
+            disabled: true
         - divider
         -   icon: route
             route: config-not-implemented
             label: Routes
+            disabled: true
         -   icon: list
             route: config-not-implemented
             label: Menu
+            disabled: true
         - divider
         -   label: Données
             icon: database
             route: config-not-implemented
+            disabled: true
         -   label: users
             icon: users
             route: users
@@ -66,9 +76,11 @@
         -   icon: cube
             route: config-not-implemented
             label: Classes PdoTables
+            disabled: true
         -   icon: table
             route: config-not-implemented
             label: Crud
+            disabled: true
         - divider
         -   label: documentation
             icon: books
