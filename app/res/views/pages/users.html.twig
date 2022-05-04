@@ -19,8 +19,8 @@
             <div class="m-1 p-4 user">
                 {{ icon('user', 'fa-2x fas') }}
                 {{ user.identifier }}
-                <span class="text-info">#{{ user.publicId|slice(0, 9) }}</span><br>
-                <small class="text-muted">{{ user.publicId|slice(10) }}</small>
+                <span class="text-info">#{{ user.publicId|slice(0, 8) }}</span><br>
+                <small class="text-muted">{{ user.publicId|slice(9) }}</small>
                 <hr class="mt-1 mb-2">
                 {% if authorized('manage-user', 'edit-user') %}
                     <button class="btn btn-sm btn-secondary"
