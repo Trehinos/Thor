@@ -7,7 +7,7 @@ use Thor\Http\Server\HttpServer;
 use Thor\Security\SecurityInterface;
 use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;
-use Thor\Framework\Configuration\SecurityConfiguration;
+use Thor\Framework\Configurations\SecurityConfiguration;
 
 /**
  * A factory to create HttpServers.

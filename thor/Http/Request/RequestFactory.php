@@ -7,7 +7,7 @@ use Thor\Web\Headers;
 use Thor\Tools\Strings;
 use Thor\Http\UriInterface;
 
-class RequestFactory
+final class RequestFactory
 {
 
     public static string $userAgent = '{appName}-{version}/Http';

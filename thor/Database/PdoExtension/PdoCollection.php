@@ -4,7 +4,7 @@ namespace Thor\Database\PdoExtension;
 
 use PDO;
 use Thor\Structures\Collection\Collection;
-use Thor\Framework\Configuration\DatabasesConfiguration;
+use Thor\Framework\Configurations\DatabasesConfiguration;
 
 /**
  * Holds a collection of PdoHandlers.

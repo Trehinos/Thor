@@ -7,7 +7,7 @@ use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
 use Thor\Configuration\Configuration;
 use Thor\Configuration\ThorConfiguration;
-use Thor\Framework\Configuration\KernelsConfiguration;
+use Thor\Framework\Configurations\KernelsConfiguration;
 
 /**
  * Main class of the framework. It loads the global configuration, sets the logger level

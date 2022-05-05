@@ -14,8 +14,8 @@ use Thor\Web\Assets\CachedAsset;
 use Thor\Web\Assets\AssetInterface;
 use Thor\Configuration\Configuration;
 use Thor\Configuration\ConfigurationFromFile;
-use Thor\Framework\Configuration\TwigConfiguration;
-use Thor\Framework\Configuration\RoutesConfiguration;
+use Thor\Framework\Configurations\TwigConfiguration;
+use Thor\Framework\Configurations\RoutesConfiguration;
 
 final class AssetsListFactory
 {

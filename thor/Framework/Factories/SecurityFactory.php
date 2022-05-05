@@ -7,7 +7,7 @@ use Thor\Http\Server\HttpServer;
 use Thor\Configuration\Configuration;
 use Thor\Framework\Security\HttpSecurity;
 use Thor\Security\{Firewall, SecurityInterface};
-use Thor\Framework\Configuration\SecurityConfiguration;
+use Thor\Framework\Configurations\SecurityConfiguration;
 
 /**
  * A factory to create the security context and firewalls from configuration.

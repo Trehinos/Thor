@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Framework\Configuration;
+namespace Thor\Framework\Configurations;
 
 use Thor\Http\Server\HttpServer;
 use Thor\Security\SecurityInterface;

@@ -14,7 +14,7 @@ use Thor\Framework\Security\DbUser;
 use Thor\Configuration\ThorConfiguration;
 use Thor\Framework\Factories\RouterFactory;
 use Thor\Configuration\ConfigurationFromFile;
-use Thor\Framework\Configuration\RoutesConfiguration;
+use Thor\Framework\Configurations\RoutesConfiguration;
 use Thor\Database\PdoExtension\{PdoMigrator, PdoRequester};
 use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, SchemaHelper, Driver\Sqlite};
 use Thor\Cli\{Daemon, Command, CliKernel, DaemonState, Console\Mode, Console\Color};

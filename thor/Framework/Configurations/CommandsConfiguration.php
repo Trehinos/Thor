@@ -1,6 +1,8 @@
 <?php
 
-namespace Thor\Configuration;
+namespace Thor\Framework\Configurations;
+
+use Thor\Configuration\ConfigurationFromFile;
 
 final class CommandsConfiguration extends ConfigurationFromFile
 {

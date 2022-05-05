@@ -11,8 +11,8 @@ use Thor\Http\Request\HttpMethod;
 use Thor\Configuration\ThorConfiguration;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Configuration\ConfigurationFromFile;
-use Thor\Framework\Configuration\SecurityConfiguration;
-use Thor\Framework\Configuration\DatabasesConfiguration;
+use Thor\Framework\Configurations\SecurityConfiguration;
+use Thor\Framework\Configurations\DatabasesConfiguration;
 use Thor\Configuration\Configuration as YmlConfiguration;
 
 final class Configuration extends WebController
