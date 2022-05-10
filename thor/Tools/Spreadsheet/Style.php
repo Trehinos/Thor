@@ -55,7 +55,7 @@ final class Style
         }
     }
 
-    public function createStyle(
+    public static function createStyle(
         string $fontName = 'Calibri',
         int $size = 10,
         ?Color $fontColor = null,
