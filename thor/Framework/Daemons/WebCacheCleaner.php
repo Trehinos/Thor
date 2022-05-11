@@ -19,11 +19,12 @@ final class WebCacheCleaner extends Daemon
 
         $limit = (Thor::isDev())
             ? (new DateTime())->sub(new DateInterval('PT5M'))
-            : (new DateTime())->sub(new DateInterval($configuration['assets_cache_ttl'] ?? 'PT24H'));
+            : (new DateTime())->sub(new DateInterval($configuration['assets_cache_ttl'] ?? 'P1D'));
 
-        if (file_exists(Globals::WEB_DIR . $configuration['assets_cache'])) {
+        $assets_cache = Globals::WEB_DIR . $configuration['assets_cache'];
+        if (file_exists($assets_cache)) {
             Folder::removeTree(
-                             Globals::WEB_DIR . $configuration['assets_cache'],
+                $assets_cache,
                 removeFirst: false,
                 removeCondition: fn(string $filename) => $limit->format('YmdHis') >= date(
                         'YmdHis',
@@ -31,9 +32,11 @@ final class WebCacheCleaner extends Daemon
                     )
             );
         }
-        if (file_exists(Globals::VAR_DIR . $configuration['cache_dir'])) {
+
+        $cache_dir = Globals::VAR_DIR . $configuration['cache_dir'];
+        if (file_exists($cache_dir)) {
             Folder::removeTree(
-                             Globals::VAR_DIR . $configuration['cache_dir'],
+                $cache_dir,
                 removeFirst: false,
                 removeCondition: fn(string $filename) => $limit->format('YmdHis') >= date(
                         'YmdHis',
@@ -41,7 +44,7 @@ final class WebCacheCleaner extends Daemon
                     )
             );
             Folder::removeTree(
-                             Globals::VAR_DIR . $configuration['cache_dir'],
+                $cache_dir,
                 removeCondition: fn(string $filename) => is_dir($filename) && empty(Folder::fileList($filename))
             );
         }
