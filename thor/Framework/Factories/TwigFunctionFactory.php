@@ -2,6 +2,7 @@
 
 namespace Thor\Framework\Factories;
 
+use Thor\Tools\Guid;
 use Twig\TwigFunction;
 use Thor\Web\WebServer;
 use Thor\Web\Assets\Asset;
@@ -176,7 +177,7 @@ final class TwigFunctionFactory
     {
         return new TwigFunction(
             'uuid',
-            fn(?int $size = null) => bin2hex(random_bytes($size ?? $defaultSize))
+            fn(?int $size = null) => Guid::hex($size ?? $defaultSize)
         );
     }
 

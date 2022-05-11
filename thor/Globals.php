@@ -2,6 +2,8 @@
 
 namespace Thor;
 
+use Thor\Tools\Strings;
+
 /**
  * Defines some of Thor's common paths.
  *
@@ -54,4 +56,36 @@ final class Globals
      * This files can be deleted without implication on Thor's or project's features.
      */
     const VAR_DIR = self::CODE_DIR . 'var/';
+
+    /**
+     * Substitutes `{CONST_NAME}_DIR` in **$pathString** with corresponding `Globals::CONST_NAME_DIR`.
+     *
+     * ### Example :
+     * ```php
+     * Globals::path('{VAR}exports/export.xlsx'); // === Globals::VAR_DIR . 'exports/export.xlsx'
+     * ```
+     *
+     * @param string $pathString
+     *
+     * @return string
+     *
+     * @example Globals::path('{VAR}foo/bar.baz') === Globals::VAR_DIR . 'foo/bar.baz'
+     *
+     * @see     Strings::interpolate()
+     *
+     */
+    public static function path(string $pathString): string
+    {
+        return Strings::interpolate($pathString, [
+            'CODE'      => realpath(self::CODE_DIR),
+            'BIN'       => realpath(self::BIN_DIR),
+            'RESOURCES' => realpath(self::RESOURCES_DIR),
+            'CONFIG'    => realpath(self::CONFIG_DIR),
+            'STATIC'    => realpath(self::STATIC_DIR),
+            'WEB'       => realpath(self::WEB_DIR),
+            'VENDORS'   => realpath(self::VENDORS_DIR),
+            'VAR'       => realpath(self::VAR_DIR),
+        ]);
+    }
+
 }

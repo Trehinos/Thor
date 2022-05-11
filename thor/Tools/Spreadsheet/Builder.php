@@ -22,6 +22,12 @@ final class Builder
     }
 
     /**
+     * @param mixed       $value
+     * @param string      $coordinates "Xy" or "x:y"
+     * @param int|null    $sheetIndex
+     * @param string|null $style
+     *
+     * @return Builder
      * @throws PhpSpreadsheetException
      */
     public function cell(mixed $value, string $coordinates, ?int $sheetIndex = null, ?string $style = null): self
@@ -30,7 +36,12 @@ final class Builder
             ? $this->spreadsheet->getActiveSheet()
             : $this->spreadsheet->getSheet($sheetIndex);
 
-        $cell = $worksheet->getCell($coordinates);
+        if (str_contains(':', $coordinates)) {
+            [$column, $row] = explode(':', $coordinates);
+            $cell = $worksheet->getCellByColumnAndRow($column, $row);
+        } else {
+            $cell = $worksheet->getCell($coordinates);
+        }
         $cell->setValue($value);
         if ($style !== null) {
             $this->styles->getStyle($style)?->apply($cell);
