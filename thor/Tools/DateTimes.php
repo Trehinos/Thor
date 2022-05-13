@@ -2,8 +2,11 @@
 
 namespace Thor\Tools;
 
-use DateTime;
+use Exception;
+use DatePeriod;
+use DateInterval;
 use DateTimeInterface;
+use DateTimeImmutable;
 
 /**
  * Provides some Date and Time utilities.
@@ -30,7 +33,7 @@ final class DateTimes
         DateTimeInterface $date,
         string $dateFormat = 'Y-m-d',
         string $yesterday = 'Yesterday',
-        DateTimeInterface $relativeTo = new \DateTimeImmutable()
+        DateTimeInterface $relativeTo = new DateTimeImmutable()
     ): string {
         $diff = $date->diff($relativeTo);
         if ($diff->format('%a%H%I%S') > 1000000) {
@@ -41,6 +44,22 @@ final class DateTimes
             $prefix = "$yesterday ";
         }
         return $prefix . $date->format('H:i');
+    }
+
+    /**
+     * Returns a DatePeriod between $start and $end with 1-day interval.
+     *
+     * Il $end is not specified, it will be the last day of $start's month.
+     *
+     * @throws Exception if $interval is not a valid interval string.
+     */
+    public static function period(
+        DateTimeImmutable $start,
+        ?DateTimeInterface $end = null,
+        string $interval = 'P1D'
+    ): DatePeriod {
+        $end ??= $start->modify('last day of this month');
+        return new DatePeriod($start, new DateInterval($interval), $end);
     }
 
 }
