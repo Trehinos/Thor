@@ -47,18 +47,21 @@ final class DateTimes
     }
 
     /**
-     * Returns a DatePeriod between $start and $end with 1-day interval.
+     * Returns a DatePeriod between $start and $end with $interval interval.
      *
      * Il $end is not specified, it will be the last day of $start's month.
      *
      * @throws Exception if $interval is not a valid interval string.
      */
     public static function period(
-        DateTimeImmutable $start,
+        DateTimeInterface $start,
         ?DateTimeInterface $end = null,
         string $interval = 'P1D'
     ): DatePeriod {
-        $end ??= $start->modify('last day of this month');
+        if ($end === null) {
+            $end = clone $start;
+            $end = $end->modify('last day of this month');
+        }
         return new DatePeriod($start, new DateInterval($interval), $end);
     }
 
