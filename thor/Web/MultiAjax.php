@@ -5,7 +5,6 @@ namespace Thor\Web;
 use JsonException;
 use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
-use Thor\Http\Routing\Route;
 use Thor\Http\Response\Response;
 use Thor\Http\Response\HttpStatus;
 use Thor\Http\Response\ResponseFactory;
@@ -40,9 +39,9 @@ class MultiAjax extends WebController
     {
         return ResponseFactory::json([
             array_map(
-                fn(mixed $dataChunk) => ResponseFactory::json(
-                    $dataChunk,
-                    $dataChunk === null
+                fn(mixed $responseData) => ResponseFactory::json(
+                    $responseData,
+                    $responseData === null
                         ? ($defaultStatus === HttpStatus::OK ? HttpStatus::NO_CONTENT : $defaultStatus)
                         : ($defaultStatus === HttpStatus::NO_CONTENT ? HttpStatus::OK : $defaultStatus)
                 )->getRaw(),
@@ -71,8 +70,8 @@ class MultiAjax extends WebController
                 'controller' => $cClass,
                 'method'     => $cMethod,
             ]);
-            $controller = new $cClass($this->httpServer);
-            $responses[] = $controller->$cMethod(...array_values($this->route->getFilledParams()));
+            $controller = new $cClass($this->getServer());
+            $responses[] = $controller->$cMethod(...array_values($route->getFilledParams()));
         }
 
         return $this->multiResponse(HttpStatus::OK, $responses);
