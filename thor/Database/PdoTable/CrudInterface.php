@@ -46,6 +46,18 @@ interface CrudInterface
     public function table(): string;
 
     /**
+     * Gets one/some/all column(s) of one row.
+     *
+     * Returns `null` if the row has not been found.
+     *
+     * @param Criteria          $criteria
+     * @param array|string|null $columns
+     *
+     * @return ?array
+     */
+    public function read(Criteria $criteria, array|string|null $columns = null): ?array;
+
+    /**
      * Gets one row from its primary keys.
      *
      * Returns `null` if the row has not been found.

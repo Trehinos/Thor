@@ -5,8 +5,10 @@ namespace Thor\Database\PdoExtension;
 use JetBrains\PhpStorm\Pure;
 use Thor\Database\PdoTable\Criteria;
 
+use function PHPUnit\Framework\matches;
+
 /**
- * Class CrudHelper : SQL CRUD operation requester for PdoRows.
+ * For class CrudHelper : SQL CRUD operation requester for PdoRows.
  *
  * @package Thor\Database\Sql
  */
@@ -89,16 +91,29 @@ final class PdoArrayCrud
         return $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES $marks", $allValues);
     }
 
-    public function readOne(array $primaries): mixed
+    public function readOne(array $primaries): ?array
     {
         return $this->readOneBy($this->primaryArrayToCriteria($primaries));
     }
 
-    public function readOneBy(Criteria $criteria): mixed
+    public function read(Criteria $criteria, array|string|null $columns = null): ?array
     {
+        $columnSql = match (true) {
+            is_null($columns)   => '*',
+            is_string($columns) => "$columns",
+            is_array($columns)  => implode(
+                ', ',
+                array_map(
+                    fn(string $column, ?string $alias = null) => $alias ? "$column as $alias" : $column,
+                    array_values($columns),
+                    array_keys($columns)
+                )
+            )
+        };
+
         $sql = Criteria::getWhere($criteria);
         $row = $this->requester->request(
-                "SELECT * FROM {$this->table()} $sql",
+                "SELECT $columnSql FROM {$this->table()} $sql",
                 $criteria->getParams()
             )->fetch() ?? [];
 
@@ -107,6 +122,11 @@ final class PdoArrayCrud
         }
 
         return $row;
+    }
+
+    public function readOneBy(Criteria $criteria): ?array
+    {
+        return $this->read($criteria);
     }
 
     private function primaryArrayToCriteria(array $primaries): Criteria
