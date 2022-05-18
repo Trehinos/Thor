@@ -44,7 +44,7 @@ final class Strings
     {
         $replace = [];
         foreach ($context as $key => $val) {
-            if (is_string($val) || $val instanceof Stringable) {
+            if (is_scalar($val) || $val instanceof Stringable) {
                 if ($phpStyle) {
                     $replace["\$$key"] = $val;
                     continue;
