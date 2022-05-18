@@ -22,6 +22,11 @@ final class DateTimes
     {
     }
 
+    public static function format(string $date, string $from = 'Y-m-d', string $to = 'd/m/Y'): string
+    {
+        return DateTimeImmutable::createFromFormat($from, $date)->format($to);
+    }
+
     /**
      * Returns a string from a DateTimeInterface, accordingly to relative time
      * between $relativeTo (default is now) and $date :
