@@ -39,6 +39,8 @@ final class Strings
      * * If $phpStyle parameter is set true : Replaces all $key in $message string by $context[key] value.
      *
      * Values in $context MUST not be arrays or objects (or they MUST define a __toString() method).
+     *
+     * @param array<string, scalar|Stringable> $context
      */
     public static function interpolate(string $string, array $context = [], bool $phpStyle = false): string
     {
