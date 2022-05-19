@@ -27,7 +27,6 @@ final class CrudHelper implements CrudInterface
 {
 
     private PdoArrayCrud $arrayCrud;
-    private string $tableName;
     private array $primary;
 
     /**
@@ -43,9 +42,9 @@ final class CrudHelper implements CrudInterface
         if (!class_exists($this->className) || !in_array(PdoRowInterface::class, class_implements($this->className))) {
             throw new TypeError("{$this->className} class not found or not implementing PdoRowInterface...");
         }
-        $this->tableName = ($this->className)::getPdoTable()->getTableName();
+        $tableName = ($this->className)::getPdoTable()->getTableName();
         $this->primary = ($this->className)::getPrimaryKeys();
-        $this->arrayCrud = new PdoArrayCrud($this->tableName, $this->primary, $requester);
+        $this->arrayCrud = new PdoArrayCrud($tableName, $this->primary, $requester);
     }
 
     /**
@@ -67,7 +66,7 @@ final class CrudHelper implements CrudInterface
     #[Pure]
     public function table(): string
     {
-        return $this->tableName;
+        return $this->arrayCrud->table();
     }
 
     /**
