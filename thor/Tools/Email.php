@@ -48,6 +48,8 @@ class Email
     public function file(string $filepath, ?string $filename = null,): array
     {
         $this->files[$filename ?? basename($filepath)] = $filepath;
+
+        return $this->files;
     }
 
     public function from(?string $from = null): string
