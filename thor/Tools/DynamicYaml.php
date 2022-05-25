@@ -42,10 +42,11 @@ final class DynamicYaml
         }
     }
 
-    public static function test(): void
+    public static function withAutoContext(string $filename, ?string $key = null): array
     {
-        $data = DynamicYaml::fromFile('', fn(array $dataFromFile) => array_map(
-            fn(array $claimType) => $claimType['type'],
+        return DynamicYaml::fromFile($filename, fn(array $dataFromFile) => array_map(
+            fn(string|int $index, array $element) => $key === null ? $index : $element[$key],
+            array_keys($dataFromFile),
             $dataFromFile
         ));
     }
