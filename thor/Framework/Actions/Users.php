@@ -57,7 +57,7 @@ final class Users extends WebController
     public function usersInterface(): Response
     {
         return $this->twigResponse(
-            'pages/users.html.twig',
+            'thor/pages/users.html.twig',
             [
                 'users' => $this->manager->getUserCrud()->listAll(),
             ],
@@ -70,7 +70,7 @@ final class Users extends WebController
     public function usersTable(): Response
     {
         return $this->twigResponse(
-            'pages/datatable.html.twig',
+            'thor/pages/datatable.html.twig',
             [
                 'table' => $this->userTable->getDataTable(['hash' => 'Mot de passe']),
             ]
@@ -89,7 +89,7 @@ final class Users extends WebController
     public function createForm(): Response
     {
         return $this->twigResponse(
-            'pages/users_modals/create.html.twig',
+            'thor/pages/users_modals/create.html.twig',
             [
                 'generatedPassword' => UserManager::generatePassword(),
                 'permissions'       => UserManager::getPermissions(),
@@ -131,7 +131,7 @@ final class Users extends WebController
         $user = $this->manager->getUserCrud()->readOneBy(new Criteria(['public_id' => $public_id]));
 
         return $this->twigResponse(
-            'pages/users_modals/edit.html.twig',
+            'thor/pages/users_modals/edit.html.twig',
             [
                 'user'        => $user,
                 'permissions' => UserManager::getPermissions(),
@@ -173,7 +173,7 @@ final class Users extends WebController
         $user = $this->manager->getUserCrud()->readOneBy(new Criteria(['public_id' => $public_id]));
 
         return $this->twigResponse(
-            'pages/users_modals/change-password.html.twig',
+            'thor/pages/users_modals/change-password.html.twig',
             [
                 'user'              => $user,
                 'generatedPassword' => UserManager::generatePassword(),
@@ -227,7 +227,7 @@ final class Users extends WebController
         $user = $this->manager->getUserCrud()->readOneBy(new Criteria(['public_id' => $public_id]));
 
         return $this->twigResponse(
-            'pages/users_modals/parameters.html.twig',
+            'thor/pages/users_modals/parameters.html.twig',
             [
                 'user' => $user,
                 'parameters' => (new ConfigurationFromFile('user-parameters', true))->getArrayCopy()

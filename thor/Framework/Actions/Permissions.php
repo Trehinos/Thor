@@ -33,7 +33,7 @@ final class Permissions extends WebController
     public function permissionsForm(): ResponseInterface
     {
         return $this->twigResponse(
-            'pages/permissions.html.twig',
+            'thor/pages/permissions.html.twig',
             [
                 'permissions' => UserManager::getPermissions(),
                 'languages'   => UserManager::getLanguages(),

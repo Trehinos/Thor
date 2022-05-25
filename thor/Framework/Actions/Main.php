@@ -22,13 +22,13 @@ final class Main extends WebController
     #[Route('index', '/', HttpMethod::GET)]
     public function index(): Response
     {
-        return $this->twigResponse('page.html.twig', ['menuItem' => $this->get('menuItem')]);
+        return $this->twigResponse('thor/page.html.twig', ['menuItem' => $this->get('menuItem')]);
     }
 
     #[Route('index-page', '/index', HttpMethod::GET)]
     public function indexPage(): Response
     {
-        return $this->twigResponse('pages/index.html.twig');
+        return $this->twigResponse('thor/pages/index.html.twig');
     }
 
     #[Route('help', '/help', HttpMethod::GET)]
@@ -40,7 +40,7 @@ final class Main extends WebController
     #[Route('documentation', '/documentation', HttpMethod::GET)]
     public function documentationPage(): Response
     {
-        return $this->twigResponse('pages/documentation.html.twig');
+        return $this->twigResponse('thor/pages/documentation.html.twig');
     }
 
     #[Route('menu')]
@@ -57,19 +57,19 @@ final class Main extends WebController
     #[Route('changelog', '/changelog', HttpMethod::GET)]
     public function changelog(): Response
     {
-        return $this->twigResponse('pages/changelog.html.twig');
+        return $this->twigResponse('thor/pages/changelog.html.twig');
     }
 
     #[Route('about', '/about', HttpMethod::GET)]
     public function about(): Response
     {
-        return $this->twigResponse('pages/about.html.twig');
+        return $this->twigResponse('thor/pages/about.html.twig');
     }
 
     #[Route('legal', '/legal', HttpMethod::GET)]
     public function legal(): Response
     {
-        return $this->twigResponse('pages/legal.html.twig');
+        return $this->twigResponse('thor/pages/legal.html.twig');
     }
 
 }

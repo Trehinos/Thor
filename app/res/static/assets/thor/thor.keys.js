@@ -5,7 +5,6 @@ const KeyMapper = {
     KEY_ONLY: "",
     bindings: {},
     onKeyDown: (e) => {
-        console.log(e.key);
         if (KeyMapper.bindings.hasOwnProperty(e.key)) {
             if (
                 KeyMapper.bindings[e.key].modifiers.shift && !e.shiftKey ||

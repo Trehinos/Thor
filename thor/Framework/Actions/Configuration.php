@@ -39,7 +39,7 @@ final class Configuration extends WebController
                 'env'              => 'DEV / DEBUG / PROD : affichage des erreurs et logs',
                 'lang'             => 'fr / en : langue du système',
                 'timezone'         => 'Fuseau horaire par défaut pour les opérations de date',
-                'log_path'         => 'Relatif à <code>' . realpath(Globals::CODE_DIR) . '/</code>',
+                'log_path'         => 'Relatif à <code>' . realpath(Globals::VAR_DIR) . '/</code>',
                 'thor_kernel'      => 'Kernel actuel <small><i class="fas fa-info-circle text-info"></i> informatif, ne peut pas être changé</small>',
             ],
         ]);
