@@ -5,6 +5,7 @@ namespace Thor\Http\Routing;
 use Attribute;
 use Thor\Tools\Strings;
 use Thor\Http\Request\HttpMethod;
+use Thor\Tools\PlaceholderFormat;
 use Thor\Security\Authorization\Authorization;
 
 /**
@@ -109,7 +110,7 @@ final class Route
      */
     public function url(array $parameters): string
     {
-        $path = Strings::interpolate($this->path, $parameters, true);
+        $path = Strings::interpolate($this->path, $parameters, PlaceholderFormat::SIGIL);
         return "/index.php$path";
     }
 

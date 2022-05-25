@@ -27,7 +27,7 @@ final class Strings
      *
      * @return string tail
      */
-    public static function split(string $stringToSplit, string $delimiter, string& $head): string
+    public static function split(string $stringToSplit, string $delimiter, string &$head): string
     {
         $parts = explode($delimiter, $stringToSplit);
         $head = $parts[0] ?? '';
@@ -35,23 +35,19 @@ final class Strings
     }
 
     /**
-     * * If $phpStyle parameter is set false (default) : Replaces all {key} in $message string by $context[key] value.
-     * * If $phpStyle parameter is set true : Replaces all $key in $message string by $context[key] value.
-     *
      * Values in $context MUST not be arrays or objects (or they MUST define a __toString() method).
      *
      * @param array<string, scalar|Stringable> $context
      */
-    public static function interpolate(string $string, array $context = [], bool $phpStyle = false): string
-    {
+    public static function interpolate(
+        string $string,
+        array $context = [],
+        PlaceholderFormat $placeholder = PlaceholderFormat::BRACES
+    ): string {
         $replace = [];
         foreach ($context as $key => $val) {
             if (is_scalar($val) || $val instanceof Stringable) {
-                if ($phpStyle) {
-                    $replace["\$$key"] = $val;
-                    continue;
-                }
-                $replace['{' . $key . '}'] = $val;
+                $placeholder->replace($replace, $key, $val);
             }
         }
         return strtr($string, $replace);
