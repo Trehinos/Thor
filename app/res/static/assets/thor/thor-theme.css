@@ -127,9 +127,6 @@ Main elements of Thor on pages
 Bootstrap overrides
  */
 
-.fa-li {
-    top: 7px;
-}
 .modal-header {
     background: #666;
     color: #fff;
@@ -178,8 +175,4 @@ Thor elements
 
 ul.fa-ul li .badge {
     vertical-align: middle;
-}
-
-ul.fa-ul .fa-li, ul.fa-ul li .badge {
-    margin-top: -3px;
 }

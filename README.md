@@ -30,14 +30,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
     * **Twig** template system.
     * **Multilingual** static and **dynamic** strings (`"xxx"|_()` Twig filter and `DICT` global variable).
     * Extensible application with custom **kernels**.
-    * PSR inspired interfaces
-        * `PSR-3` Logger
-        * `PSR-4` Auto-loading (with **composer**)
-        * `PSR-7` HTTP Message
-        * `PSR-12` Code Style
-        * `PSR-15` HTTP Handler
-        * `PSR-16` SimpleCache (*in memory* implementation)
-        * `PSR-18` HTTP Client
+    * PSR inspired interfaces.
     * Base **web application** to develop a corporate work :
         * Index, legal, about and changelog pages.
         * **Menu** system with icons and authorizations.
@@ -52,7 +45,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
         * `route/` : `set` / `list`.
         * `database/migrate`
     * Daemons and daemons control :
-        * `start` / `stop` / `status` : enable or disable a daemon.
+        * `start` / `stop` / `status` / `run` : enable, disable, execute or get info of a daemon.
         * `kill` / `reset` : stop execution or reset state.
 
 ## Dependencies

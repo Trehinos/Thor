@@ -5,7 +5,7 @@
 {% block modal_body %}
     <form id="form-parameters" action="{{ url('user-parameters-action', {public_id: user.publicId}) }}" method="POST">
         {% for parameter in parameters %}
-            {% include 'fragments/parameter.html.twig' %}
+            {% include 'thor/fragments/parameter.html.twig' %}
         {% else %}
             <div class="alert alert-warning">
                 {{ icon('info-circle') }} aucun paramètre...

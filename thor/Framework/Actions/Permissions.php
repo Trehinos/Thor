@@ -75,7 +75,7 @@ final class Permissions extends WebController
     public function addPermissionLine(): ResponseInterface
     {
         return $this->twigResponse(
-            'fragments/permission.html.twig',
+            'thor/fragments/permission.html.twig',
             [
                 'permission' => array_map(
                     UserManager::getPermissionLabelsFunction(),
