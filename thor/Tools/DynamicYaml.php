@@ -2,6 +2,7 @@
 
 namespace Thor\Tools;
 
+use Stringable;
 use Symfony\Component\Yaml\Yaml;
 
 final class DynamicYaml
@@ -9,6 +10,21 @@ final class DynamicYaml
 
     private function __construct()
     {
+    }
+
+    public static function withAutoContext(string $filename, ?string $key = null, ?callable $selector = null): array
+    {
+        return self::fromFile(
+            $filename,
+            fn(array $dataFromFile) => array_combine(
+                $key === null
+                    ? array_keys($dataFromFile)
+                    : array_map(fn(array $element) => $element[$key] ?? null, $dataFromFile),
+                $selector === null
+                    ? array_values($dataFromFile)
+                    : array_map($selector, $dataFromFile)
+            )
+        );
     }
 
     /**
@@ -29,36 +45,42 @@ final class DynamicYaml
         } else {
             $arrContext = $context;
         }
-        self::interpolateData($data, $arrContext, $format);
+        foreach ($arrContext as $k => $v) {
+            $arrContext[$k] = self::interpolateData($v ?? [], $arrContext, $format);
+        }
+        return self::interpolateData($data, $arrContext, $format);
+    }
+
+    private static function interpolateData(array $data, array $context, PlaceholderFormat $format): array
+    {
+        foreach ($data as $k => $v) {
+            if (is_array($v)) {
+                $v = self::interpolateData($v, $context, $format);
+                $data[$k] = $v;
+                continue;
+            }
+
+            $data[$k] = self::interpolate($v, $context, $format);
+        }
 
         return $data;
     }
 
-    private static function interpolateData(array &$data, array $context, PlaceholderFormat $format): void
-    {
-        foreach ($data as $k => $v) {
-            if (is_array($v)) {
-                self::interpolateData($v, $context, $format);
-                $data[$k] = $v;
-                continue;
+    private static function interpolate(
+        string $string,
+        array $context,
+        PlaceholderFormat $placeholder
+    ): string|array {
+        $replace = [];
+        foreach ($context as $key => $val) {
+            if (is_scalar($val) || $val instanceof Stringable) {
+                $placeholder->setReplace($replace, $key, $val);
+            } elseif (is_array($val) && $placeholder->matches($key, $string)) {
+                return $val;
             }
-            $data[$k] = Strings::interpolate($v, $context, $format);
         }
-    }
 
-    public static function withAutoContext(string $filename, ?string $key = null,  ?callable $selector = null): array
-    {
-        return self::fromFile(
-            $filename,
-            fn(array $dataFromFile) => array_combine(
-                $key === null
-                    ? array_keys($dataFromFile)
-                    : array_map(fn(array $element) => $element[$key], $dataFromFile),
-                $selector === null
-                    ? array_values($dataFromFile)
-                    : array_map($selector, $dataFromFile)
-            )
-        );
+        return strtr($string, $replace);
     }
 
 }

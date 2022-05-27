@@ -27,6 +27,17 @@ enum PlaceholderFormat
     case BRACKETS;
     case ESCAPE;
 
+    public function format(string $key): string
+    {
+        return match($this) {
+            self::SIGIL    => "\$$key",
+            self::CURLY    => '{' . "$key}",
+            self::SHELL    => "\${" . "$key}",
+            self::BRACKETS => "[=$key]",
+            self::ESCAPE   => "\\($key)",
+        };
+    }
+
     public function setReplace(array &$replaces, string $key, mixed $value): void
     {
         $replaces[match ($this) {
@@ -36,6 +47,11 @@ enum PlaceholderFormat
             self::BRACKETS => "[=$key]",
             self::ESCAPE   => "\\($key)",
         }] = $value;
+    }
+
+    public function matches(string $key, string $str): bool
+    {
+        return $this->format($key) === $str;
     }
 
 }
