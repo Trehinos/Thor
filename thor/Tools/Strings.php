@@ -35,27 +35,25 @@ final class Strings
     }
 
     /**
-     * Values in $context MUST not be arrays or objects (or they MUST define a __toString() method).
-     *
      * @param array<string, scalar|Stringable> $context
      */
     public static function interpolate(
         string $string,
         array $context = [],
-        PlaceholderFormat $placeholder = PlaceholderFormat::BRACES
+        PlaceholderFormat $placeholder = PlaceholderFormat::CURLY
     ): string {
         $replace = [];
         foreach ($context as $key => $val) {
             if (is_scalar($val) || $val instanceof Stringable) {
-                $placeholder->replace($replace, $key, $val);
+                $placeholder->setReplace($replace, $key, $val);
             }
         }
         return strtr($string, $replace);
     }
 
     /**
-     *  - If `$str !== '' && $str !== null` :  `return $prefix . $str`,
-     *  - otherwise : `return ''`.
+     *  - If `$str !== '' && $str !== null` :  returns `"$prefix$str"`,
+     *  - otherwise : returns `''`.
      */
     public static function prefix(string $prefix, ?string $str): string
     {
@@ -66,8 +64,8 @@ final class Strings
     }
 
     /**
-     *  - If `$str !== '' && $str !== null` :  `return $str . $suffix`,
-     *  - otherwise : `return ''`.
+     *  - If `$str !== '' && $str !== null` :  returns `"$str$suffix"`,
+     *  - otherwise : returns `''`.
      */
     public static function suffix(?string $str, string $suffix): string
     {

@@ -3,38 +3,38 @@
 namespace Thor\Tools;
 
 /**
- * ## SIGIL
- * Format : "Your name is $name."
+ * * SIGIL
+ *   Format : "Your name is $name."
  *
- * ## BRACES
+ * * CURLY
  * Format : "Your name is {name}."
  *
- * ## BASH_STYLE
+ * * SHELL
  * Format : "Your name is ${name}."
  *
- * ## BRACKETS
+ * * BRACKETS
  * Format : "Your name is [=name]."
  *
- * ## ESCAPE
- * Format : "Your name is \(name)."
+ * * ESCAPE
+ * Format : "Your name is \\(name)."
  */
 enum PlaceholderFormat
 {
 
     case SIGIL;
-    case BRACES;
-    case BASH_STYLE;
+    case CURLY;
+    case SHELL;
     case BRACKETS;
     case ESCAPE;
 
-    public function replace(array &$replaces, string $key, mixed $value): void
+    public function setReplace(array &$replaces, string $key, mixed $value): void
     {
         $replaces[match ($this) {
-            self::SIGIL => "\$$key",
-            self::BRACES => '{' . "$key}",
-            self::BASH_STYLE => "\${" . "$key}",
+            self::SIGIL    => "\$$key",
+            self::CURLY    => '{' . "$key}",
+            self::SHELL    => "\${" . "$key}",
             self::BRACKETS => "[=$key]",
-            self::ESCAPE => "\\($key)",
+            self::ESCAPE   => "\\($key)",
         }] = $value;
     }
 

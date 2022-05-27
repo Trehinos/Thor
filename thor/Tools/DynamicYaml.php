@@ -12,43 +12,53 @@ final class DynamicYaml
     }
 
     /**
-     * @param string         $filename
-     * @param callable|array $context (array): array
+     * @param string            $filename
+     * @param callable|array    $context fn (array): array
+     * @param PlaceholderFormat $format
      *
      * @return array
      */
-    public static function fromFile(string $filename, callable|array $context = []): array
-    {
+    public static function fromFile(
+        string $filename,
+        callable|array $context = [],
+        PlaceholderFormat $format = PlaceholderFormat::SHELL
+    ): array {
         $data = Yaml::parseFile($filename);
         if (is_callable($context)) {
             $arrContext = $context($data);
         } else {
             $arrContext = $context;
         }
-        self::interpolateData($data, $arrContext);
+        self::interpolateData($data, $arrContext, $format);
 
         return $data;
     }
 
-    private static function interpolateData(array &$data, array $context): void
+    private static function interpolateData(array &$data, array $context, PlaceholderFormat $format): void
     {
         foreach ($data as $k => $v) {
             if (is_array($v)) {
-                self::interpolateData($v, $context);
+                self::interpolateData($v, $context, $format);
                 $data[$k] = $v;
                 continue;
             }
-            $data[$k] = Strings::interpolate($v, $context, PlaceholderFormat::BASH_STYLE);
+            $data[$k] = Strings::interpolate($v, $context, $format);
         }
     }
 
-    public static function withAutoContext(string $filename, ?string $key = null): array
+    public static function withAutoContext(string $filename, ?string $key = null,  ?callable $selector = null): array
     {
-        return DynamicYaml::fromFile($filename, fn(array $dataFromFile) => array_map(
-            fn(string|int $index, array $element) => $key === null ? $index : $element[$key],
-            array_keys($dataFromFile),
-            $dataFromFile
-        ));
+        return self::fromFile(
+            $filename,
+            fn(array $dataFromFile) => array_combine(
+                $key === null
+                    ? array_keys($dataFromFile)
+                    : fn(array $element) => $element[$key],
+                $selector === null
+                    ? array_values($dataFromFile)
+                    : array_map($selector, $dataFromFile)
+            )
+        );
     }
 
 }
