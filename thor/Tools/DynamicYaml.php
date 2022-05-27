@@ -53,7 +53,7 @@ final class DynamicYaml
             fn(array $dataFromFile) => array_combine(
                 $key === null
                     ? array_keys($dataFromFile)
-                    : fn(array $element) => $element[$key],
+                    : array_map(fn(array $element) => $element[$key], $dataFromFile),
                 $selector === null
                     ? array_values($dataFromFile)
                     : array_map($selector, $dataFromFile)
