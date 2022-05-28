@@ -114,7 +114,9 @@ final class CliKernel implements KernelInterface
     /**
      * Construct a CliKernel with database and commands configuration.
      *
-     * @param array $config ['database' => 'array', 'commands' => 'array']
+     * @param Configuration $config ['database' => 'array', 'commands' => 'array']
+     *
+     * @return CliKernel
      */
     public static function createFromConfiguration(
         Configuration $config
@@ -226,7 +228,7 @@ final class CliKernel implements KernelInterface
                 ->mode(Mode::UNDERSCORE)
                 ->write('Write ')
                 ->fColor(Color::GREEN)->write('-help')
-                ->fColor(Color::GRAY)->writeln(' to see a list of valid commands.')
+                ->fColor()->writeln(' to see a list of valid commands.')
                 ->writeln()
             ;
             return;

@@ -64,7 +64,7 @@ final class Configuration extends WebController
             try {
                 $pdoHandler->getPdo();
                 $status[$name] = true;
-            } catch (PDOException $e) {
+            } catch (PDOException) {
                 $status[$name] = false;
             }
         }

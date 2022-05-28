@@ -2,7 +2,6 @@
 
 namespace Thor\Http\Response;
 
-use InvalidArgumentException;
 use Thor\Http\MessageInterface;
 
 /**

@@ -30,7 +30,7 @@ final class PasswordHasher
         string $password,
         string $algo = PASSWORD_ARGON2ID,
         array $options = []
-    ) {
+    ): string {
         return (new self($algo, $options))->hash($password);
     }
 

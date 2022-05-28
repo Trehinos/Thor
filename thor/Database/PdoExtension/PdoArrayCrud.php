@@ -5,8 +5,6 @@ namespace Thor\Database\PdoExtension;
 use JetBrains\PhpStorm\Pure;
 use Thor\Database\PdoTable\Criteria;
 
-use function PHPUnit\Framework\matches;
-
 /**
  * For class CrudHelper : SQL CRUD operation requester for PdoRows.
  *
@@ -140,7 +138,7 @@ final class PdoArrayCrud
     }
 
 
-    public function readOneFromPid(string $pid): mixed
+    public function readOneFromPid(string $pid): ?array
     {
         return $this->readOneBy(new Criteria(['public_id' => $pid]));
     }

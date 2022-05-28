@@ -2,6 +2,7 @@
 
 namespace Thor\Web\Assets;
 
+use InvalidArgumentException;
 use JetBrains\PhpStorm\ArrayShape;
 
 enum AssetType
@@ -59,7 +60,7 @@ enum AssetType
             'gif' => self::IMAGE_GIF,
             'bmp' => self::IMAGE_BMP,
             'jpg', 'jpeg' => self::IMAGE_JPEG,
-            default => throw new \InvalidArgumentException("Invalid asset type [$type]")
+            default => throw new InvalidArgumentException("Invalid asset type [$type]")
         };
     }
 

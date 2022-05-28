@@ -45,7 +45,7 @@ class CachedAsset extends MergedAsset
         return !file_exists($this->getCacheFilename())
                || (
                    $this->ttl !== null &&
-                   (new \DateTimeImmutable())->sub($this->ttl) > DateTimeImmutable::createFromFormat(
+                   (new DateTimeImmutable())->sub($this->ttl) > DateTimeImmutable::createFromFormat(
                        'U',
                        filemtime($this->getCacheFilename())
                    )
@@ -68,11 +68,6 @@ class CachedAsset extends MergedAsset
     public function getFilename(): string
     {
         return "{$this->name}.{$this->type->getExtension()}";
-    }
-
-    public function getContent(): string
-    {
-        return parent::getContent();
     }
 
 }

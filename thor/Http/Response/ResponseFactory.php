@@ -431,6 +431,8 @@ final class ResponseFactory
      *
      * Indicates that the server is not ready to respond. The response MUST contain a Retry-After field.
      *
+     * @param DateTimeInterface|int $retryAfter
+     *
      * @return Response
      */
     public static function serviceUnavailable(DateTimeInterface|int $retryAfter): Response

@@ -34,7 +34,7 @@ abstract class HttpClient implements ClientInterface
         }
 
         $uri = Uri::create("{$this->baseUrl}/$operation")->withQuery($queryParameters);
-        Logger::write("HTTPClient request : {$method->value} $uri", LogLevel::NOTICE);
+        Logger::write("HTTPClient request : {$method->value} $uri");
 
         return $this->sendRequest(
             RequestFactory::http11Request(

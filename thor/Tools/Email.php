@@ -45,7 +45,7 @@ class Email
         $this->boundary = bin2hex(random_bytes(16));
     }
 
-    public function file(string $filepath, ?string $filename = null,): array
+    public function file(string $filepath, ?string $filename = null): array
     {
         $this->files[$filename ?? basename($filepath)] = $filepath;
 
@@ -112,7 +112,7 @@ class Email
             $this->headers['Content-Type'],
             ['boundary' => $this->boundary]
         );
-        $parts = [$this->addPart(self::DEFAULT_HEADERS[self::EMAIL_HTML], $this->getMessage(), self::EMAIL_HTML)];
+        $parts = [$this->addPart(self::DEFAULT_HEADERS[self::EMAIL_HTML], $this->getMessage())];
         foreach ($this->files as $file => $path) {
             $parts[] = $this->addPart(
                 [
@@ -180,5 +180,3 @@ class Email
     }
 
 }
-
-;

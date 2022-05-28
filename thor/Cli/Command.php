@@ -2,12 +2,9 @@
 
 namespace Thor\Cli;
 
-use Stringable;
-use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\Cli\Console\Console;
 use JetBrains\PhpStorm\ArrayShape;
-use Thor\Cli\Console\CursorControl;
 
 /**
  * Base class for any Thor command.

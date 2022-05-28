@@ -2,6 +2,7 @@
 
 namespace Thor\Stream;
 
+use Throwable;
 use RuntimeException;
 use InvalidArgumentException;
 
@@ -240,7 +241,7 @@ class Stream implements StreamInterface
         try {
             /** @var resource $handle */
             $handle = fopen($filename, $mode);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $ex = new RuntimeException(
                 sprintf(
                     'Unable to open "%s" using mode "%s" : %s',

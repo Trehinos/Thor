@@ -61,7 +61,7 @@ final class TwigFilterFactory
             'date2date',
             fn($valueA, $formatA, $formatB) => $valueA === null
                 ? null
-                : \DateTime::createFromFormat($formatA, $valueA)->format($formatB)
+                : DateTime::createFromFormat($formatA, $valueA)->format($formatB)
         );
     }
 

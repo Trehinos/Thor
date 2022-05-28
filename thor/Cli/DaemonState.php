@@ -3,6 +3,7 @@
 namespace Thor\Cli;
 
 use DateTime;
+use DateInterval;
 use DateTimeImmutable;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Yaml\Yaml;
@@ -134,10 +135,10 @@ final class DaemonState
 
         $nextRun = clone $this->lastRun;
         $delta = $now->format('YmdHi') % $this->daemon->getPeriodicity();
-        $nextRun->sub(new \DateInterval("PT{$delta}M"));
-        $nextRun->add(new \DateInterval("PT{$this->daemon->getPeriodicity()}M"));
+        $nextRun->sub(new DateInterval("PT{$delta}M"));
+        $nextRun->add(new DateInterval("PT{$this->daemon->getPeriodicity()}M"));
         if ($this->daemon->getStartToday() < $this->daemon->getEndToday()) {
-
+            // TODO
         }
 
         $this->nextRun = DateTime::createFromFormat(

@@ -72,12 +72,13 @@ final class RouterFactory
     }
 
     /**
-     * @param string      $routeName
-     * @param string      $className
-     * @param string|null $methodName
-     * @param string|null $path
-     * @param string|null $method
-     * @param array|null  $parameters
+     * @param string             $routeName
+     * @param string             $className
+     * @param string|null        $methodName
+     * @param string|null        $path
+     * @param string|null        $method
+     * @param array|null         $parameters
+     * @param Authorization|null $authorization
      *
      * @return Route[]
      *
@@ -89,7 +90,8 @@ final class RouterFactory
         ?string $methodName = null,
         ?string $path = null,
         ?string $method = null,
-        ?array $parameters = null
+        ?array $parameters = null,
+        ?Authorization $authorization = null
     ): array {
         $routesObj = [];
         if ($routeName === 'load') {
@@ -99,15 +101,15 @@ final class RouterFactory
         if (in_array(null, [$methodName, $path, $method])) {
             throw new InvalidArgumentException();
         }
-        $parameters ??= [];
 
         $routesObj[$routeName] = new Route(
             $routeName,
-            $routeInfo['path'] ?? '',
-            HttpMethod::tryFrom($routeInfo['method'] ?? 'GET'),
-            $routeInfo['parameters'] ?? [],
+            $path ?? '',
+            HttpMethod::tryFrom($methodName ?? 'GET'),
+            $parameters ?? [],
             $className,
-            $methodName
+            $methodName,
+            $authorization
         );
         return $routesObj;
     }

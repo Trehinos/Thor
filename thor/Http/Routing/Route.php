@@ -30,6 +30,7 @@ final class Route
      * @param array                   $parameters
      * @param string|null             $controllerClass
      * @param string|null             $controllerMethod
+     * @param Authorization|null      $authorization
      */
     public function __construct(
         private ?string $routeName = null,

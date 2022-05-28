@@ -110,12 +110,11 @@ final class CurlClient implements ClientInterface
      */
     public static function toHeadersLines(array $headers): array
     {
-        $headersLines = array_map(
+        return array_map(
             fn (string $key, array|string $value) => "$key: " . (is_string($value) ? $value : implode(', ', $value)),
             array_keys($headers),
             array_values($headers),
         );
-        return $headersLines;
     }
 
     /**

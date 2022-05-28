@@ -43,6 +43,7 @@ final class SchemaHelper
         $createTableSql = $this->driver->createTable($this->className);
         $sql = $createTableSql;
 
+        $result = true;
         if (!$this->isDebug) {
             $result = $this->requester->execute($createTableSql);
         }

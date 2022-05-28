@@ -107,7 +107,7 @@ final class CoreCommand extends Command
         $this->console->write('Creating table ')
                       ->fColor(Color::BLUE, Mode::BRIGHT)->write('user')
                       ->mode()->writeln('...');
-        Logger::write("SETUP : Creating table user...", LogLevel::NOTICE);
+        Logger::write("SETUP : Creating table user...");
         $schema = new SchemaHelper($requester, $driver, DbUser::class);
         $schema->dropTable();
         $schema->createTable();
@@ -122,7 +122,7 @@ final class CoreCommand extends Command
                 'password',
                 ['manage-user', 'create-user', 'edit-user', 'remove-user', 'manage-permissions']
             );
-        Logger::write("SETUP : Admin $pid created.", LogLevel::NOTICE);
+        Logger::write("SETUP : Admin $pid created.");
     }
 
     public function routeList(): void

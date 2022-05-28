@@ -250,7 +250,7 @@ final class DaemonCommand extends Command
         $state = new DaemonState(Daemon::instantiate($daemonInfo));
         $state->load();
         if (!$state->isRunning()) {
-            $this->error("Not running\n", 'Daemon is not running', false);
+            $this->error("Not running\n", 'Daemon is not running');
         }
         $pid = $state->getPid();
         $state->setPid(null);

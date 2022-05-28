@@ -15,10 +15,7 @@ class MultiAjax extends WebController
 
     protected function ajaxResponse(array $data = [], HttpStatus $status = HttpStatus::OK): Response
     {
-        return Response::create(
-            '',
-            [],
-        );
+        return Response::create('');
     }
 
 }

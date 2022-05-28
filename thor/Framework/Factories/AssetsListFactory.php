@@ -24,6 +24,8 @@ final class AssetsListFactory
      * @param Configuration $assetsDataList
      *
      * @return Asset[]
+     *
+     * @throws Exception
      */
     public static function produce(Configuration $assetsDataList): array
     {

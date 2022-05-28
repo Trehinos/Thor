@@ -3,6 +3,7 @@
 namespace Thor\Debug;
 
 use Thor\Env;
+use DateTime;
 use Thor\Thor;
 use Throwable;
 use Stringable;
@@ -114,7 +115,7 @@ final class Logger implements LoggerInterface
     {
         if ($level->value >= $this->logLevel->value) {
             $strLevel = str_pad($level->name, 10);
-            $now = new \DateTime();
+            $now = new DateTime();
             $nowStr = $now->format($this->dateFormat);
             $message = "$nowStr $strLevel : " . Strings::interpolate($message, $context);
 

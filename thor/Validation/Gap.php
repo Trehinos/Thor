@@ -19,12 +19,4 @@ class Gap
         return (new self($min, $max))($value);
     }
 
-    public static function test(): void
-    {
-        $markGap = new self(0, 20);
-        $mark = $markGap(18);
-
-        $mark = self::guard(18, 0, 20);
-    }
-
 }

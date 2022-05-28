@@ -30,7 +30,7 @@ final class WebServerFactory
     {
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
         $server = self::produce(
-            $router = RouterFactory::createRouterFromConfiguration($config['routes']),
+            RouterFactory::createRouterFromConfiguration($config['routes']),
             null,
             $pdoCollection,
             $config['language'],

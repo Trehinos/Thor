@@ -115,9 +115,9 @@ interface LoggerInterface
     /**
      * Logs with an arbitrary level.
      *
-     * @param LogLevel $level
-     * @param string   $message
-     * @param array    $context
+     * @param LogLevel          $level
+     * @param Stringable|string $message
+     * @param array             $context
      *
      * @return void
      */

@@ -96,7 +96,7 @@ final class UserManager
         $user->generatePublicId();
         $public_id = $user->getPublicId();
         $this->userCrud->createOne($user);
-        Logger::write("User $public_id created.", LogLevel::NOTICE);
+        Logger::write("User $public_id created.");
 
         return $public_id;
     }
@@ -124,7 +124,7 @@ final class UserManager
                 $user->setPermissions($permissions);
             }
             $state = $this->userCrud->updateOne($user);
-            Logger::write("User $public_id updated !", LogLevel::NOTICE);
+            Logger::write("User $public_id updated !");
         }
 
         return $state;
@@ -147,7 +147,7 @@ final class UserManager
         if ($user) {
             $user->setPwdHashFrom($password);
             $state = $this->userCrud->updateOne($user);
-            Logger::write("User $public_id updated !", LogLevel::NOTICE);
+            Logger::write("User $public_id updated !");
         }
 
         return $state;
@@ -168,7 +168,7 @@ final class UserManager
         $user = $this->userCrud->readOneBy(new Criteria(['public_id' => $public_id]));
         if ($user) {
             $state = $this->userCrud->deleteOne($user);
-            Logger::write("User $public_id deleted !", LogLevel::NOTICE);
+            Logger::write("User $public_id deleted !");
         }
 
         return $state;

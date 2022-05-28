@@ -4,7 +4,6 @@ namespace Thor\Cli;
 
 use DateTime;
 use Throwable;
-use DateInterval;
 use Thor\Executable;
 use JetBrains\PhpStorm\ArrayShape;
 

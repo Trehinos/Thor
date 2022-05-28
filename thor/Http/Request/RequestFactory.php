@@ -28,6 +28,7 @@ final class RequestFactory
      * @param UriInterface $uri
      * @param string       $data
      * @param array        $headers
+     * @param string       $contentType
      *
      * @return Request with headers :
      *                 Host: $uri->getHost()
