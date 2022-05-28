@@ -12,8 +12,20 @@ final class DynamicYaml
     {
     }
 
-    public static function withAutoContext(string $filename, ?string $key = null, ?callable $selector = null): array
-    {
+    /**
+     * @param string            $filename
+     * @param string|null       $key
+     * @param callable|null     $selector fn (string $key, array $rowFromFile): array -> element in context
+     * @param PlaceholderFormat $format
+     *
+     * @return array
+     */
+    public static function withAutoContext(
+        string $filename,
+        ?string $key = null,
+        ?callable $selector = null,
+        PlaceholderFormat $format = PlaceholderFormat::SHELL
+    ): array {
         return self::fromFile(
             $filename,
             fn(array $dataFromFile) => array_combine(
@@ -22,15 +34,16 @@ final class DynamicYaml
                     : array_map(fn(array $element) => $element[$key] ?? null, $dataFromFile),
                 $selector === null
                     ? array_values($dataFromFile)
-                    : array_map($selector, $dataFromFile)
-            )
+                    : array_map($selector, array_keys($dataFromFile), $dataFromFile)
+            ),
+            $format
         );
     }
 
     /**
-     * @param string            $filename
-     * @param callable|array    $context fn (array): array
-     * @param PlaceholderFormat $format
+     * @param string                                    $filename
+     * @param callable|array<string, scalar|Stringable> $context fn (array $dataFromFile): array -> whole context
+     * @param PlaceholderFormat                         $format
      *
      * @return array
      */
