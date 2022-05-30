@@ -157,7 +157,7 @@ database/migrate:
 core/set-env:
     class: Thor\Framework\Commands\CoreCommand
     command: setEnv
-    description: 'set the environnement'
+    description: 'set the environment'
     arguments:
         env:
             hasValue: true

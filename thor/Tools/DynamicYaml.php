@@ -59,7 +59,11 @@ final class DynamicYaml
             $arrContext = $context;
         }
         foreach ($arrContext as $k => $v) {
-            $arrContext[$k] = self::interpolateData($v ?? [], $arrContext, $format);
+            if (is_array($v)) {
+                $arrContext[$k] = self::interpolateData($v, $arrContext, $format);
+            } else {
+                $arrContext[$k] = self::interpolate($v, $arrContext, $format);
+            }
         }
         return self::interpolateData($data, $arrContext, $format);
     }
@@ -86,10 +90,11 @@ final class DynamicYaml
     ): string|array {
         $replace = [];
         foreach ($context as $key => $val) {
+            if (is_array($val) && $placeholder->matches($key, $string)) {
+                return $val;
+            }
             if (is_scalar($val) || $val instanceof Stringable) {
                 $placeholder->setReplace($replace, $key, $val);
-            } elseif (is_array($val) && $placeholder->matches($key, $string)) {
-                return $val;
             }
         }
 
