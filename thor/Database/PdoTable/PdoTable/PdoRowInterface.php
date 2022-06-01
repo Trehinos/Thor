@@ -31,22 +31,22 @@ interface PdoRowInterface
     public static function getPdoTable(): PdoTable;
 
     /**
-     * @return array an array of 'column_name' => 'SQL_COLUMN_TYPE(SIZE)'.
+     * Returns an array of 'column_name' => 'SQL_COLUMN_TYPE(SIZE)'.
      */
     public static function getPdoColumnsDefinitions(): array;
 
     /**
-     * @return string[] an array of field name(s).
+     * Returns an array of field name(s).
      */
     public static function getPrimaryKeys(): array;
 
     /**
-     * @return PdoIndex[] an array of PdoIndex containing indexes information.
+     * Returns an array of PdoIndex containing indexes information.
      */
     public static function getIndexes(): array;
 
     /**
-     * @return array an array representation of this object which is the same as it would be returned by
+     * Returns an array representation of this object which is the same as it would be returned by
      *               PDOStatement::fetch().
      */
     public function toPdoArray(): array;
@@ -64,17 +64,17 @@ interface PdoRowInterface
     public function reset(): void;
 
     /**
-     * @return array get primary keys in an array of 'column_name' => PHP_value.
+     * Get primary keys in an array of 'column_name' => PHP_value.
      */
     public function getPrimary(): array;
 
     /**
-     * @return array get primary keys as loaded from DB. Empty if not loaded from DB.
+     * Get primary keys as loaded from DB. Empty if not loaded from DB.
      */
     public function getFormerPrimary(): array;
 
     /**
-     * @return string get primary keys in a concatenated string.
+     * Get primary keys in a concatenated string.
      */
     public function getPrimaryString(): string;
 

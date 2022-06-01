@@ -13,6 +13,7 @@ use Thor\Tools\Strings;
 use ReflectionProperty;
 use ReflectionException;
 use Thor\Cli\Console\Mode;
+use ReflectionEnumUnitCase;
 use Thor\Cli\Console\Color;
 use Thor\FileSystem\Folder;
 use ReflectionClassConstant;
@@ -73,12 +74,12 @@ final class Project extends Command
                 $str .= "### $module module\n";
             }
             $type = match (true) {
-                $rc->isTrait() => 'trait',
-                $rc->isEnum() => 'enum',
-                $rc->isFinal() => 'final class',
+                $rc->isTrait()     => 'trait',
+                $rc->isEnum()      => 'enum',
+                $rc->isFinal()     => 'final class',
                 $rc->isInterface() => 'interface',
-                $rc->isAbstract() => 'abstract class',
-                default => 'class'
+                $rc->isAbstract()  => 'abstract class',
+                default            => 'class'
             };
             $link = basename($link);
             $str .= "* [$label]($link) `$type`\n";
@@ -109,12 +110,38 @@ final class Project extends Command
     {
         return match (true) {
             is_string($value) || $value instanceof Stringable => "'$value'",
-            is_bool($value) => $value ? 'true' : 'false',
-            is_scalar($value) => "$value",
-            is_array($value) => json_encode($value),
-            is_object($value) => $this->basename(get_class($value)) . ' ' . json_encode($value),
-            default => 'unknown'
+            is_bool($value)                                   => $value ? 'true' : 'false',
+            is_scalar($value)                                 => "$value",
+            is_array($value)                                  => json_encode($value),
+            is_object($value)                                 => $this->basename(get_class($value)) . ' ' . json_encode(
+                    $value
+                ),
+            default                                           => 'unknown'
         };
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
+    private function toLink(string $type): string
+    {
+        $type = trim($type, '\\');
+        if (str_contains($type, '|')) {
+            return implode(
+                '|',
+                array_map(
+                    fn(string $t) => $this->toLink($t),
+                    explode('|', $type)
+                )
+            );
+        }
+        if (!str_contains($type, '\\')) {
+            return "`$type`";
+        }
+        $type = trim($type, '?');
+        return "[{$this->basename($type)}]({$this->normalize($type)})";
     }
 
     /**
@@ -128,12 +155,12 @@ final class Project extends Command
     {
         $rc = new ReflectionClass($className);
         $type = match (true) {
-            $rc->isTrait() => 'trait',
-            $rc->isEnum() => 'enum',
-            $rc->isFinal() => 'final class',
+            $rc->isTrait()     => 'trait',
+            $rc->isEnum()      => 'enum',
+            $rc->isFinal()     => 'final class',
             $rc->isInterface() => 'interface',
-            $rc->isAbstract() => 'abstract class',
-            default => 'class'
+            $rc->isAbstract()  => 'abstract class',
+            default            => 'class'
         };
         $name = $rc->getShortName();
         $namespace = $rc->getNamespaceName();
@@ -142,21 +169,21 @@ final class Project extends Command
         $parent = $rc->getParentClass();
 
         $md = "# $name `$type`\n\n";
+        $md .= "> **FQN** : `$namespace\\$name`  \n";
         if ($parent) {
-            $md .= "> **Extends** : [{$parent->getShortName()}]({$this->normalize($parent->getName())})  \n";
+            $md .= "> **Extends** : " . $this->toLink($parent->getName()) . "  \n";
         }
         if (!empty($interfaces)) {
             $md .= "> **Implements** : " . implode(
                     ', ',
                     array_map(
-                        fn(ReflectionClass $interface) => '[' . $interface->getShortName() . ']('
-                                                          . $this->normalize($interface->getName()) . ')',
+                        fn(ReflectionClass $interface) => $this->toLink($interface->getName()),
                         $interfaces
                     )
                 ) . "  \n";
         }
-        $md .= "> **Namespace** : `$namespace\\$name`\n\n";
-        $md .= $this->parseComment($rc->getDocComment(), true);
+        $md .= "\n";
+        $md .= $this->parseComment($rc, $rc->getDocComment(), true);
 
         $attributes = $rc->getAttributes();
         if (!empty($attributes)) {
@@ -181,7 +208,7 @@ final class Project extends Command
                 $v = $case->getValue() instanceof BackedEnum
                     ? ' = ' . $case->getBackingValue()
                     : '';
-                $comment = $this->parseComment($case->getDocComment());
+                $comment = $this->parseComment(null, $case->getDocComment());
                 $md .= "* `{$case->getName()}`$v\n$comment";
             }
         } else {
@@ -190,8 +217,8 @@ final class Project extends Command
             $constants = array_filter(
                 $constants,
                 fn($constant) => is_string($constant) ||
-                                 $constant instanceof Stringable ||
-                                 $constant instanceof BackedEnum
+                    $constant instanceof Stringable ||
+                    $constant instanceof BackedEnum
             );
             if (!empty($constants)) {
                 $md .= "## Class constants\n\n";
@@ -277,7 +304,7 @@ final class Project extends Command
         /** @var ReflectionMethod $method */
         foreach ($methods as $method) {
             $returnType = "{$method->getReturnType()}";
-            $comment = $this->parseComment($method->getDocComment(), !$short);
+            $comment = $this->parseComment($method, $method->getDocComment(), !$short);
             $parameters = implode(
                 "\n",
                 array_map(
@@ -297,8 +324,9 @@ final class Project extends Command
                             $defaultValue = '(...)';
                         }
 
-                        return '* ' . $parameter->getType() . ' `$' . $parameter->getName() .
-                               ($parameter->isOptional() ? ' = ' . $defaultValue : '') . '`';
+                        $type = $parameter->getType() === null ? 'mixed' : $this->toLink($parameter->getType());
+                        return "* $type `$" . $parameter->getName() .
+                            ($parameter->isOptional() ? ' = ' . $defaultValue : '') . '`';
                     },
                     $method->getParameters()
                 )
@@ -328,16 +356,29 @@ final class Project extends Command
                     $md .= "* `#[$name($attrs)]`\n";
                 }
             }
-            if ($returnType !== 'void' && $returnType !== '') {
-                $md .= "#### Return type : `$returnType`\n\n";
+            if ($returnType !== 'void' && $returnType !== '' && $returnType !== null) {
+                $returnType = $this->toLink($returnType);
+                $md .= "#### Return type : $returnType\n\n";
             }
             $md .= "<hr>\n\n";
         }
         return "$md\n";
     }
 
-    private function parseComment(string $comment, bool $long = false): string
-    {
+    /**
+     * @param ReflectionClass|ReflectionMethod|null $element
+     * @param string                                $comment
+     * @param bool                                  $long
+     *
+     * @return string
+     *
+     * @throws ReflectionException
+     */
+    private function parseComment(
+        ReflectionClass|ReflectionMethod|null $element,
+        string $comment,
+        bool $long = false
+    ): string {
         $str = '';
         $separator = '';
         foreach (explode("\n", $comment) as $line) {
@@ -350,6 +391,34 @@ final class Project extends Command
             }
             $line = trim(trim($line, '*'));
             if (str_starts_with($line, "@")) {
+                if (str_contains($line, 'inheritDoc') && $element !== null) {
+                    $p = null;
+                    if ($element instanceof ReflectionClass) {
+                        $p = $element->getParentClass();
+                    } elseif ($element instanceof ReflectionMethod) {
+                        $parent = $element->getDeclaringClass()->getParentClass();
+                        if ($parent && $parent->hasMethod($element->getName())) {
+                            $p = $parent->getMethod($element->getName());
+                        } else {
+                            foreach ($element->getDeclaringClass()->getInterfaces() as $interface) {
+                                if ($interface->hasMethod($element->getName())) {
+                                    $p = $interface->getMethod($element->getName());
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if ($p === null) {
+                        continue;
+                    }
+
+                    return $this->parseComment(
+                        $p,
+                        $p->getDocComment(),
+                        $long
+                    );
+                }
                 break;
             }
             if ($line === '') {
