@@ -112,10 +112,29 @@ final class Project extends Command
         $name = $rc->getShortName();
         $namespace = $rc->getNamespaceName();
 
-        $md = "# $name `$type`\n\n";
-        $md .= "**Namespace** : `$namespace\\$name`\n\n";
+        $interfaces = $rc->getInterfaces();
+        $parent = $rc->getParentClass();
 
-        $md .= $this->parseComment($rc->getDocComment());
+        $md = "# $name `$type`\n\n";
+        if ($parent) {
+            $md .= "> **Extends** : [{$parent->getShortName()}]({$parent->getName()})  \n";
+        }
+        if (!empty($interfaces)) {
+            $md .= "> **Implements** : " . implode(
+                    ', ',
+                    array_map(
+                        fn(\ReflectionClass $interface) => '[' . $interface->getShortName() . '](' . str_replace(
+                                '\\',
+                                '_',
+                                $interface->getName()
+                            ) . ')',
+                        $interfaces
+                    )
+                ) . "  \n";
+        }
+        $md .= "> **Namespace** : `$namespace\\$name`\n\n";
+
+        $md .= $this->parseComment($rc->getDocComment(), true);
 
         if ($type === 'enum') {
             $md .= "## Cases\n\n";
@@ -126,12 +145,33 @@ final class Project extends Command
             }
         } else {
             // TODO : consts
-            $md .= $this->mdBlockMethods($rc->getMethods(\ReflectionMethod::IS_STATIC), 'Static methods', true);
-            $md .= $this->mdBlockMethods($rc->getMethods(\ReflectionMethod::IS_PUBLIC), 'Public methods', true);
-            $md .= $this->mdBlockMethods($rc->getMethods(\ReflectionMethod::IS_PROTECTED), 'Protected methods', true);
-            $md .= $this->mdBlockMethods($rc->getMethods(\ReflectionMethod::IS_STATIC), 'Static methods');
-            $md .= $this->mdBlockMethods($rc->getMethods(\ReflectionMethod::IS_PUBLIC), 'Public methods');
-            $md .= $this->mdBlockMethods($rc->getMethods(\ReflectionMethod::IS_PROTECTED), 'Protected methods');
+
+            $staticMethods = [];
+            $publicMethods = [];
+            $protectedMethods = [];
+            foreach ($rc->getMethods() as $method) {
+                if ($method->getDeclaringClass()->getName() !== $className) {
+                    continue;
+                }
+                if ($method->isStatic() && $method->isPublic()) {
+                    $staticMethods[] = $method;
+                    continue;
+                }
+                if ($method->isPublic()) {
+                    $publicMethods[] = $method;
+                    continue;
+                }
+                if ($method->isProtected()) {
+                    $protectedMethods[] = $method;
+                }
+            }
+
+            $md .= $this->mdBlockMethods($staticMethods, 'Static methods', true);
+            $md .= $this->mdBlockMethods($publicMethods, 'Public methods', true);
+            $md .= $this->mdBlockMethods($protectedMethods, 'Protected methods', true);
+            $md .= $this->mdBlockMethods($staticMethods, 'Static methods');
+            $md .= $this->mdBlockMethods($publicMethods, 'Public methods');
+            $md .= $this->mdBlockMethods($protectedMethods, 'Protected methods');
             $md .= $this->mdBlockProperties($rc->getProperties(\ReflectionProperty::IS_PUBLIC), 'Public properties');
         }
 
@@ -262,6 +302,7 @@ final class Project extends Command
 
     /**
      * @param string $path
+     * @param string $namespace
      *
      * @return array
      */
