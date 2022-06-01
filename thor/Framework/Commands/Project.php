@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Thor\Framework\Commands;
 
 use Thor\Globals;
 use Thor\Cli\Command;
@@ -29,6 +29,7 @@ final class Project extends Command
     {
         $folder = ($this->get('folder') ?? 'thor') . '/';
         $namespace = ($this->get('namespace') ?? 'Thor') . '\\';
+        $verbose = $this->get('verbose') ?? false;
 
         $classes = $this->getClasses(Globals::CODE_DIR . $folder, $namespace);
         Folder::createIfNotExists(Globals::VAR_DIR . 'documentation');
@@ -41,7 +42,9 @@ final class Project extends Command
                 "$className\n",
             );
             $md = $this->generateMd($className);
-            $this->console->echoes(Mode::DIM, $md, "\n");
+            if ($verbose) {
+                $this->console->echoes(Mode::DIM, $md, "\n");
+            }
             $filename = str_replace('\\', '_', $className);
             FileSystem::write(Globals::VAR_DIR . ($link = "documentation/$filename") . '.md', $md);
             $links[$className] = $link;

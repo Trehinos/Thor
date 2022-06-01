@@ -178,3 +178,6 @@ project/document:
         folder:
             hasValue: true
             description: (default 'thor')
+        verbose:
+            hasValue: false
+            description: echoes the generated markdown
