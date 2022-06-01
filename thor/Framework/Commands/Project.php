@@ -2,28 +2,32 @@
 
 namespace Thor\Framework\Commands;
 
+use Stringable;
+use BackedEnum;
 use Thor\Globals;
+use ReflectionEnum;
+use ReflectionClass;
 use Thor\Cli\Command;
+use ReflectionMethod;
 use Thor\Tools\Strings;
-use Thor\FileSystem\File;
+use ReflectionProperty;
+use ReflectionException;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\FileSystem\Folder;
+use ReflectionClassConstant;
 use Thor\FileSystem\FileSystem;
 
-/**
- *
- */
-
-/**
- *
- */
 final class Project extends Command
 {
 
     /**
+     * Command `project/document`.
+     * Generate a markdown file for each file in the specified folder.
+     *
      * @return void
-     * @throws \ReflectionException
+     *
+     * @throws ReflectionException
      */
     public function document(): void
     {
@@ -55,7 +59,7 @@ final class Project extends Command
         $last = 0;
         $modules = [];
         foreach ($links as $label => $link) {
-            $rc = new \ReflectionClass($label);
+            $rc = new ReflectionClass($label);
             $thor = '';
             $baseModule = '';
             $rest = Strings::split($label, '\\', $thor);
@@ -69,21 +73,21 @@ final class Project extends Command
                 $str .= "### $module module\n";
             }
             $type = match (true) {
-                $rc->isTrait()     => 'trait',
-                $rc->isEnum()      => 'enum',
-                $rc->isFinal()     => 'final class',
+                $rc->isTrait() => 'trait',
+                $rc->isEnum() => 'enum',
+                $rc->isFinal() => 'final class',
                 $rc->isInterface() => 'interface',
-                $rc->isAbstract()  => 'abstract class',
-                default            => 'class'
+                $rc->isAbstract() => 'abstract class',
+                default => 'class'
             };
             $link = basename($link);
             $str .= "* [$label]($link) `$type`\n";
             $oldModule = $module;
         }
-        $summary = "# Thor's classes documentation\n\n## Summary\n\n" . implode(
+        $summary = "# $namespace's classes documentation\n\n## Summary\n\n" . implode(
                 "\n",
                 array_map(
-                    fn(string $hlbl, string $href) => "* [$hlbl](#" . str_replace('\\', '', $href) . ') module',
+                    fn(string $hlbl, string $href) => "* [$hlbl](#" . str_replace('\\', '', $href) . ')',
                     array_keys($modules),
                     array_values($modules)
                 )
@@ -91,23 +95,45 @@ final class Project extends Command
         FileSystem::write(Globals::VAR_DIR . ($link = "documentation.md"), $summary . $str);
     }
 
+    private function normalize(string $type): string
+    {
+        return str_replace('\\', '_', $type);
+    }
+
+    private function basename(string $type): string
+    {
+        return basename(str_replace('\\', '/', $type));
+    }
+
+    private function getRepresentation(mixed $value): string
+    {
+        return match (true) {
+            is_string($value) || $value instanceof Stringable => "'$value'",
+            is_bool($value) => $value ? 'true' : 'false',
+            is_scalar($value) => "$value",
+            is_array($value) => json_encode($value),
+            is_object($value) => $this->basename(get_class($value)) . ' ' . json_encode($value),
+            default => 'unknown'
+        };
+    }
+
     /**
      * @param class-string $className
      *
      * @return string
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function generateMd(string $className): string
     {
-        $rc = new \ReflectionClass($className);
+        $rc = new ReflectionClass($className);
         $type = match (true) {
-            $rc->isTrait()     => 'trait',
-            $rc->isEnum()      => 'enum',
-            $rc->isFinal()     => 'final class',
+            $rc->isTrait() => 'trait',
+            $rc->isEnum() => 'enum',
+            $rc->isFinal() => 'final class',
             $rc->isInterface() => 'interface',
-            $rc->isAbstract()  => 'abstract class',
-            default            => 'class'
+            $rc->isAbstract() => 'abstract class',
+            default => 'class'
         };
         $name = $rc->getShortName();
         $namespace = $rc->getNamespaceName();
@@ -117,63 +143,92 @@ final class Project extends Command
 
         $md = "# $name `$type`\n\n";
         if ($parent) {
-            $md .= "> **Extends** : [{$parent->getShortName()}]({$parent->getName()})  \n";
+            $md .= "> **Extends** : [{$parent->getShortName()}]({$this->normalize($parent->getName())})  \n";
         }
         if (!empty($interfaces)) {
             $md .= "> **Implements** : " . implode(
                     ', ',
                     array_map(
-                        fn(\ReflectionClass $interface) => '[' . $interface->getShortName() . '](' . str_replace(
-                                '\\',
-                                '_',
-                                $interface->getName()
-                            ) . ')',
+                        fn(ReflectionClass $interface) => '[' . $interface->getShortName() . ']('
+                                                          . $this->normalize($interface->getName()) . ')',
                         $interfaces
                     )
                 ) . "  \n";
         }
         $md .= "> **Namespace** : `$namespace\\$name`\n\n";
-
         $md .= $this->parseComment($rc->getDocComment(), true);
+
+        $attributes = $rc->getAttributes();
+        if (!empty($attributes)) {
+            $md .= "## Attributes\n\n";
+            foreach ($attributes as $attribute) {
+                $attrs = implode(
+                    ', ',
+                    array_map(
+                        fn(mixed $attrValue) => $this->getRepresentation($attrValue),
+                        $attribute->getArguments()
+                    )
+                );
+                $name = $this->basename($attribute->getName());
+                $md .= "* `#[$name($attrs)]`\n";
+            }
+        }
 
         if ($type === 'enum') {
             $md .= "## Cases\n\n";
-            $re = new \ReflectionEnum($className);
+            $re = new ReflectionEnum($className);
             foreach ($re->getCases() as $case) {
+                $v = $case->getValue() instanceof BackedEnum
+                    ? ' = ' . $case->getBackingValue()
+                    : '';
                 $comment = $this->parseComment($case->getDocComment());
-                $md .= "### {$case->getName()}\n$comment";
+                $md .= "* `{$case->getName()}`$v\n$comment";
             }
         } else {
-            // TODO : consts
-
-            $staticMethods = [];
-            $publicMethods = [];
-            $protectedMethods = [];
-            foreach ($rc->getMethods() as $method) {
-                if ($method->getDeclaringClass()->getName() !== $className) {
-                    continue;
+            /** @var ReflectionClassConstant $constant */
+            $constants = $rc->getConstants(ReflectionClassConstant::IS_PUBLIC);
+            $constants = array_filter(
+                $constants,
+                fn($constant) => is_string($constant) ||
+                                 $constant instanceof Stringable ||
+                                 $constant instanceof BackedEnum
+            );
+            if (!empty($constants)) {
+                $md .= "## Class constants\n\n";
+                foreach ($constants as $name => $constant) {
+                    $md .= "* `{$name}` = {$this->getRepresentation($constant)}\n";
                 }
-                if ($method->isStatic() && $method->isPublic()) {
-                    $staticMethods[] = $method;
-                    continue;
-                }
-                if ($method->isPublic()) {
-                    $publicMethods[] = $method;
-                    continue;
-                }
-                if ($method->isProtected()) {
-                    $protectedMethods[] = $method;
-                }
+                $md .= "\n";
             }
-
-            $md .= $this->mdBlockMethods($staticMethods, 'Static methods', true);
-            $md .= $this->mdBlockMethods($publicMethods, 'Public methods', true);
-            $md .= $this->mdBlockMethods($protectedMethods, 'Protected methods', true);
-            $md .= $this->mdBlockMethods($staticMethods, 'Static methods');
-            $md .= $this->mdBlockMethods($publicMethods, 'Public methods');
-            $md .= $this->mdBlockMethods($protectedMethods, 'Protected methods');
-            $md .= $this->mdBlockProperties($rc->getProperties(\ReflectionProperty::IS_PUBLIC), 'Public properties');
         }
+
+        $staticMethods = [];
+        $publicMethods = [];
+        $protectedMethods = [];
+        foreach ($rc->getMethods() as $method) {
+            if ($method->getDeclaringClass()->getName() !== $className) {
+                continue;
+            }
+            if ($method->isStatic() && $method->isPublic()) {
+                $staticMethods[] = $method;
+                continue;
+            }
+            if ($method->isPublic()) {
+                $publicMethods[] = $method;
+                continue;
+            }
+            if ($method->isProtected()) {
+                $protectedMethods[] = $method;
+            }
+        }
+
+        $md .= $this->mdBlockProperties($rc->getProperties(ReflectionProperty::IS_PUBLIC), 'Public properties');
+        $md .= $this->mdBlockMethods($staticMethods, 'Static methods', true);
+        $md .= $this->mdBlockMethods($publicMethods, 'Public methods', true);
+        $md .= $this->mdBlockMethods($protectedMethods, 'Protected methods', true);
+        $md .= $this->mdBlockMethods($staticMethods, 'Static methods');
+        $md .= $this->mdBlockMethods($publicMethods, 'Public methods');
+        $md .= $this->mdBlockMethods($protectedMethods, 'Protected methods');
 
 
         return $md;
@@ -194,9 +249,9 @@ final class Project extends Command
             return '';
         }
         $md = "## $title\n\n";
-        /** @var \ReflectionProperty $property */
+        /** @var ReflectionProperty $property */
         foreach ($properties as $property) {
-            $md .= "### `{$property->getName()}:{$property->getType()}`\n";
+            $md .= "* \${$property->getName()} `:{$property->getType()}`\n";
         }
         return "$md\n";
     }
@@ -207,7 +262,7 @@ final class Project extends Command
      * @param bool   $short
      *
      * @return string
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private
     function mdBlockMethods(
@@ -219,7 +274,7 @@ final class Project extends Command
             return '';
         }
         $md = "## $title\n\n";
-        /** @var \ReflectionMethod $method */
+        /** @var ReflectionMethod $method */
         foreach ($methods as $method) {
             $returnType = "{$method->getReturnType()}";
             $comment = $this->parseComment($method->getDocComment(), !$short);
@@ -228,7 +283,7 @@ final class Project extends Command
                 array_map(
                     function (\ReflectionParameter $parameter) {
                         $defaultValue = $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : '';
-                        if (is_string($defaultValue) || $defaultValue instanceof \Stringable) {
+                        if (is_string($defaultValue) || $defaultValue instanceof Stringable) {
                             $defaultValue = "\"$defaultValue\"";
                         } elseif (is_bool($defaultValue)) {
                             $defaultValue = $defaultValue ? 'true' : 'false';
@@ -242,8 +297,8 @@ final class Project extends Command
                             $defaultValue = '(...)';
                         }
 
-                        return '* `' . $parameter->getType() . ' $' . $parameter->getName() .
-                            ($parameter->isOptional() ? ' = ' . $defaultValue : '') . '`';
+                        return '* ' . $parameter->getType() . ' `$' . $parameter->getName() .
+                               ($parameter->isOptional() ? ' = ' . $defaultValue : '') . '`';
                     },
                     $method->getParameters()
                 )
@@ -257,6 +312,21 @@ final class Project extends Command
             $md .= "### `{$method->getName()}()`\n$comment";
             if ($parameters !== '') {
                 $md .= "#### Parameters\n\n$parameters\n\n";
+            }
+            $attributes = $method->getAttributes();
+            if (!empty($attributes)) {
+                $md .= "#### Attributes\n\n";
+                foreach ($attributes as $attribute) {
+                    $attrs = implode(
+                        ', ',
+                        array_map(
+                            fn(mixed $attrValue) => $this->getRepresentation($attrValue),
+                            $attribute->getArguments()
+                        )
+                    );
+                    $name = $this->basename($attribute->getName());
+                    $md .= "* `#[$name($attrs)]`\n";
+                }
             }
             if ($returnType !== 'void' && $returnType !== '') {
                 $md .= "#### Return type : `$returnType`\n\n";

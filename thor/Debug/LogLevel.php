@@ -5,34 +5,15 @@ namespace Thor\Debug;
 use Thor\Env;
 
 /**
- * ## INFO (dev)
- * Interesting events.
- *
- * ## NOTICE (dev)
- * Normal but significant events.
- *
- * ## DEBUG
- * Detailed debug information.
- *
- * ## WARNING
- * Exceptional occurrences that are not errors.
- *
- * ## ERROR
- * Runtime errors to be logged
- *
- * ## CRITICAL
- * Critical condition.
- *
- * Application component unavailable, unexpected exception.
- *
- * ## ALERT
- * Action must be taken immediately.
- *
- * Example: Entire website down, database unavailable, etc. This should
+ * * `INFO` (dev) : Interesting events.
+ * * `NOTICE` (dev) : Normal but significant events.
+ * * `DEBUG` : Detailed debug information.
+ * * `WARNING` : Exceptional occurrences that are not errors.
+ * * `ERROR` : Runtime errors to be logged
+ * * `CRITICAL` : Critical condition. Application component unavailable, unexpected exception.
+ * * `ALERT` : Action must be taken immediately. Example: Entire website down, database unavailable, etc. This should
  * trigger the SMS alerts and wake you up.
- *
- * ## EMERGENCY
- * System is unusable.
+ * * `EMERGENCY` : System is unusable.
  *
  */
 enum LogLevel: int
@@ -47,7 +28,7 @@ enum LogLevel: int
     case EMERGENCY = 7;
 
     /**
-     * Returns **minimum** LogLevel according to En :
+     * Returns **minimum** LogLevel according to Env :
      *  - DEV --> INFO
      *  - DEBUG --> DEBUG
      *  - PROD --> ERROR.
