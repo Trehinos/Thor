@@ -2,6 +2,13 @@
 
 namespace Thor\Structures\Promise;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 enum PromiseState
 {
 

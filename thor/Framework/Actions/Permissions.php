@@ -23,11 +23,20 @@ use Thor\Http\{Routing\Route, Request\HttpMethod, Response\ResponseInterface};
 final class Permissions extends WebController
 {
 
+    /**
+     * @param WebServer $webServer
+     */
     public function __construct(WebServer $webServer)
     {
         parent::__construct($webServer);
     }
 
+    /**
+     * @return ResponseInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Authorization('manage-user')]
     #[Route('manage-permissions', '/permissions/form')]
     public function permissionsForm(): ResponseInterface
@@ -41,6 +50,9 @@ final class Permissions extends WebController
         );
     }
 
+    /**
+     * @return ResponseInterface
+     */
     #[Authorization('manage-permissions')]
     #[Route('permissions-update', '/permissions/action', HttpMethod::POST)]
     public function permissionsAction(): ResponseInterface
@@ -70,6 +82,12 @@ final class Permissions extends WebController
         return $this->redirect('index', query: ['menuItem' => 'manage-permissions']);
     }
 
+    /**
+     * @return ResponseInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Authorization('manage-permissions', 'create-user')]
     #[Route('permission-line', '/permission/line', HttpMethod::GET)]
     public function addPermissionLine(): ResponseInterface

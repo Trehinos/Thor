@@ -32,6 +32,11 @@ final class PdoAttributesReader
     {
     }
 
+    /**
+     * @param ReflectionClass $rc
+     *
+     * @return array
+     */
     #[ArrayShape(['table' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     private static function parseAttributes(
         ReflectionClass $rc
@@ -70,6 +75,18 @@ final class PdoAttributesReader
         return ['table' => $table, 'columns' => $columns, 'indexes' => $indexes, 'foreign_keys' => $fks];
     }
 
+    /**
+     * @param PdoTable|null $tableA
+     * @param PdoTable|null $tableB
+     * @param array         $columnsA
+     * @param array         $columnsB
+     * @param array         $indexA
+     * @param array         $indexB
+     * @param array         $fkA
+     * @param array         $fkB
+     *
+     * @return array
+     */
     #[Pure]
     #[ArrayShape(['table' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     private static function _merge(

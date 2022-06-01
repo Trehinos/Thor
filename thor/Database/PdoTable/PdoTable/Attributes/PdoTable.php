@@ -16,6 +16,11 @@ use Attribute;
 class PdoTable
 {
 
+    /**
+     * @param string|null $tableName
+     * @param array       $primary
+     * @param string|null $auto
+     */
     public function __construct(
         private ?string $tableName = null,
         private array $primary = [],

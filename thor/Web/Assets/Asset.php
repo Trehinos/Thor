@@ -9,9 +9,23 @@ use Thor\Stream\Stream;
 use Thor\Http\UriInterface;
 use Thor\Stream\StreamInterface;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class Asset extends Node implements AssetInterface
 {
 
+    /**
+     * @param AssetType            $type
+     * @param string               $name
+     * @param string               $filename
+     * @param UriInterface         $uri
+     * @param StreamInterface|null $file
+     */
     public function __construct(
         public readonly AssetType $type,
         public readonly string $name,
@@ -27,6 +41,9 @@ class Asset extends Node implements AssetInterface
         $this->setNode();
     }
 
+    /**
+     * @return void
+     */
     public function setNode(): void
     {
         $attrs = $this->getType()->getHtmlArguments();
@@ -39,17 +56,26 @@ class Asset extends Node implements AssetInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function getContent(): string
     {
         $this->file->rewind();
         return $this->file->getContents();
     }
 
+    /**
+     * @return string
+     */
     public function getFilename(): string
     {
         return $this->filename;
     }
 
+    /**
+     * @return AssetType
+     */
     public function getType(): AssetType
     {
         return $this->type;

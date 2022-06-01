@@ -2,6 +2,13 @@
 
 namespace Thor\Structures\Collection;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 enum SortOrder:int
 {
     case ASC = 4;

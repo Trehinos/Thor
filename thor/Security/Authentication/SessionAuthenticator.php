@@ -15,6 +15,9 @@ use Thor\Security\Identity\IdentityInterface;
 class SessionAuthenticator implements AuthenticatorInterface
 {
 
+    /**
+     * @param string $key
+     */
     public function __construct(private string $key = 'identity')
     {
     }

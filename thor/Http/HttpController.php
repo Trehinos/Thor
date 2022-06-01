@@ -41,6 +41,9 @@ abstract class HttpController
     private array $headers;
     private array $queryAttributes;
 
+    /**
+     * @param HttpServer $httpServer
+     */
     public function __construct(protected HttpServer $httpServer)
     {
         $this->method = $this->getRequest()->getMethod();

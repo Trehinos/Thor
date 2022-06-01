@@ -2,6 +2,13 @@
 
 namespace Thor\Web\Assets;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 interface AssetInterface
 {
 
@@ -19,6 +26,9 @@ interface AssetInterface
      */
     public function getFilename(): string;
 
+    /**
+     * @return AssetType
+     */
     public function getType(): AssetType;
 
 }

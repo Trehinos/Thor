@@ -12,13 +12,29 @@ use Thor\Web\NodeInterface;
 use Thor\Http\Request\HttpMethod;
 use Thor\Web\Form\Field\FieldInterface;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 interface FormInterface extends NodeInterface
 {
 
+    /**
+     * @return array
+     */
     public static function formDefinition(): array;
 
+    /**
+     * @return string
+     */
     public function getAction(): string;
 
+    /**
+     * @return HttpMethod
+     */
     public function getMethod(): HttpMethod;
 
     /**
@@ -36,6 +52,11 @@ interface FormInterface extends NodeInterface
      */
     public function getFields(): array;
 
+    /**
+     * @param string $name
+     *
+     * @return FieldInterface|null
+     */
     public function getField(string $name): ?FieldInterface;
 
 }

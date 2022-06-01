@@ -2,6 +2,13 @@
 
 namespace Thor\Tools;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class Arrays
 {
 

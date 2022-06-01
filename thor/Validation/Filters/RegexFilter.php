@@ -16,6 +16,9 @@ class RegexFilter implements FilterInterface
 
     private string $regExp;
 
+    /**
+     * @param string $regExp
+     */
     public function __construct(string $regExp = '.*')
     {
         $this->regExp = $regExp;

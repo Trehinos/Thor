@@ -47,6 +47,9 @@ final class UserManager
         );
     }
 
+    /**
+     * @return array
+     */
     public static function getPermissions(): array
     {
         return array_map(
@@ -55,6 +58,9 @@ final class UserManager
         );
     }
 
+    /**
+     * @return callable
+     */
     public static function getPermissionLabelsFunction(): callable
     {
         return fn(string $permission) => [
@@ -71,6 +77,9 @@ final class UserManager
         ];
     }
 
+    /**
+     * @return array
+     */
     public static function getLanguages(): array
     {
         return array_map(

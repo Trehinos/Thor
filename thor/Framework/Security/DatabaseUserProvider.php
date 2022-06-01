@@ -15,12 +15,21 @@ use Thor\Database\PdoTable\{Criteria, CrudHelper};
 class DatabaseUserProvider implements ProviderInterface
 {
 
+    /**
+     * @param CrudHelper $userCrud
+     * @param string     $usernameField
+     */
     public function __construct(
         private CrudHelper $userCrud,
         private string $usernameField
     ) {
     }
 
+    /**
+     * @param string $identifier
+     *
+     * @return DbUser|null
+     */
     public function getIdentity(string $identifier): ?DbUser
     {
         return $this->userCrud->readOneBy(new Criteria([$this->usernameField => $identifier]));

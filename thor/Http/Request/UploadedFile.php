@@ -59,6 +59,11 @@ class UploadedFile implements UploadedFileInterface
         return $normalized;
     }
 
+    /**
+     * @param array $value
+     *
+     * @return UploadedFile|array
+     */
     private static function createUploadedFileFromSpec(array $value): UploadedFile|array
     {
         if (is_array($value['tmp_name'])) {
@@ -73,6 +78,11 @@ class UploadedFile implements UploadedFileInterface
         );
     }
 
+    /**
+     * @param array $files
+     *
+     * @return array
+     */
     private static function normalizeNestedFileSpec(array $files = []): array
     {
         $normalizedFiles = [];
@@ -97,6 +107,9 @@ class UploadedFile implements UploadedFileInterface
         return $this->stream;
     }
 
+    /**
+     * @return void
+     */
     private function validateActive(): void
     {
         if ($this->errorStatus !== UploadError::NO_ERROR) {

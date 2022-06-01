@@ -134,6 +134,11 @@ final class DaemonScheduler implements KernelInterface
         return $this->daemons;
     }
 
+    /**
+     * @param string $daemonName
+     *
+     * @return Daemon|null
+     */
     public function getDaemon(string $daemonName): ?Daemon
     {
         foreach ($this->daemons as $daemon) {

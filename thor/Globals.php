@@ -41,6 +41,11 @@ final class Globals
     /**
      * The folder where lies web files.
      */
+    const THOR_DIR = self::CODE_DIR . 'thor/';
+
+    /**
+     * The folder where lies web files.
+     */
     const WEB_DIR = self::CODE_DIR . 'web/';
 
     /**
@@ -83,6 +88,7 @@ final class Globals
             'CONFIG'    => realpath(self::CONFIG_DIR),
             'STATIC'    => realpath(self::STATIC_DIR),
             'WEB'       => realpath(self::WEB_DIR),
+            'THOR'      => realpath(self::THOR_DIR),
             'VENDORS'   => realpath(self::VENDORS_DIR),
             'VAR'       => realpath(self::VAR_DIR),
         ]);

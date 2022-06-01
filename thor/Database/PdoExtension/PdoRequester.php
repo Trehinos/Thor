@@ -19,6 +19,9 @@ use Thor\Debug\LogLevel;
 class PdoRequester
 {
 
+    /**
+     * @param PdoHandler $handler
+     */
     public function __construct(protected PdoHandler $handler)
     {
     }

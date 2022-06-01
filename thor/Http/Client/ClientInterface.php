@@ -5,6 +5,13 @@ namespace Thor\Http\Client;
 use Thor\Http\Request\RequestInterface;
 use Thor\Http\Response\ResponseInterface;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 interface ClientInterface
 {
     /**

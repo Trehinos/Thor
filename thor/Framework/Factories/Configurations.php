@@ -81,6 +81,9 @@ final class Configurations
         );
     }
 
+    /**
+     * @return Configuration
+     */
     public static function getBaseConfiguration(): Configuration
     {
         global $thor_kernel;

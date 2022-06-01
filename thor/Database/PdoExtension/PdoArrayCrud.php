@@ -13,6 +13,11 @@ use Thor\Database\PdoTable\Criteria;
 final class PdoArrayCrud
 {
 
+    /**
+     * @param string       $tableName
+     * @param array        $primary
+     * @param PdoRequester $requester
+     */
     public function __construct(
         private string $tableName,
         private array $primary,
@@ -20,17 +25,28 @@ final class PdoArrayCrud
     ) {
     }
 
+    /**
+     * @return array
+     */
     public function listAll(): array
     {
         return $this->requester->request("SELECT * FROM {$this->table()}", [])->fetchAll();
     }
 
+    /**
+     * @return string
+     */
     #[Pure]
     public function table(): string
     {
         return $this->tableName;
     }
 
+    /**
+     * @param array $row
+     *
+     * @return string
+     */
     public function createOne(array $row): string
     {
         [$columns, $marks, $values] = self::compileRowValues($row);
@@ -39,11 +55,21 @@ final class PdoArrayCrud
         return $this->getPrimaryString($row);
     }
 
+    /**
+     * @param array $row
+     *
+     * @return string
+     */
     private function getPrimaryString(array $row): string
     {
         return implode('_', $this->extractPrimaries($row));
     }
 
+    /**
+     * @param array $row
+     *
+     * @return array
+     */
     private function extractPrimaries(array $row): array
     {
         $pkeyParts = [];
@@ -56,6 +82,11 @@ final class PdoArrayCrud
         return $pkeyParts;
     }
 
+    /**
+     * @param array $row
+     *
+     * @return array
+     */
     private static function compileRowValues(array $row): array
     {
         $pdoArray = $row;
@@ -89,11 +120,22 @@ final class PdoArrayCrud
         return $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES $marks", $allValues);
     }
 
+    /**
+     * @param array $primaries
+     *
+     * @return array|null
+     */
     public function readOne(array $primaries): ?array
     {
         return $this->readOneBy($this->primaryArrayToCriteria($primaries));
     }
 
+    /**
+     * @param Criteria          $criteria
+     * @param array|string|null $columns
+     *
+     * @return array|null
+     */
     public function read(Criteria $criteria, array|string|null $columns = null): ?array
     {
         $columnSql = match (true) {
@@ -122,11 +164,21 @@ final class PdoArrayCrud
         return $row;
     }
 
+    /**
+     * @param Criteria $criteria
+     *
+     * @return array|null
+     */
     public function readOneBy(Criteria $criteria): ?array
     {
         return $this->read($criteria);
     }
 
+    /**
+     * @param array $primaries
+     *
+     * @return Criteria
+     */
     private function primaryArrayToCriteria(array $primaries): Criteria
     {
         $criteria = [];
@@ -138,6 +190,11 @@ final class PdoArrayCrud
     }
 
 
+    /**
+     * @param string $pid
+     *
+     * @return array|null
+     */
     public function readOneFromPid(string $pid): ?array
     {
         return $this->readOneBy(new Criteria(['public_id' => $pid]));
@@ -158,6 +215,11 @@ final class PdoArrayCrud
             )->fetchAll() ?? [];
     }
 
+    /**
+     * @param array $row
+     *
+     * @return bool
+     */
     public function updateOne(array $row): bool
     {
         $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($row)));
@@ -170,6 +232,11 @@ final class PdoArrayCrud
         );
     }
 
+    /**
+     * @param array $row
+     *
+     * @return bool
+     */
     public function deleteOne(array $row): bool
     {
         $criteria = $this->primaryArrayToCriteria($this->extractPrimaries($row));

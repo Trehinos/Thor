@@ -11,13 +11,13 @@ thor-js:
         - thor/thor.modal.js
         - thor/thor.toast.js
         - thor/thor.keys.js
-general-css:
+vendors-css:
     type: css
     cache: true
     list:
         - vendors/bootstrap.min.css
         - vendors/datatables.min.css
-general-js:
+vendors-js:
     type: js
     cache: true
     list:

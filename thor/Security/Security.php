@@ -38,6 +38,11 @@ abstract class Security implements SecurityInterface
         return $this->firewalls;
     }
 
+    /**
+     * @param Firewall $firewall
+     *
+     * @return void
+     */
     public function addFirewall(Firewall $firewall): void
     {
         $this->firewalls[] = $firewall;

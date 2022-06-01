@@ -213,6 +213,11 @@ final class CrudHelper implements CrudInterface
         return $rowObj;
     }
 
+    /**
+     * @param array $primaries
+     *
+     * @return Criteria
+     */
     private function primaryArrayToCriteria(array $primaries): Criteria
     {
         $criteria = [];

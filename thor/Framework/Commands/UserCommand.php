@@ -24,6 +24,11 @@ final class UserCommand extends Command
 
     private UserManager $userManager;
 
+    /**
+     * @param string    $command
+     * @param array     $args
+     * @param CliKernel $kernel
+     */
     public function __construct(string $command, array $args, CliKernel $kernel)
     {
         parent::__construct($command, $args, $kernel);

@@ -2,6 +2,13 @@
 
 namespace Thor\Structures\Collection;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 enum SortFlag:int
 {
     case REGULAR = 0;

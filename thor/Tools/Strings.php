@@ -23,7 +23,7 @@ final class Strings
      *
      * @param string  $stringToSplit
      * @param string  $delimiter
-     * @param string& $head
+     * @param string &$head
      *
      * @return string tail
      */

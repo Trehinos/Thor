@@ -14,7 +14,7 @@ class Collection implements ArrayAccess, Iterator, Countable
 {
 
     /**
-     * @param array<string|int|null, TValue> $data
+     * @param array<string|int, TValue> $data
      */
     public function __construct(protected array $data = [])
     {
@@ -24,10 +24,10 @@ class Collection implements ArrayAccess, Iterator, Countable
     /// STATIC FUNCTIONS
 
     /**
-     * @param self<int, string|int|null> $keys
-     * @param self<int, TValue>          $values
+     * @param Collection<int, string|int> $keys
+     * @param Collection<int, TValue>          $values
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public static function combine(self $keys, self $values): static
     {
@@ -35,10 +35,10 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<int, string|int|null> $keys
+     * @param Collection<int, string|int> $keys
      * @param TValue                     $value
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public static function fillKeys(self $keys, mixed $value): static
     {
@@ -50,7 +50,7 @@ class Collection implements ArrayAccess, Iterator, Countable
      * @param int    $count
      * @param TValue $value
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public static function fill(int $start = 0, int $count = 1, mixed $value = ''): static
     {
@@ -62,7 +62,7 @@ class Collection implements ArrayAccess, Iterator, Countable
      * @param string|int|float $end
      * @param int|float        $step
      *
-     * @return static<int, string|int|float>
+     * @return Collection<int, string|int|float>
      */
     public static function range(string|int|float $start, string|int|float $end, int|float $step = 1): static
     {
@@ -72,6 +72,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     ////////////////////////////////////////////////////////////////////////////
     /// Implementations
 
+    /**
+     * @return array
+     */
     #[ArrayShape(['data' => "array"])]
     public function __serialize(): array
     {
@@ -95,7 +98,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param string|int|null $offset
+     * @param string|int $offset
      *
      * @return bool
      */
@@ -105,7 +108,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param string|int|null $offset
+     * @param string|int $offset
      *
      * @return TValue
      */
@@ -115,7 +118,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param string|int|null $offset
+     * @param string|int $offset
      * @param TValue          $value
      *
      * @return void
@@ -130,7 +133,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param string|int|null $offset
+     * @param string|int $offset
      */
     public function offsetUnset(mixed $offset): void
     {
@@ -138,6 +141,11 @@ class Collection implements ArrayAccess, Iterator, Countable
         unset($this->data[$offset]);
     }
 
+    /**
+     * @param bool $recursive
+     *
+     * @return int
+     */
     public function count(bool $recursive = false): int
     {
         return count($this->data, $recursive ? COUNT_RECURSIVE : COUNT_NORMAL);
@@ -151,21 +159,33 @@ class Collection implements ArrayAccess, Iterator, Countable
         return current($this->data);
     }
 
+    /**
+     * @return void
+     */
     public function next(): void
     {
         next($this->data);
     }
 
-    public function key(): string|int|null
+    /**
+     * @return string|int
+     */
+    public function key(): string|int
     {
         return key($this->data);
     }
 
+    /**
+     * @return bool
+     */
     public function valid(): bool
     {
         return $this->offsetExists($this->key());
     }
 
+    /**
+     * @return void
+     */
     public function rewind(): void
     {
         reset($this->data);
@@ -177,7 +197,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     /**
      * @param KeyCase $case
      *
-     * @return static<string, TValue>
+     * @return Collection<string, TValue>
      */
     public function changeKeyCase(KeyCase $case): static
     {
@@ -188,7 +208,7 @@ class Collection implements ArrayAccess, Iterator, Countable
      * @param int  $length
      * @param bool $preserveKeys
      *
-     * @return static<int, array<string|int|null, TValue>>
+     * @return Collection<int, array<string|int, TValue>>
      */
     public function chunk(int $length, bool $preserveKeys = false): static
     {
@@ -199,7 +219,7 @@ class Collection implements ArrayAccess, Iterator, Countable
      * @param int|string|null $columnKey
      * @param int|string|null $indexKey
      *
-     * @return static<int|string|null, TValue>
+     * @return Collection<int|string|null, TValue>
      */
     public function column(int|string|null $columnKey, int|string|null $indexKey = null): static
     {
@@ -207,7 +227,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @return static<TValue, int>
+     * @return Collection<TValue, int>
      */
     public function countValues(): static
     {
@@ -218,7 +238,7 @@ class Collection implements ArrayAccess, Iterator, Countable
      * @param callable|null $filterFunction
      * @param FilterMode    $mode
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function filter(?callable $filterFunction = null, FilterMode $mode = FilterMode::USE_VALUE): static
     {
@@ -226,7 +246,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @return static<TValue, string|int|null>
+     * @return Collection<TValue, string|int>
      */
     public function flip(): static
     {
@@ -237,7 +257,7 @@ class Collection implements ArrayAccess, Iterator, Countable
      * @param ?TValue $searchValue
      * @param bool    $strict
      *
-     * @return static<int, string|int|null>
+     * @return Collection<int, string|int>
      */
     public function keys(mixed $searchValue = null, bool $strict = false): static
     {
@@ -249,7 +269,7 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     /**
      * @param ?callable                     $function
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
      * @return static
      */
@@ -259,9 +279,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function merge(self ...$arrays): static
     {
@@ -269,9 +289,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<string|int|null, TValue|self> ...$arrays
+     * @param Collection<string|int, TValue|self> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function mergeRecursive(self ...$arrays): static
     {
@@ -282,7 +302,7 @@ class Collection implements ArrayAccess, Iterator, Countable
      * @param int    $length
      * @param TValue $value
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function pad(int $length, mixed $value): static
     {
@@ -290,9 +310,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<string|int|null, TValue> ...$replacements
+     * @param Collection<string|int, TValue> ...$replacements
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function replace(self ...$replacements): static
     {
@@ -300,9 +320,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<string|int|null, TValue> ...$replacements
+     * @param Collection<string|int, TValue> ...$replacements
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function replaceRecursive(self ...$replacements): static
     {
@@ -312,7 +332,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     /**
      * @param bool $preserveKeys
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function reverse(bool $preserveKeys = false): static
     {
@@ -324,7 +344,7 @@ class Collection implements ArrayAccess, Iterator, Countable
      * @param int|null $length
      * @param bool     $preserveKeys
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function slice(int $offset, ?int $length = null, bool $preserveKeys = false): static
     {
@@ -334,9 +354,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     /**
      * @param int                           $offset
      * @param int|null                      $length
-     * @param self<string|int|null, TValue> $replacement
+     * @param Collection<string|int, TValue> $replacement
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function splice(int $offset, ?int $length = null, self $replacement = new self()): static
     {
@@ -346,7 +366,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     /**
      * @param UniqueSortFlag $sortFlag
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function unique(UniqueSortFlag $sortFlag = UniqueSortFlag::REGULAR): static
     {
@@ -354,7 +374,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @return self<int, TValue>
+     * @return Collection<int, TValue>
      */
     public function values(): static
     {
@@ -362,9 +382,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function diff(self ...$arrays): static
     {
@@ -373,9 +393,9 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     /**
      * @param callable                      $compare
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function uDiff(callable $compare, self ...$arrays): static
     {
@@ -383,9 +403,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function diffAssoc(self ...$arrays): static
     {
@@ -394,9 +414,9 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     /**
      * @param callable                      $compare
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function diffUAssoc(callable $compare, self ...$arrays): static
     {
@@ -405,9 +425,9 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     /**
      * @param callable                      $compare
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function uDiffAssoc(callable $compare, self ...$arrays): static
     {
@@ -417,9 +437,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     /**
      * @param callable                      $compareKey
      * @param callable                      $compareValue
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function uDiffUAssoc(callable $compareKey, callable $compareValue, self ...$arrays): static
     {
@@ -430,9 +450,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function diffKey(self ...$arrays): static
     {
@@ -441,9 +461,9 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     /**
      * @param callable                      $compare
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function diffUKey(callable $compare, self ...$arrays): static
     {
@@ -451,9 +471,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function intersect(self ...$arrays): static
     {
@@ -462,9 +482,9 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     /**
      * @param callable                      $compare
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function uIntersect(callable $compare, self ...$arrays): static
     {
@@ -472,9 +492,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function intersectAssoc(self ...$arrays): static
     {
@@ -483,9 +503,9 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     /**
      * @param callable                      $compare
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function uIntersectAssoc(callable $compare, self ...$arrays): static
     {
@@ -493,9 +513,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function intersectKey(self ...$arrays): static
     {
@@ -504,9 +524,9 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     /**
      * @param callable                      $compare
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function intersectUAssoc(callable $compare, self ...$arrays): static
     {
@@ -516,9 +536,9 @@ class Collection implements ArrayAccess, Iterator, Countable
     /**
      * @param callable                      $compareKey
      * @param callable                      $compareValue
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function uIntersectUAssoc(callable $compareKey, callable $compareValue, self ...$arrays): static
     {
@@ -530,15 +550,21 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     /**
      * @param callable                      $compare
-     * @param self<string|int|null, TValue> ...$arrays
+     * @param Collection<string|int, TValue> ...$arrays
      *
-     * @return static<string|int|null, TValue>
+     * @return Collection<string|int, TValue>
      */
     public function intersectUKey(callable $compare, self ...$arrays): static
     {
         return $this->forEachArray(fn($ret, $array) => array_intersect_ukey($ret, $array, $compare), ...$arrays);
     }
 
+    /**
+     * @param callable   $function
+     * @param Collection ...$arrays
+     *
+     * @return $this
+     */
     private function forAllArrays(callable $function, self ...$arrays): static
     {
         $data = [];
@@ -548,6 +574,12 @@ class Collection implements ArrayAccess, Iterator, Countable
         return new static($function($data));
     }
 
+    /**
+     * @param callable   $function
+     * @param Collection ...$arrays
+     *
+     * @return $this
+     */
     private function forEachArray(callable $function, self ...$arrays): static
     {
         $ret = $this->data;
@@ -563,7 +595,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     /**
      * @param int $num
      *
-     * @return int|string|static<int, TValue>
+     * @return int|string|Collection<int, TValue>
      */
     public function rand(int $num = 1): int|string|static
     {
@@ -585,36 +617,62 @@ class Collection implements ArrayAccess, Iterator, Countable
         return array_search($needle, $this->data, $strict);
     }
 
+    /**
+     * @return bool
+     */
     public function isList(): bool
     {
         return array_is_list($this->data);
     }
 
+    /**
+     * @param int|string $key
+     *
+     * @return bool
+     */
     public function keyExists(int|string $key): bool
     {
         return array_key_exists($key, $this->data);
     }
 
+    /**
+     * @return int|string|null
+     */
     public function keyFirst(): int|string|null
     {
         return array_key_first($this->data);
     }
 
+    /**
+     * @return int|string|null
+     */
     public function keyLast(): int|string|null
     {
         return array_key_last($this->data);
     }
 
+    /**
+     * @return int|float
+     */
     public function product(): int|float
     {
         return array_product($this->data);
     }
 
+    /**
+     * @return int|float
+     */
     public function sum(): int|float
     {
         return array_sum($this->data);
     }
 
+    /**
+     * @param callable   $callback
+     * @param mixed|null $initial
+     *
+     * @return mixed
+     */
     public function reduce(callable $callback, mixed $initial = null): mixed
     {
         return array_reduce($this->data, $callback, $initial);
@@ -634,6 +692,12 @@ class Collection implements ArrayAccess, Iterator, Countable
     ////////////////////////////////////////////////////////////////////////////
     /// Mutators
 
+    /**
+     * @param SortOrder $sortOrder
+     * @param SortFlag  $sortFlag
+     *
+     * @return void
+     */
     public function multiSort(SortOrder $sortOrder = SortOrder::ASC, SortFlag $sortFlag = SortFlag::REGULAR): void
     {
         array_multisort($this->data, ($sortOrder->value), ($sortFlag->value));
@@ -675,11 +739,20 @@ class Collection implements ArrayAccess, Iterator, Countable
         return array_unshift($this->data, ...$values);
     }
 
+    /**
+     * @param callable   $callback
+     * @param mixed|null $arg
+     *
+     * @return bool
+     */
     public function walk(callable $callback, mixed $arg = null): bool
     {
         return array_walk($this->data, $callback, $arg);
     }
 
+    /**
+     * @return bool
+     */
     public function shuffle(): bool
     {
         return shuffle($this->data);
@@ -714,6 +787,12 @@ class Collection implements ArrayAccess, Iterator, Countable
         };
     }
 
+    /**
+     * @param SortOrder $order
+     * @param SortFlag  $flag
+     *
+     * @return bool
+     */
     public function kSort(SortOrder $order = SortOrder::ASC, SortFlag $flag = SortFlag::REGULAR): bool
     {
         return match ($order) {
@@ -722,6 +801,11 @@ class Collection implements ArrayAccess, Iterator, Countable
         };
     }
 
+    /**
+     * @param bool $caseInsensitive
+     *
+     * @return bool
+     */
     public function natSort(bool $caseInsensitive = false): bool
     {
         return match ($caseInsensitive) {
@@ -730,6 +814,13 @@ class Collection implements ArrayAccess, Iterator, Countable
         };
     }
 
+    /**
+     * @param callable $compare
+     * @param bool     $sortKeys
+     * @param bool     $preserveKeys
+     *
+     * @return bool
+     */
     public function uSort(callable $compare, bool $sortKeys = false, bool $preserveKeys = false): bool
     {
         return match ($sortKeys) {

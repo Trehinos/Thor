@@ -23,6 +23,12 @@ final class HttpServerFactory
     {
     }
 
+    /**
+     * @param Configuration $config
+     *
+     * @return HttpServer
+     * @throws \ReflectionException
+     */
     public static function createHttpServerFromConfiguration(Configuration $config): HttpServer
     {
         $pdoCollection = PdoCollection::createFromConfiguration($config['database']);
@@ -38,6 +44,12 @@ final class HttpServerFactory
         return $server;
     }
 
+    /**
+     * @param HttpServer            $server
+     * @param SecurityConfiguration $config
+     *
+     * @return SecurityInterface|null
+     */
     public static function produceSecurity(HttpServer $server, SecurityConfiguration $config): ?SecurityInterface
     {
         if (!$config->security()) {
@@ -46,6 +58,14 @@ final class HttpServerFactory
         return $config->getSecurityFromFactory($server);
     }
 
+    /**
+     * @param Router                 $router
+     * @param SecurityInterface|null $security
+     * @param PdoCollection          $pdoCollection
+     * @param Configuration          $language
+     *
+     * @return HttpServer
+     */
     public static function produce(
         Router $router,
         ?SecurityInterface $security,

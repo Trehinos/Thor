@@ -18,9 +18,9 @@ use Thor\Database\PdoExtension\PdoCollection;
  *
  * It is made to run the command defined in `thor/res/static/commands.yml` and specified in the command line.
  *
- * @package          Thor/Cli
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
+ * @package           Thor/Cli
+ * @copyright (2021)  Sébastien Geldreich
+ * @license           MIT
  */
 final class CliKernel implements KernelInterface
 {
@@ -98,7 +98,7 @@ final class CliKernel implements KernelInterface
     /**
      * This function exit the program if PHP is not run from Cli context.
      *
-     * @return void|no-return
+     * @return void
      */
     public static function guardCli(): void
     {
@@ -229,8 +229,7 @@ final class CliKernel implements KernelInterface
                 ->write('Write ')
                 ->fColor(Color::GREEN)->write('-help')
                 ->fColor()->writeln(' to see a list of valid commands.')
-                ->writeln()
-            ;
+                ->writeln();
             return;
         }
         $commandClass = $commandSpecs['class'] ?? null;
@@ -242,8 +241,7 @@ final class CliKernel implements KernelInterface
                 ->fColor(Color::RED)->write($command)
                 ->fColor(Color::YELLOW)->writeln(" doesn't have a corresponding class...")
                 ->writeln()
-                ->mode()
-            ;
+                ->mode();
             return;
         }
 
@@ -292,8 +290,7 @@ final class CliKernel implements KernelInterface
         $span16 = str_repeat(' ', 16);
         $this->console
             ->echoes(CursorControl::home(), Color::FG_GREEN, "\t$command$spanCommand")
-            ->echoes(Mode::UNDERSCORE, "$description\n")
-        ;
+            ->echoes(Mode::UNDERSCORE, "$description\n");
 
         foreach ($args as $argName => $arg) {
             $argName = "-$argName";
@@ -310,8 +307,7 @@ final class CliKernel implements KernelInterface
                 ->write("\t$span16")
                 ->fColor(Color::YELLOW)->write("$argName$vSpan")
                 ->fColor(mode: Mode::UNDERSCORE)->writeln("$spanArg{$arg['description']}")
-                ->mode()
-            ;
+                ->mode();
         }
 
         $this->console->writeln();
@@ -341,14 +337,12 @@ final class CliKernel implements KernelInterface
     ): self {
         $this->console
             ->echoes(CursorControl::home(), Color::FG_YELLOW, $command, Color::FG_GRAY, " usage :\n\n")
-            ->mode()
-        ;
+            ->mode();
 
         $this->console
             ->echoes(CursorControl::home())
             ->fColor(Color::GREEN)->write("\t$command ")
-            ->mode()
-        ;
+            ->mode();
 
         foreach ($args as $argName => $arg) {
             $argName = "-$argName";
@@ -358,8 +352,7 @@ final class CliKernel implements KernelInterface
                 ->fColor(Color::YELLOW)->write("$argName")
                 ->fColor()->write($value)
                 ->write('] ')
-                ->mode()
-            ;
+                ->mode();
         }
 
         $this->console->writeln("\n");

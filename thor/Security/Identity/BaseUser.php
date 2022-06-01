@@ -17,6 +17,12 @@ class BaseUser implements IdentityInterface, HasPassword, HasPermissions, HasPar
 
     protected string $hash;
 
+    /**
+     * @param string $username
+     * @param string $clearPassword
+     * @param array  $permissions
+     * @param array  $parameters
+     */
     public function __construct(
         protected string $username,
         string $clearPassword,
@@ -34,6 +40,11 @@ class BaseUser implements IdentityInterface, HasPassword, HasPermissions, HasPar
         return $this->username;
     }
 
+    /**
+     * @param string $username
+     *
+     * @return void
+     */
     public function setUsername(string $username): void
     {
         $this->username = $username;
@@ -59,16 +70,31 @@ class BaseUser implements IdentityInterface, HasPassword, HasPermissions, HasPar
         return true;
     }
 
+    /**
+     * @param string $permission
+     *
+     * @return bool
+     */
     public function hasPermission(string $permission): bool
     {
         return in_array($permission, $this->permissions);
     }
 
+    /**
+     * @param string $permission
+     *
+     * @return void
+     */
     public function addPermission(string $permission): void
     {
         $this->permissions[] = $permission;
     }
 
+    /**
+     * @param string $permission
+     *
+     * @return void
+     */
     public function removePermission(string $permission): void
     {
         if (!$this->hasPermission($permission)) {
@@ -94,16 +120,30 @@ class BaseUser implements IdentityInterface, HasPassword, HasPermissions, HasPar
         $this->permissions = $permissions;
     }
 
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return void
+     */
     public function setParameter(string $key, mixed $value): void
     {
         $this->parameters[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     *
+     * @return mixed
+     */
     public function getParameter(string $key): mixed
     {
         return $this->parameters[$key] ?? null;
     }
 
+    /**
+     * @return array
+     */
     public function getParameters(): array
     {
         return $this->parameters;

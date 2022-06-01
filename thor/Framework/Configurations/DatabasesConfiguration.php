@@ -8,6 +8,13 @@ use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Configuration\ConfigurationFromFile;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class DatabasesConfiguration extends ConfigurationFromFile
 {
 
@@ -16,11 +23,19 @@ final class DatabasesConfiguration extends ConfigurationFromFile
         parent::__construct('database');
     }
 
+    /**
+     * @return Configuration
+     */
     public function getDefault(): Configuration
     {
         return new Configuration($this['default'] ?? []);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return Configuration|null
+     */
     public function getConfigurationOf(string $name): ?Configuration
     {
         return ($this[$name] ?? null) ? new Configuration($this[$name]) : null;

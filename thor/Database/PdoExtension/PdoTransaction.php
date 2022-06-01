@@ -17,6 +17,10 @@ namespace Thor\Database\PdoExtension;
 final class PdoTransaction extends PdoRequester
 {
 
+    /**
+     * @param PdoHandler $handler
+     * @param bool       $autoTransaction
+     */
     public function __construct(PdoHandler $handler, private bool $autoTransaction = true)
     {
         parent::__construct($handler);
@@ -25,6 +29,9 @@ final class PdoTransaction extends PdoRequester
         }
     }
 
+    /**
+     *
+     */
     public function __destruct()
     {
         if ($this->handler->getPdo()->inTransaction()) {

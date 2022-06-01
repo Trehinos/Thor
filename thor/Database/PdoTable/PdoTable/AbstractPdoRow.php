@@ -20,6 +20,10 @@ abstract class AbstractPdoRow extends BasePdoRow implements HasPublicId
 
     use HasPublicIdTrait;
 
+    /**
+     * @param string|null $public_id
+     * @param array       $primaries
+     */
     public function __construct(?string $public_id = null, array $primaries = [])
     {
         parent::__construct($primaries);

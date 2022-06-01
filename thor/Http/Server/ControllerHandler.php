@@ -18,6 +18,10 @@ use Thor\Http\Request\ServerRequestInterface;
 class ControllerHandler implements RequestHandlerInterface
 {
 
+    /**
+     * @param HttpServer $server
+     * @param Route      $route
+     */
     public function __construct(private HttpServer $server, private Route $route)
     {
     }

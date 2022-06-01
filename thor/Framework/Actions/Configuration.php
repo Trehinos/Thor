@@ -15,6 +15,13 @@ use Thor\Framework\Configurations\SecurityConfiguration;
 use Thor\Framework\Configurations\DatabasesConfiguration;
 use Thor\Configuration\Configuration as YmlConfiguration;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class Configuration extends WebController
 {
 
@@ -22,6 +29,12 @@ final class Configuration extends WebController
     private const DATABASE_YML = Globals::CONFIG_DIR . 'database.yml';
     private const SECURITY_YML = Globals::CONFIG_DIR . 'security.yml';
 
+    /**
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Route('config-config', '/config/general')]
     public function configView(): Response
     {
@@ -45,6 +58,9 @@ final class Configuration extends WebController
         ]);
     }
 
+    /**
+     * @return Response
+     */
     #[Route('config-save', '/config-save/general', HttpMethod::POST)]
     public function saveConfig(): Response
     {
@@ -54,6 +70,12 @@ final class Configuration extends WebController
         return $this->redirect('index', query: ['menuItem' => 'config-config']);
     }
 
+    /**
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Route('database-config', '/config/database')]
     public function databaseView(): Response
     {
@@ -77,6 +99,9 @@ final class Configuration extends WebController
         ]);
     }
 
+    /**
+     * @return Response
+     */
     #[Route('database-save', '/config-save/database', HttpMethod::POST)]
     public function saveDatabase(): Response
     {
@@ -95,6 +120,12 @@ final class Configuration extends WebController
         return $this->redirect('index', query: ['menuItem' => 'database-config']);
     }
 
+    /**
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Route('security-config', '/config/security')]
     public function securityView(): Response
     {
@@ -110,6 +141,9 @@ final class Configuration extends WebController
         );
     }
 
+    /**
+     * @return Response
+     */
     #[Route('security-save', '/config-save/security', HttpMethod::POST)]
     public function saveSecurity(): Response
     {
@@ -118,6 +152,12 @@ final class Configuration extends WebController
         return $this->redirect('index', query: ['menuItem' => 'security-config']);
     }
 
+    /**
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Route('config-not-implemented', '/config/not-implemented')]
     public function notImplemented(): Response
     {

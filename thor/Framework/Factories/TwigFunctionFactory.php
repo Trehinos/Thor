@@ -24,6 +24,9 @@ final class TwigFunctionFactory
     {
     }
 
+    /**
+     * @return TwigFunction
+     */
     public static function toast(): TwigFunction
     {
         return new TwigFunction(
@@ -90,6 +93,9 @@ final class TwigFunctionFactory
         );
     }
 
+    /**
+     * @return TwigFunction
+     */
     public static function option(): TwigFunction
     {
         return new TwigFunction(
@@ -103,6 +109,11 @@ final class TwigFunctionFactory
         );
     }
 
+    /**
+     * @param SecurityInterface|null $security
+     *
+     * @return TwigFunction
+     */
     public static function authorized(?SecurityInterface $security = null): TwigFunction
     {
         return new TwigFunction(
@@ -122,6 +133,11 @@ final class TwigFunctionFactory
         );
     }
 
+    /**
+     * @param Router $router
+     *
+     * @return TwigFunction
+     */
     public static function url(Router $router): TwigFunction
     {
         return new TwigFunction(
@@ -133,6 +149,9 @@ final class TwigFunctionFactory
         );
     }
 
+    /**
+     * @return TwigFunction
+     */
     public static function icon(): TwigFunction
     {
         return new TwigFunction(
@@ -146,6 +165,11 @@ final class TwigFunctionFactory
         );
     }
 
+    /**
+     * @param WebServer $server
+     *
+     * @return TwigFunction
+     */
     public static function render(WebServer $server): TwigFunction
     {
         return new TwigFunction(
@@ -162,6 +186,9 @@ final class TwigFunctionFactory
         );
     }
 
+    /**
+     * @return TwigFunction
+     */
     public static function dump(): TwigFunction
     {
         return new TwigFunction(
@@ -173,6 +200,11 @@ final class TwigFunctionFactory
         );
     }
 
+    /**
+     * @param int $defaultSize
+     *
+     * @return TwigFunction
+     */
     public static function uuid(int $defaultSize = 8): TwigFunction
     {
         return new TwigFunction(

@@ -2,6 +2,13 @@
 
 namespace Thor\Security\Identity;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 interface HasPassword
 {
 

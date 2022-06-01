@@ -290,6 +290,9 @@ class Stream implements StreamInterface
         return $this->getMetadata('seekable') ?? false;
     }
 
+    /**
+     *
+     */
     public function __destruct()
     {
         $this->close();

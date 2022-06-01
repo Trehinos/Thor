@@ -74,6 +74,9 @@ final class DataTables
         );
     }
 
+    /**
+     * @return array
+     */
     public function getColumns(): array
     {
         return array_values(
@@ -84,6 +87,11 @@ final class DataTables
         );
     }
 
+    /**
+     * @param array $labels
+     *
+     * @return array
+     */
     #[ArrayShape(['table' => Node::class, 'data' => 'string'])]
     public function getDataTable(array $labels = []): array
     {

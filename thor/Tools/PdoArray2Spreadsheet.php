@@ -7,6 +7,13 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Thor\Structures\Collection\Collection;
 use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class PdoArray2Spreadsheet
 {
 
@@ -21,6 +28,9 @@ final class PdoArray2Spreadsheet
         $this->builder ??= new Builder();
     }
 
+    /**
+     * @return Spreadsheet
+     */
     public function toXlsx(): Spreadsheet
     {
         $this->build();

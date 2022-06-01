@@ -22,6 +22,11 @@ final class TwigFilterFactory
     {
     }
 
+    /**
+     * @param WebServer $server
+     *
+     * @return TwigFilter
+     */
     public static function _(WebServer $server): TwigFilter
     {
         return new TwigFilter(
@@ -37,6 +42,9 @@ final class TwigFilterFactory
         );
     }
 
+    /**
+     * @return TwigFilter
+     */
     public static function classname(): TwigFilter
     {
         return new TwigFilter(
@@ -45,6 +53,9 @@ final class TwigFilterFactory
         );
     }
 
+    /**
+     * @return TwigFilter
+     */
     public static function datetimeRelative(): TwigFilter
     {
         return new TwigFilter(
@@ -55,6 +66,9 @@ final class TwigFilterFactory
         );
     }
 
+    /**
+     * @return TwigFilter
+     */
     public static function date2date(): TwigFilter
     {
         return new TwigFilter(
@@ -65,6 +79,9 @@ final class TwigFilterFactory
         );
     }
 
+    /**
+     * @return TwigFilter
+     */
     public static function toUtf8(): TwigFilter
     {
         return new TwigFilter(
@@ -73,6 +90,9 @@ final class TwigFilterFactory
         );
     }
 
+    /**
+     * @return TwigFilter
+     */
     public static function fromUtf8(): TwigFilter
     {
         return new TwigFilter(
@@ -81,6 +101,9 @@ final class TwigFilterFactory
         );
     }
 
+    /**
+     * @return TwigFilter
+     */
     public static function format(): TwigFilter
     {
         return new TwigFilter(

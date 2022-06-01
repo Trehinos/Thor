@@ -71,6 +71,11 @@ final class FileSystem
     {
     }
 
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
     public static function isDir(string $name): bool
     {
         return self::exists($name) && is_dir($name);
@@ -87,11 +92,21 @@ final class FileSystem
         return false;
     }
 
+    /**
+     * @param string $filename
+     *
+     * @return bool
+     */
     public static function readable(string $filename): bool
     {
         return self::exists($filename) && is_readable($filename);
     }
 
+    /**
+     * @param string $filename
+     *
+     * @return bool
+     */
     public static function writable(string $filename): bool
     {
         return self::exists($filename) && is_writable($filename);
@@ -248,6 +263,17 @@ final class FileSystem
             );
     }
 
+    /**
+     * @param int    $permission
+     * @param int    $read
+     * @param int    $write
+     * @param int    $exec
+     * @param int    $special
+     * @param string $special_exec
+     * @param string $special_notExec
+     *
+     * @return string
+     */
     private static function permissionsStringFor(
         int $permission,
         int $read,

@@ -10,9 +10,20 @@ use Thor\Cli\Daemon;
 use Thor\FileSystem\Folder;
 use Thor\Framework\Configurations\TwigConfiguration;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class WebCacheCleaner extends Daemon
 {
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function execute(): void
     {
         $configuration = TwigConfiguration::get();

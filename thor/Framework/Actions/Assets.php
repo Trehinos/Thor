@@ -9,14 +9,31 @@ use Thor\Http\Response\Response;
 use Thor\Http\Response\ResponseFactory;
 use Thor\Framework\Factories\AssetsListFactory;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class Assets extends WebController
 {
 
+    /**
+     * @param WebServer $webServer
+     */
     public function __construct(WebServer $webServer)
     {
         parent::__construct($webServer);
     }
 
+    /**
+     * @param string $identifier
+     *
+     * @return Response
+     * @throws \Exception
+     * @throws \Exception
+     */
     #[Route('load-asset', '/asset/$asset', parameters: ['asset' => '.+'])]
     public function asset(string $identifier): Response
     {

@@ -33,6 +33,9 @@ final class PdoHandler
     ) {
     }
 
+    /**
+     * @return string|null
+     */
     public function getDriverName(): ?string
     {
         return explode(':', $this->dsn)[0] ?: null;

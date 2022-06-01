@@ -20,27 +20,42 @@ final class Thor
     {
     }
 
+    /**
+     * @return ThorConfiguration
+     */
     private static function config(): ThorConfiguration
     {
         global $thor_kernel;
         return self::$configuration ??= new ThorConfiguration($thor_kernel);
     }
 
+    /**
+     * @return string
+     */
     public static function version(): string
     {
         return self::config()->appVersion();
     }
 
+    /**
+     * @return string
+     */
     public static function versionName(): string
     {
         return self::config()->appVersionName();
     }
 
+    /**
+     * @return string
+     */
     public static function appName(): string
     {
         return self::config()->appName();
     }
 
+    /**
+     * @return string
+     */
     public static function vendor(): string
     {
         return self::config()->appVendor();

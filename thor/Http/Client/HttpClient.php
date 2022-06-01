@@ -11,15 +11,38 @@ use Thor\Http\Request\RequestFactory;
 use Thor\Http\Request\RequestInterface;
 use Thor\Http\Response\ResponseInterface;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 abstract class HttpClient implements ClientInterface
 {
 
+    /**
+     * @param CurlClient $curl
+     * @param string     $baseUrl
+     */
     public function __construct(
         private CurlClient $curl,
         protected string $baseUrl
     ) {
     }
 
+    /**
+     * @param HttpMethod        $method
+     * @param string            $operation
+     * @param array             $queryParameters
+     * @param array|string|null $data
+     * @param Headers           $headers
+     * @param bool              $isJson
+     * @param bool              $isAuthenticated
+     *
+     * @return ResponseInterface
+     * @throws \Exception
+     */
     public function operation(
         HttpMethod $method,
         string $operation,
@@ -56,8 +79,16 @@ abstract class HttpClient implements ClientInterface
         );
     }
 
+    /**
+     * @return string|null
+     */
     abstract public function getAuthenticationToken(): ?string;
 
+    /**
+     * @param RequestInterface $request
+     *
+     * @return ResponseInterface
+     */
     public final function sendRequest(RequestInterface $request): ResponseInterface
     {
         return $this->curl->sendRequest($request);

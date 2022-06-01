@@ -23,6 +23,13 @@ use Thor\Stream\StreamInterface;
 class Request extends Message implements RequestInterface
 {
 
+    /**
+     * @param ProtocolVersion $version
+     * @param array           $headers
+     * @param StreamInterface $body
+     * @param HttpMethod      $method
+     * @param UriInterface    $target
+     */
     #[Pure]
     public function __construct(
         ProtocolVersion $version,

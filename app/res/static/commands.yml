@@ -166,3 +166,15 @@ core/repl:
     class: Thor\Cli\Repl
     command: repl
     description: "launch a REPL"
+
+project/document:
+    class: Thor\Framework\Commands\Project
+    command: document
+    description: "generates documentation of a project"
+    arguments:
+        namespace:
+            hasValue: true
+            description: (default 'Thor')
+        folder:
+            hasValue: true
+            description: (default 'thor')

@@ -8,9 +8,24 @@
 
 namespace Thor\Web\Form\Field;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class InputField extends AbstractField
 {
 
+    /**
+     * @param string      $name
+     * @param string      $inputType
+     * @param bool        $read_only
+     * @param bool        $required
+     * @param string|null $htmlClass
+     * @param string|null $value
+     */
     public function __construct(
         string $name,
         protected string $inputType,

@@ -28,6 +28,9 @@ final class DaemonState
     private ?string $error = null;
     private ?string $pid = null;
 
+    /**
+     * @param Daemon $daemon
+     */
     public function __construct(private Daemon $daemon)
     {
     }
@@ -156,11 +159,17 @@ final class DaemonState
         return $this->isRunning ?? false;
     }
 
+    /**
+     * @return DateTime|null
+     */
     public function getNextRun(): ?DateTime
     {
         return $this->nextRun;
     }
 
+    /**
+     * @return DateTime|null
+     */
     public function getLastRun(): ?DateTime
     {
         return $this->lastRun;

@@ -17,6 +17,12 @@ use Thor\Database\PdoTable\TableType\TableTypeInterface;
 class PdoColumn
 {
 
+    /**
+     * @param string             $name
+     * @param TableTypeInterface $type
+     * @param bool               $nullable
+     * @param mixed|null         $defaultValue
+     */
     public function __construct(
         private string $name,
         private TableTypeInterface $type,

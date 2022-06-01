@@ -4,16 +4,31 @@ namespace Thor\Structures;
 
 use SplQueue;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class BinaryNode
 {
 
     private ?self $left = null;
     private ?self $right = null;
 
+    /**
+     * @param mixed $value
+     */
     public function __construct(public mixed $value)
     {
     }
 
+    /**
+     * @param mixed|null $left
+     *
+     * @return $this
+     */
     public function left(mixed $left = null): static
     {
         if ($left instanceof self) {
@@ -24,6 +39,11 @@ class BinaryNode
         return $this;
     }
 
+    /**
+     * @param mixed|null $right
+     *
+     * @return $this
+     */
     public function right(mixed $right = null): static
     {
         if ($right instanceof self) {
@@ -34,31 +54,51 @@ class BinaryNode
         return $this;
     }
 
+    /**
+     * @return $this|null
+     */
     public function leftNode(): ?static
     {
         return $this->left;
     }
 
+    /**
+     * @return $this|null
+     */
     public function rightNode(): ?static
     {
         return $this->right;
     }
 
+    /**
+     * @return bool
+     */
     public function hasLeft(): bool
     {
         return $this->left !== null;
     }
 
+    /**
+     * @return bool
+     */
     public function hasRight(): bool
     {
         return $this->right !== null;
     }
 
+    /**
+     * @return bool
+     */
     public function isLeaf(): bool
     {
         return !($this->hasLeft() || $this->hasRight());
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @return bool
+     */
     public function has(mixed $value): bool
     {
         if ($this->isLeaf()) {
@@ -68,6 +108,12 @@ class BinaryNode
         return $this->left?->has($value) || $this->right?->has($value);
     }
 
+    /**
+     * @param callable    $callback
+     * @param BinaryOrder $order
+     *
+     * @return mixed
+     */
     public function each(callable $callback, BinaryOrder $order = BinaryOrder::PRE): mixed
     {
         $left = $this->left?->each($callback, $order);
@@ -80,6 +126,12 @@ class BinaryNode
         };
     }
 
+    /**
+     * @param BinaryNode|null $tree
+     * @param BinaryOrder     $order
+     *
+     * @return array
+     */
     public static function depthArray(?BinaryNode $tree, BinaryOrder $order = BinaryOrder::PRE): array
     {
         if ($tree === null) {
@@ -94,6 +146,11 @@ class BinaryNode
         };
     }
 
+    /**
+     * @param BinaryNode|null $tree
+     *
+     * @return array
+     */
     public static function breadthArray(?BinaryNode $tree): array
     {
         if ($tree === null) {

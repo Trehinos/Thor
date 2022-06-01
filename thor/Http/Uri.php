@@ -20,6 +20,16 @@ class Uri implements UriInterface
     public const SCHEME_FTP = 'ftp';
     public const SCHEME_SSH = 'ssh';
 
+    /**
+     * @param string      $scheme
+     * @param string      $host
+     * @param string|null $user
+     * @param string|null $password
+     * @param int|null    $port
+     * @param string      $path
+     * @param array       $queryArguments
+     * @param string      $fragment
+     */
     private function __construct(
         private string $scheme,
         private string $host = '',
@@ -73,6 +83,11 @@ class Uri implements UriInterface
         );
     }
 
+    /**
+     * @param string $authority
+     *
+     * @return array
+     */
     private static function extractHostAndPortFromAuthority(string $authority): array
     {
         $uri = self::SCHEME_HTTP . "://$authority";

@@ -63,6 +63,11 @@ final class Folder
         return $ret;
     }
 
+    /**
+     * @param string $file
+     *
+     * @return bool
+     */
     private static function isSpecial(string $file): bool
     {
         return in_array($file, ['.', '..']);
@@ -117,6 +122,11 @@ final class Folder
         }
     }
 
+    /**
+     * @param string $path
+     *
+     * @return array
+     */
     public static function fileList(string $path): array
     {
         $files = scandir($path);

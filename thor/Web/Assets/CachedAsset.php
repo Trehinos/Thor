@@ -9,9 +9,25 @@ use Thor\Debug\Logger;
 use Thor\Stream\Stream;
 use Thor\Debug\LogLevel;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class CachedAsset extends MergedAsset
 {
 
+    /**
+     * @param AssetType             $type
+     * @param string                $filename
+     * @param Uri                   $uri
+     * @param array                 $fileList
+     * @param DateInterval|int|null $ttl
+     * @param string                $cacheHostPath
+     * @param string                $cacheFilePath
+     */
     public function __construct(
         AssetType $type,
         string $filename,
@@ -52,11 +68,17 @@ class CachedAsset extends MergedAsset
                );
     }
 
+    /**
+     * @return string
+     */
     public function getCacheFilename(): string
     {
         return "{$this->cacheFilePath}/{$this->getFilename()}";
     }
 
+    /**
+     * @return void
+     */
     public function cache(): void
     {
         if ($this->hasExpired()) {
@@ -65,6 +87,9 @@ class CachedAsset extends MergedAsset
         }
     }
 
+    /**
+     * @return string
+     */
     public function getFilename(): string
     {
         return "{$this->name}.{$this->type->getExtension()}";

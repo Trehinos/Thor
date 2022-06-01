@@ -37,12 +37,22 @@ final class CoreCommand extends Command
 
     private array $routes;
 
+    /**
+     * @param string    $command
+     * @param array     $args
+     * @param CliKernel $kernel
+     *
+     * @throws \ReflectionException
+     */
     public function __construct(string $command, array $args, CliKernel $kernel)
     {
         parent::__construct($command, $args, $kernel);
         $this->routes = RouterFactory::createRoutesFromConfiguration(RoutesConfiguration::get('web'));
     }
 
+    /**
+     * @return void
+     */
     public function routeSet(): void
     {
         $name = $this->get('name');
@@ -72,6 +82,9 @@ final class CoreCommand extends Command
         ;
     }
 
+    /**
+     * @return void
+     */
     public function setEnv(): void
     {
         $env = $this->get('env');
@@ -125,6 +138,9 @@ final class CoreCommand extends Command
         Logger::write("SETUP : Admin $pid created.");
     }
 
+    /**
+     * @return void
+     */
     public function routeList(): void
     {
         /** @var Route $route */
@@ -178,6 +194,9 @@ final class CoreCommand extends Command
         }
     }
 
+    /**
+     * @return void
+     */
     public function clearCache(): void
     {
         $this->console->fColor(Color::CYAN)
@@ -191,6 +210,9 @@ final class CoreCommand extends Command
         $this->console->writeln(" -> Done");
     }
 
+    /**
+     * @return void
+     */
     public function clearLogs(): void
     {
         $env = $this->get('env') ?? 'dev';
@@ -207,6 +229,9 @@ final class CoreCommand extends Command
         $this->console->writeln(" -> Done");
     }
 
+    /**
+     * @return void
+     */
     public function update(): void
     {
         $updateConf = new ConfigurationFromFile('update');
@@ -324,6 +349,9 @@ final class CoreCommand extends Command
         Folder::removeTree($updateFolder);
     }
 
+    /**
+     * @return array
+     */
     private static function loadDaemons(): array
     {
         return array_map(

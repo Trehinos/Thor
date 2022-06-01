@@ -19,6 +19,10 @@ use Thor\Http\{Uri, Routing\Route, HttpController, Response\Response, Request\Ht
 final class Api extends HttpController
 {
 
+    /**
+     * @return Response
+     * @throws \JsonException
+     */
     #[Route('api-index', '/', [HttpMethod::GET, HttpMethod::POST])]
     public function index(): Response
     {

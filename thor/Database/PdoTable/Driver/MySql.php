@@ -8,6 +8,13 @@ use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
 use Thor\Database\PdoTable\PdoTable\PdoAttributesReader;
 use Thor\Database\PdoTable\PdoTable\Attributes\PdoColumn;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class MySql implements DriverInterface
 {
 
@@ -52,6 +59,12 @@ class MySql implements DriverInterface
             §;
     }
 
+    /**
+     * @param PdoColumn   $column
+     * @param string|null $autoKey
+     *
+     * @return string
+     */
     public function addColumn(PdoColumn $column, ?string $autoKey = null): string
     {
         $nullStr = $column->isNullable() ? '' : ' NOT NULL';
@@ -63,6 +76,11 @@ class MySql implements DriverInterface
                (($column->getName() === $autoKey) ? ' AUTO_INCREMENT' : '');
     }
 
+    /**
+     * @param PdoIndex $index
+     *
+     * @return string
+     */
     public function addIndex(PdoIndex $index): string
     {
         $unq = $index->isUnique() ? ' UNIQUE' : '';
@@ -71,6 +89,12 @@ class MySql implements DriverInterface
         return "CONSTRAINT$unq INDEX {$index->getName()} ($cols)";
     }
 
+    /**
+     * @param PdoTable    $table
+     * @param string|null $autoKey
+     *
+     * @return string
+     */
     public function primaryKeys(PdoTable $table, ?string $autoKey = null): string
     {
         $keys = $table->getPrimaryKeys();
@@ -81,6 +105,11 @@ class MySql implements DriverInterface
         return "PRIMARY KEY ($primary)";
     }
 
+    /**
+     * @param string $className
+     *
+     * @return array
+     */
     public function createIndexes(string $className): array
     {
         return [];

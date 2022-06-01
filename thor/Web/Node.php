@@ -2,38 +2,71 @@
 
 namespace Thor\Web;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class Node implements NodeInterface
 {
 
     private array $attributes = [];
     private array $children = [];
 
+    /**
+     * @param string    $name
+     * @param Node|null $parent
+     */
     public function __construct(
         private string $name,
         private ?Node $parent = null
     ) {
     }
 
+    /**
+     * @return Node|null
+     */
     public function getParent(): ?Node
     {
         return $this->parent;
     }
 
+    /**
+     * @param string           $name
+     * @param string|bool|null $value
+     *
+     * @return void
+     */
     public function setAttribute(string $name, string|bool|null $value): void
     {
         $this->attributes[$name] = $value;
     }
 
+    /**
+     * @return array
+     */
     public function getAttributes(): array
     {
         return $this->attributes;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return string|null
+     */
     public function getAttribute(string $name): ?string
     {
         return $this->attributes[$name] ?? null;
     }
 
+    /**
+     * @param Node $node
+     *
+     * @return void
+     */
     public function addChild(Node $node): void
     {
         $this->children[] = $node;
@@ -76,6 +109,9 @@ class Node implements NodeInterface
         return $this->children;
     }
 
+    /**
+     * @return string
+     */
     public function getHtml(): string
     {
         $attributes = implode(

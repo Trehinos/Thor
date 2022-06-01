@@ -29,6 +29,12 @@ class HttpServer implements RequestHandlerInterface
 
     private ?ServerRequestInterface $request = null;
 
+    /**
+     * @param Router                 $router
+     * @param SecurityInterface|null $security
+     * @param PdoCollection          $pdoCollection
+     * @param Configuration          $language
+     */
     public function __construct(
         private Router $router,
         private ?SecurityInterface $security,

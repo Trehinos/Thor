@@ -24,6 +24,12 @@ final class Logger implements LoggerInterface
 
     private static ?self $logger = null;
 
+    /**
+     * @param LogLevel    $logLevel
+     * @param string      $basePath
+     * @param string      $dateFormat
+     * @param string|null $filename
+     */
     public function __construct(
         private LogLevel $logLevel = LogLevel::DEBUG,
         private string $basePath = __DIR__ . '/../',
@@ -43,6 +49,9 @@ final class Logger implements LoggerInterface
         return self::$logger = new self($level, $basePath, $dateFormat);
     }
 
+    /**
+     * @return LogLevel
+     */
     public static function getLogLevel(): LogLevel
     {
         return self::get()->logLevel;
@@ -58,7 +67,13 @@ final class Logger implements LoggerInterface
         $traceStr = '';
 
         foreach (array_reverse($e->getTrace()) as $trace) {
-            $traceStr .= "$pad • Location : {$trace['file']}:{$trace['line']}\n";
+            $file = $trace['file'] ?? '';
+            $line = $trace['line'] ?? '';
+            $location = "$file:$line";
+            if ($location === ':') {
+                $location = 'unknown';
+            }
+            $traceStr .= "$pad • @$location\n";
 
             $traceClass = $trace['class'] ?? null;
             $traceObject = $trace['object'] ?? null;
@@ -66,18 +81,17 @@ final class Logger implements LoggerInterface
             $traceType = $trace['type'] ?? '';
             $traceArgs = $trace['args'] ?? [];
             if ($traceClass !== null) {
-                $traceStr .= "$pad •         : $traceClass$traceType" .
-                    $traceFunction;
+                $traceStr .= "$pad • $traceType$traceClass$traceFunction";
             } else {
-                $traceStr .= "$pad • Call     : -> $traceFunction";
+                $traceStr .= "$pad • $traceType$traceFunction";
             }
             if (!empty($traceArgs)) {
                 $traceStr .= '(' . implode(', ', $traceArgs) . ')';
             }
-            $traceStr .= "\n";
             if ($traceObject !== null) {
                 "$pad " . json_encode($traceObject) . "\n";
             }
+            $traceStr .= "\n\n";
         }
 
         self::write(

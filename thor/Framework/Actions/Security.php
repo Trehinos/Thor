@@ -18,12 +18,21 @@ use Thor\Http\{Routing\Route, Request\HttpMethod, Response\ResponseInterface};
 final class Security extends WebController
 {
 
+    /**
+     * @return ResponseInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Route('login', '/login', HttpMethod::GET)]
     public function login(): ResponseInterface
     {
         return $this->twigResponse('login.html.twig');
     }
 
+    /**
+     * @return ResponseInterface
+     */
     #[Route('check', '/check', HttpMethod::POST)]
     public function check(): ResponseInterface
     {
@@ -39,6 +48,9 @@ final class Security extends WebController
         return $this->redirect($this->getServer()->getSecurity()->loginRoute ?? 'login');
     }
 
+    /**
+     * @return ResponseInterface
+     */
     #[Route('logout', '/logout', HttpMethod::GET)]
     public function logout(): ResponseInterface
     {

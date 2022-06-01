@@ -35,6 +35,14 @@ class DbUser extends BaseUser implements PdoRowInterface, HasPublicId
     }
     use HasPublicIdTrait;
 
+    /**
+     * @param int|null    $id
+     * @param string      $username
+     * @param string      $clearPassword
+     * @param array       $permissions
+     * @param array       $parameters
+     * @param string|null $public_id
+     */
     public function __construct(
         ?int $id = null,
         string $username = '',
@@ -48,11 +56,21 @@ class DbUser extends BaseUser implements PdoRowInterface, HasPublicId
         $this->public_id = $public_id;
     }
 
+    /**
+     * @param string $username
+     *
+     * @return void
+     */
     public function setUsername(string $username): void
     {
         $this->username = $username;
     }
 
+    /**
+     * @param string $clearPassword
+     *
+     * @return void
+     */
     public function setPwdHashFrom(string $clearPassword): void
     {
         $this->hash = PasswordHasher::hashPassword($clearPassword);

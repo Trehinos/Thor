@@ -7,11 +7,24 @@ use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
 use Thor\Database\PdoTable\PdoTable\PdoAttributesReader;
 use Thor\Database\PdoTable\PdoTable\Attributes\PdoColumn;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class Sqlite implements DriverInterface
 {
 
     private string $tableName = '';
 
+    /**
+     * @param string $className
+     *
+     * @return string
+     * @throws \ReflectionException
+     */
     public function createTable(string $className): string
     {
         $attrs = new PdoAttributesReader($className);
@@ -38,6 +51,12 @@ class Sqlite implements DriverInterface
             §;
     }
 
+    /**
+     * @param PdoColumn   $column
+     * @param string|null $autoKey
+     *
+     * @return string
+     */
     public function addColumn(PdoColumn $column, ?string $autoKey = null): string
     {
         if ($autoKey === $column->getName()) {
@@ -51,6 +70,12 @@ class Sqlite implements DriverInterface
         return "{$column->getName()} {$column->getSqlType()}$nullStr$defaultStr";
     }
 
+    /**
+     * @param PdoTable    $table
+     * @param string|null $autoKey
+     *
+     * @return string
+     */
     public function primaryKeys(PdoTable $table, ?string $autoKey = null): string
     {
         if ($autoKey !== null) {
@@ -64,6 +89,12 @@ class Sqlite implements DriverInterface
         return "PRIMARY KEY ($primary)";
     }
 
+    /**
+     * @param string $className
+     *
+     * @return array
+     * @throws \ReflectionException
+     */
     public function createIndexes(string $className): array
     {
         $attrs = new PdoAttributesReader($className);
@@ -74,6 +105,11 @@ class Sqlite implements DriverInterface
         );
     }
 
+    /**
+     * @param PdoIndex $index
+     *
+     * @return string
+     */
     public function addIndex(PdoIndex $index): string
     {
         $unq = $index->isUnique() ? ' UNIQUE' : '';

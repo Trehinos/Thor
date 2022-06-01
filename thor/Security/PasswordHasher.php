@@ -11,6 +11,10 @@ namespace Thor\Security;
 final class PasswordHasher
 {
 
+    /**
+     * @param string $algo
+     * @param array  $options
+     */
     public function __construct(
         private string $algo = PASSWORD_ARGON2ID,
         private array $options = []

@@ -26,6 +26,12 @@ final class RouterFactory
     {
     }
 
+    /**
+     * @param RoutesConfiguration $routes
+     *
+     * @return Router
+     * @throws ReflectionException
+     */
     public static function createRouterFromConfiguration(RoutesConfiguration $routes): Router
     {
         return new Router(self::createRoutesFromConfiguration($routes));

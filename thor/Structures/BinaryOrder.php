@@ -2,6 +2,13 @@
 
 namespace Thor\Structures;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 enum BinaryOrder
 {
     case PRE;

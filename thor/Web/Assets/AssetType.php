@@ -5,6 +5,13 @@ namespace Thor\Web\Assets;
 use InvalidArgumentException;
 use JetBrains\PhpStorm\ArrayShape;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 enum AssetType
 {
 
@@ -15,6 +22,9 @@ enum AssetType
     case IMAGE_BMP;
     case IMAGE_JPEG;
 
+    /**
+     * @return string
+     */
     public function getExtension(): string
     {
         return match ($this) {
@@ -27,6 +37,9 @@ enum AssetType
         };
     }
 
+    /**
+     * @return string
+     */
     public function getMimeType(): string
     {
         return match ($this) {
@@ -39,6 +52,9 @@ enum AssetType
         };
     }
 
+    /**
+     * @return array
+     */
     #[ArrayShape(['tag' => 'string', 'src' => 'string', 'attrs' => 'array'])]
     public function getHtmlArguments(): array
     {
@@ -51,6 +67,11 @@ enum AssetType
         );
     }
 
+    /**
+     * @param string $type
+     *
+     * @return static
+     */
     public static function fromExtension(string $type): self
     {
         return match (strtolower($type)) {

@@ -24,6 +24,9 @@ final class ServerRequestFactory
     {
     }
 
+    /**
+     * @return ServerRequestInterface
+     */
     public static function createFromGlobals(): ServerRequestInterface
     {
         $version = explode('/', $_SERVER['SERVER_PROTOCOL'])[1] ?? '1.1';

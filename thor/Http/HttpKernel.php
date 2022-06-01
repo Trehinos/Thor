@@ -21,6 +21,9 @@ use Thor\Http\{Server\HttpServer, Response\ResponseInterface, Request\ServerRequ
 class HttpKernel implements KernelInterface
 {
 
+    /**
+     * @param HttpServer $server
+     */
     public function __construct(protected HttpServer $server)
     {
         Logger::write('Instantiate HttpKernel');
@@ -45,7 +48,7 @@ class HttpKernel implements KernelInterface
     /**
      * This function exit the program if PHP is run from Cli context.
      *
-     * @return void|no-return
+     * @return void
      */
     final public static function guardHttp(): void
     {
@@ -64,6 +67,8 @@ class HttpKernel implements KernelInterface
      * @param Configuration $config
      *
      * @return static
+     * @throws \ReflectionException
+     * @throws \ReflectionException
      */
     public static function createFromConfiguration(Configuration $config): static
     {
@@ -116,11 +121,21 @@ class HttpKernel implements KernelInterface
         }
     }
 
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return ResponseInterface
+     */
     protected function alterResponse(ResponseInterface $response): ResponseInterface
     {
         return $response;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     *
+     * @return ServerRequestInterface
+     */
     protected function alterRequest(ServerRequestInterface $request): ServerRequestInterface
     {
         return $request;

@@ -29,6 +29,11 @@ final class Users extends WebController
     private UserManager $manager;
     private DataTables $userTable;
 
+    /**
+     * @param WebServer $webServer
+     *
+     * @throws \ReflectionException
+     */
     public function __construct(WebServer $webServer)
     {
         parent::__construct($webServer);
@@ -52,6 +57,12 @@ final class Users extends WebController
         );
     }
 
+    /**
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Authorization('manage-user')]
     #[Route('users', '/users', HttpMethod::GET)]
     public function usersInterface(): Response
@@ -65,6 +76,12 @@ final class Users extends WebController
         );
     }
 
+    /**
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Authorization('manage-user')]
     #[Route('users-table', '/users/table', HttpMethod::GET)]
     public function usersTable(): Response
@@ -77,6 +94,10 @@ final class Users extends WebController
         );
     }
 
+    /**
+     * @return Response
+     * @throws \Exception
+     */
     #[Authorization('manage-user')]
     #[Route('users-table-actions', '/users/table/actions', HttpMethod::POST)]
     public function usersTableActions(): Response
@@ -84,6 +105,12 @@ final class Users extends WebController
         return ResponseFactory::ok($this->userTable->process($_POST));
     }
 
+    /**
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Authorization('manage-user', 'create-user')]
     #[Route('users-create-form', '/users/create/form', HttpMethod::GET)]
     public function createForm(): Response
@@ -97,6 +124,10 @@ final class Users extends WebController
         );
     }
 
+    /**
+     * @return ResponseInterface
+     * @throws \Exception
+     */
     #[Authorization('manage-user', 'create-user')]
     #[Route('users-create-action', '/users/create/action', HttpMethod::POST)]
     public function createAction(): ResponseInterface
@@ -119,6 +150,14 @@ final class Users extends WebController
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }
 
+    /**
+     * @param string $public_id
+     *
+     * @return ResponseInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Authorization('manage-user', 'edit-user')]
     #[Route(
         'users-edit-form',
@@ -139,6 +178,11 @@ final class Users extends WebController
         );
     }
 
+    /**
+     * @param string $public_id
+     *
+     * @return ResponseInterface
+     */
     #[Authorization('manage-user', 'edit-user')]
     #[Route(
         'users-edit-action',
@@ -162,6 +206,14 @@ final class Users extends WebController
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }
 
+    /**
+     * @param string $public_id
+     *
+     * @return ResponseInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Route(
         'users-change-password-form',
         '/users/$public_id/change-password/form',
@@ -181,6 +233,11 @@ final class Users extends WebController
         );
     }
 
+    /**
+     * @param string $public_id
+     *
+     * @return ResponseInterface
+     */
     #[Route(
         'users-change-password-action',
         '/users/$public_id/change-password/action',
@@ -202,6 +259,11 @@ final class Users extends WebController
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }
 
+    /**
+     * @param string $public_id
+     *
+     * @return ResponseInterface
+     */
     #[Authorization('manage-user', 'remove-user')]
     #[Route(
         'users-delete-action',
@@ -216,6 +278,14 @@ final class Users extends WebController
         return $this->redirect('index', query: ['menuItem' => 'users']);
     }
 
+    /**
+     * @param string $public_id
+     *
+     * @return ResponseInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Route(
         'user-parameters-form',
         '/users/$public_id/parameters/form',
@@ -234,6 +304,12 @@ final class Users extends WebController
             ]
         );
     }
+
+    /**
+     * @param string $public_id
+     *
+     * @return ResponseInterface
+     */
     #[Route(
         'user-parameters-action',
         '/users/$public_id/parameters/action',

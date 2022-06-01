@@ -5,9 +5,21 @@ namespace Thor\Tools\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class Builder
 {
 
+    /**
+     * @param Spreadsheet|null $spreadsheet
+     * @param FileType         $type
+     * @param StyleCollection  $styles
+     */
     public function __construct(
         private ?Spreadsheet $spreadsheet = null,
         public readonly FileType $type = FileType::XLSX,
@@ -16,6 +28,9 @@ final class Builder
         $this->spreadsheet ??= new Spreadsheet();
     }
 
+    /**
+     * @return Spreadsheet
+     */
     public function spreadsheet(): Spreadsheet
     {
         return $this->spreadsheet;
@@ -50,11 +65,23 @@ final class Builder
         return $this;
     }
 
+    /**
+     * @param string $filename
+     *
+     * @return void
+     */
     public function write(string $filename): void
     {
         $this->type->getWriter($this)->save($filename);
     }
 
+    /**
+     * @param string   $filename
+     * @param FileType $type
+     *
+     * @return static
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     */
     public static function read(string $filename, FileType $type): self
     {
         return new self($type->getReader()->load($filename), $type);

@@ -2,6 +2,13 @@
 
 namespace Thor\Cli\Console;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 enum Color: int
 {
     private const FOREGROUND = 30;
@@ -34,11 +41,17 @@ enum Color: int
     case BG_CYAN = 46;
     case BG_GRAY = 47;
 
+    /**
+     * @return int
+     */
     public function fg(): int
     {
         return $this->value + self::FOREGROUND;
     }
 
+    /**
+     * @return int
+     */
     public function bg(): int
     {
         return $this->value + self::BACKGROUND;

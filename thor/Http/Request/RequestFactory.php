@@ -7,6 +7,13 @@ use Thor\Web\Headers;
 use Thor\Tools\Strings;
 use Thor\Http\UriInterface;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class RequestFactory
 {
 
@@ -16,6 +23,12 @@ final class RequestFactory
     {
     }
 
+    /**
+     * @param UriInterface $uri
+     * @param array        $headers
+     *
+     * @return Request
+     */
     public static function get(UriInterface $uri, array $headers = []): Request
     {
         return self::http11Request(HttpMethod::GET, $uri, '', $headers);
@@ -65,11 +78,24 @@ final class RequestFactory
         );
     }
 
+    /**
+     * @param UriInterface $uri
+     * @param array        $headers
+     *
+     * @return Request
+     */
     public static function head(UriInterface $uri, array $headers = []): Request
     {
         return self::http11Request(HttpMethod::HEAD, $uri, '', $headers);
     }
 
+    /**
+     * @param UriInterface $uri
+     * @param array        $data
+     * @param array        $headers
+     *
+     * @return Request
+     */
     public static function post(UriInterface $uri, array $data, array $headers = []): Request
     {
         return self::http11Request(
@@ -81,6 +107,15 @@ final class RequestFactory
         );
     }
 
+    /**
+     * @param UriInterface $uri
+     * @param array        $data
+     * @param array        $headers
+     * @param string|null  $boundary
+     *
+     * @return Request
+     * @throws \Exception
+     */
     public static function formPost(
         UriInterface $uri,
         array $data,
@@ -97,6 +132,13 @@ final class RequestFactory
         );
     }
 
+    /**
+     * @param array  $data
+     * @param string $boundary
+     * @param string $contentDisposition
+     *
+     * @return string
+     */
     public static function multipart(array $data, string $boundary, string $contentDisposition = 'form-data'): string
     {
         return implode(
@@ -114,6 +156,14 @@ final class RequestFactory
                ) . "\n--$boundary--";
     }
 
+    /**
+     * @param UriInterface $uri
+     * @param array        $data
+     * @param array        $headers
+     *
+     * @return Request
+     * @throws \JsonException
+     */
     public static function jsonPost(UriInterface $uri, array $data, array $headers = []): Request
     {
         return self::http11Request(
@@ -125,12 +175,27 @@ final class RequestFactory
         );
     }
 
+    /**
+     * @param UriInterface $uri
+     * @param array        $data
+     * @param array        $headers
+     *
+     * @return Request
+     */
     public static function put(UriInterface $uri, array $data, array $headers = []): Request
     {
         return self::http11Request(HttpMethod::PUT, $uri, http_build_query($data), $headers);
     }
 
 
+    /**
+     * @param UriInterface $uri
+     * @param array        $data
+     * @param array        $headers
+     *
+     * @return Request
+     * @throws \JsonException
+     */
     public static function jsonPut(UriInterface $uri, array $data, array $headers = []): Request
     {
         return self::http11Request(

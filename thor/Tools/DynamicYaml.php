@@ -5,6 +5,13 @@ namespace Thor\Tools;
 use Stringable;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class DynamicYaml
 {
 
@@ -68,6 +75,13 @@ final class DynamicYaml
         return self::interpolateData($data, $arrContext, $format);
     }
 
+    /**
+     * @param array             $data
+     * @param array             $context
+     * @param PlaceholderFormat $format
+     *
+     * @return array
+     */
     private static function interpolateData(array $data, array $context, PlaceholderFormat $format): array
     {
         foreach ($data as $k => $v) {
@@ -83,6 +97,13 @@ final class DynamicYaml
         return $data;
     }
 
+    /**
+     * @param string            $string
+     * @param array             $context
+     * @param PlaceholderFormat $placeholder
+     *
+     * @return string|array
+     */
     private static function interpolate(
         string $string,
         array $context,

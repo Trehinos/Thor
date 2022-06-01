@@ -81,6 +81,9 @@ enum HttpStatus: int
     case NOT_EXTENDED = 510;
     case NETWORK_AUTHENTICATION_REQUIRED = 511;
 
+    /**
+     * @return string
+     */
     public function normalized(): string
     {
         return ucwords(str_replace('_', ' ', $this->name));

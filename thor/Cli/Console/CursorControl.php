@@ -2,6 +2,13 @@
 
 namespace Thor\Cli\Console;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class CursorControl
 {
     public const HOME = "\033[0K";
@@ -15,10 +22,16 @@ class CursorControl
     public const SAVEALL = "\0337";     # unused
     public const RESTORE = "\0338";     # unused
 
+    /**
+     * @param string $data
+     */
     private function __construct(private readonly string $data = '')
     {
     }
 
+    /**
+     * @return void
+     */
     public function resolves(): void
     {
         echo $this->data;

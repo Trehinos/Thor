@@ -12,6 +12,9 @@ namespace Thor\Database\PdoTable;
 interface HasId
 {
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int;
 
 }

@@ -16,6 +16,9 @@ abstract class BasePdoRow implements PdoRowInterface
         PdoRowTrait::__construct as private traitConstructor;
     }
 
+    /**
+     * @param array $primaries
+     */
     public function __construct(array $primaries = [])
     {
         $this->traitConstructor($primaries);

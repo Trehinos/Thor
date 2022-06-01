@@ -10,6 +10,13 @@ use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use PhpOffice\PhpSpreadsheet\Reader\Xls as XlsReader;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 enum FileType
 {
 
@@ -19,6 +26,11 @@ enum FileType
     case XLSX;
     case XLSX2XLS;
 
+    /**
+     * @param Builder $builder
+     *
+     * @return BaseWriter
+     */
     public function getWriter(Builder $builder): BaseWriter
     {
         return match ($this) {
@@ -27,6 +39,9 @@ enum FileType
         };
     }
 
+    /**
+     * @return BaseReader
+     */
     public function getReader(): BaseReader
     {
         return match ($this) {

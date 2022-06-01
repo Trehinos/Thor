@@ -7,6 +7,13 @@ use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\Cli\Console\CursorControl;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class Repl extends Command
 {
 
@@ -19,6 +26,11 @@ final class Repl extends Command
 
     public string $prompt;
 
+    /**
+     * @param string    $command
+     * @param array     $args
+     * @param CliKernel $kernel
+     */
     public function __construct(string $command, array $args, CliKernel $kernel)
     {
         parent::__construct($command, $args, $kernel);
@@ -26,6 +38,9 @@ final class Repl extends Command
         $this->prompt = '[Thor ' . Thor::version() . '] Enter command :';
     }
 
+    /**
+     * @return void
+     */
     public function repl(): void
     {
         while ($this->continue) {
@@ -47,6 +62,9 @@ final class Repl extends Command
         $this->console->writeln("Exiting...");
     }
 
+    /**
+     * @return string
+     */
     public function read(): string
     {
         $this->console->fColor(Color::BLACK, Mode::BRIGHT)->writeln("\n" . $this->prompt)->mode();

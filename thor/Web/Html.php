@@ -2,6 +2,13 @@
 
 namespace Thor\Web;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class Html
 {
 
@@ -9,6 +16,12 @@ final class Html
     {
     }
 
+    /**
+     * @param string $iconName
+     * @param string $iconCollection
+     *
+     * @return Node
+     */
     public static function icon(string $iconName, string $iconCollection = 'fas'): Node
     {
         return self::node(
@@ -43,6 +56,13 @@ final class Html
         return $node;
     }
 
+    /**
+     * @param Node|null $icon
+     * @param string    $label
+     * @param array     $attrs
+     *
+     * @return Node
+     */
     public static function button(?Node $icon, string $label, array $attrs = []): Node
     {
         return self::node(
@@ -52,6 +72,12 @@ final class Html
         );
     }
 
+    /**
+     * @param array $attrs
+     * @param array $content
+     *
+     * @return Node
+     */
     public static function div(array $attrs = [], array $content = ['']): Node
     {
         return self::node('div', $attrs, $content);

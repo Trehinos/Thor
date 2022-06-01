@@ -2,21 +2,39 @@
 
 namespace Thor\Tools;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class Guid
 {
 
     private string $guid;
 
+    /**
+     * @param int $size
+     *
+     * @throws \Exception
+     */
     public function __construct(private readonly int $size = 16)
     {
         $this->guid = random_bytes($size);
     }
 
+    /**
+     * @return string
+     */
     public function get(): string
     {
         return $this->guid;
     }
 
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         $hex = bin2hex($this->guid);
@@ -33,17 +51,34 @@ final class Guid
         );
     }
 
+    /**
+     * @return string
+     */
     public function getBase64(): string
     {
         return base64_encode($this->guid);
     }
 
+    /**
+     * @param int $size
+     *
+     * @return string
+     * @throws \Exception
+     * @throws \Exception
+     */
     public static function hex(int $size = 16): string
     {
         $uuid = new self($size);
         return "$uuid";
     }
 
+    /**
+     * @param int $size
+     *
+     * @return string
+     * @throws \Exception
+     * @throws \Exception
+     */
     public static function base64(int $size = 16): string
     {
         $uuid = new self($size);

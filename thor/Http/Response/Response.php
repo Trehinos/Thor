@@ -16,6 +16,12 @@ use Thor\Stream\{Stream, StreamInterface};
 class Response extends Message implements ResponseInterface
 {
 
+    /**
+     * @param ProtocolVersion $version
+     * @param array           $headers
+     * @param StreamInterface $body
+     * @param HttpStatus      $status
+     */
     #[Pure]
     public function __construct(
         ProtocolVersion $version,

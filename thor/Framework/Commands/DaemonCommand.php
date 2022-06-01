@@ -31,17 +31,31 @@ use Thor\Cli\{Console\Color,
 final class DaemonCommand extends Command
 {
 
+    /**
+     * @param string    $command
+     * @param array     $args
+     * @param CliKernel $kernel
+     */
     public function __construct(string $command, array $args, CliKernel $kernel)
     {
         parent::__construct($command, $args, $kernel);
     }
 
+    /**
+     * @return void
+     */
     public function daemonStart()
     {
         $daemonName = $this->get('name');
         $this->daemonEnable($daemonName);
     }
 
+    /**
+     * @param string|null $daemonName
+     * @param bool        $enable
+     *
+     * @return void
+     */
     private function daemonEnable(?string $daemonName, bool $enable = true)
     {
         if (null === $daemonName) {
@@ -54,6 +68,11 @@ final class DaemonCommand extends Command
         file_put_contents($daemonFile, Yaml::dump($daemonInfo));
     }
 
+    /**
+     * @param string $daemonName
+     *
+     * @return array
+     */
     private function loadDaemon(string $daemonName): array
     {
         $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
@@ -63,12 +82,19 @@ final class DaemonCommand extends Command
         return Yaml::parseFile($daemonFile);
     }
 
+    /**
+     * @return void
+     */
     public function daemonReset()
     {
         $daemonName = $this->get('name');
         $this->daemonResetState($daemonName);
     }
 
+    /**
+     * @return void
+     * @throws \Throwable
+     */
     public function daemonRun()
     {
         $daemonName = $this->get('name');
@@ -111,6 +137,11 @@ final class DaemonCommand extends Command
             ->mode();
     }
 
+    /**
+     * @param string|null $daemonName
+     *
+     * @return void
+     */
     private function daemonResetState(?string $daemonName)
     {
         if (null === $daemonName) {
@@ -129,12 +160,18 @@ final class DaemonCommand extends Command
         file_put_contents($daemonFile, Yaml::dump($daemonInfo));
     }
 
+    /**
+     * @return void
+     */
     public function daemonStop()
     {
         $daemonName = $this->get('name');
         $this->daemonEnable($daemonName, false);
     }
 
+    /**
+     * @return void
+     */
     public function daemonStatus()
     {
         $daemonName = $this->get('name');
@@ -239,6 +276,9 @@ final class DaemonCommand extends Command
         $this->console->writeln();
     }
 
+    /**
+     * @return void
+     */
     public function daemonKill()
     {
         $daemonName = $this->get('name');

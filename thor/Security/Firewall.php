@@ -24,6 +24,17 @@ class Firewall implements RequestHandlerInterface
 
     public bool $isAuthenticated = false;
 
+    /**
+     * @param SecurityInterface $security
+     * @param Router            $router
+     * @param string            $pattern
+     * @param string|null       $redirect
+     * @param string|null       $loginRoute
+     * @param string|null       $logoutRoute
+     * @param string|null       $checkRoute
+     * @param array             $excludedRoutes
+     * @param array             $excludedPaths
+     */
     public function __construct(
         private SecurityInterface $security,
         private Router $router,

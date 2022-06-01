@@ -21,6 +21,9 @@ use Thor\Http\{HttpKernel, Response\ResponseInterface, Request\ServerRequestInte
 class WebKernel extends HttpKernel
 {
 
+    /**
+     * @param WebServer $webServer
+     */
     public function __construct(protected WebServer $webServer)
     {
         parent::__construct($webServer);
@@ -48,6 +51,8 @@ class WebKernel extends HttpKernel
      * @param Configuration $config
      *
      * @return static
+     * @throws \ReflectionException
+     * @throws \ReflectionException
      */
     public static function createFromConfiguration(Configuration $config): static
     {

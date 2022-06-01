@@ -4,20 +4,39 @@ namespace Thor\Structures\Promise;
 
 use Exception;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class Promise
 {
 
     private PromiseState $state = PromiseState::PENDING;
 
+    /**
+     * @param mixed|null $value
+     */
     public function __construct(private readonly mixed $value = null)
     {
     }
 
+    /**
+     * @return PromiseState
+     */
     public function getState(): PromiseState
     {
         return $this->state;
     }
 
+    /**
+     * @param callable|null $onFulfillment
+     * @param callable|null $onRejection
+     *
+     * @return $this
+     */
     public function then(?callable $onFulfillment = null, callable $onRejection = null): static
     {
         if (($onFulfillment === null && $onRejection === null) || $this->state !== PromiseState::PENDING) {

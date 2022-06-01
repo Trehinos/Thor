@@ -17,6 +17,13 @@ use Thor\Configuration\ConfigurationFromFile;
 use Thor\Framework\Configurations\TwigConfiguration;
 use Thor\Framework\Configurations\RoutesConfiguration;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class AssetsListFactory
 {
 
@@ -96,6 +103,8 @@ final class AssetsListFactory
 
     /**
      * @return Asset[]
+     * @throws Exception
+     * @throws Exception
      */
     public static function listFromConfiguration(): array
     {

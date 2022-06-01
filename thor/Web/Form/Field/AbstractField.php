@@ -4,9 +4,24 @@ namespace Thor\Web\Form\Field;
 
 use Thor\Web\Node;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 abstract class AbstractField extends Node implements FieldInterface
 {
 
+    /**
+     * @param string      $type
+     * @param string      $name
+     * @param string|null $value
+     * @param bool        $readOnly
+     * @param bool        $required
+     * @param string|null $htmlClass
+     */
     public function __construct(
         string $type,
         protected string $name,
@@ -23,16 +38,27 @@ abstract class AbstractField extends Node implements FieldInterface
         $this->setAttribute('class', $htmlClass ?? 'form-control');
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @return string|null
+     */
     public function getValue(): ?string
     {
         return $this->value;
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @return void
+     */
     public function setValue(mixed $value): void
     {
         if (null === $value) {

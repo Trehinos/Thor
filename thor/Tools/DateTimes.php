@@ -22,6 +22,13 @@ final class DateTimes
     {
     }
 
+    /**
+     * @param string $date
+     * @param string $from
+     * @param string $to
+     *
+     * @return string
+     */
     public static function format(string $date, string $from = 'Y-m-d', string $to = 'd/m/Y'): string
     {
         return DateTimeImmutable::createFromFormat($from, $date)->format($to);

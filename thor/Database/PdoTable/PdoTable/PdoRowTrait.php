@@ -28,6 +28,9 @@ trait PdoRowTrait
 
     protected array $formerPrimaries = [];
 
+    /**
+     * @param array $primaries
+     */
     public function __construct(
         protected array $primaries = []
     ) {

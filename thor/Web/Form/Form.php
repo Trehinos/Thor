@@ -12,9 +12,20 @@ use Thor\Web\Node;
 use Thor\Http\Request\HttpMethod;
 use Thor\Web\Form\Field\FieldInterface;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 abstract class Form extends Node implements FormInterface
 {
 
+    /**
+     * @param string     $action
+     * @param HttpMethod $method
+     */
     public function __construct(private string $action, private HttpMethod $method = HttpMethod::POST)
     {
         parent::__construct('form');
@@ -23,15 +34,24 @@ abstract class Form extends Node implements FormInterface
         $this->setData(static::formDefinition());
     }
 
+    /**
+     * @return string
+     */
     public function getAction(): string {
         return $this->action;
     }
 
+    /**
+     * @return HttpMethod
+     */
     public function getMethod(): HttpMethod
     {
         return $this->method;
     }
 
+    /**
+     * @return array
+     */
     public function getFieldValues(): array
     {
         $values = [];
@@ -41,11 +61,21 @@ abstract class Form extends Node implements FormInterface
         return $values;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
     public function getFieldValue(string $name): mixed
     {
          return $this->getField($name)?->getValue();
     }
 
+    /**
+     * @param array $data
+     *
+     * @return void
+     */
     public function setFieldsData(array $data): void
     {
         foreach ($data as $fieldName => $value) {
@@ -53,16 +83,29 @@ abstract class Form extends Node implements FormInterface
         }
     }
 
+    /**
+     * @param array $data
+     *
+     * @return void
+     */
     public function setFields(array $data): void
     {
         $this->setData(array_merge($this->getFields(), $data));
     }
 
+    /**
+     * @param string $name
+     *
+     * @return FieldInterface|null
+     */
     public function getField(string $name): ?FieldInterface
     {
         return $this->getFields()[$name] ?? null;
     }
 
+    /**
+     * @return array
+     */
     public function getFields(): array
     {
         return $this->getChildren();

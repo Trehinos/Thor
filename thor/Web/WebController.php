@@ -16,16 +16,28 @@ use Thor\Http\{Session, HttpController, Response\Response, Response\HttpStatus};
 abstract class WebController extends HttpController
 {
 
+    /**
+     * @param WebServer $webServer
+     */
     public function __construct(protected WebServer $webServer)
     {
         parent::__construct($webServer);
     }
 
+    /**
+     * @return bool
+     */
     public function hasMessages(): bool
     {
         return !empty(Session::read('controller.messages', []));
     }
 
+    /**
+     * @param string $languageKey
+     * @param string $hint
+     *
+     * @return void
+     */
     public function error(string $languageKey, string $hint = ''): void
     {
         $message = $this->getServer()->getLanguage()['errors'][$languageKey] ?? $languageKey;
@@ -40,6 +52,14 @@ abstract class WebController extends HttpController
         return $this->webServer;
     }
 
+    /**
+     * @param string $message
+     * @param string $title
+     * @param string $type
+     * @param string $muted
+     *
+     * @return void
+     */
     public function addMessage(string $message, string $title = '', string $type = 'info', string $muted = ''): void
     {
         Session::write(
@@ -55,6 +75,9 @@ abstract class WebController extends HttpController
         );
     }
 
+    /**
+     * @return array
+     */
     public function getMessages(): array
     {
         $messages = Session::read('controller.messages', []);

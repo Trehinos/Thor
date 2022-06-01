@@ -25,6 +25,13 @@ use Thor\Http\Request\ServerRequestInterface;
 class WebServer extends HttpServer
 {
 
+    /**
+     * @param Router                 $router
+     * @param SecurityInterface|null $security
+     * @param PdoCollection          $pdoCollection
+     * @param Configuration          $language
+     * @param Environment|null       $twig
+     */
     #[Pure]
     public function __construct(
         Router $router,

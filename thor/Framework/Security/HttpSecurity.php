@@ -17,6 +17,10 @@ class HttpSecurity extends Security
 
     use ProtectWithFirewalls;
 
+    /**
+     * @param PdoRequester $requester
+     * @param array        $firewalls
+     */
     public function __construct(
         PdoRequester $requester,
         array $firewalls = []

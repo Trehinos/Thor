@@ -20,6 +20,9 @@ abstract class BasePdoTable implements PdoRowInterface, HasId
     }
     use HasIdTrait;
 
+    /**
+     * @param int|null $id
+     */
     public function __construct(?int $id = null)
     {
         $this->traitConstructor(['id' => $id]);

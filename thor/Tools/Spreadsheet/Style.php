@@ -9,11 +9,23 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Borders;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 final class Style
 {
 
     private static array $colors = [];
 
+    /**
+     * @param Font|null    $font
+     * @param Fill|null    $fill
+     * @param Borders|null $borders
+     */
     public function __construct(
         public readonly ?Font $font = null,
         public readonly ?Fill $fill = null,
@@ -21,6 +33,11 @@ final class Style
     ) {
     }
 
+    /**
+     * @param string $name
+     *
+     * @return Color
+     */
     public static function color(string $name): Color
     {
         if (empty(self::$colors)) {
@@ -33,11 +50,23 @@ final class Style
         return self::$colors[$name] ?? self::$colors['white'];
     }
 
+    /**
+     * @param string $name
+     * @param Color  $color
+     *
+     * @return void
+     */
     public static function setColor(string $name, Color $color): void
     {
         self::$colors[$name] = $color;
     }
 
+    /**
+     * @param Cell $cell
+     *
+     * @return void
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     public function apply(Cell $cell): void
     {
         $style = $cell->getStyle();
@@ -55,6 +84,20 @@ final class Style
         }
     }
 
+    /**
+     * @param string      $fontName
+     * @param int         $size
+     * @param Color|null  $fontColor
+     * @param string      $fillType
+     * @param Color|null  $fillStartColor
+     * @param Color|null  $fillEndColor
+     * @param Border|null $borderTop
+     * @param Border|null $borderRight
+     * @param Border|null $borderBottom
+     * @param Border|null $borderLeft
+     *
+     * @return static
+     */
     public static function createStyle(
         string $fontName = 'Calibri',
         int $size = 10,

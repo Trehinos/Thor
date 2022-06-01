@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width">
     <title>{% block head_title %}App{% endblock %}</title>
     <link rel="icon" href="/thor-favicon-v2.png">
-    {{ asset('general-css') }}
+    {{ asset('vendors-css') }}
     {% block head_css %}{% endblock %}
     {% block head_js %}{% endblock %}
 </head>
@@ -16,7 +16,7 @@
         <p>{% block body_text %}{% endblock %}</p>
     </div>
 {% endblock %}
-{{ asset('general-js') }}
+{{ asset('vendors-js') }}
 {% block body_js %}{% endblock %}
 </body>
 </html>

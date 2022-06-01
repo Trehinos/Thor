@@ -2,6 +2,13 @@
 
 namespace Thor\Cli\Console;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 enum Mode: int
 {
     case RESET = 0;

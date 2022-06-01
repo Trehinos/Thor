@@ -18,6 +18,11 @@ class PdoIndex
 
     private string $name;
 
+    /**
+     * @param array       $columnNames
+     * @param bool        $isUnique
+     * @param string|null $name
+     */
     public function __construct(
         private array $columnNames,
         private bool $isUnique = false,

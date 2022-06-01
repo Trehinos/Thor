@@ -2,6 +2,13 @@
 
 namespace Thor\Tools;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class Email
 {
 
@@ -34,6 +41,16 @@ class Email
     private array $files = [];
     private string $boundary;
 
+    /**
+     * @param string $from
+     * @param string $subject
+     * @param string $rawMessage
+     * @param array  $context
+     * @param array  $headers
+     * @param int    $type
+     *
+     * @throws \Exception
+     */
     public function __construct(
         private string $from,
         private string $subject,
@@ -45,6 +62,12 @@ class Email
         $this->boundary = bin2hex(random_bytes(16));
     }
 
+    /**
+     * @param string      $filepath
+     * @param string|null $filename
+     *
+     * @return array
+     */
     public function file(string $filepath, ?string $filename = null): array
     {
         $this->files[$filename ?? basename($filepath)] = $filepath;
@@ -52,6 +75,11 @@ class Email
         return $this->files;
     }
 
+    /**
+     * @param string|null $from
+     *
+     * @return string
+     */
     public function from(?string $from = null): string
     {
         $this->from = $from ?? $this->from;
@@ -59,6 +87,11 @@ class Email
         return $this->from;
     }
 
+    /**
+     * @param string|null $subject
+     *
+     * @return string
+     */
     public function subject(?string $subject = null): string
     {
         $this->subject = $subject ?? $this->subject;
@@ -66,6 +99,11 @@ class Email
         return $this->subject;
     }
 
+    /**
+     * @param string|null $rawMessage
+     *
+     * @return string
+     */
     public function rawMessage(?string $rawMessage = null): string
     {
         $this->rawMessage = $rawMessage ?? $this->rawMessage;
@@ -86,6 +124,12 @@ class Email
         return $this;
     }
 
+    /**
+     * @param string|null $header
+     * @param string|null $value
+     *
+     * @return array
+     */
     public function header(?string $header = null, ?string $value = null): array
     {
         if ($header !== null) {
@@ -95,6 +139,11 @@ class Email
         return $this->headers;
     }
 
+    /**
+     * @param string|null $email
+     *
+     * @return array
+     */
     public function to(?string $email): array
     {
         $this->to[] = $email;
@@ -102,6 +151,9 @@ class Email
         return $this->to;
     }
 
+    /**
+     * @return string
+     */
     public function getMessage(): string
     {
         if ($this->type !== self::EMAIL_MULTIPART) {
@@ -129,6 +181,11 @@ class Email
         return implode(self::MAIL_EOL . self::MAIL_EOL, $parts);
     }
 
+    /**
+     * @param string $message
+     *
+     * @return string
+     */
     public static function normalize(string $message): string
     {
         return str_contains($message, self::MAIL_EOL)
@@ -136,6 +193,9 @@ class Email
             : str_replace(self::UNIX_EOL, self::MAIL_EOL, $message);
     }
 
+    /**
+     * @return bool
+     */
     public function send(): bool
     {
         if (empty($this->to)) {
@@ -153,6 +213,12 @@ class Email
         );
     }
 
+    /**
+     * @param array  $headers
+     * @param string $body
+     *
+     * @return string
+     */
     public function addPart(array $headers, string $body): string
     {
         if ($this->type !== self::EMAIL_MULTIPART) {

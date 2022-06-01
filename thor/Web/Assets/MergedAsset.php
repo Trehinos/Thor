@@ -5,9 +5,22 @@ namespace Thor\Web\Assets;
 use Thor\Http\Uri;
 use Thor\Stream\Stream;
 
+/**
+ *
+ */
+
+/**
+ *
+ */
 class MergedAsset extends Asset
 {
 
+    /**
+     * @param AssetType $type
+     * @param string    $filename
+     * @param Uri       $uri
+     * @param array     $fileList
+     */
     public function __construct(
         AssetType $type,
         string $filename,

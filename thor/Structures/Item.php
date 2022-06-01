@@ -12,6 +12,10 @@ namespace Thor\Structures;
 class Item implements ItemInterface
 {
 
+    /**
+     * @param string $key
+     * @param mixed  $value
+     */
     public function __construct(private readonly string $key, protected mixed $value)
     {
     }

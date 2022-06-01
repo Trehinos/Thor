@@ -22,6 +22,11 @@ enum PlaceholderFormat
     case BRACKETS;
     case ESCAPE;
 
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
     public function format(string $key): string
     {
         return match($this) {
@@ -33,11 +38,24 @@ enum PlaceholderFormat
         };
     }
 
+    /**
+     * @param array  $replaces
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return void
+     */
     public function setReplace(array &$replaces, string $key, mixed $value): void
     {
         $replaces[$this->format($key)] = $value;
     }
 
+    /**
+     * @param string $key
+     * @param string $str
+     *
+     * @return bool
+     */
     public function matches(string $key, string $str): bool
     {
         return $this->format($key) === $str;

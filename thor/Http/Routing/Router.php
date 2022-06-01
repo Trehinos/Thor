@@ -24,6 +24,9 @@ final class Router
     private ?Route $errorRoute = null;
     private ?string $matched_routeName = null;
 
+    /**
+     * @param array $routes
+     */
     public function __construct(private array $routes)
     {
     }

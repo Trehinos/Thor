@@ -14,10 +14,21 @@ use Thor\Web\NodeInterface;
 interface FieldInterface extends NodeInterface
 {
 
+    /**
+     * @return string
+     */
     public function getName(): string;
 
+    /**
+     * @return mixed
+     */
     public function getValue(): mixed;
 
+    /**
+     * @param mixed $value
+     *
+     * @return void
+     */
     public function setValue(mixed $value): void;
 
 }

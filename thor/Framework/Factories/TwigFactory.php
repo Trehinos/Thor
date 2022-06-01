@@ -23,11 +23,19 @@ final class TwigFactory
 
     private Environment $twig;
 
+    /**
+     * @param Configuration $twigConfig
+     */
     public function __construct(Configuration $twigConfig)
     {
         $this->twig = self::defaultTwigEnvironment($twigConfig);
     }
 
+    /**
+     * @param Configuration $twig_config
+     *
+     * @return Environment
+     */
     private static function defaultTwigEnvironment(Configuration $twig_config): Environment
     {
         return new Environment(
@@ -44,6 +52,14 @@ final class TwigFactory
         );
     }
 
+    /**
+     * @param WebServer     $server
+     * @param Configuration $twig_config
+     *
+     * @return Environment
+     * @throws \Exception
+     * @throws \Exception
+     */
     public static function createTwigFromConfiguration(
         WebServer $server,
         Configuration $twig_config
@@ -59,6 +75,14 @@ final class TwigFactory
         return $this->twig;
     }
 
+    /**
+     * @param WebServer $server
+     * @param Router    $router
+     *
+     * @return $this
+     * @throws \Exception
+     * @throws \Exception
+     */
     public function addDefaults(WebServer $server, Router $router): self
     {
         $this->twig->addGlobal('server', $server);

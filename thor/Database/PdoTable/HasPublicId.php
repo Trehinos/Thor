@@ -12,6 +12,9 @@ namespace Thor\Database\PdoTable;
 interface HasPublicId
 {
 
+    /**
+     * @return string|null
+     */
     public function getPublicId(): ?string;
 
 }

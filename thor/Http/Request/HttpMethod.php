@@ -25,31 +25,49 @@ enum HttpMethod: string
     case CONNECT = 'CONNECT';
     case OPTIONS = 'OPTIONS';
 
+    /**
+     * @return bool
+     */
     public function hasBody(): bool
     {
         return in_array($this, [HttpMethod::POST, HttpMethod::PUT, HttpMethod::CONNECT]);
     }
 
+    /**
+     * @return bool
+     */
     public function responseHasBody(): bool
     {
         return in_array($this, [HttpMethod::GET, HttpMethod::POST, HttpMethod::CONNECT, HttpMethod::OPTIONS]);
     }
 
+    /**
+     * @return bool
+     */
     public function isSafe(): bool
     {
         return in_array($this, [HttpMethod::GET, HttpMethod::HEAD, HttpMethod::OPTIONS, HttpMethod::TRACE]);
     }
 
+    /**
+     * @return bool
+     */
     public function isIdempotent(): bool
     {
         return !in_array($this, [HttpMethod::POST, HttpMethod::CONNECT]);
     }
 
+    /**
+     * @return bool
+     */
     public function compatibleWithCache(): bool
     {
         return in_array($this, [HttpMethod::GET, HttpMethod::HEAD, HttpMethod::POST]);
     }
 
+    /**
+     * @return bool
+     */
     public function compatibleWithHtml(): bool
     {
         return in_array($this, [HttpMethod::GET, HttpMethod::POST]);

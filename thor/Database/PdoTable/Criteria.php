@@ -80,6 +80,9 @@ final class Criteria
         return $this->sql;
     }
 
+    /**
+     * @return void
+     */
     private function make(): void
     {
         ['sql' => $this->sql, 'params' => $this->params] = self::compile($this->criteria, $this->glue);
@@ -132,6 +135,11 @@ final class Criteria
         ];
     }
 
+    /**
+     * @param string|null $value
+     *
+     * @return array
+     */
     #[ArrayShape(['op' => "string", 'value' => "false|null|string"])]
     private static function parseValue(
         ?string $value

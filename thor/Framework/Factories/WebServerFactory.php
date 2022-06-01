@@ -23,6 +23,13 @@ final class WebServerFactory
     {
     }
 
+    /**
+     * @param Configuration $config
+     *
+     * @return WebServer
+     * @throws \ReflectionException
+     * @throws \ReflectionException
+     */
     public static function creatWebServerFromConfiguration(
         #[ArrayShape(['database' => '', 'routes' => '', 'language' => '', 'twig' => ''])]
         Configuration $config
@@ -43,6 +50,17 @@ final class WebServerFactory
         return $server;
     }
 
+    /**
+     * @param Router                 $router
+     * @param SecurityInterface|null $security
+     * @param PdoCollection          $pdoCollection
+     * @param Configuration          $language
+     * @param Configuration|null     $twig_config
+     *
+     * @return WebServer
+     * @throws \Exception
+     * @throws \Exception
+     */
     public static function produce(
         Router $router,
         ?SecurityInterface $security,

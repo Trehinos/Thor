@@ -127,6 +127,9 @@ final class CurlClient implements ClientInterface
         return $this->curl;
     }
 
+    /**
+     *
+     */
     public function __destruct()
     {
         if ($this->curl instanceof CurlHandle) {

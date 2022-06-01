@@ -24,6 +24,9 @@ use Thor\Database\PdoTable\CrudHelper;
 final class PdoRowConverter
 {
 
+    /**
+     * @param PdoRowInterface $pdoRow
+     */
     public function __construct(
         private PdoRowInterface $pdoRow
     ) {

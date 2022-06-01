@@ -20,6 +20,9 @@ use Thor\Framework\Configurations\KernelsConfiguration;
 final class Application implements KernelInterface
 {
 
+    /**
+     * @param KernelInterface|null $kernel
+     */
     public function __construct(private ?KernelInterface $kernel = null)
     {
     }
@@ -114,7 +117,7 @@ final class Application implements KernelInterface
         try {
             $this->kernel?->execute();
         } catch (Throwable $e) {
-            Logger::logThrowable($e);
+            $trace = Logger::logThrowable($e);
             echo "UNRECOVERABLE ERROR THROWN";
             global $thor_kernel;
             $message = " : {$e->getMessage()}";
@@ -122,17 +125,14 @@ final class Application implements KernelInterface
                 ? "<strong style='font-family: monospace;'>$message</strong><br>"
                 : "$message\n";
             if (in_array(Thor::getEnv(), [Env::DEV, Env::DEBUG])) {
-                $traceStr = '';
-                foreach ($e->getTrace() as $trace) {
-                    $traceLine =
-                        " • Location : {$trace['file']}:{$trace['line']}\n   -> Function : {$trace['function']}\n";
-                    if ('http' === $thor_kernel) {
-                        $traceLine = nl2br($traceLine);
-                    }
-                    $traceStr .= $traceLine;
-                }
                 echo $thor_kernel === 'web' ? '<pre>' : '';
-                echo $traceStr;
+                echo implode(
+                    "\n",
+                    array_map(
+                        'trim',
+                        explode("\n", $trace)
+                    )
+                );
                 echo $thor_kernel === 'web' ? '</pre>' : '';
             }
         }

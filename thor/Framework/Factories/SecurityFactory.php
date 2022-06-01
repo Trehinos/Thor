@@ -23,6 +23,12 @@ final class SecurityFactory
     {
     }
 
+    /**
+     * @param HttpServer            $server
+     * @param SecurityConfiguration $config
+     *
+     * @return SecurityInterface|null
+     */
     public static function produceSecurity(HttpServer $server, SecurityConfiguration $config): ?SecurityInterface
     {
         if (!$config->security()) {
@@ -42,6 +48,13 @@ final class SecurityFactory
         return $security;
     }
 
+    /**
+     * @param SecurityInterface $security
+     * @param Router            $router
+     * @param Configuration     $firewallConfig
+     *
+     * @return Firewall
+     */
     public static function produceFirewall(
         SecurityInterface $security,
         Router $router,
