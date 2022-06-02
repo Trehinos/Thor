@@ -14,13 +14,44 @@ enum Color: int
     private const FOREGROUND = 30;
     private const BACKGROUND = 40;
 
+    /**
+     * `Color::FG_BLACK === Color::BLACK->fg()` && `Color::BG_BLACK === Color::BLACK->bg()`
+     */
     case BLACK = 0;
+
+    /**
+     * `Color::FG_RED === Color::RED->fg()` && `Color::BG_RED === Color::RED->bg()`
+     */
     case RED = 1;
+
+    /**
+     * `Color::FG_GREEN === Color::GREEN->fg()` && `Color::BG_GREEN === Color::GREEN->bg()`
+     */
     case GREEN = 2;
+
+    /**
+     * `Color::FG_YELLOW === Color::YELLOW->fg()` && `Color::BG_YELLOW === Color::YELLOW->bg()`
+     */
     case YELLOW = 3;
+
+    /**
+     * `Color::FG_BLUE === Color::BLUE->fg()` && `Color::BG_BLUE === Color::BLUE->bg()`
+     */
     case BLUE = 4;
+
+    /**
+     * `Color::FG_MAGENTA === Color::MAGENTA->fg()` && `Color::BG_MAGENTA === Color::MAGENTA->bg()`
+     */
     case MAGENTA = 5;
+
+    /**
+     * `Color::FG_CYAN === Color::CYAN->fg()` && `Color::BG_CYAN === Color::CYAN->bg()`
+     */
     case CYAN = 6;
+
+    /**
+     * `Color::FG_GRAY === Color::GRAY->fg()` && `Color::BG_GRAY === Color::GRAY->bg()`
+     */
     case GRAY = 7;
 
     case FG_BLACK = 30;

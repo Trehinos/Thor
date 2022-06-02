@@ -68,10 +68,17 @@ class Cache extends Container implements CacheInterface
     /**
      * Executes the callable for each element in $items.
      *
-     * @param iterable $items
-     * @param callable $operation ($key, $item): bool
+     * $operation :
+     * ```php
+     * fn ($key, $item): bool
+     * ```
      *
-     * @return bool (false &&= $operation())
+     * Returns (true &&= $operation())
+     *
+     * @param iterable $items
+     * @param callable $operation
+     *
+     * @return bool
      */
     public function multiple(iterable $items, callable $operation): bool
     {

@@ -201,15 +201,17 @@ final class Project extends Command
             }
         }
 
+
+        $md .= "## Summary\n\n";
         if ($type === 'enum') {
-            $md .= "## Cases\n\n";
+            $md .= "### Cases\n\n";
             $re = new ReflectionEnum($className);
             foreach ($re->getCases() as $case) {
                 $v = $case->getValue() instanceof BackedEnum
                     ? ' = ' . $case->getBackingValue()
                     : '';
-                $comment = $this->parseComment(null, $case->getDocComment());
-                $md .= "* `{$case->getName()}`$v\n$comment";
+                $comment = trim($this->parseComment(null, $case->getDocComment(), true), "\n");
+                $md .= "* `{$case->getName()}`$v  \n  $comment\n";
             }
         } else {
             /** @var ReflectionClassConstant $constant */
@@ -221,7 +223,7 @@ final class Project extends Command
                     $constant instanceof BackedEnum
             );
             if (!empty($constants)) {
-                $md .= "## Class constants\n\n";
+                $md .= "### Class constants\n\n";
                 foreach ($constants as $name => $constant) {
                     $md .= "* `{$name}` = {$this->getRepresentation($constant)}\n";
                 }
@@ -248,14 +250,19 @@ final class Project extends Command
                 $protectedMethods[] = $method;
             }
         }
-
         $md .= $this->mdBlockProperties($rc->getProperties(ReflectionProperty::IS_PUBLIC), 'Public properties');
         $md .= $this->mdBlockMethods($staticMethods, 'Static methods', true);
         $md .= $this->mdBlockMethods($publicMethods, 'Public methods', true);
         $md .= $this->mdBlockMethods($protectedMethods, 'Protected methods', true);
-        $md .= $this->mdBlockMethods($staticMethods, 'Static methods');
-        $md .= $this->mdBlockMethods($publicMethods, 'Public methods');
-        $md .= $this->mdBlockMethods($protectedMethods, 'Protected methods');
+
+        $details = '';
+        $details .= $this->mdBlockMethods($staticMethods, 'Static methods');
+        $details .= $this->mdBlockMethods($publicMethods, 'Public methods');
+        $details .= $this->mdBlockMethods($protectedMethods, 'Protected methods');
+        if (trim($details) !== '') {
+            $md .= "## Details\n\n";
+            $md .= $details;
+        }
 
 
         return $md;
@@ -275,7 +282,7 @@ final class Project extends Command
         if (empty($properties)) {
             return '';
         }
-        $md = "## $title\n\n";
+        $md = "### $title\n\n";
         /** @var ReflectionProperty $property */
         foreach ($properties as $property) {
             $md .= "* \${$property->getName()} `:{$property->getType()}`\n";
@@ -300,7 +307,7 @@ final class Project extends Command
         if (empty($methods)) {
             return '';
         }
-        $md = "## $title\n\n";
+        $md = "### $title\n\n";
         /** @var ReflectionMethod $method */
         foreach ($methods as $method) {
             $returnType = "{$method->getReturnType()}";
@@ -337,13 +344,13 @@ final class Project extends Command
                 $md .= "* [{$method->getName()}](#{$method->getName()})()$comment\n";
                 continue;
             }
-            $md .= "### `{$method->getName()}()`\n$comment";
+            $md .= "#### `{$method->getName()}()`\n$comment";
             if ($parameters !== '') {
-                $md .= "#### Parameters\n\n$parameters\n\n";
+                $md .= "##### Parameters\n\n$parameters\n\n";
             }
             $attributes = $method->getAttributes();
             if (!empty($attributes)) {
-                $md .= "#### Attributes\n\n";
+                $md .= "##### Attributes\n\n";
                 foreach ($attributes as $attribute) {
                     $attrs = implode(
                         ', ',
@@ -358,7 +365,7 @@ final class Project extends Command
             }
             if ($returnType !== 'void' && $returnType !== '' && $returnType !== null) {
                 $returnType = $this->toLink($returnType);
-                $md .= "#### Return type : $returnType\n\n";
+                $md .= "##### Return type : $returnType\n\n";
             }
             $md .= "<hr>\n\n";
         }
@@ -380,7 +387,8 @@ final class Project extends Command
         bool $long = false
     ): string {
         $str = '';
-        $separator = '';
+        $paragraph = false;
+        $code = false;
         foreach (explode("\n", $comment) as $line) {
             $line = trim($line);
             if (str_starts_with($line, '/**')) {
@@ -389,8 +397,8 @@ final class Project extends Command
             if (str_starts_with($line, '*/')) {
                 continue;
             }
-            $line = trim(trim($line, '*'));
-            if (str_starts_with($line, "@")) {
+            $line = trim($line, '*');
+            if (str_starts_with(trim($line), "@")) {
                 if (str_contains($line, 'inheritDoc') && $element !== null) {
                     $p = null;
                     if ($element instanceof ReflectionClass) {
@@ -421,12 +429,27 @@ final class Project extends Command
                 }
                 break;
             }
-            if ($line === '') {
-                $separator = $long ? "\n" : "  ";
+            if (trim($line) === '') {
+                $paragraph = true;
                 continue;
             }
-            $str .= "$separator$line\n";
-            $separator = '';
+
+            $separatorAfter = $long ? '' : ' ';
+            $separatorBefore = $long ? " " : "";
+
+            if (str_starts_with($line, '   ')) {
+                if (!$code) {
+                    $str .= "\n\n";
+                }
+                $code = true;
+                $separatorAfter = $long ? "\n" : ' ';
+            } elseif ($paragraph) {
+                $paragraph = false;
+                $separatorBefore = $long ? "  \n" : ' ';
+            } elseif ($code) {
+                $code = false;
+            }
+            $str .= "$separatorBefore$line$separatorAfter";
         }
 
         if (trim($str) === '') {
@@ -436,7 +459,7 @@ final class Project extends Command
         if ($long) {
             return trim($str, "\n") . "\n\n";
         }
-        return substr(trim($str, "\n"), 0, min(strpos($str, '.'), 75)) . "...\n";
+        return substr(trim($str, "\n"), 0, min(false !== ($p = strpos($str, '.')) ? $p : 75, 75)) . "...\n";
     }
 
     /**
