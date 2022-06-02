@@ -4,9 +4,10 @@
 #
 # This command sets this modes, owner and group :
 #
-# drwxr-xr-x $USER:$PHP_GROUP : $DIR/
-# drw-r--r-- $USER:$PHP_GROUP : $DIR/*.*
-# drwxr--r-- $USER:$PHP_GROUP : $DIR/bin/*.*
+# drwxr-xr-x $USER:$USER : $DIR/
+# drw-r--r-- $USER:$USER : $DIR/*.*
+# drw-r--r-- $USER:$USER : $DIR/bin/*.*
+# drwxr--r-- $USER:$USER : $DIR/bin/chown
 #
 # drwxrwxr-x $USER:$PHP_GROUP : $DIR/var
 # drw-rw-r-- $USER:$PHP_GROUP : $DIR/var/*.*
@@ -26,16 +27,35 @@ PHP_GROUP="www-data"
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 DIR="${DIR}/.."
 
-# ######################################################################################################################
-echo "Mise à jour du dossier $DIR"
+F='\e[1;32m';
+EM='\e[1;3;33m';
+C='\e[0m';
 
+# ######################################################################################################################
 # Global folder
+echo -e "$DIR ${EM}644+X --> $PHP_USER:$PHP_GROUP${C}"
 chmod -R 644 "$DIR"
 chmod -R +X "$DIR"
-chown -R "$PHP_USER":"$PHP_GROUP" "$DIR"
+chown -R "$PHP_USER":"$PHP_USER" "$DIR"
+echo -e "$DIR${F}/var ${EM}--> $PHP_USER:$PHP_GROUP${C}"
+chown -R "$PHP_USER":"$PHP_GROUP" "$DIR/var"
 
 # Per folder configuration
-chmod -R g+w "$DIR/var"
-chmod -R g+w "$DIR/web/assets"
+echo -e "$DIR${F}/bin ${EM}u+x${C}"
 chmod -R u+x "$DIR/bin"
-chmod -R g+w "$DIR/app/res" # ONLY IN DEV ENV
+echo -e "$DIR${F}/var ${EM}g+w${C}"
+chmod -R g+w "$DIR/var"
+mkdir -p "$DIR/web/assets"
+echo -e "$DIR${F}/web/assets ${EM}--> $PHP_USER:$PHP_GROUP${C}"
+chown -R "$PHP_USER":"$PHP_GROUP" "$DIR/web/assets"
+echo -e "$DIR${F}/web/assets ${EM}g+w${C}"
+chmod -R g+w "$DIR/web/assets"
+
+# To edit configuration from web
+echo -e "$DIR${F}/app/res ${EM}--> $PHP_USER:$PHP_GROUP${C}"
+chown -R "$PHP_USER":"$PHP_GROUP" "$DIR/app/res"
+echo -e "$DIR${F}/app/res ${EM}g+w${C}"
+chmod -R g+w "$DIR/app/res"
+
+echo -e "$DIR${F}/bin/chown ${EM}u+x${C}"
+chmod u+x "$DIR/bin/chown"
