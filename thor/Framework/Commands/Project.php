@@ -88,7 +88,7 @@ final class Project extends Command
             $str .= "* [$label]($link) `$type`\n";
             $oldModule = $module;
         }
-        $summary = "# $namespace's classes documentation\n\n## Summary\n\n" . implode(
+        $summary = "# `$namespace` classes reference\n\n## Summary\n\n" . implode(
                 "\n",
                 array_map(
                     fn(string $hlbl, string $href) => "* [$hlbl](#" . str_replace(
