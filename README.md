@@ -63,10 +63,13 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 #### Installed with `composer update`
 
-* Symfony/VarDumper 5.3
-* Symfony/Yaml 5.3
-* Twig/Twig 3.3
-* Datatables/Editor 2.0.5
+- phpoffice/phpspreadsheet: ```1.x```
+- datatables.net/editor-php: ```2.x```
+- nusphere/nusoap: ```0.9.6```
+- symfony/var-dumper: ```5.x```
+- symfony/yaml: ```5.x```
+- twig/twig: ```3.x```
+- phpunit/phpunit : ```9.x```
 
 ### Web vendors (not included)
 
