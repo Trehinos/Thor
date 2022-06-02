@@ -76,12 +76,12 @@ final class Project extends Command
                 $str .= "### $module module\n";
             }
             $type = match (true) {
-                $rc->isTrait()     => 'trait',
-                $rc->isEnum()      => 'enum',
-                $rc->isFinal()     => 'final class',
+                $rc->isTrait() => 'trait',
+                $rc->isEnum() => 'enum',
+                $rc->isFinal() => 'final class',
                 $rc->isInterface() => 'interface',
-                $rc->isAbstract()  => 'abstract class',
-                default            => 'class'
+                $rc->isAbstract() => 'abstract class',
+                default => 'class'
             };
             $link = basename($link);
             $link = $this->target === 'gitlab' ? strtolower($link) : $link;
@@ -91,7 +91,13 @@ final class Project extends Command
         $summary = "# $namespace's classes documentation\n\n## Summary\n\n" . implode(
                 "\n",
                 array_map(
-                    fn(string $hlbl, string $href) => "* [$hlbl](#" . str_replace('\\', '', $href) . ')',
+                    fn(string $hlbl, string $href) => "* [$hlbl](#" . str_replace(
+                            '\\',
+                            '',
+                            $this->target === 'gitlab' ? strtolower(
+                                $href
+                            ) : $href
+                        ) . ')',
                     array_keys($modules),
                     array_values($modules)
                 )
@@ -116,13 +122,13 @@ final class Project extends Command
     {
         return match (true) {
             is_string($value) || $value instanceof Stringable => "'$value'",
-            is_bool($value)                                   => $value ? 'true' : 'false',
-            is_scalar($value)                                 => "$value",
-            is_array($value)                                  => json_encode($value),
-            is_object($value)                                 => $this->basename(get_class($value)) . ' ' . json_encode(
+            is_bool($value) => $value ? 'true' : 'false',
+            is_scalar($value) => "$value",
+            is_array($value) => json_encode($value),
+            is_object($value) => $this->basename(get_class($value)) . ' ' . json_encode(
                     $value
                 ),
-            default                                           => 'unknown'
+            default => 'unknown'
         };
     }
 
@@ -161,12 +167,12 @@ final class Project extends Command
     {
         $rc = new ReflectionClass($className);
         $type = match (true) {
-            $rc->isTrait()     => 'trait',
-            $rc->isEnum()      => 'enum',
-            $rc->isFinal()     => 'final class',
+            $rc->isTrait() => 'trait',
+            $rc->isEnum() => 'enum',
+            $rc->isFinal() => 'final class',
             $rc->isInterface() => 'interface',
-            $rc->isAbstract()  => 'abstract class',
-            default            => 'class'
+            $rc->isAbstract() => 'abstract class',
+            default => 'class'
         };
         $name = $rc->getShortName();
         $namespace = $rc->getNamespaceName();
@@ -225,8 +231,8 @@ final class Project extends Command
             $constants = array_filter(
                 $constants,
                 fn($constant) => is_string($constant) ||
-                    $constant instanceof Stringable ||
-                    $constant instanceof BackedEnum
+                                 $constant instanceof Stringable ||
+                                 $constant instanceof BackedEnum
             );
             if (!empty($constants)) {
                 $md .= "### Class constants\n\n";
@@ -339,7 +345,7 @@ final class Project extends Command
 
                         $type = $parameter->getType() === null ? 'mixed' : $this->toLink($parameter->getType());
                         return "* $type `$" . $parameter->getName() .
-                            ($parameter->isOptional() ? ' = ' . $defaultValue : '') . '`';
+                               ($parameter->isOptional() ? ' = ' . $defaultValue : '') . '`';
                     },
                     $method->getParameters()
                 )
