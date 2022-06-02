@@ -13,7 +13,6 @@ use Thor\Tools\Strings;
 use ReflectionProperty;
 use ReflectionException;
 use Thor\Cli\Console\Mode;
-use ReflectionEnumUnitCase;
 use Thor\Cli\Console\Color;
 use Thor\FileSystem\Folder;
 use ReflectionClassConstant;
@@ -85,6 +84,7 @@ final class Project extends Command
                 default            => 'class'
             };
             $link = basename($link);
+            $link = $this->target === 'gitlab' ? strtolower($link) : $link;
             $str .= "* [$label]($link) `$type`\n";
             $oldModule = $module;
         }
