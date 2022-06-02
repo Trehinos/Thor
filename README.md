@@ -78,6 +78,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
 ## Documentation
 
 * [Setup THOR](https://github.com/Trehinos/Thor/wiki/Setup)
+* [Classes reference](https://github.com/Trehinos/Thor/wiki/documentation)
 * [Complete documentation](https://github.com/Trehinos/thor/wiki)
 
 ## License
