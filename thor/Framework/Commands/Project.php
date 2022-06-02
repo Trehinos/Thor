@@ -22,6 +22,8 @@ use Thor\FileSystem\FileSystem;
 final class Project extends Command
 {
 
+    private string $target = '';
+
     /**
      * Command `project/document`.
      * Generate a markdown file for each file in the specified folder.
@@ -33,6 +35,7 @@ final class Project extends Command
     public function document(): void
     {
         $folder = ($this->get('folder') ?? 'thor') . '/';
+        $this->target = $this->get('target') ?? 'github';
         $namespace = ($this->get('namespace') ?? 'Thor') . '\\';
         $verbose = $this->get('verbose') ?? false;
 
@@ -98,6 +101,9 @@ final class Project extends Command
 
     private function normalize(string $type): string
     {
+        if ($this->target === 'gitlab') {
+            $type = strtolower($type);
+        }
         return str_replace('\\', '_', $type);
     }
 

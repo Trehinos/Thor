@@ -178,6 +178,9 @@ project/document:
         folder:
             hasValue: true
             description: (default 'thor')
+        target:
+            hasValue: true
+            description: "(default 'github') values : github|gitlab"
         verbose:
             hasValue: false
             description: echoes the generated markdown
