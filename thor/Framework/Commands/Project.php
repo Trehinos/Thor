@@ -347,7 +347,8 @@ final class Project extends Command
             if ($short) {
                 $comment = trim($comment, "\n");
                 $comment = $comment === '' ? $comment : " : $comment";
-                $md .= "* [{$method->getName()}](#{$method->getName()})()$comment\n";
+                $link = $this->target === 'gitlab' ? strtolower($method->getName()) : $method->getName();
+                $md .= "* [{$method->getName()}](#$link)()$comment\n";
                 continue;
             }
             $md .= "#### `{$method->getName()}()`\n$comment";
