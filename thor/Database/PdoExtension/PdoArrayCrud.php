@@ -90,7 +90,6 @@ final class PdoArrayCrud
     private static function compileRowValues(array $row): array
     {
         $pdoArray = $row;
-        unset($pdoArray['id']);
 
         $columns = implode(', ', array_keys($pdoArray));
         $values = implode(', ', array_fill(0, count($pdoArray), '?'));

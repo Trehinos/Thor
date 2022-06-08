@@ -5,6 +5,7 @@ namespace Tests;
 use Thor\Tools\Strings;
 use Thor\Tools\DateTimes;
 use PHPUnit\Framework\TestCase;
+use Thor\Tools\PlaceholderFormat;
 
 final class ToolsTest extends TestCase
 {
@@ -59,7 +60,7 @@ final class ToolsTest extends TestCase
         $stringPhpStyle = 'Today\'s date is $date.';
 
         $this->assertSame($expected, Strings::interpolate($string, $context));
-        $this->assertSame($expected, Strings::interpolate($stringPhpStyle, $context, true));
+        $this->assertSame($expected, Strings::interpolate($stringPhpStyle, $context, PlaceholderFormat::SIGIL));
     }
 
     public function testPrefixAndSuffix(): void
