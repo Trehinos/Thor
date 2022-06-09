@@ -134,21 +134,21 @@ final class DaemonState
                 $lastRun->format('YmdHi') . '00'
             );
         }
+        if ($this->lastRun !== null) {
+            $nextRun = clone $this->lastRun;
+            $delta = $now->format('YmdHi') % $this->daemon->getPeriodicity();
+            $nextRun->sub(new DateInterval("PT{$delta}M"));
+            $nextRun->add(new DateInterval("PT{$this->daemon->getPeriodicity()}M"));
+            if ($this->daemon->getStartToday() < $this->daemon->getEndToday()) {
+                // TODO
+            }
 
-
-        $nextRun = clone $this->lastRun;
-        $delta = $now->format('YmdHi') % $this->daemon->getPeriodicity();
-        $nextRun->sub(new DateInterval("PT{$delta}M"));
-        $nextRun->add(new DateInterval("PT{$this->daemon->getPeriodicity()}M"));
-        if ($this->daemon->getStartToday() < $this->daemon->getEndToday()) {
-            // TODO
+            $this->nextRun = DateTime::createFromFormat(
+                self::DATE_FORMAT,
+                $nextRun->format('YmdHi') . '00'
+            );
+            $this->isRunning = $running;
         }
-
-        $this->nextRun = DateTime::createFromFormat(
-            self::DATE_FORMAT,
-            $nextRun->format('YmdHi') . '00'
-        );
-        $this->isRunning = $running;
     }
 
     /**
