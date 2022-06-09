@@ -13,29 +13,20 @@ use Thor\Database\PdoTable\Criteria;
 final class PdoArrayCrud
 {
 
-    /**
-     * @param string       $tableName
-     * @param array        $primary
-     * @param PdoRequester $requester
-     */
     public function __construct(
         private string $tableName,
         private array $primary,
-        private PdoRequester $requester
+        private PdoRequester $requester,
+        private array $insertExcludedColumns = [],
+        private array $updateExcludedColumns = []
     ) {
     }
 
-    /**
-     * @return array
-     */
     public function listAll(): array
     {
         return $this->requester->request("SELECT * FROM {$this->table()}", [])->fetchAll();
     }
 
-    /**
-     * @return string
-     */
     #[Pure]
     public function table(): string
     {
@@ -49,6 +40,11 @@ final class PdoArrayCrud
      */
     public function createOne(array $row): string
     {
+        $row = array_filter(
+            $row,
+            fn(string $key) => !in_array($key, $this->insertExcludedColumns),
+            ARRAY_FILTER_USE_KEY
+        );
         [$columns, $marks, $values] = self::compileRowValues($row);
         $this->requester->execute("INSERT INTO {$this->table()} ($columns) VALUES ($marks)", $values);
 
@@ -221,6 +217,11 @@ final class PdoArrayCrud
      */
     public function updateOne(array $row): bool
     {
+        $row = array_filter(
+            $row,
+            fn(string $key) => !in_array($key, $this->updateExcludedColumns),
+            ARRAY_FILTER_USE_KEY
+        );
         $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($row)));
 
         $criteria = $this->primaryArrayToCriteria($this->extractPrimaries($row));

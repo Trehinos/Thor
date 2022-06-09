@@ -37,14 +37,22 @@ final class CrudHelper implements CrudInterface
      */
     public function __construct(
         private readonly string $className,
-        PdoRequester $requester
+        PdoRequester $requester,
+        array $insertExcludedColumns = [],
+        array $updateExcludedColumns = []
     ) {
         if (!class_exists($this->className) || !in_array(PdoRowInterface::class, class_implements($this->className))) {
             throw new TypeError("{$this->className} class not found or not implementing PdoRowInterface...");
         }
         $tableName = ($this->className)::getPdoTable()->getTableName();
         $this->primary = ($this->className)::getPrimaryKeys();
-        $this->arrayCrud = new PdoArrayCrud($tableName, $this->primary, $requester);
+        $this->arrayCrud = new PdoArrayCrud(
+            $tableName,
+            $this->primary,
+            $requester,
+            $insertExcludedColumns,
+            $updateExcludedColumns
+        );
     }
 
     /**
@@ -125,7 +133,7 @@ final class CrudHelper implements CrudInterface
      *
      * Returns `null` if the row has not been found.
      *
-     * @param Criteria          $criteria
+     * @param Criteria $criteria
      * @param array|string|null $columns
      *
      * @return ?array
