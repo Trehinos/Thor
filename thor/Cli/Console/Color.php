@@ -72,19 +72,13 @@ enum Color: int
     case BG_CYAN = 46;
     case BG_GRAY = 47;
 
-    /**
-     * @return int
-     */
-    public function fg(): int
+    public function fg(): self
     {
-        return $this->value + self::FOREGROUND;
+        return self::tryFrom($this->value + self::FOREGROUND);
     }
 
-    /**
-     * @return int
-     */
-    public function bg(): int
+    public function bg(): self
     {
-        return $this->value + self::BACKGROUND;
+        return self::tryFrom($this->value + self::BACKGROUND);
     }
 }

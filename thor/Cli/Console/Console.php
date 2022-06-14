@@ -82,7 +82,7 @@ class Console
      */
     public function fColor(Color $fc = Color::GRAY, ?Mode $mode = null): self
     {
-        return $this->color(Color::tryFrom($fc->fg()), $mode);
+        return $this->color($fc->fg(), $mode);
     }
 
     /**
@@ -95,7 +95,7 @@ class Console
      */
     public function bColor(Color $bc = Color::BLACK, ?Mode $mode = null): self
     {
-        return $this->color(Color::tryFrom($bc->bg()), $mode);
+        return $this->color($bc->bg(), $mode);
     }
 
 

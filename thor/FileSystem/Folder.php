@@ -111,13 +111,14 @@ final class Folder
     public static function createIfNotExists(
         string $name,
         int $permissions = FileSystem::ALL_ALL,
-        ?string $user = null
+        ?string $user = null,
+        ?string $group = null,
     ): void {
         if (!FileSystem::exists($name)) {
             mkdir($name, recursive: true);
             chmod($name, $permissions);
             if (null !== $user) {
-                FileSystem::chown($name, $user);
+                FileSystem::chown($name, $user, $group);
             }
         }
     }
