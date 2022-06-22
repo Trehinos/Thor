@@ -16,8 +16,8 @@
 require_once __DIR__ . '/vendors/autoload.php';
 
 use Thor\Globals;
-use Thor\Application;
 use Thor\Debug\Logger;
+use Thor\Process\Application;
 
 ini_set('log_errors', E_ALL);
 ini_set('error_log', Globals::VAR_DIR . 'errors.log');

@@ -1,8 +1,10 @@
 <?php
 
-namespace Thor;
+namespace Thor\Process;
 
 use Throwable;
+use Thor\Thor;
+use Thor\Globals;
 use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
 use Thor\Configuration\Configuration;

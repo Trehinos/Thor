@@ -5,13 +5,13 @@ namespace Thor\Cli;
 
 use Thor\Thor;
 use Thor\Globals;
-use Thor\KernelInterface;
+use Thor\Process\KernelInterface;
 use Thor\Debug\{Logger, LogLevel};
 use JetBrains\PhpStorm\ArrayShape;
-use Thor\Framework\Factories\Configurations;
-use Thor\Cli\Console\{Console, Color, CursorControl, Mode};
 use Thor\Configuration\Configuration;
+use Thor\Framework\Factories\Configurations;
 use Thor\Database\PdoExtension\PdoCollection;
+use Thor\Cli\Console\{Mode, Color, Console, CursorControl};
 
 /**
  * This class is the Kernel launched by the `thor.php` entry point.
