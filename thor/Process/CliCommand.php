@@ -25,6 +25,7 @@ abstract class CliCommand implements Executable
      */
     public function __construct(
         public readonly string $command,
+        public readonly string $description = '',
         public readonly array $arguments = [],
         public readonly array $options = []
     ) {
@@ -36,6 +37,7 @@ abstract class CliCommand implements Executable
         $yaml = ConfigurationFromFile::fromFile('cli-commands', true);
         $test = new DaemonStatus(
             'daemon/status',
+            $yaml['daemon/status']['description'] ?? '',
             Argument::fromConfiguration($yaml['daemon/status']['arguments']),
             Option::fromConfiguration($yaml['daemon/status']['options'])
         );
@@ -87,6 +89,7 @@ abstract class CliCommand implements Executable
                 $console->echoes(']');
             }
         }
+        $console->echoes(Mode::BRIGHT, Mode::UNDERSCORE, "\n    {$this->description}\n");
         $console->writeln()->writeln();
 
         if (!empty($this->options)) {

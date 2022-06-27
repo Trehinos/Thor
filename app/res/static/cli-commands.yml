@@ -8,7 +8,7 @@ daemon/run:
 
 daemon/status:
     class: Thor\Framework\CliCommands\DaemonStatus
-    description: 'displays the status of a daemon'
+    description: 'displays the status of a daemon. Either the daemon name or the --all option has to be specified.'
     arguments:
         name:
             description: 'the daemon name'

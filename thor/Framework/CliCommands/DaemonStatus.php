@@ -90,23 +90,21 @@ final class DaemonStatus extends CliCommand
                 default => [Color::YELLOW, 'DISABLED'],
             };
 
-            $console
-                ->fColor($status_color)
-                ->writeFix($status, 10)
-                ->mode()
-                ->writeFix($state->getLastRun()?->format('y-m-d H:i') ?? 'never', 17)
-                ->writeFix($state->getNextRun()?->format('y-m-d H:i') ?? 'never', 17)
-                ->fColor(
-                    $state->getError()
-                        ? Color::RED
-                        :
-                        (
-                        $state->isRunning()
-                            ? Color::CYAN
-                            : Color::YELLOW
-                        )
-                )
-                ->writeFix(
+            $console->echoes(
+                $status_color->fg(),
+                new FixedOutput($status, 10),
+                Color::FG_GRAY,
+                new FixedOutput($state->getLastRun()?->format('y-m-d H:i') ?? 'never', 17),
+                new FixedOutput($state->getNextRun()?->format('y-m-d H:i') ?? 'never', 17),
+                $state->getError()
+                    ? Color::FG_RED
+                    :
+                    (
+                    $state->isRunning()
+                        ? Color::FG_CYAN
+                        : Color::FG_YELLOW
+                    ),
+                new FixedOutput(
                     $state->getError()
                         ? "  E "
                         :
@@ -115,11 +113,10 @@ final class DaemonStatus extends CliCommand
                             ? "  > "
                             : "  • "
                         ),
-                    4,
-                    STR_PAD_LEFT
-                )
-                ->writeFix(substr("{$daemon->getName()}", 0, 24), 24)
-            ;
+                    4
+                ),
+                new FixedOutput(substr("{$daemon->getName()}", 0, 24), 24)
+            );
 
             if ($state->getError() ?? false) {
                 $console
@@ -148,13 +145,13 @@ final class DaemonStatus extends CliCommand
         }
         $console->writeln();
 
-        $console->echoes(Color::FG_GRAY, Mode::REVERSE, "Status   \n");
+        $console->echoes(Color::FG_GRAY, Mode::REVERSE, "Status\n");
         foreach (
             [
                 [Color::CYAN, 'ACTIVE', 'Daemon is in its active period and is enabled'],
                 [Color::GREEN, 'ENABLED', 'Daemon is NOT in its active period but is enabled'],
                 [Color::YELLOW, 'DISABLED', 'The daemon is disabled'],
-                [Color::RED, 'ERROR', 'The last run throws an error.'],
+                [Color::RED, 'ERROR', 'The last run threw an error.'],
             ] as [$color, $legend, $desc]
         ) {
             $console->echoes($color->fg(), "$legend ", Color::FG_GRAY, Mode::UNDERSCORE, ": $desc\n");
