@@ -1,0 +1,166 @@
+<?php
+
+namespace Thor\Framework\CliCommands;
+
+use Thor\Globals;
+use Thor\Process\CliCommand;
+use Thor\Process\CommandError;
+use Symfony\Component\Yaml\Yaml;
+use Thor\Cli\{Console\Color, Console\Console, Console\FixedOutput, Console\Mode, Daemon, DaemonState, DaemonScheduler};
+use Thor\Framework\Factories\Configurations;
+
+
+/**
+ * This Command contains all daemons related Thor-Api commands :
+ *  - daemon/start
+ *  - daemon/stop
+ *  - damon/reset
+ *  - daemon/status
+ *  - daemon/kill
+ *
+ * @package          Thor/Framework
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
+final class DaemonStatus extends CliCommand
+{
+
+
+    /**
+     * @param string $daemonName
+     *
+     * @return array
+     */
+    private function loadDaemon(string $daemonName): array
+    {
+        $daemonFile = Globals::STATIC_DIR . "daemons/$daemonName.yml";
+        if (!file_exists($daemonFile)) {
+        }
+        return Yaml::parseFile($daemonFile);
+    }
+
+    /**
+     * @return void
+     * @throws \Throwable
+     */
+    public function execute(): void
+    {
+        $console = new Console();
+
+        $daemonName = $this->get('name');
+        $all = $this->get('all', false);
+
+        if (!$all && null === $daemonName) {
+            throw CommandError::misusage($this);
+        }
+
+        if (!$all) {
+            $daemonInfo = $this->loadDaemon($daemonName);
+            $state = new DaemonState(Daemon::instantiate($daemonInfo));
+            $state->load();
+            dump($state);
+            return;
+        }
+        $daemons = DaemonScheduler::createFromConfiguration(Configurations::getDaemonsConfig())->getDaemons();
+        if (empty($daemons)) {
+            throw CommandError::misusage($this);
+        }
+
+        $console
+            ->echoes(
+                Color::FG_BLACK,
+                Color::BG_GRAY,
+                new FixedOutput('Status', 10),
+                new FixedOutput('Last run', 17),
+                new FixedOutput('Next run', 17),
+                new FixedOutput('', 4, STR_PAD_LEFT),
+                new FixedOutput('Daemon', 24),
+                new FixedOutput('Active period / Info', 32)
+            )
+            ->writeln()
+        ;
+        foreach ($daemons as $daemon) {
+            $state = new DaemonState($daemon);
+            $state->load();
+
+            [$status_color, $status] = match (true) {
+                $state->getError() !== null => [Color::RED, 'ERROR'],
+                $daemon->isActive() => [Color::CYAN, 'ACTIVE'],
+                $daemon->isEnabled() => [Color::GREEN, 'ENABLED'],
+                default => [Color::YELLOW, 'DISABLED'],
+            };
+
+            $console
+                ->fColor($status_color)
+                ->writeFix($status, 10)
+                ->mode()
+                ->writeFix($state->getLastRun()?->format('y-m-d H:i') ?? 'never', 17)
+                ->writeFix($state->getNextRun()?->format('y-m-d H:i') ?? 'never', 17)
+                ->fColor(
+                    $state->getError()
+                        ? Color::RED
+                        :
+                        (
+                        $state->isRunning()
+                            ? Color::CYAN
+                            : Color::YELLOW
+                        )
+                )
+                ->writeFix(
+                    $state->getError()
+                        ? "  E "
+                        :
+                        (
+                        $state->isRunning()
+                            ? "  > "
+                            : "  • "
+                        ),
+                    4,
+                    STR_PAD_LEFT
+                )
+                ->writeFix(substr("{$daemon->getName()}", 0, 24), 24)
+            ;
+
+            if ($state->getError() ?? false) {
+                $console
+                    ->fColor(Color::RED)
+                    ->writeln(substr($state->getError(), 0, 32))
+                    ->mode()
+                ;
+                continue;
+            }
+            if ($state->isRunning()) {
+                $console
+                    ->fColor(Color::CYAN)
+                    ->writeln("PID : {$state->getPid()}")
+                    ->mode()
+                ;
+            } else {
+                $console
+                    ->mode()
+                    ->writeFix(
+                        "[{$daemon->getStartToday()->format('H:i')} - {$daemon->getEndToday()->format('H:i')}]",
+                        15
+                    )
+                    ->writeln(" / {$daemon->getPeriodicity()} min")
+                ;
+            }
+        }
+        $console->writeln();
+
+        $console->echoes(Color::FG_GRAY, Mode::REVERSE, "Status   \n");
+        foreach (
+            [
+                [Color::CYAN, 'ACTIVE', 'Daemon is in its active period and is enabled'],
+                [Color::GREEN, 'ENABLED', 'Daemon is NOT in its active period but is enabled'],
+                [Color::YELLOW, 'DISABLED', 'The daemon is disabled'],
+                [Color::RED, 'ERROR', 'The last run throws an error.'],
+            ] as [$color, $legend, $desc]
+        ) {
+            $console->echoes($color->fg(), "$legend ", Color::FG_GRAY, Mode::UNDERSCORE, ": $desc\n");
+        }
+
+        $console->writeln();
+    }
+
+}

@@ -28,7 +28,7 @@ use Thor\Cli\{Console\Color,
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class DaemonCommand extends Command
+final class DaemonCommands extends Command
 {
 
     /**

@@ -1,0 +1,18 @@
+daemon/run:
+    class: Thor\Framework\CliCommands\DaemonRun
+    description: 'run a daemon'
+    arguments:
+        name:
+            description: 'the daemon name'
+            required: true
+
+daemon/status:
+    class: Thor\Framework\CliCommands\DaemonStatus
+    description: 'displays the status of a daemon'
+    arguments:
+        name:
+            description: 'the daemon name'
+    options:
+        all:
+            description: 'displays a table of all the statuses of daemons'
+            hasValue: false

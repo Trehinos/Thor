@@ -30,4 +30,29 @@ class Option
         }
     }
 
+    public static function fromArray(array $argument): self
+    {
+        return new self(
+            $argument['name'],
+            $argument['description'] ?? '',
+            $argument['short'] ?? null,
+            $argument['long'] ?? null,
+            $argument['hasValue'] ?? true,
+            $argument['cumulative'] ?? false,
+        );
+    }
+
+    /**
+     * @return static[]
+     */
+    public static function fromConfiguration(array $configuration): array
+    {
+        $array = [];
+        foreach ($configuration as $optName => $optSpecs) {
+            $array[] = self::fromArray(['name' => $optName, ...$optSpecs]);
+        }
+
+        return $array;
+    }
+
 }

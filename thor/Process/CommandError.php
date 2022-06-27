@@ -15,8 +15,9 @@ class CommandError extends \RuntimeException
         return new self("The command line \"$input\" mismatches the \"{$cliCommand->command}\" command.");
     }
 
-    public static function misusage(CliCommand $cliCommand, string $input): self
+    public static function misusage(CliCommand $cliCommand): self
     {
+        $cliCommand->usage();
         return new self("Invalid usage of \"{$cliCommand->command}\"");
     }
 

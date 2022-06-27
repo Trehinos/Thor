@@ -5,13 +5,18 @@ namespace Thor\Process;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\Cli\Console\Console;
+use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\Console\FixedOutput;
+use JetBrains\PhpStorm\ArrayShape;
 use PhpParser\Node\Expr\AssignOp\Mod;
+use Thor\Framework\CliCommands\DaemonRun;
+use Thor\Framework\CliCommands\DaemonStatus;
+use Thor\Configuration\ConfigurationFromFile;
 
-class CliCommand implements Executable
+abstract class CliCommand implements Executable
 {
 
-    public readonly array $context;
+    public array $context;
 
     /**
      * @param string     $command
@@ -23,28 +28,38 @@ class CliCommand implements Executable
         public readonly array $arguments = [],
         public readonly array $options = []
     ) {
+        $this->context = [];
     }
 
     public static function test(): void
     {
-        $test = new self(
-            'daemon/run',
-            [
-                new Argument('NAME', 'The daemon to run', true),
-                new Argument('TIME', 'HH:MM the moment when to run the daemon (default : now)'),
-                new Argument('USERNAME', 'Sends a different username to the command'),
-            ],
-            [
-                new Option('env', 'The environnement on which to run the daemon'),
-                new Option('verbose', 'Set this option to show the daemon\'s output', hasValue: false),
-            ]
+        $yaml = ConfigurationFromFile::fromFile('cli-commands', true);
+        $test = new DaemonStatus(
+            'daemon/status',
+            Argument::fromConfiguration($yaml['daemon/status']['arguments']),
+            Option::fromConfiguration($yaml['daemon/status']['options'])
         );
-        $test->usage();
 
         global $argv;
-        $d = $test->parse($argv);
-        dump($d);
-        $test->execute();
+        array_shift($argv);
+        if ($test->matches($argv)) {
+            $d = $test->parse($argv);
+            $test->setContext(array_merge($d['arguments'], $d['options']));
+            $test->execute();
+        } else {
+            throw CommandError::notFound($argv[0] ?? '');
+        }
+    }
+
+    public function matches(array $commandLineArguments): bool
+    {
+        $command = array_shift($commandLineArguments);
+        return $command === $this->command;
+    }
+
+    public function setContext(array $context): void
+    {
+        $this->context = $context;
     }
 
     public function get(string $name, mixed $default = null): mixed
@@ -83,11 +98,12 @@ class CliCommand implements Executable
                 $console->echoes(
                     Mode::BRIGHT,
                     Color::FG_RED,
-                    ' ',
                     new FixedOutput(
-                        $option->hasValue
-                            ? strtoupper($option->name)
-                            : '',
+                        $option->cumulative
+                            ? '+'
+                            : ($option->hasValue
+                            ? ' ' . strtoupper($option->name)
+                            : ''),
                         7
                     )
                 );
@@ -101,7 +117,9 @@ class CliCommand implements Executable
                 $console->color(Color::FG_GREEN, Mode::BRIGHT);
                 $console->writeFix("--{$option->long}", 14, STR_PAD_LEFT);
                 $console->mode();
-                if ($option->hasValue) {
+                if ($option->cumulative) {
+                    $console->echoes(Mode::BRIGHT, Color::FG_RED, '+');
+                } elseif ($option->hasValue) {
                     $console->echoes(Mode::BRIGHT, Color::FG_RED, ' ', strtoupper($option->name));
                 }
                 $console->writeln();
@@ -125,55 +143,62 @@ class CliCommand implements Executable
         $console->writeln()->writeln();
     }
 
+
+    /**
+     * @throws CommandError
+     */
+    #[ArrayShape(['command' => "mixed|null|string", 'arguments' => "array", 'options' => "array"])]
     public function parse(array $commandLineArguments): array
     {
-        array_shift($commandLineArguments);
-        $command = array_shift($commandLineArguments);
-        if ($command !== $this->command) {
-            throw CommandError::mismatch($this, $command);
+        $parser = CommandParser::with($this);
+        $commandFromLine = array_shift($commandLineArguments);
+        if ($commandFromLine !== $this->command) {
+            throw CommandError::mismatch($this, $commandFromLine);
         }
+
+        $waitingForValue = false;
         $options = [];
         $arguments = [];
-        $optionBuffer = '';
-        $inOption = false;
-        foreach ($commandLineArguments as $argument) {
-            if ($inOption) {
-                if (is_array($optionBuffer)) {
-                    foreach ($optionBuffer as $flag) {
-                        $options[$flag] = true;
+        $nextArg = 0;
+        foreach ($commandLineArguments as $argumentFromLine) {
+            if ($waitingForValue !== false) {
+                $options[$waitingForValue->name] = $argumentFromLine;
+                $waitingForValue = false;
+                continue;
+            }
+
+            if ($parser->isOption($argumentFromLine)) {
+                $option = $parser->parseOption($argumentFromLine);
+                foreach (
+                match ($option['type'] ?? '') {
+                    'short' => $option['option'],
+                    'long' => [$option['option']]
+                } as $opt
+                ) {
+                    if ($opt?->cumulative) {
+                        $options[$opt->name] = ($options[$opt->name] ?? 0) + 1;
+                    } else {
+                        $options[$opt->name] = true;
                     }
-                } elseif (array_key_exists($optionBuffer, $options)) {
-                    if (!is_array($options[$optionBuffer])) {
-                        $options[$optionBuffer] = [$options[$optionBuffer]];
-                    }
-                    $options[$optionBuffer][] = $argument;
-                } else {
-                    $options[$optionBuffer] = $argument;
                 }
-                $inOption = false;
-                $optionBuffer = '';
-            } else {
-                if (str_starts_with($argument, '-')) {
-                    $inOption = true;
-                    if (str_starts_with($argument, '--')) {
-                        $optionBuffer = trim($argument, '-');
-                    }
-                    $optionBuffer = str_split(trim($argument, '-'));
-                } else {
-                    $arguments[] = $argument;
+                if (array_key_exists('value', $option) && is_string($option['value'] ?? null)) {
+                    $options[$option['option']?->name] = $option['value'];
+                } elseif ($option['waiting'] ?? false) {
+                    $waitingForValue = $option['for'];
                 }
+                continue;
+            }
+
+            if ($nextArg !== null) {
+                $arguments[$this->arguments[$nextArg++]->name] = $argumentFromLine;
             }
         }
 
         return [
-            'command'   => $command,
+            'command'   => $commandFromLine,
             'arguments' => $arguments,
             'options'   => $options,
         ];
     }
 
-    public function execute(): void
-    {
-        // TODO: Implement execute() method.
-    }
 }
