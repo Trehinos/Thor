@@ -2,24 +2,23 @@
 
 namespace Thor\Process;
 
+use Thor\Cli\CliKernel;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\Cli\Console\Console;
-use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\Console\FixedOutput;
 use JetBrains\PhpStorm\ArrayShape;
-use PhpParser\Node\Expr\AssignOp\Mod;
-use Thor\Framework\CliCommands\DaemonRun;
-use Thor\Framework\CliCommands\DaemonStatus;
 use Thor\Configuration\ConfigurationFromFile;
 
 abstract class CliCommand implements Executable
 {
 
     public array $context;
+    public Console $console;
 
     /**
      * @param string     $command
+     * @param string     $description
      * @param Argument[] $arguments
      * @param Option[]   $options
      */
@@ -29,28 +28,50 @@ abstract class CliCommand implements Executable
         public readonly array $arguments = [],
         public readonly array $options = []
     ) {
+        $this->console = new Console();
         $this->context = [];
     }
 
+    public static function fromConfiguration(): array
+    {
+        $yaml = ConfigurationFromFile::fromFile('cli-commands', true)->getArrayCopy();
+
+        return array_map(
+            fn(string $command, array $specifications) => new ($specifications['class'])(
+                $command,
+                $specifications['description'] ?? '',
+                array_map(
+                    fn(string $name, array $argumentArray) => Argument::fromArray(['name' => $name] + $argumentArray),
+                    array_keys($specifications['arguments'] ?? []),
+                    $specifications['arguments'] ?? []
+                ),
+                array_map(
+                    fn(string $name, array $optionArray) => Option::fromArray(['name' => $name] + $optionArray),
+                    array_keys($specifications['options'] ?? []),
+                    $specifications['options'] ?? []
+                ),
+            ),
+            array_keys($yaml),
+            array_values($yaml)
+        );
+    }
+
+
     public static function test(): void
     {
-        $yaml = ConfigurationFromFile::fromFile('cli-commands', true);
-        $test = new DaemonStatus(
-            'daemon/status',
-            $yaml['daemon/status']['description'] ?? '',
-            Argument::fromConfiguration($yaml['daemon/status']['arguments']),
-            Option::fromConfiguration($yaml['daemon/status']['options'])
-        );
-
+        $commands = self::fromConfiguration();
         global $argv;
         array_shift($argv);
-        if ($test->matches($argv)) {
-            $d = $test->parse($argv);
-            $test->setContext(array_merge($d['arguments'], $d['options']));
-            $test->execute();
-        } else {
-            throw CommandError::notFound($argv[0] ?? '');
+        foreach ($commands as $command) {
+            if ($command->matches($argv)) {
+                $input = $command->parse($argv);
+                $command->setContext([...$input['arguments'], ...$input['options']]);
+                $command->execute();
+                return;
+            }
         }
+
+        throw CommandError::notFound($argv[0] ?? '');
     }
 
     public function matches(array $commandLineArguments): bool
@@ -69,30 +90,49 @@ abstract class CliCommand implements Executable
         return $this->context[$name] ?? $default;
     }
 
-    public function usage(): void
+    public function error(string $message, bool $displayUsage = true): never
+    {
+        $this->console->echoes(Mode::BRIGHT, Color::FG_RED, 'ERROR', "\n");
+        $this->console->echoes(Mode::BRIGHT, Color::FG_YELLOW, $message, "\n");
+        if ($displayUsage) {
+            $this->usage();
+        }
+        exit;
+    }
+
+    public function usage(bool $full = true): void
     {
         $console = new Console();
-        $console->echoes(Mode::BRIGHT, 'Usage of ', Color::FG_BLUE, $this->command, Color::FG_GRAY, ":\n\n");
-        $console->echoes(Mode::BRIGHT, Color::FG_BLUE, "    {$this->command} ");
-        if (!empty($this->options)) {
+        if ($full) {
+            $console->echoes(Mode::BRIGHT, 'Usage of ', Color::FG_BLUE, $this->command, Color::FG_GRAY, ":\n\n");
+            $console->echoes('    ');
+            $console->echoes(Mode::BRIGHT, Color::FG_BLUE, "{$this->command} ");
+        } else {
+            $console->echoes(Mode::BRIGHT, Color::FG_BLUE, new FixedOutput($this->command, 20, STR_PAD_LEFT));
+        }
+        if ($full && !empty($this->options)) {
             $console->echoes('[');
             $console->echoes(Mode::BRIGHT, Color::FG_GREEN, 'OPTIONS');
             $console->echoes(']');
         }
-        foreach ($this->arguments as $argument) {
-            $console->echoes(' ');
-            if (!$argument->required) {
-                $console->echoes('[');
+        if ($full) {
+            foreach ($this->arguments as $argument) {
+                $console->echoes(' ');
+                if (!$argument->required) {
+                    $console->echoes('[');
+                }
+                $console->echoes(Mode::BRIGHT, Color::FG_YELLOW, "{$argument->name}");
+                if (!$argument->required) {
+                    $console->echoes(']');
+                }
             }
-            $console->echoes(Mode::BRIGHT, Color::FG_YELLOW, "{$argument->name}");
-            if (!$argument->required) {
-                $console->echoes(']');
-            }
+            $console->echoes(Mode::BRIGHT, Mode::UNDERSCORE, "\n    {$this->description}\n");
+            $console->writeln()->writeln();
+        } else {
+            $console->echoes(Mode::BRIGHT, Mode::UNDERSCORE, ": {$this->description}\n");
         }
-        $console->echoes(Mode::BRIGHT, Mode::UNDERSCORE, "\n    {$this->description}\n");
-        $console->writeln()->writeln();
 
-        if (!empty($this->options)) {
+        if ($full && !empty($this->options)) {
             $console->writeFix("List of options ", 23, STR_PAD_LEFT)->writeln();
             foreach ($this->options as $option) {
                 $console->color(Color::FG_GREEN, Mode::BRIGHT);
@@ -130,7 +170,7 @@ abstract class CliCommand implements Executable
             $console->writeln();
         }
 
-        if (!empty($this->arguments)) {
+        if ($full && !empty($this->arguments)) {
             $console->writeFix("List of arguments ", 23, STR_PAD_LEFT)->writeln();
             foreach ($this->arguments as $argument) {
                 $console->color(Color::FG_YELLOW, Mode::BRIGHT);
@@ -141,11 +181,10 @@ abstract class CliCommand implements Executable
                     $argument->description
                 )->writeln();
             }
+
+            $console->writeln()->writeln();
         }
-
-        $console->writeln()->writeln();
     }
-
 
     /**
      * @throws CommandError
@@ -178,6 +217,9 @@ abstract class CliCommand implements Executable
                     'long' => [$option['option']]
                 } as $opt
                 ) {
+                    if ($opt === null) {
+                        continue;
+                    }
                     if ($opt?->cumulative) {
                         $options[$opt->name] = ($options[$opt->name] ?? 0) + 1;
                     } else {

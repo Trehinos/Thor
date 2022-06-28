@@ -1,0 +1,63 @@
+<?php
+
+namespace Thor\Framework\CliCommands\User;
+
+use Thor\Cli\Console\Mode;
+use Thor\Cli\Console\Color;
+use Thor\Process\CliCommand;
+use Thor\Framework\Security\DbUser;
+use Thor\Database\PdoTable\Criteria;
+use Thor\Database\PdoTable\CrudHelper;
+use Thor\Framework\Managers\UserManager;
+use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoExtension\PdoCollection;
+use Thor\Framework\Configurations\DatabasesConfiguration;
+
+/**
+ * @package          Thor/Framework
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
+final class UserList extends CliCommand
+{
+
+    public function execute(): void
+    {
+        $manager = new UserManager(
+            new CrudHelper(
+                DbUser::class,
+                new PdoRequester(PdoCollection::createFromConfiguration(DatabasesConfiguration::get())->get())
+            )
+        );
+
+        $search = $this->get('search');
+
+        if (null !== $search) {
+            $users = $manager->getUserCrud()->readMultipleBy(new Criteria(['username' => "%$search"]));
+        } else {
+            $users = $manager->getUserCrud()->listAll();
+        }
+
+        /**
+         * @var DbUser $user
+         */
+        foreach ($users as $user) {
+            $pid = $user->getPublicId();
+            $username = $user->getIdentifier();
+            $hash = $user->toPdoArray()['hash'];
+            $this->console->fColor(mode: Mode::DIM)
+                          ->write("[$pid] ")
+                          ->mode()->fColor()->write('username:')
+                          ->fColor(Color::CYAN)
+                          ->writeln($username)
+                          ->mode()->fColor()->write("password:")
+                          ->fColor(Color::MAGENTA)
+                          ->writeln($hash)
+                          ->mode();
+        }
+
+        $this->console->writeln()->fColor(Color::GREEN)->write(count($users))
+                      ->fColor()->writeln(" user(s) listed");
+    }
+
+}

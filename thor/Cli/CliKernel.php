@@ -135,8 +135,8 @@ final class CliKernel implements KernelInterface
     public static function executeCommand(string $commandName, array $args = []): void
     {
         $command = $commandName;
-        foreach ($args as $argName => $argValue) {
-            $command .= " -$argName \"$argValue\"";
+        foreach ($args as $argValue) {
+            $command .= " \"$argValue\"";
         }
         CliKernel::executeProgram('php ' . Globals::BIN_DIR . "thor.php $command");
     }
@@ -172,7 +172,7 @@ final class CliKernel implements KernelInterface
     {
         $args = self::getArgs();
         $command = $args[0] ?? '';
-        if ('-help' === $command) {
+        if ('help' === $command) {
             $displayCommand = null;
             if (($args[1] ?? null) !== null) {
                 $displayCommand = $args[1];

@@ -1,5 +1,12 @@
+help:
+    class: Thor\Framework\CliCommands\Help
+    description: 'displays a list of all available commands or a command detail'
+    arguments:
+        command:
+            description: 'if specified, displays details of this command'
+
 daemon/run:
-    class: Thor\Framework\CliCommands\DaemonRun
+    class: Thor\Framework\CliCommands\Daemon\Run
     description: 'run a daemon'
     arguments:
         name:
@@ -7,7 +14,7 @@ daemon/run:
             required: true
 
 daemon/status:
-    class: Thor\Framework\CliCommands\DaemonStatus
+    class: Thor\Framework\CliCommands\Daemon\Status
     description: 'displays the status of a daemon. Either the daemon name or the --all option has to be specified.'
     arguments:
         name:
@@ -16,3 +23,49 @@ daemon/status:
         all:
             description: 'displays a table of all the statuses of daemons'
             hasValue: false
+
+daemon/state:
+    class: Thor\Framework\CliCommands\Daemon\State
+    description: 'change the state of a daemon.'
+    arguments:
+        name:
+            description: 'the daemon name'
+            required: true
+    options:
+        enable:
+            description: 'enable the daemon'
+            hasValue: false
+        disable:
+            description: 'disable the daemon'
+            hasValue: false
+        reset:
+            description: 'reset the daemon status'
+            hasValue: false
+
+daemon/kill:
+    class: Thor\Framework\CliCommands\Daemon\Kill
+    description: 'stops the execution of a daemon'
+    arguments:
+        name:
+            description: 'the daemon name'
+            required: true
+
+user/create:
+    class: Thor\Framework\CliCommands\User\Create
+    description: 'create a new user in DB. If password is omitted a random one will be affected to the user and displayed'
+    arguments:
+        username:
+            required: true
+            description: 'user''s login'
+    options:
+        password:
+            hasValue: true
+            description: 'user''s clear password. Will be hashed before insertion'
+
+user/list:
+    class: Thor\Framework\CliCommands\User\UserList
+    description: 'list all users in DB'
+    options:
+        search:
+            hasValue: true
+            description: 'User login search request'

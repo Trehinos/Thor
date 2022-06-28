@@ -1,22 +1,3 @@
-user/create:
-    class: Thor\Framework\Commands\UserCommand
-    command: createUser
-    description: 'create a new user in DB'
-    arguments:
-        username:
-            hasValue: true
-            description: 'user''s login'
-        password:
-            hasValue: true
-            description: 'user''s clear password. Will be hashed before insertion'
-user/list:
-    class: Thor\Framework\Commands\UserCommand
-    command: listUsers
-    description: 'list all users in DB'
-    arguments:
-        search:
-            hasValue: true
-            description: 'User login search request'
 user/edit:
     class: Thor\Framework\Commands\UserCommand
     command: editUser
@@ -63,57 +44,6 @@ route/list:
     class: Thor\Framework\Commands\CoreCommand
     command: routeList
     description: 'list all routes in app/res/static/routes.yml'
-daemon/run:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonRun
-    description: 'run a daemon'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-daemon/start:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonStart
-    description: 'start a daemon'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-daemon/stop:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonStop
-    description: 'stop a daemon'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-daemon/status:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonStatus
-    description: 'get the status of a daemon'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-        all:
-            hasValue: false
-            description: 'if present, display all daemons status'
-daemon/reset:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonReset
-    description: 'reset the daemon state'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-daemon/kill:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonKill
-    description: 'stop the daemon immediately'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
 clear/cache:
     class: Thor\Framework\Commands\CoreCommand
     command: clearCache

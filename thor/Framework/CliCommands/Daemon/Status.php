@@ -1,13 +1,13 @@
 <?php
 
-namespace Thor\Framework\CliCommands;
+namespace Thor\Framework\CliCommands\Daemon;
 
 use Thor\Globals;
 use Thor\Process\CliCommand;
 use Thor\Process\CommandError;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Cli\{Console\Color, Console\Console, Console\FixedOutput, Console\Mode, Daemon, DaemonState, DaemonScheduler};
 use Thor\Framework\Factories\Configurations;
+use Thor\Cli\{Daemon, DaemonState, Console\Mode, Console\Color, Console\Console, DaemonScheduler, Console\FixedOutput};
 
 
 /**
@@ -22,7 +22,7 @@ use Thor\Framework\Factories\Configurations;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class DaemonStatus extends CliCommand
+final class Status extends CliCommand
 {
 
 
