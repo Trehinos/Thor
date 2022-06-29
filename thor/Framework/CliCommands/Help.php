@@ -25,7 +25,7 @@ final class Help extends CliCommand
     {
         $console = new Console();
         $command = $this->get('command');
-        $commands = CliCommand::fromConfiguration();
+        $commands = $this->kernel->getCommands();
         $config = ThorConfiguration::get();
 
         if ($command === null) {

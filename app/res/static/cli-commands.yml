@@ -1,3 +1,5 @@
+# ######################################################################################################################
+# General commands
 help:
     class: Thor\Framework\CliCommands\Help
     description: 'displays a list of all available commands or a command detail'
@@ -5,6 +7,8 @@ help:
         command:
             description: 'if specified, displays details of this command'
 
+# ######################################################################################################################
+# Daemon commands
 daemon/run:
     class: Thor\Framework\CliCommands\Daemon\Run
     description: 'run a daemon'
@@ -50,6 +54,8 @@ daemon/kill:
             description: 'the daemon name'
             required: true
 
+# ######################################################################################################################
+# User commands
 user/create:
     class: Thor\Framework\CliCommands\User\Create
     description: 'create a new user in DB. If password is omitted a random one will be affected to the user and displayed'

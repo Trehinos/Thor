@@ -4,6 +4,7 @@ namespace Thor\Process;
 
 use Thor\Cli\CliKernel;
 use Thor\Cli\Console\Mode;
+use Thor\Cli\NewCliKernel;
 use Thor\Cli\Console\Color;
 use Thor\Cli\Console\Console;
 use Thor\Cli\Console\FixedOutput;
@@ -17,61 +18,21 @@ abstract class CliCommand implements Executable
     public Console $console;
 
     /**
-     * @param string     $command
-     * @param string     $description
-     * @param Argument[] $arguments
-     * @param Option[]   $options
+     * @param string            $command
+     * @param string            $description
+     * @param Argument[]        $arguments
+     * @param Option[]          $options
+     * @param NewCliKernel|null $kernel
      */
     public function __construct(
         public readonly string $command,
         public readonly string $description = '',
         public readonly array $arguments = [],
-        public readonly array $options = []
+        public readonly array $options = [],
+        public ?NewCliKernel $kernel = null
     ) {
         $this->console = new Console();
         $this->context = [];
-    }
-
-    public static function fromConfiguration(): array
-    {
-        $yaml = ConfigurationFromFile::fromFile('cli-commands', true)->getArrayCopy();
-
-        return array_map(
-            fn(string $command, array $specifications) => new ($specifications['class'])(
-                $command,
-                $specifications['description'] ?? '',
-                array_map(
-                    fn(string $name, array $argumentArray) => Argument::fromArray(['name' => $name] + $argumentArray),
-                    array_keys($specifications['arguments'] ?? []),
-                    $specifications['arguments'] ?? []
-                ),
-                array_map(
-                    fn(string $name, array $optionArray) => Option::fromArray(['name' => $name] + $optionArray),
-                    array_keys($specifications['options'] ?? []),
-                    $specifications['options'] ?? []
-                ),
-            ),
-            array_keys($yaml),
-            array_values($yaml)
-        );
-    }
-
-
-    public static function test(): void
-    {
-        $commands = self::fromConfiguration();
-        global $argv;
-        array_shift($argv);
-        foreach ($commands as $command) {
-            if ($command->matches($argv)) {
-                $input = $command->parse($argv);
-                $command->setContext([...$input['arguments'], ...$input['options']]);
-                $command->execute();
-                return;
-            }
-        }
-
-        throw CommandError::notFound($argv[0] ?? '');
     }
 
     public function matches(array $commandLineArguments): bool
@@ -127,13 +88,13 @@ abstract class CliCommand implements Executable
                 }
             }
             $console->echoes(Mode::BRIGHT, Mode::UNDERSCORE, "\n    {$this->description}\n");
-            $console->writeln()->writeln();
+            $console->writeln();
         } else {
             $console->echoes(Mode::BRIGHT, Mode::UNDERSCORE, ": {$this->description}\n");
         }
 
         if ($full && !empty($this->options)) {
-            $console->writeFix("List of options ", 23, STR_PAD_LEFT)->writeln();
+            $console->writeln("    List of options ");
             foreach ($this->options as $option) {
                 $console->color(Color::FG_GREEN, Mode::BRIGHT);
                 $console->writeFix("-{$option->short}", 14, STR_PAD_LEFT);
@@ -171,7 +132,7 @@ abstract class CliCommand implements Executable
         }
 
         if ($full && !empty($this->arguments)) {
-            $console->writeFix("List of arguments ", 23, STR_PAD_LEFT)->writeln();
+            $console->writeln("    List of arguments ");
             foreach ($this->arguments as $argument) {
                 $console->color(Color::FG_YELLOW, Mode::BRIGHT);
                 $console->writeFix("{$argument->name} ", 23, STR_PAD_LEFT);
@@ -182,7 +143,7 @@ abstract class CliCommand implements Executable
                 )->writeln();
             }
 
-            $console->writeln()->writeln();
+            $console->writeln();
         }
     }
 
