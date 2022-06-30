@@ -75,3 +75,46 @@ user/list:
         search:
             hasValue: true
             description: 'User login search request'
+
+user/edit:
+    class: Thor\Framework\CliCommands\User\Edit
+    description: 'create a new user in DB'
+    arguments:
+        pid:
+            required: true
+            description: 'user''s PID. Needed to identify the user in DB'
+    options:
+        username:
+            hasValue: true
+            description: 'user''s new login'
+        password:
+            hasValue: true
+            description: 'user''s new clear password. Will be hashed before insertion'
+
+user/delete:
+    class: Thor\Framework\CliCommands\User\Delete
+    description: 'delete an existing user in DB'
+    arguments:
+        pid:
+            required: true
+            description: 'user''s PID. Needed to identify the user in DB'
+
+# ######################################################################################################################
+# Clear commands
+clear/cache:
+    class: Thor\Framework\CliCommands\Core\ClearCache
+    description: 'clear the cache'
+    options:
+        ttl:
+            hasValue: true
+            description: 'if specified, only delete file older than ttl (in minutes)'
+clear/logs:
+    class: Thor\Framework\CliCommands\Core\ClearLogs
+    description: 'clear all logs'
+    options:
+        env:
+            hasValue: true
+            description: 'prod|verbose|debug|[dev] : the environment to clear'
+        ttl:
+            hasValue: true
+            description: 'if specified, only delete file older than ttl (in minutes)'

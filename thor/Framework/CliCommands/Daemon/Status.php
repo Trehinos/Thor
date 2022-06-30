@@ -3,7 +3,7 @@
 namespace Thor\Framework\CliCommands\Daemon;
 
 use Thor\Globals;
-use Thor\Process\CliCommand;
+use Thor\Process\Command;
 use Thor\Process\CommandError;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Framework\Factories\Configurations;
@@ -22,7 +22,7 @@ use Thor\Cli\{Daemon, DaemonState, Console\Mode, Console\Color, Console\Console,
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class Status extends CliCommand
+final class Status extends Command
 {
 
 

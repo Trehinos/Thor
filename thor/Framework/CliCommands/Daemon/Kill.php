@@ -5,10 +5,10 @@ namespace Thor\Framework\CliCommands\Daemon;
 use Thor\Cli\Daemon;
 use Thor\Cli\CliKernel;
 use Thor\Cli\DaemonState;
-use Thor\Process\CliCommand;
+use Thor\Process\Command;
 use Thor\Configuration\ConfigurationFromFile;
 
-final class Kill extends CliCommand
+final class Kill extends Command
 {
 
     /**

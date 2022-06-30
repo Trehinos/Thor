@@ -13,7 +13,7 @@ final class CommandParser
     {
     }
 
-    public static function with(CliCommand $command): self
+    public static function with(Command $command): self
     {
         return new self($command->options, $command->arguments);
     }

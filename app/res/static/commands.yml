@@ -1,25 +1,3 @@
-user/edit:
-    class: Thor\Framework\Commands\UserCommand
-    command: editUser
-    description: 'create a new user in DB'
-    arguments:
-        pid:
-            hasValue: true
-            description: 'user''s PID. Needed to identify the user in DB'
-        username:
-            hasValue: true
-            description: 'user''s new login'
-        password:
-            hasValue: true
-            description: 'user''s new clear password. Will be hashed before insertion'
-user/delete:
-    class: Thor\Framework\Commands\UserCommand
-    command: deleteUser
-    description: 'delete an existing user in DB'
-    arguments:
-        pid:
-            hasValue: true
-            description: 'user''s PID. Needed to identify the user in DB'
 route/set:
     class: Thor\Framework\Commands\CoreCommand
     command: routeSet

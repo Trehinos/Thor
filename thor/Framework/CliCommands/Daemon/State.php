@@ -5,12 +5,12 @@ namespace Thor\Framework\CliCommands\Daemon;
 use Throwable;
 use Thor\Globals;
 use Thor\Cli\Daemon;
-use Thor\Process\CliCommand;
+use Thor\Process\Command;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\DaemonState;
 use Thor\Configuration\ConfigurationFromFile;
 
-final class State extends CliCommand
+final class State extends Command
 {
 
     /**

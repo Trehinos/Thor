@@ -4,32 +4,30 @@ namespace Thor\Process;
 
 use Thor\Cli\CliKernel;
 use Thor\Cli\Console\Mode;
-use Thor\Cli\NewCliKernel;
 use Thor\Cli\Console\Color;
 use Thor\Cli\Console\Console;
 use Thor\Cli\Console\FixedOutput;
 use JetBrains\PhpStorm\ArrayShape;
-use Thor\Configuration\ConfigurationFromFile;
 
-abstract class CliCommand implements Executable
+abstract class Command implements Executable
 {
 
     public array $context;
     public Console $console;
 
     /**
-     * @param string            $command
-     * @param string            $description
-     * @param Argument[]        $arguments
-     * @param Option[]          $options
-     * @param NewCliKernel|null $kernel
+     * @param string         $command
+     * @param string         $description
+     * @param Argument[]     $arguments
+     * @param Option[]       $options
+     * @param CliKernel|null $kernel
      */
     public function __construct(
         public readonly string $command,
         public readonly string $description = '',
         public readonly array $arguments = [],
         public readonly array $options = [],
-        public ?NewCliKernel $kernel = null
+        public ?CliKernel $kernel = null
     ) {
         $this->console = new Console();
         $this->context = [];

@@ -4,7 +4,7 @@ namespace Thor\Framework\CliCommands;
 
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
-use Thor\Process\CliCommand;
+use Thor\Process\Command;
 use Thor\Cli\Console\Console;
 use Thor\Cli\Console\FixedOutput;
 use Thor\Configuration\ThorConfiguration;
@@ -14,7 +14,7 @@ use Thor\Configuration\ThorConfiguration;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class Help extends CliCommand
+final class Help extends Command
 {
 
 

@@ -2,10 +2,8 @@
 
 namespace Thor\Framework\CliCommands\Daemon;
 
-use Thor\Globals;
-use Thor\Process\CliCommand;
+use Thor\Process\Command;
 use Thor\Process\CommandError;
-use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\{DaemonState, Console\Mode, Console\Color, Console\Console, DaemonScheduler};
 
 
@@ -21,7 +19,7 @@ use Thor\Cli\{DaemonState, Console\Mode, Console\Color, Console\Console, DaemonS
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class Run extends CliCommand
+final class Run extends Command
 {
 
     /**
