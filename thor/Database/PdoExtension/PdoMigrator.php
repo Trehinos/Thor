@@ -44,6 +44,9 @@ final class PdoMigrator
             }
             ksort($migrations);
             foreach ($migrations as $migrationIndex => $migrationQueries) {
+                if ($migrationQueries === null) {
+                    continue;
+                }
                 if ($migrationIndex > $this->migrationIndex) {
                     if ($nextIndex !== null && $migrationIndex > $nextIndex) {
                         continue;
@@ -75,7 +78,7 @@ final class PdoMigrator
             $yaml = Yaml::parseFile($filename);
             $basename = basename($filename);
             $num = substr($basename, strpos($basename, '_') + 1);
-            $num = substr($num, 0, strrpos($basename, '.'));
+            $num = substr($num, 0, strrpos($num, '.'));
             foreach ($databaseConfiguration as $key => $unused) {
                 $migrations[$key][$num] = $yaml[$key] ?? null;
             }

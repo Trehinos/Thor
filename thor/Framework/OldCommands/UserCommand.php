@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Framework\Commands;
+namespace Thor\Framework\OldCommands;
 
 use Exception;
 use Thor\Framework\{Managers\UserManager};

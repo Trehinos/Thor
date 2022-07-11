@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Framework\CliCommands;
+namespace Thor\Framework\Commands;
 
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;

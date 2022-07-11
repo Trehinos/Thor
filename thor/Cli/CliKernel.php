@@ -10,13 +10,18 @@ use Thor\Process\Argument;
 use Thor\Process\CommandError;
 use Thor\Process\KernelInterface;
 use Thor\Configuration\Configuration;
+use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Framework\Factories\Configurations;
+use Thor\Database\PdoExtension\PdoCollection;
 
 class CliKernel implements KernelInterface
 {
 
+    private PdoCollection $pdoCollection;
+
     private function __construct(private array $commands)
     {
+        $this->pdoCollection = new PdoCollection();
     }
 
     /**
@@ -136,7 +141,8 @@ class CliKernel implements KernelInterface
     public static function createFromConfiguration(Configuration $config): static
     {
         $yaml = $config['commands']?->getArrayCopy() ?? [];
-        return new self(
+
+        $kernel = new self(
             array_map(
                 fn(string $command, array $specifications) => new ($specifications['class'])(
                     $command,
@@ -158,6 +164,15 @@ class CliKernel implements KernelInterface
                 array_values($yaml)
             )
         );
+
+        $kernel->pdoCollection = PdoCollection::createFromConfiguration($config['database']);
+
+        return $kernel;
+    }
+
+    public function getHandler(string $name): ?PdoHandler
+    {
+        return $this->pdoCollection->get($name);
     }
 
     public function getCommands(): array

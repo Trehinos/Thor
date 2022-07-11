@@ -1,8 +1,7 @@
 <?php
 
-namespace Thor\Framework\CliCommands\User;
+namespace Thor\Framework\Commands\User;
 
-use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\Process\Command;
 use Thor\Framework\Security\DbUser;
@@ -17,7 +16,7 @@ use Thor\Framework\Configurations\DatabasesConfiguration;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class Edit extends Command
+final class Create extends Command
 {
 
     public function execute(): void
@@ -29,25 +28,21 @@ final class Edit extends Command
             )
         );
 
-        $pid = $this->get('pid');
         $username = $this->get('username');
-        $password = $this->get('password');
+        $password = $this->get('password', null);
 
-        if ($pid === null) {
-            $this->error('Invalid usage, PID is required.');
+        if ($password === null) {
+            $password = base64_encode(random_bytes(16));
+            $this->console->echoes(
+                "User's password [",
+                Color::FG_YELLOW,
+                $password,
+                Color::FG_GRAY,
+                "] has been generated...\n"
+            );
         }
-
-        if ($username !== null) {
-            $manager->updateUser($pid, $username);
-            $this->console->echoes(Color::FG_GREEN, "User's username has been modified.\n");
-        }
-        if ($password !== null) {
-            $manager->setPassword($pid, $password);
-            $this->console->echoes(Color::FG_GREEN, "User's password has been modified.\n");
-        }
-        if ($username === null && $password === null) {
-            $this->console->echoes(Mode::DIM, Color::FG_GRAY, "Nothing to do.\n");
-        }
+        $pid = $manager->createUser($username, $password);
+        $this->console->echoes("User ", Color::FG_YELLOW, $pid, Color::FG_GRAY, " has been created.\n");
         $this->console->echoes("Done\n");
     }
 

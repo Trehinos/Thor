@@ -1,0 +1,2 @@
+default:
+    - "UPDATE user SET username='admin' WHERE username='admini'"

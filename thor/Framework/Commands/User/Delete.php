@@ -1,7 +1,8 @@
 <?php
 
-namespace Thor\Framework\CliCommands\User;
+namespace Thor\Framework\Commands\User;
 
+use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\Process\Command;
 use Thor\Framework\Security\DbUser;
@@ -16,7 +17,7 @@ use Thor\Framework\Configurations\DatabasesConfiguration;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class Create extends Command
+final class Delete extends Command
 {
 
     public function execute(): void
@@ -28,22 +29,18 @@ final class Create extends Command
             )
         );
 
-        $username = $this->get('username');
-        $password = $this->get('password', null);
-
-        if ($password === null) {
-            $password = base64_encode(random_bytes(16));
-            $this->console->echoes(
-                "User's password [",
-                Color::FG_YELLOW,
-                $password,
-                Color::FG_GRAY,
-                "] has been generated...\n"
-            );
+        $pid = $this->get('pid');
+        if (null === $pid) {
+            $this->error('PID not provided...');
         }
-        $pid = $manager->createUser($username, $password);
-        $this->console->echoes("User ", Color::FG_YELLOW, $pid, Color::FG_GRAY, " has been created.\n");
-        $this->console->echoes("Done\n");
+        $user = $manager->getFromPublicId($pid);
+        if (null === $user) {
+            $this->error('User not found...');
+        }
+
+        $manager->deleteOne($pid);
+        $this->console->fColor(Color::GREEN)->writeln('Success');
+        $this->console->fColor()->writeln("User $pid deleted.");
     }
 
 }

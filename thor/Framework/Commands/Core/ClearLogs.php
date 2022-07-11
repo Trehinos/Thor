@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Framework\CliCommands\Core;
+namespace Thor\Framework\Commands\Core;
 
 use Thor\Globals;
 use Thor\Debug\Logger;

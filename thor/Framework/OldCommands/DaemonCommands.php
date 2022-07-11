@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Framework\Commands;
+namespace Thor\Framework\OldCommands;
 
 use Thor\Globals;
 use Symfony\Component\Yaml\Yaml;

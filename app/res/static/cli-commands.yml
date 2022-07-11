@@ -1,7 +1,7 @@
 # ######################################################################################################################
 # General commands
 help:
-    class: Thor\Framework\CliCommands\Help
+    class: Thor\Framework\Commands\Help
     description: 'displays a list of all available commands or a command detail'
     arguments:
         command:
@@ -10,7 +10,7 @@ help:
 # ######################################################################################################################
 # Daemon commands
 daemon/run:
-    class: Thor\Framework\CliCommands\Daemon\Run
+    class: Thor\Framework\Commands\Daemon\Run
     description: 'run a daemon'
     arguments:
         name:
@@ -18,7 +18,7 @@ daemon/run:
             required: true
 
 daemon/status:
-    class: Thor\Framework\CliCommands\Daemon\Status
+    class: Thor\Framework\Commands\Daemon\Status
     description: 'displays the status of a daemon. Either the daemon name or the --all option has to be specified.'
     arguments:
         name:
@@ -29,7 +29,7 @@ daemon/status:
             hasValue: false
 
 daemon/state:
-    class: Thor\Framework\CliCommands\Daemon\State
+    class: Thor\Framework\Commands\Daemon\State
     description: 'change the state of a daemon.'
     arguments:
         name:
@@ -47,7 +47,7 @@ daemon/state:
             hasValue: false
 
 daemon/kill:
-    class: Thor\Framework\CliCommands\Daemon\Kill
+    class: Thor\Framework\Commands\Daemon\Kill
     description: 'stops the execution of a daemon'
     arguments:
         name:
@@ -57,7 +57,7 @@ daemon/kill:
 # ######################################################################################################################
 # User commands
 user/create:
-    class: Thor\Framework\CliCommands\User\Create
+    class: Thor\Framework\Commands\User\Create
     description: 'create a new user in DB. If password is omitted a random one will be affected to the user and displayed'
     arguments:
         username:
@@ -69,7 +69,7 @@ user/create:
             description: 'user''s clear password. Will be hashed before insertion'
 
 user/list:
-    class: Thor\Framework\CliCommands\User\UserList
+    class: Thor\Framework\Commands\User\UserList
     description: 'list all users in DB'
     options:
         search:
@@ -77,7 +77,7 @@ user/list:
             description: 'User login search request'
 
 user/edit:
-    class: Thor\Framework\CliCommands\User\Edit
+    class: Thor\Framework\Commands\User\Edit
     description: 'create a new user in DB'
     arguments:
         pid:
@@ -92,7 +92,7 @@ user/edit:
             description: 'user''s new clear password. Will be hashed before insertion'
 
 user/delete:
-    class: Thor\Framework\CliCommands\User\Delete
+    class: Thor\Framework\Commands\User\Delete
     description: 'delete an existing user in DB'
     arguments:
         pid:
@@ -100,16 +100,47 @@ user/delete:
             description: 'user''s PID. Needed to identify the user in DB'
 
 # ######################################################################################################################
-# Clear commands
+# Core commands
+
+core/setup:
+    class: Thor\Framework\Commands\Core\Setup
+    description: 'create the PdoRows tables'
+    options:
+        database:
+            hasValue: true
+            description: '(default = default)'
+
+database/migrate:
+    class: Thor\Framework\Commands\Core\Migrate
+    description: 'run a migration file with multiple SQL queries'
+    options:
+        index:
+            hasValue: true
+            description: 'the new migration index'
+
+env/set:
+    class: Thor\Framework\Commands\Core\SetEnv
+    description: 'set the environment'
+    arguments:
+        env:
+            required: true
+            description: 'PROD | DEBUG | DEV'
+            
+core/repl:
+    class: Thor\Cli\Repl
+    command: repl
+    description: "launch a REPL"
+
 clear/cache:
-    class: Thor\Framework\CliCommands\Core\ClearCache
+    class: Thor\Framework\Commands\Core\ClearCache
     description: 'clear the cache'
     options:
         ttl:
             hasValue: true
             description: 'if specified, only delete file older than ttl (in minutes)'
+
 clear/logs:
-    class: Thor\Framework\CliCommands\Core\ClearLogs
+    class: Thor\Framework\Commands\Core\ClearLogs
     description: 'clear all logs'
     options:
         env:

@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Framework\CliCommands\Daemon;
+namespace Thor\Framework\Commands\Daemon;
 
 use Thor\Cli\Daemon;
 use Thor\Cli\CliKernel;

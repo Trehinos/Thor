@@ -22,26 +22,6 @@ route/list:
     class: Thor\Framework\Commands\CoreCommand
     command: routeList
     description: 'list all routes in app/res/static/routes.yml'
-clear/cache:
-    class: Thor\Framework\Commands\CoreCommand
-    command: clearCache
-    description: 'clear the cache'
-clear/logs:
-    class: Thor\Framework\Commands\CoreCommand
-    command: clearLogs
-    description: 'clear all logs'
-    arguments:
-        env:
-            hasValue: true
-            description: 'prod|verbose|debug|[dev] : the environment to clear'
-core/setup:
-    class: Thor\Framework\Commands\CoreCommand
-    command: setup
-    description: 'create the PdoRows tables'
-    arguments:
-        database:
-            hasValue: true
-            description: '(default = default)'
 core/install:
     class: Thor\Framework\Commands\CoreCommand
     command: install
@@ -54,26 +34,6 @@ core/uninstall:
     class: Thor\Framework\Commands\CoreCommand
     command: uninstall
     description: 'removes all PdoRows in DB'
-database/migrate:
-    class: Thor\Framework\Commands\DatabaseCommand
-    command: migrate
-    description: 'run a migration file with multiple SQL queries'
-    arguments:
-        index:
-            hasValue: true
-            description: 'the new migration index'
-core/set-env:
-    class: Thor\Framework\Commands\CoreCommand
-    command: setEnv
-    description: 'set the environment'
-    arguments:
-        env:
-            hasValue: true
-            description: 'PROD | DEBUG | DEV'
-core/repl:
-    class: Thor\Cli\Repl
-    command: repl
-    description: "launch a REPL"
 
 project/document:
     class: Thor\Framework\Commands\Project

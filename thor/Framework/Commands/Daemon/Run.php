@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Framework\CliCommands\Daemon;
+namespace Thor\Framework\Commands\Daemon;
 
 use Thor\Process\Command;
 use Thor\Process\CommandError;
