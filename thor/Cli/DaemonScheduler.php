@@ -3,16 +3,16 @@
 namespace Thor\Cli;
 
 use Throwable;
-use Thor\{Configuration\ThorConfiguration,
-    Thor,
+use Thor\{Thor,
     Globals,
-    Application,
     Debug\Logger,
     Debug\LogLevel,
-    KernelInterface,
     FileSystem\Folder,
-    Framework\Factories\Configurations,
-    Configuration\Configuration};
+    Process\Application,
+    Process\KernelInterface,
+    Configuration\Configuration,
+    Configuration\ThorConfiguration,
+    Framework\Factories\Configurations};
 
 /**
  * This class is the Kernel of thor daemons.

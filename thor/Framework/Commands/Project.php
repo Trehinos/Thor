@@ -7,17 +7,22 @@ use BackedEnum;
 use Thor\Globals;
 use ReflectionEnum;
 use ReflectionClass;
-use Thor\Cli\Command;
 use ReflectionMethod;
 use Thor\Tools\Strings;
 use ReflectionProperty;
 use ReflectionException;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
+use Thor\Process\Command;
 use Thor\FileSystem\Folder;
 use ReflectionClassConstant;
 use Thor\FileSystem\FileSystem;
 
+/**
+ * @package          Thor/Framework
+ * @copyright (2021) Sébastien Geldreich
+ * @license          MIT
+ */
 final class Project extends Command
 {
 
@@ -31,7 +36,7 @@ final class Project extends Command
      *
      * @throws ReflectionException
      */
-    public function document(): void
+    public function execute(): void
     {
         $folder = ($this->get('folder') ?? 'thor') . '/';
         $this->target = $this->get('target') ?? 'github';

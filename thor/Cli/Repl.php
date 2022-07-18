@@ -3,6 +3,7 @@
 namespace Thor\Cli;
 
 use Thor\Thor;
+use Thor\Process\Command;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\Cli\Console\CursorControl;
@@ -18,30 +19,18 @@ final class Repl extends Command
 {
 
     private bool $continue = true;
-
-    /**
-     * @var Command[]
-     */
-    private array $commands;
-
     public string $prompt;
 
-    /**
-     * @param string    $command
-     * @param array     $args
-     * @param CliKernel $kernel
-     */
-    public function __construct(string $command, array $args, CliKernel $kernel)
+    public function __construct(string $command, string $description, array $args, array $options, ?CliKernel $kernel = null)
     {
-        parent::__construct($command, $args, $kernel);
-        $this->commands = $kernel->commands;
+        parent::__construct($command, $description, $args, $options, $kernel);
         $this->prompt = '[Thor ' . Thor::version() . '] Enter command :';
     }
 
     /**
      * @return void
      */
-    public function repl(): void
+    public function execute(): void
     {
         while ($this->continue) {
             $command = $this->read();
@@ -54,8 +43,7 @@ final class Repl extends Command
                     flags: PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
                 );
                 $command = trim(array_shift($arguments));
-                $commandArgs = Command::getArgs($arguments, $this->commands[$command]['arguments'] ?? []);
-                CliKernel::executeCommand($command, $commandArgs);
+                CliKernel::executeCommand($command, $arguments);
             }
         }
 

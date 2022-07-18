@@ -1,177 +1,16 @@
-user/create:
-    class: Thor\Framework\Commands\UserCommand
-    command: createUser
-    description: 'create a new user in DB'
+# ######################################################################################################################
+# General commands
+help:
+    class: Thor\Framework\Commands\Help
+    description: 'displays a list of all available commands or a command detail'
     arguments:
-        username:
-            hasValue: true
-            description: 'user''s login'
-        password:
-            hasValue: true
-            description: 'user''s clear password. Will be hashed before insertion'
-user/list:
-    class: Thor\Framework\Commands\UserCommand
-    command: listUsers
-    description: 'list all users in DB'
-    arguments:
-        search:
-            hasValue: true
-            description: 'User login search request'
-user/edit:
-    class: Thor\Framework\Commands\UserCommand
-    command: editUser
-    description: 'create a new user in DB'
-    arguments:
-        pid:
-            hasValue: true
-            description: 'user''s PID. Needed to identify the user in DB'
-        username:
-            hasValue: true
-            description: 'user''s new login'
-        password:
-            hasValue: true
-            description: 'user''s new clear password. Will be hashed before insertion'
-user/delete:
-    class: Thor\Framework\Commands\UserCommand
-    command: deleteUser
-    description: 'delete an existing user in DB'
-    arguments:
-        pid:
-            hasValue: true
-            description: 'user''s PID. Needed to identify the user in DB'
-route/set:
-    class: Thor\Framework\Commands\CoreCommand
-    command: routeSet
-    description: 'add or edit a route in app/res/static/routes.yml'
-    arguments:
-        name:
-            hasValue: true
-            description: 'route identifier'
-        path:
-            hasValue: true
-            description: 'route PATH'
-        method:
-            hasValue: true
-            description: 'the request method GET, POST, ...'
-        action-class:
-            hasValue: true
-            description: 'the controller class'
-        action-method:
-            hasValue: true
-            description: 'the controller method'
-route/list:
-    class: Thor\Framework\Commands\CoreCommand
-    command: routeList
-    description: 'list all routes in app/res/static/routes.yml'
-daemon/run:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonRun
-    description: 'run a daemon'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-daemon/start:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonStart
-    description: 'start a daemon'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-daemon/stop:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonStop
-    description: 'stop a daemon'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-daemon/status:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonStatus
-    description: 'get the status of a daemon'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-        all:
-            hasValue: false
-            description: 'if present, display all daemons status'
-daemon/reset:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonReset
-    description: 'reset the daemon state'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-daemon/kill:
-    class: Thor\Framework\Commands\DaemonCommand
-    command: daemonKill
-    description: 'stop the daemon immediately'
-    arguments:
-        name:
-            hasValue: true
-            description: 'the daemon name'
-clear/cache:
-    class: Thor\Framework\Commands\CoreCommand
-    command: clearCache
-    description: 'clear the cache'
-clear/logs:
-    class: Thor\Framework\Commands\CoreCommand
-    command: clearLogs
-    description: 'clear all logs'
-    arguments:
-        env:
-            hasValue: true
-            description: 'prod|verbose|debug|[dev] : the environment to clear'
-core/setup:
-    class: Thor\Framework\Commands\CoreCommand
-    command: setup
-    description: 'create the PdoRows tables'
-    arguments:
-        database:
-            hasValue: true
-            description: '(default = default)'
-core/install:
-    class: Thor\Framework\Commands\CoreCommand
-    command: install
-    description: 'run thor/setup then migrations'
-core/update:
-    class: Thor\Framework\Commands\CoreCommand
-    command: update
-    description: 'run the update process'
-core/uninstall:
-    class: Thor\Framework\Commands\CoreCommand
-    command: uninstall
-    description: 'removes all PdoRows in DB'
-database/migrate:
-    class: Thor\Framework\Commands\DatabaseCommand
-    command: migrate
-    description: 'run a migration file with multiple SQL queries'
-    arguments:
-        index:
-            hasValue: true
-            description: 'the new migration index'
-core/set-env:
-    class: Thor\Framework\Commands\CoreCommand
-    command: setEnv
-    description: 'set the environment'
-    arguments:
-        env:
-            hasValue: true
-            description: 'PROD | DEBUG | DEV'
-core/repl:
-    class: Thor\Cli\Repl
-    command: repl
-    description: "launch a REPL"
+        command:
+            description: 'if specified, displays details of this command'
 
 project/document:
     class: Thor\Framework\Commands\Project
-    command: document
     description: "generates documentation of a project"
-    arguments:
+    options:
         namespace:
             hasValue: true
             description: (default 'Thor')
@@ -184,3 +23,158 @@ project/document:
         verbose:
             hasValue: false
             description: echoes the generated markdown
+
+# ######################################################################################################################
+# Daemon commands
+daemon/run:
+    class: Thor\Framework\Commands\Daemon\Run
+    description: 'run a daemon'
+    arguments:
+        name:
+            description: 'the daemon name'
+            required: true
+
+daemon/status:
+    class: Thor\Framework\Commands\Daemon\Status
+    description: 'displays the status of a daemon. Either the daemon name or the --all option has to be specified.'
+    arguments:
+        name:
+            description: 'the daemon name'
+    options:
+        all:
+            description: 'displays a table of all the statuses of daemons'
+            hasValue: false
+
+daemon/state:
+    class: Thor\Framework\Commands\Daemon\State
+    description: 'change the state of a daemon.'
+    arguments:
+        name:
+            description: 'the daemon name'
+            required: true
+    options:
+        enable:
+            description: 'enable the daemon'
+            hasValue: false
+        disable:
+            description: 'disable the daemon'
+            hasValue: false
+        reset:
+            description: 'reset the daemon status'
+            hasValue: false
+
+daemon/kill:
+    class: Thor\Framework\Commands\Daemon\Kill
+    description: 'stops the execution of a daemon'
+    arguments:
+        name:
+            description: 'the daemon name'
+            required: true
+
+# ######################################################################################################################
+# User commands
+user/create:
+    class: Thor\Framework\Commands\User\Create
+    description: 'create a new user in DB. If password is omitted a random one will be affected to the user and displayed'
+    arguments:
+        username:
+            required: true
+            description: 'user''s login'
+    options:
+        password:
+            hasValue: true
+            description: 'user''s clear password. Will be hashed before insertion'
+
+user/list:
+    class: Thor\Framework\Commands\User\UserList
+    description: 'list all users in DB'
+    options:
+        search:
+            hasValue: true
+            description: 'User login search request'
+
+user/edit:
+    class: Thor\Framework\Commands\User\Edit
+    description: 'create a new user in DB'
+    arguments:
+        pid:
+            required: true
+            description: 'user''s PID. Needed to identify the user in DB'
+    options:
+        username:
+            hasValue: true
+            description: 'user''s new login'
+        password:
+            hasValue: true
+            description: 'user''s new clear password. Will be hashed before insertion'
+
+user/delete:
+    class: Thor\Framework\Commands\User\Delete
+    description: 'delete an existing user in DB'
+    arguments:
+        pid:
+            required: true
+            description: 'user''s PID. Needed to identify the user in DB'
+
+# ######################################################################################################################
+# Core commands
+
+core/setup:
+    class: Thor\Framework\Commands\Core\Setup
+    description: 'create the PdoRows tables'
+    options:
+        database:
+            hasValue: true
+            description: '(default = default)'
+
+core/install:
+    class: Thor\Framework\Commands\Core\Install
+    description: 'run thor/setup then migrations'
+
+core/update:
+    class: Thor\Framework\Commands\Core\Update
+    description: 'run the update process'
+
+database/migrate:
+    class: Thor\Framework\Commands\Core\Migrate
+    description: 'run a migration file with multiple SQL queries'
+    options:
+        index:
+            hasValue: true
+            description: 'the new migration index'
+
+env/set:
+    class: Thor\Framework\Commands\Core\SetEnv
+    description: 'set the environment'
+    arguments:
+        env:
+            required: true
+            description: 'PROD | DEBUG | DEV'
+            
+core/repl:
+    class: Thor\Cli\Repl
+    command: repl
+    description: "launch a REPL"
+
+clear/cache:
+    class: Thor\Framework\Commands\Core\ClearCache
+    description: 'clear the cache'
+    options:
+        ttl:
+            hasValue: true
+            description: 'if specified, only delete file older than ttl (in minutes)'
+
+clear/logs:
+    class: Thor\Framework\Commands\Core\ClearLogs
+    description: 'clear all logs'
+    options:
+        env:
+            hasValue: true
+            description: 'prod|verbose|debug|[dev] : the environment to clear'
+        ttl:
+            hasValue: true
+            description: 'if specified, only delete file older than ttl (in minutes)'
+
+route/list:
+    class: Thor\Framework\Commands\Http\RoutesList
+    description: 'list all routes in app/res/static/routes.yml'

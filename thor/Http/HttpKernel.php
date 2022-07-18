@@ -4,7 +4,7 @@ namespace Thor\Http;
 
 use Thor\Env;
 use Thor\Thor;
-use Thor\KernelInterface;
+use Thor\Process\KernelInterface;
 use Thor\Debug\{Logger, LogLevel};
 use Thor\Configuration\Configuration;
 use Thor\Framework\Factories\Configurations;

@@ -30,6 +30,7 @@ use Thor\Database\PdoTable\TableType\{ArrayType, StringType, IntegerType};
 class DbUser extends BaseUser implements PdoRowInterface, HasPublicId
 {
 
+    
     use PdoRowTrait {
         PdoRowTrait::__construct as private traitConstructor;
     }

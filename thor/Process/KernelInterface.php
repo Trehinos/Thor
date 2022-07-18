@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor;
+namespace Thor\Process;
 
 use Thor\Configuration\Configuration;
 

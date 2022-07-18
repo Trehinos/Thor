@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor;
+namespace Thor\Process;
 
 /**
  * This interface describes a process that can be executed.
