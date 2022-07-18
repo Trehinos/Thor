@@ -16,7 +16,7 @@ final class CommandsConfiguration extends ConfigurationFromFile
 
     public function __construct()
     {
-        parent::__construct('cli-commands', true);
+        parent::__construct('commands', true);
     }
 
 }

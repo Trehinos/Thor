@@ -2,6 +2,7 @@
 
 namespace Thor\Process;
 
+use Thor\Env;
 use Throwable;
 use Thor\Thor;
 use Thor\Globals;
