@@ -80,9 +80,9 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ## Documentation
 
-* [Setup THOR](https://github.com/Trehinos/Thor/wiki/Setup)
-* [Classes reference](https://github.com/Trehinos/Thor/wiki/documentation)
-* [Complete documentation](https://github.com/Trehinos/thor/wiki)
+* [Setup THOR](https://lab.frogg.it/Trehinos/Thor/-/wikis/setup)
+* [Classes reference](https://lab.frogg.it/Trehinos/Thor/-/wikis/documentation)
+* [Complete documentation](https://lab.frogg.it/Trehinos/Thor/-/wikis/home)
 
 ## License
 
