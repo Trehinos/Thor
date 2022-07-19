@@ -10,43 +10,24 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ## Key features
 
-* Main modules of **Thor** :
-    * **Database** module :
-        * **PdoExtension** module : Connection handler, requester, transaction, *extends PDO*.
-        * **PdoTable** module :
-            * Concept of `PdoTable`, an Entity-like object representing a table row.
-                * attributes `#[PdoRow]`, `#[PdoIndex]`, `#[PdoColumn]`, `#[PdoForeignKey]`.
-            * `CrudHelper` : performs CRUD operations on DB,
-            * `SchemaHelper` : performs DQL operations on DB,
-            * `BasePdoRow`/`PdoRowTrait`/`PdoRowInterface` : models to create DAOs with CrudHelper.
-    * **Http** module (with `PSR-7`) : **Request** -> **Server** -> **Router** -> **Controller** -> **Response**.
-        * Use the `#[Route]` attribute,
-        * **Security** module : with the `#[Authorization]` attribute to protect routes within a simple permission
-          system,
-    * **CLI** module : performs custom CLI commands ; offers a console color/formatting utility.
-    * **Daemons** scheduler module.
-
-* Other features :
-    * **Twig** template system.
-    * **Multilingual** static and **dynamic** strings (`"xxx"|_()` Twig filter and `DICT` global variable).
-    * Extensible application with custom **kernels**.
-    * PSR inspired interfaces.
-    * Base **web application** to develop a corporate work :
-        * Index, legal, about and changelog pages.
-        * **Menu** system with icons and authorizations.
-        * Page loading in **AJAX**  to reduce payloads.
-        * **Users** management (create/edit/change password/delete), login, logout.
-        * **Permissions** management (`#[Authorization]` PHP attribute on controllers, `authorized()` twig function in
-          views).
-    * Console commands to **control the application** :
-        * `user/` : `create` / `edit` / `delete` / `list`.
-        * `core/` : `setup` / `install` / `update` / `uninstall` / `set-env`.
-        * `clear/` : `cache` / `logs`.
-        * `route/` : `set` / `list`.
-        * `database/migrate`
-    * Daemons and daemons control :
-        * `start` / `stop` / `status` / `run` : enable, disable, execute or get info of a daemon.
-        * `kill` / `reset` : stop execution or reset state.
+- A complete **Framework** (Routing, Controllers, HTTP client, Database, Cli),
+- A **daemon** scheduler to run automated tasks periodically, 
+- PHP8.1 **attributes** (`#[Route]`, `#[Authorization]`, `#[PdoTable]`, `#[PdoColumn]`, `#[PdoIndex]`, `#[PdoForeignKey]`)
+- **Twig** templating
+- **Custom kernels** to add new **entry points** (default are `web`, `daemon` and `cli`).
+- Pre-developed **features** :
+  - Base **web application** :
+    - Index, legal page, changelog and about,
+    - **Menu system** with icons and authorizations,
+    - Pages loaded with AJAX,
+    - Users management and authentication, with a permission system,
+  - **Cli** commands :
+    - User : `create`, `edit`, `delete`, `list`,
+    - Core : `setup`, `update`, `migrate`, `set-env`
+    - Clear : `cache`, `logs`,
+    - Route : `list`
+    - Daemons : `status`, `state`, `run`, `kill`
+    - `project/document` : **auto-documentation of your project** in markdown ([an example here](https://lab.frogg.it/Trehinos/Thor/-/wikis/documentation)) 
 
 ## Dependencies
 
@@ -73,6 +54,10 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ### Web vendors (not included)
 
+These vendors only have to be installed if you want to use Thor to build a web application **AND**
+you use the pre-developed views.  
+Feel free to use your own dependencies if you don't use Thor's pre-developed views.
+
 * [JQuery 3.6.0](https://code.jquery.com/jquery-3.5.1.min.js)
 * [Bootstrap 5.1.3](https://getbootstrap.com/docs/5.1/getting-started/download/)
 * [Fontawesome 5.15.1](https://fontawesome.com/) PRO icons **licence required**
@@ -80,9 +65,9 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ## Documentation
 
-* [Setup THOR](https://lab.frogg.it/Trehinos/Thor/-/wikis/setup)
-* [Classes reference](https://lab.frogg.it/Trehinos/Thor/-/wikis/documentation)
 * [Complete documentation](https://lab.frogg.it/Trehinos/Thor/-/wikis/home)
+  * [Setup THOR](https://lab.frogg.it/Trehinos/Thor/-/wikis/setup)
+  * [Classes reference](https://lab.frogg.it/Trehinos/Thor/-/wikis/documentation)
 
 ## License
 
