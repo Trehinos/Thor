@@ -46,7 +46,6 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 - phpoffice/phpspreadsheet: ```1.x```
 - datatables.net/editor-php: ```2.x```
-- nusphere/nusoap: ```0.9.6```
 - symfony/var-dumper: ```5.x```
 - symfony/yaml: ```5.x```
 - twig/twig: ```3.x```
@@ -54,9 +53,9 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ### Web vendors (not included)
 
-These vendors only have to be installed if you want to use Thor to build a web application **AND**
-you use the pre-developed views.  
-Feel free to use your own dependencies if you don't use Thor's pre-developed views.
+> These vendors only have to be installed if you want to use Thor to build a web application **AND**
+> you use the pre-developed views.  
+> Feel free to use your own libraries/vendors if you don't use Thor's pre-developed views.
 
 * [JQuery 3.6.0](https://code.jquery.com/jquery-3.5.1.min.js)
 * [Bootstrap 5.1.3](https://getbootstrap.com/docs/5.1/getting-started/download/)
