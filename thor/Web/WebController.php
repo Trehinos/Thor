@@ -4,7 +4,7 @@ namespace Thor\Web;
 
 use Thor\Debug\Logger;
 use Twig\Error\{SyntaxError, LoaderError, RuntimeError};
-use Thor\Http\{Session, HttpController, Response\Response, Response\HttpStatus};
+use Thor\Http\{Routing\Route, Session, HttpController, Response\Response, Response\HttpStatus};
 
 /**
  * Base controller for web context.
@@ -18,10 +18,11 @@ abstract class WebController extends HttpController
 
     /**
      * @param WebServer $webServer
+     * @param Route     $route
      */
-    public function __construct(protected WebServer $webServer)
+    public function __construct(protected WebServer $webServer, Route $route)
     {
-        parent::__construct($webServer);
+        parent::__construct($webServer, $route);
     }
 
     /**

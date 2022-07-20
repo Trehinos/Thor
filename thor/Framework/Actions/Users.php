@@ -31,12 +31,13 @@ final class Users extends WebController
 
     /**
      * @param WebServer $webServer
+     * @param Route     $route
      *
      * @throws \ReflectionException
      */
-    public function __construct(WebServer $webServer)
+    public function __construct(WebServer $webServer, Route $route)
     {
-        parent::__construct($webServer);
+        parent::__construct($webServer, $route);
         $this->manager = new UserManager(new CrudHelper(DbUser::class, $this->getServer()->getRequester()));
 
         $this->userTable = new DataTables(

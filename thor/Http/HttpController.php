@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Http\Controllers;
+namespace Thor\Http;
 
 use JetBrains\PhpStorm\Pure;
 use Thor\Http\{Routing\Route,
@@ -46,6 +46,7 @@ abstract class HttpController extends ControllerHandler
 
     public function __construct(HttpServer $httpServer, Route $route)
     {
+        parent::__construct($httpServer, $route);
         $this->method = $this->getRequest()->getMethod();
         $this->uri = $this->getRequest()->getUri();
         $this->get = $this->getRequest()->getQueryParams();
@@ -55,7 +56,6 @@ abstract class HttpController extends ControllerHandler
         $this->cookies = $this->getRequest()->getCookieParams();
         $this->headers = $this->getRequest()->getHeaders();
         $this->queryAttributes = $this->getRequest()->getAttributes();
-        parent::__construct($httpServer, $route);
     }
 
     /**

@@ -37,7 +37,7 @@ class ControllerHandler implements RequestHandlerInterface
             'controller' => $cClass,
             'method'     => $cMethod,
         ]);
-        $controller = new $cClass($this->httpServer);
+        $controller = new $cClass($this->httpServer, $this->route);
         return $controller->$cMethod(...array_values($this->route->getFilledParams()));
     }
 

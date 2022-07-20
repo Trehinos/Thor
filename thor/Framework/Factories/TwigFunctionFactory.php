@@ -8,6 +8,7 @@ use Thor\Web\WebServer;
 use Thor\Web\Assets\Asset;
 use Thor\Http\Routing\Router;
 use Thor\Security\SecurityInterface;
+use Thor\Http\Server\ControllerHandler;
 use Symfony\Component\VarDumper\VarDumper;
 
 /**
@@ -177,11 +178,8 @@ final class TwigFunctionFactory
             'render',
             function (string $routeName, array $params = []) use ($server) {
                 $route = $server->getRouter()->getRoute($routeName);
-                $cClass = $route->getControllerClass();
-                $cMethod = $route->getControllerMethod();
-
-                $controller = new $cClass($server);
-                return $controller->$cMethod(...$params)->getBody();
+                $handler = new ControllerHandler($server, $route);
+                return $handler->handle(ServerRequestFactory::createFromGlobals())->getBody();
             },
             ['is_safe' => ['html']]
         );
