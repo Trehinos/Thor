@@ -172,10 +172,9 @@ class Email
                         self::DEFAULT_HEADERS[self::EMAIL_OCTET_STREAM]['Content-Type'],
                         ['name' => $file]
                     ),
-                    'Content-Transfer-Encoding' => 'base64',
                     'Content-Disposition'       => 'attachment',
                 ],
-                chunk_split(base64_encode(file_get_contents($path)))
+                file_get_contents($path)
             );
         }
         return implode(self::MAIL_EOL . self::MAIL_EOL, $parts);
@@ -225,13 +224,18 @@ class Email
             return '';
         }
         $headers = implode(
-            self::MAIL_EOL,
-            array_map(
-                fn(string $headerName, string $headerValue) => "$headerName: $headerValue",
-                array_keys($headers),
-                array_values($headers)
+            self::UNIX_EOL,
+            array_merge(
+                array_map(
+                    fn(string $headerName, string $headerValue) => "$headerName: $headerValue",
+                    array_keys($headers),
+                    array_values($headers)
+                ),
+                ['Content-Transfer-Encoding' => 'base64']
             )
         );
+
+        $body = chunk_split(base64_encode($body), separator: "\n");
 
         return self::normalize(
             <<<§
