@@ -23,6 +23,8 @@ use Thor\Framework\Configurations\KernelsConfiguration;
 final class Application implements KernelInterface
 {
 
+    public static Dispatcher $dispatcher;
+
     /**
      * @param KernelInterface|null $kernel
      */
@@ -38,6 +40,7 @@ final class Application implements KernelInterface
     public static function create(): static
     {
         global $thor_kernel;
+        self::$dispatcher = new Dispatcher();
         $config = new ThorConfiguration($thor_kernel);
         return self::createFromConfiguration($config);
     }
