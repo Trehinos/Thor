@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Thor\Tools\Email;
 use Thor\Tools\Strings;
 use Thor\Tools\DateTimes;
 use PHPUnit\Framework\TestCase;
@@ -73,6 +74,15 @@ final class ToolsTest extends TestCase
 
         $this->assertSame('prefixed', Strings::prefix('prefix', 'ed'));
         $this->assertSame('the suffix', Strings::suffix('the ', 'suffix'));
+    }
+
+    public function testEmail(): void
+    {
+        $email = new Email('noreply@trehinos.eu', 'Test', 'Ceci est un <strong>test</strong>', type: Email::EMAIL_MULTIPART);
+        $email->to('user@example.com');
+        $r = $email->send();
+
+        $this->assertTrue($r);
     }
 
 }

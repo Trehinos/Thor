@@ -20,7 +20,7 @@ class Email
     public const UNIX_EOL = "\n";
     public const MAIL_EOL = "\r\n";
 
-    private const DEFAULT_HEADERS = [
+    public const DEFAULT_HEADERS = [
         self::EMAIL_TEXT         => [
             'Content-Type' => 'text/plain; charset=utf-8',
         ],
@@ -60,6 +60,7 @@ class Email
         private int $type = self::EMAIL_TEXT
     ) {
         $this->boundary = bin2hex(random_bytes(16));
+        $this->headers = [...$this->headers, ...self::DEFAULT_HEADERS[$type]];
     }
 
     /**
@@ -159,12 +160,11 @@ class Email
         if ($this->type !== self::EMAIL_MULTIPART) {
             return Strings::interpolate(self::normalize($this->rawMessage), $this->context);
         }
-
         $this->headers['Content-Type'] = Strings::interpolate(
             $this->headers['Content-Type'],
             ['boundary' => $this->boundary]
         );
-        $parts = [$this->addPart(self::DEFAULT_HEADERS[self::EMAIL_HTML], $this->getMessage())];
+        $parts = [$this->addPart(self::DEFAULT_HEADERS[self::EMAIL_HTML], $this->rawMessage)];
         foreach ($this->files as $file => $path) {
             $parts[] = $this->addPart(
                 [
@@ -172,12 +172,12 @@ class Email
                         self::DEFAULT_HEADERS[self::EMAIL_OCTET_STREAM]['Content-Type'],
                         ['name' => $file]
                     ),
-                    'Content-Disposition'       => 'attachment',
+                    'Content-Disposition'       => "attachment; filename=\"$file\"",
                 ],
                 file_get_contents($path)
             );
         }
-        return implode(self::MAIL_EOL . self::MAIL_EOL, $parts);
+        return implode($parts);
     }
 
     /**
@@ -201,7 +201,8 @@ class Email
             return false;
         }
 
-        $message = $this->getMessage();
+        $message = $this->getMessage()."--{$this->boundary}--";
+        dump($message);
         $headers = $this->headers + self::DEFAULT_HEADERS[$this->type];
 
         return mail(
@@ -231,7 +232,7 @@ class Email
                     array_keys($headers),
                     array_values($headers)
                 ),
-                ['Content-Transfer-Encoding' => 'base64']
+                ['Content-Transfer-Encoding: base64']
             )
         );
 
@@ -244,7 +245,6 @@ class Email
             
             $body
             
-            --{$this->boundary}--
             §
         );
     }
