@@ -2,11 +2,18 @@
 
 namespace Thor\Tools\Email;
 
-use Thor\Tools\Strings;
-
+/**
+ * This class represent an email part.
+ */
 class Part
 {
 
+    /**
+     * Construct an email part with its headers.
+     *
+     * @param Headers $headers
+     * @param string  $body
+     */
     public function __construct(
         protected Headers $headers = new Headers(),
         protected string $body = ''
@@ -20,6 +27,13 @@ class Part
             $this->body;
     }
 
+    /**
+     * Build a new part to attach a file on an email.
+     *
+     * @param string $path
+     *
+     * @return static
+     */
     public static function file(string $path): self
     {
         return new self(
@@ -28,6 +42,13 @@ class Part
         );
     }
 
+    /**
+     * Build a new part to inline a text in an email.
+     *
+     * @param string $text
+     *
+     * @return static
+     */
     public static function text(string $text): self
     {
         return new self(

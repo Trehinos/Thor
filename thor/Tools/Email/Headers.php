@@ -5,6 +5,9 @@ namespace Thor\Tools\Email;
 use ArrayAccess;
 use Thor\Tools\Strings;
 
+/**
+ * This class represents an email part headers.
+ */
 final class Headers implements ArrayAccess
 {
 
@@ -14,6 +17,13 @@ final class Headers implements ArrayAccess
 
     private array $headers;
 
+    /**
+     * Construct Headers with most important headers.
+     *
+     * @param string $contentType
+     * @param string $transfertEncoding
+     * @param string $contentDisposition
+     */
     public function __construct(
         string $contentType = self::TYPE_HTML,
         string $transfertEncoding = '7bit',
@@ -26,6 +36,13 @@ final class Headers implements ArrayAccess
         ];
     }
 
+    /**
+     * Builds headers for an attached file part.
+     *
+     * @param string $name
+     *
+     * @return static
+     */
     public static function fileAttachment(string $name): self
     {
         return new self(
