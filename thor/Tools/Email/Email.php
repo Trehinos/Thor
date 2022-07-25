@@ -24,6 +24,7 @@ class Email extends Part
             Strings::interpolate(Headers::TYPE_MULTIPART, ['boundary' => $this->boundary]),
             'binary'
         );
+        unset($headers['Content-Disposition']);
         array_walk(
             $additionnalHeaders,
             function (string $value, string $name) use ($headers) {
@@ -62,10 +63,22 @@ class Email extends Part
                "\r\n\r\n--$this->boundary--\r\n";
     }
 
-    public function send(string|array $to): bool
+    public function send(string|array $to, string|array|null $cc = null, string|array|null $bcc = null): bool
     {
         if (is_array($to)) {
             $to = implode(', ', $to);
+        }
+        if ($cc !== null) {
+            if (is_array($cc)) {
+                $cc = implode(', ', $cc);
+            }
+            $this->headers['Cc'] = $cc;
+        }
+        if ($bcc !== null) {
+            if (is_array($bcc)) {
+                $bcc = implode(', ', $bcc);
+            }
+            $this->headers['Bcc'] = $bcc;
         }
         $this->headers['From'] = $this->from;
         return mail($to, $this->subject, $this->getBody(), "$this->headers");

@@ -3,6 +3,7 @@
 namespace Thor\Tools\Email;
 
 use ArrayAccess;
+use Thor\Tools\Strings;
 
 final class Headers implements ArrayAccess
 {
@@ -15,12 +16,23 @@ final class Headers implements ArrayAccess
 
     public function __construct(
         string $contentType = self::TYPE_HTML,
-        string $transfertEncoding = '7bit'
+        string $transfertEncoding = '7bit',
+        string $contentDisposition = 'inline'
     ) {
         $this->headers = [
             'Content-Type'              => $contentType,
             'Content-Transfer-Encoding' => $transfertEncoding,
+            'Content-Disposition'       => $contentDisposition,
         ];
+    }
+
+    public static function fileAttachment(string $name): self
+    {
+        return new self(
+            Strings::interpolate(Headers::TYPE_OCTET_STREAM, ['name' => $name]),
+            'base64',
+            "attachment; filename=\"$name\""
+        );
     }
 
     public function toArray(): array
