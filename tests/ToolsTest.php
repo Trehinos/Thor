@@ -2,9 +2,9 @@
 
 namespace Tests;
 
-use Thor\Tools\Email;
 use Thor\Tools\Strings;
 use Thor\Tools\DateTimes;
+use Thor\Tools\Email\Email;
 use PHPUnit\Framework\TestCase;
 use Thor\Tools\PlaceholderFormat;
 
@@ -78,9 +78,8 @@ final class ToolsTest extends TestCase
 
     public function testEmail(): void
     {
-        $email = new Email('noreply@trehinos.eu', 'Test', 'Ceci est un <strong>test</strong>', type: Email::EMAIL_MULTIPART);
-        $email->to('user@example.com');
-        $r = $email->send();
+        $email = new Email('Test', 'noreply@trehinos.eu', message: 'Ceci est un <strong>test</strong>');
+        $r = $email->send('user@example.com');
 
         $this->assertTrue($r);
     }
