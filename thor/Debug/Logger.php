@@ -81,9 +81,9 @@ final class Logger implements LoggerInterface
             $traceType = $trace['type'] ?? '';
             $traceArgs = $trace['args'] ?? [];
             if ($traceClass !== null) {
-                $traceStr .= "$pad • $traceType$traceClass$traceFunction";
+                $traceStr .= "$pad • $traceType $traceClass::$traceFunction";
             } else {
-                $traceStr .= "$pad • $traceType$traceFunction";
+                $traceStr .= "$pad • $traceType $traceFunction";
             }
             if (!empty($traceArgs)) {
                 $traceStr .= '(' . implode(', ', $traceArgs) . ')';
