@@ -23,16 +23,16 @@ class Email extends Part
      *
      * @param string $subject
      * @param string $from
-     * @param array $additionnalHeaders
+     * @param array $additionalHeaders
      * @param string|null $message
      *
      * @throws Exception
      */
     public function __construct(
-        private string $subject,
-        private string $from,
-        array $additionnalHeaders = [],
-        ?string $message = null
+        private readonly string $subject,
+        private readonly string $from,
+        array                   $additionalHeaders = [],
+        ?string                 $message = null
     ) {
         $this->boundary = Guid::base64();
         $headers = new Headers(
@@ -41,9 +41,9 @@ class Email extends Part
         );
         unset($headers['Content-Disposition']);
         $headers['MIME-Version'] = '1.0';
-        $headers['X-Mailer'] = Thor::appName() . ' ' . Thor::version() . ' [' . Thor::version() . ']';
+        $headers['X-Mailer'] = Thor::appName() . ' ' . Thor::versionName() . ' [' . Thor::version() . ']';
         array_walk(
-            $additionnalHeaders,
+            $additionalHeaders,
             function (string $value, string $name) use ($headers) {
                 $headers[$name] = $value;
             }
@@ -99,20 +99,20 @@ class Email extends Part
     public function getBody(): string
     {
         return "\r\n\r\n--$this->boundary\r\n" .
-               implode(
-                   "\r\n\r\n--$this->boundary\r\n",
-                   array_map(
-                       fn(Part $part) => "$part",
-                       $this->parts
-                   )
-               ) .
-               "\r\n\r\n--$this->boundary--\r\n";
+            implode(
+                "\r\n\r\n--$this->boundary\r\n",
+                array_map(
+                    fn(Part $part) => "$part",
+                    $this->parts
+                )
+            ) .
+            "\r\n\r\n--$this->boundary--\r\n";
     }
 
     /**
      * Sends the email. Returns false if the mail() instruction fails.
      *
-     * @param string|array      $to
+     * @param string|array $to
      * @param string|array|null $cc
      * @param string|array|null $bcc
      *
