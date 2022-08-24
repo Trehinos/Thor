@@ -48,8 +48,8 @@ users:
 users.login.connect: 'Sign in <strong>{appName}</strong>'
 users.parameters: '{username} parameters'
 documentation:
-    alert: 'The documentation is available in the project''s wiki on Github.'
-    linklabel: 'See the documentation on Github'
+    alert: 'The documentation is available in the project''s wiki.'
+    linklabel: 'See the documentation online'
 changelog:
     title: Changelog
     legend: Legend

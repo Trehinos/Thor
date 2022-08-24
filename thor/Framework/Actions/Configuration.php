@@ -5,22 +5,14 @@ namespace Thor\Framework\Actions;
 use PDOException;
 use Thor\Globals;
 use Thor\Web\WebController;
-use Thor\Http\Routing\Route;
-use Thor\Http\Response\Response;
-use Thor\Http\Request\HttpMethod;
-use Thor\Configuration\ThorConfiguration;
+use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod};
 use Thor\Database\PdoExtension\PdoCollection;
-use Thor\Configuration\ConfigurationFromFile;
-use Thor\Framework\Configurations\SecurityConfiguration;
-use Thor\Framework\Configurations\DatabasesConfiguration;
-use Thor\Configuration\Configuration as YmlConfiguration;
+use Thor\Framework\Configurations\{SecurityConfiguration, DatabasesConfiguration};
+use Thor\Configuration\{ThorConfiguration, ConfigurationFromFile, Configuration as YmlConfiguration};
+use Twig\Error\{LoaderError, RuntimeError, SyntaxError};
 
 /**
- *
- */
-
-/**
- *
+ * Configuration edition controller.
  */
 final class Configuration extends WebController
 {
@@ -30,10 +22,17 @@ final class Configuration extends WebController
     private const SECURITY_YML = Globals::CONFIG_DIR . 'security.yml';
 
     /**
+     * GET /config/general
+     * Displays the general configuration view.
+     *
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     *
+     * @see ThorConfiguration
+     *
      */
     #[Route('config-config', '/config/general')]
     public function configView(): Response
@@ -59,7 +58,13 @@ final class Configuration extends WebController
     }
 
     /**
+     * POST /config-save/general
+     * Save the general configuration.
+     *
      * @return Response
+     *
+     * @see ThorConfiguration
+     *
      */
     #[Route('config-save', '/config-save/general', HttpMethod::POST)]
     public function saveConfig(): Response
@@ -71,10 +76,16 @@ final class Configuration extends WebController
     }
 
     /**
+     * GET /config/database
+     * Displays the databases configurations.
+     *
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     *
+     * @see DatabasesConfiguration
      */
     #[Route('database-config', '/config/database')]
     public function databaseView(): Response
@@ -100,7 +111,12 @@ final class Configuration extends WebController
     }
 
     /**
+     * POST /config-save/database
+     * Save the database configuration.
+     *
      * @return Response
+     *
+     * @see DatabasesConfiguration
      */
     #[Route('database-save', '/config-save/database', HttpMethod::POST)]
     public function saveDatabase(): Response
@@ -121,10 +137,16 @@ final class Configuration extends WebController
     }
 
     /**
+     * GET /config/security
+     * Displays the security configuration form.
+     *
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     *
+     * @see SecurityConfiguration
      */
     #[Route('security-config', '/config/security')]
     public function securityView(): Response
@@ -135,14 +157,19 @@ final class Configuration extends WebController
             'thor/configuration/security.html.twig',
             [
                 'security' => $securityConfig,
-                'writable'  => is_writeable(self::SECURITY_YML),
-                'filename'  => realpath(self::SECURITY_YML),
+                'writable' => is_writeable(self::SECURITY_YML),
+                'filename' => realpath(self::SECURITY_YML),
             ]
         );
     }
 
     /**
+     * POST /config-save/security
+     * Save the security configuration.
+     *
      * @return Response
+     *
+     * @see SecurityConfiguration
      */
     #[Route('security-save', '/config-save/security', HttpMethod::POST)]
     public function saveSecurity(): Response
@@ -154,9 +181,9 @@ final class Configuration extends WebController
 
     /**
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     #[Route('config-not-implemented', '/config/not-implemented')]
     public function notImplemented(): Response
