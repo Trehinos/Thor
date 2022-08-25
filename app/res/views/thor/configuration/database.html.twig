@@ -1,0 +1,73 @@
+{% extends "thor/pages/base.html.twig" %}
+
+{% block titlebar %}{{ icon('database', 'fas', true) }} Bases de données{% endblock %}
+
+{% block toolbar %}
+    {% if writable %}
+        <button type="submit" class="btn btn-sm btn-primary" form="databases-form">
+            <i class="fas fa-save"></i> Sauvegarder
+        </button>
+        <button type="button" class="btn btn-sm btn-success">
+            {{ icon('plus-circle') }} Ajouter une connexion
+        </button>
+    {% endif %}
+{% endblock %}
+
+{% block page %}
+    <form id="databases-form" {% if writable %}method="post" action="{{ url('database-save') }}"{% endif %}>
+        {% if not writable %}
+            <div class="alert alert-warning">
+                {{ icon('exclamation-triangle') }} Le fichier <code>{{ filename }}</code> n'est pas accessible
+                en écriture. Impossible de modifier la configuration.
+            </div>
+        {% else %}
+            <input type="hidden" name="size" value="{{ databases|length }}">
+            {% for name, database in databases %}
+                <div class="row mb-3 connection">
+                    <div class="col-md-2">
+                        <label for="name-{{ loop.index }}">Nom</label>
+                        <input id="name-{{ loop.index }}" name="name[{{ loop.index }}]" class="form-control"
+                               value="{{ name }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="dsn-{{ loop.index }}">DSN</label>
+                        <input id="dsn-{{ loop.index }}" name="dsn[{{ loop.index }}]" class="form-control"
+                               value="{{ database.dsn }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="user-{{ loop.index }}">Utilisateur</label>
+                        <input id="user-{{ loop.index }}" name="user[{{ loop.index }}]" class="form-control"
+                               value="{{ database.user }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="password-{{ loop.index }}">Mot de passe</label>
+                        <input id="password-{{ loop.index }}" name="password[{{ loop.index }}]" class="form-control"
+                               value="{{ database.password }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="case-{{ loop.index }}"><code>PDO::ATTR_CASE</code></label>
+                        <select id="case-{{ loop.index }}" name="case[{{ loop.index }}]" class="form-select">
+                            <option {% if database.case is not defined or database.case is null %}selected{% endif %}></option>
+                            {{ option(database.case|lower, 'lower', 'PDO::CASE_LOWER') }}
+                            {{ option(database.case|lower, 'upper', 'PDO::CASE_UPPER') }}
+                            {{ option(database.case|lower, 'natural', 'PDO::CASE_NATURAL') }}
+                        </select>
+                    </div>
+                    <div class="col-md-1 pt-4">
+                        <div class="pt-2">
+                            {% if status[name] %}
+                                <span class="text-success">
+                                    {{ icon('check', fixed= true) }} ok
+                                </span>
+                            {% else %}
+                            <span class="text-danger">
+                                {{ icon('times', fixed= true) }} ko
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </form>
+{% endblock %}

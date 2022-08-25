@@ -1,0 +1,35 @@
+{% extends "modal-base.html.twig" %}
+
+{% block modal_size %}modal-lg{% endblock %}
+
+{% block modal_title %}Ajouter un pare-feu{% endblock %}
+
+{% block modal_body %}
+    <div class="row mb-2">
+        <div class="col-8">
+            <label for="pattern">Modèle</label>
+            <div class="input-group">
+                <div class="input-group-text">/index.php/</div>
+                <input id="pattern" name="pattern" class="form-control">
+            </div>
+        </div>
+        <div class="col-4">
+            <label for="redirect">Redirection</label>
+            {% include "thor/fragments/route-select.html.twig" with {name: "redirect", routes} %}
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-4">
+            <label for="login">Connexion</label>
+            {% include "thor/fragments/route-select.html.twig" with {name: "login", routes} %}
+        </div>
+        <div class="col-4">
+            <label for="check">Vérification</label>
+            {% include "thor/fragments/route-select.html.twig" with {name: "check", routes} %}
+        </div>
+        <div class="col-4">
+            <label for="logout">Déconnexion</label>
+            {% include "thor/fragments/route-select.html.twig" with {name: "logout", routes} %}
+        </div>
+    </div>
+{% endblock %}

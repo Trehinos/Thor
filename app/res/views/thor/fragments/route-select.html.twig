@@ -1,0 +1,10 @@
+{#
+    Input :
+    var : routes : route list
+    var : name : name and id of the <select> element
+#}
+<select id="{{ name }}" name="{{ name }}" class="form-select">
+    {% for route in routes %}
+        <option value="{{ route }}">{{ route }}</option>
+    {% endfor %}
+</select>

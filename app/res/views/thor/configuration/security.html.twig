@@ -7,6 +7,11 @@
         <button type="submit" class="btn btn-sm btn-primary" form="security-form">
             <i class="fas fa-save"></i> Sauvegarder
         </button>
+        <button type="button" class="btn btn-sm btn-success"
+                onclick="Modal.load('{{ url("add-firewall") }}');"
+        >
+            {{ icon("plus-circle") }} Pare-feu
+        </button>
     {% endif %}
 {% endblock %}
 
@@ -14,8 +19,8 @@
     <form id="security-form" {% if writable %}method="post" action="{{ url('security-save') }}"{% endif %}>
         {% if not writable %}
             <div class="alert alert-warning">
-                {{ icon('exclamation-triangle') }} Le fichier <code>{{ filename }}</code> n'est pas accessible
-                en écriture. Impossible de modifier la configuration.
+                {{ icon('exclamation-triangle') }} Le fichier <code>{{ filename }}</code>
+                n'est pas accessible en écriture. Impossible de modifier la configuration.
             </div>
         {% else %}
             <div class="row align-items-end align-items-md-center">
@@ -62,12 +67,14 @@
                 </span></div>
             </div>
             <hr>
-            <h2>Firewalls</h2>
+            <h2>Pare-feux</h2>
             {% for firewall in security.firewalls %}
-                <button class="btn btn-dark" type="button">
-                    Firewall sur <code>{{ firewall.pattern }}</code>
+                <button class="btn btn-dark" type="button"
+                >
+                    {{ icon('edit') }}
+                    Pare-feu sur <code>{{ firewall.pattern }}</code>
                 </button>
-        {% else %}
+            {% else %}
                 <p class="text-warning">Aucun firewall défini...</p>
             {% endfor %}
             {% include "thor/not-implemented.html.twig" %}
