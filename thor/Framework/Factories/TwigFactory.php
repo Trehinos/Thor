@@ -108,7 +108,9 @@ final class TwigFactory
         $this->twig->addFilter(TwigFilterFactory::datetimeRelative());
         $this->twig->addFilter(TwigFilterFactory::toUtf8());
         $this->twig->addFilter(TwigFilterFactory::fromUtf8());
-        $this->twig->addFilter(TwigFilterFactory::format());
+        $this->twig->addFilter(TwigFilterFactory::money('money'));
+        $this->twig->addFilter(TwigFilterFactory::euro());
+        $this->twig->addFilter(TwigFilterFactory::dollar());
 
         return $this;
     }
