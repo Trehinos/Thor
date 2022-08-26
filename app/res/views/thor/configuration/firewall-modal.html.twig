@@ -32,4 +32,15 @@
             {% include "thor/fragments/route-select.html.twig" with {name: "logout", routes} %}
         </div>
     </div>
+    <div class="row">
+        <div class="col-6">
+            <label for="exclude-routes">Routes exclues</label>
+            {% include "thor/fragments/route-select.html.twig" with {name: "exclude-routes", routes, multiple: true} %}
+        </div>
+        <div class="col-6">
+            <label for="exclude-path">Chemins exclus</label>
+            <textarea id="exclude-path" name="excluse-path"
+                      class="form-control" rows="6"></textarea>
+        </div>
+    </div>
 {% endblock %}

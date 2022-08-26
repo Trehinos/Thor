@@ -3,7 +3,10 @@
     var : routes : route list
     var : name : name and id of the <select> element
 #}
-<select id="{{ name }}" name="{{ name }}" class="form-select">
+{% set multiple = multiple ?? false %}
+<select id="{{ name }}" name="{{ name }}" class="form-select"
+        {% if multiple %}multiple size="6"{% endif %}
+>
     {% for route in routes %}
         <option value="{{ route }}">{{ route }}</option>
     {% endfor %}
