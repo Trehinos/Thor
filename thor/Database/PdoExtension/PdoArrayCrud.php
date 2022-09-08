@@ -217,18 +217,18 @@ final class PdoArrayCrud
      */
     public function updateOne(array $row): bool
     {
-        $row = array_filter(
+        $filtered = array_filter(
             $row,
             fn(string $key) => !in_array($key, $this->updateExcludedColumns),
             ARRAY_FILTER_USE_KEY
         );
-        $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($row)));
+        $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($filtered)));
 
         $criteria = $this->primaryArrayToCriteria($this->extractPrimaries($row));
 
         return $this->requester->execute(
             "UPDATE {$this->table()} SET $sets " . Criteria::getWhere($criteria),
-            array_merge(array_values($row), $criteria->getParams())
+            array_merge(array_values($filtered), $criteria->getParams())
         );
     }
 

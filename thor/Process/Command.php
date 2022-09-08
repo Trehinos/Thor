@@ -122,7 +122,8 @@ abstract class Command implements Executable
                 if ($option->cumulative) {
                     $console->echoes(Mode::BRIGHT, Color::FG_RED, '+');
                 } elseif ($option->hasValue) {
-                    $console->echoes(Mode::BRIGHT, Color::FG_RED, ' ', strtoupper($option->name));
+                    $console->write('=');
+                    $console->echoes(Mode::BRIGHT, Color::FG_RED, '', strtoupper($option->name));
                 }
                 $console->writeln();
             }
