@@ -1,6 +1,7 @@
 source: 'git@github.com:/Trehinos/Thor.git'
+branch: dev
 composer-command: ~/composer.phar
 composer-options: '--ignore-platform-reqs'
 migration-folder: migrations/
-migration-index: 0
+migration-index: 2
 after-update: thor/after-update
