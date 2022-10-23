@@ -20,13 +20,17 @@ class HttpSecurity extends Security
     /**
      * @param PdoRequester $requester
      * @param array        $firewalls
+     * @param class-string $className
+     * @param string       $usernameField
      */
     public function __construct(
         PdoRequester $requester,
-        array $firewalls = []
+        array $firewalls = [],
+        string $className = DbUser::class,
+        string $usernameField = 'username'
     ) {
         parent::__construct(
-            new DatabaseUserProvider(new CrudHelper(DbUser::class, $requester), 'username'),
+            new DatabaseUserProvider(new CrudHelper($className, $requester), $usernameField),
             new SessionAuthenticator(),
             $firewalls
         );
