@@ -2,8 +2,8 @@
 
 namespace Thor\Database\PdoExtension;
 
+use Thor\Database\Criteria;
 use JetBrains\PhpStorm\Pure;
-use Thor\Database\PdoTable\Criteria;
 
 /**
  * For class CrudHelper : SQL CRUD operation requester for PdoRows.
@@ -172,7 +172,7 @@ final class PdoArrayCrud
     /**
      * @param array $primaries
      *
-     * @return Criteria
+     * @return \Thor\Database\Criteria
      */
     private function primaryArrayToCriteria(array $primaries): Criteria
     {
@@ -196,7 +196,7 @@ final class PdoArrayCrud
     }
 
     /**
-     * @param Criteria $criteria
+     * @param \Thor\Database\Criteria $criteria
      *
      * @return array
      */

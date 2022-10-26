@@ -10,6 +10,7 @@ namespace Thor\Database\PdoTable;
 
 use Exception;
 use TypeError;
+use Thor\Database\Criteria;
 use JetBrains\PhpStorm\Pure;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\PdoExtension\PdoArrayCrud;
@@ -20,7 +21,7 @@ use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRows.
  *
- * @template T of PdoInterface
+ * @template T of PdoRowInterface
  * @package  Thor\Database\PdoTable
  */
 final class CrudHelper implements CrudInterface

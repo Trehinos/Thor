@@ -2,6 +2,8 @@
 
 namespace Thor\Database\PdoTable;
 
+use Thor\Database\Criteria;
+
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRows.
  *

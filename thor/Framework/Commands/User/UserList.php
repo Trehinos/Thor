@@ -2,11 +2,11 @@
 
 namespace Thor\Framework\Commands\User;
 
+use Thor\Process\Command;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
-use Thor\Process\Command;
+use Thor\Database\Criteria;
 use Thor\Framework\Security\DbUser;
-use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Framework\Managers\UserManager;
 use Thor\Database\PdoExtension\PdoRequester;

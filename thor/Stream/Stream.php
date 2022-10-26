@@ -184,7 +184,7 @@ class Stream implements StreamInterface
     }
 
     /**
-     * Creates a new readable Stream on `php://temp` with specified data.
+     * Creates a new readable Stream on `php://temp` with the specified data.
      *
      * @param string $data
      *

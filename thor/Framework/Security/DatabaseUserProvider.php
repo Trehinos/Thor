@@ -2,8 +2,9 @@
 
 namespace Thor\Framework\Security;
 
+use Thor\Database\Criteria;
+use Thor\Database\PdoTable\{CrudHelper};
 use Thor\Security\Identity\ProviderInterface;
-use Thor\Database\PdoTable\{Criteria, CrudHelper};
 
 /**
  * This class provides a way to retrieve a DbUser from DB.

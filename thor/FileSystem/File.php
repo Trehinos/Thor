@@ -23,7 +23,7 @@ class File
      * @param string             $filename
      * @param Stream|string|null $content
      */
-    public function __construct(private string $filename, Stream|string|null $content = null)
+    public function __construct(private readonly string $filename, Stream|string|null $content = null)
     {
         $this->content = match (true) {
             $content instanceof Stream => $content,
@@ -80,6 +80,11 @@ class File
     {
         $this->syncWithDisk = false;
         $this->content->write($data);
+    }
+
+    public function move(int $delta): void
+    {
+
     }
 
     /**
