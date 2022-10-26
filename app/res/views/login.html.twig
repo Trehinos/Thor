@@ -9,38 +9,57 @@
         #menu {
             display: none;
         }
+
         #footer {
             position: fixed;
             width: 100%;
             text-align: center;
             height: 60px;
         }
+
         #content {
             margin: 0;
             padding-top: 64px;
             width: 100%;
         }
+
+        body {
+            background: #333;
+            color: #fff;
+        }
     </style>
 {% endblock %}
 
 {% block body_content %}
-    <div style="width: 400px; margin: auto; text-align: center">
-        <h1 class="mb-4">
-            <i class="fas fa-lg fa-sign-in"></i><br>
-            {{ "users.login.connect"|_({appName}) }}
-        </h1>
-        <form method="post" action="{{ url('check') }}">
-            <div class="form-group">
-                <label for="username">{{ DICT.users.user }}</label>
-                <input type="text" id="username" name="username" class="form-control">
+    <div class="container h-100 position-relative w-100">
+        <div class="position-absolute w-100" style="bottom: 25%; left: 0;">
+            <div class="container rounded border border-success p-4 bg-dark text-white">
+                <div class="row">
+                    <div class="col-md-6 text-start d-flex align-items-center justify-content-center">
+                        <h1 class="text-center">
+                            {{ icon('bolt', 'fad', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;') }}<br>
+                            {{ appName }}
+                        </h1>
+                    </div>
+                    <div class="col-md-6">
+                        <form method="post" action="{{ url('check') }}">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="username">{{ DICT.users.user }}</label>
+                                    <input type="text" id="username" name="username" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="password">{{ DICT.users.password }}</label>
+                                    <input type="password" id="password" name="password" class="form-control">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-success mt-3">
+                                <i class="fas fa-sign-in"></i> {{ DICT.users.connect }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group mt-2">
-                <label for="password">{{ DICT.users.password }}</label>
-                <input type="password" id="password" name="password" class="form-control">
-            </div>
-            <button class="btn btn-outline-primary mt-3">
-                <i class="fas fa-sign-in"></i> {{ DICT.users.connect }}
-            </button>
-        </form>
+        </div>
     </div>
 {% endblock %}

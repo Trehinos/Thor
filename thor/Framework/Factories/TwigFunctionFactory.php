@@ -41,16 +41,16 @@ final class TwigFunctionFactory
                     $muted = $message['muted'] ?? '';
                     $message = $message['message'] ?? '';
                 }
-                [$icon, $color, $bg] = match ($type) {
-                    'info' => ['info-circle', 'text-info', 'bg-light'],
-                    'warning' => ['exclamation-triangle', 'text-warning', 'bg-light'],
-                    'error', 'danger' => ['exclamation-triangle', 'text-danger', 'bg-danger text-light'],
-                    'success', 'ok' => ['check', 'text-success', 'bg-success text-light'],
+                [$icon, $color, $bg, $headerClass] = match ($type) {
+                    'info' => ['info-circle', 'text-dark', '', 'text-dark bg-info'],
+                    'warning' => ['exclamation-triangle', 'text-dark', '', 'text-dark bg-warning'],
+                    'error', 'danger' => ['exclamation-triangle', 'text-danger', 'bg-danger text-light', ''],
+                    'success', 'ok' => ['check', 'text-success', 'bg-success text-light', ''],
                 };
                 return <<<§
                     <div class="toast" role="alert">
-                        <div class="toast-header">
-                            <i class="fas fa-$icon $color fa-fw me-2"></i>
+                        <div class="toast-header $headerClass">
+                            <i class="fas fa-lg fa-$icon $color fa-fw me-2"></i>
                             <strong class="me-auto">$title</strong>
                             <small class="text-muted">$muted</small>
                             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
