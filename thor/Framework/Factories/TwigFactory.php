@@ -89,6 +89,7 @@ final class TwigFactory
         $this->twig->addGlobal('appName', Thor::appName());
         $this->twig->addGlobal('appVendor', Thor::vendor());
         $this->twig->addGlobal('version', Thor::version());
+        $this->twig->addGlobal('env', Thor::getEnv()->value);
         $this->twig->addGlobal('versionName', Thor::versionName());
         $this->twig->addGlobal('_lang', ThorConfiguration::get()->lang());
         $this->twig->addGlobal('DICT', $server->getLanguage());
@@ -114,6 +115,5 @@ final class TwigFactory
 
         return $this;
     }
-
 
 }
