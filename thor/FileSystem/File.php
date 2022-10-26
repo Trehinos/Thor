@@ -4,7 +4,7 @@ namespace Thor\FileSystem;
 
 use Thor\Stream\Stream;
 
-// TODO (?)
+// TODO : Add methods to modify the content of the stream.
 
 /**
  *
@@ -26,7 +26,7 @@ class File
     public function __construct(private string $filename, Stream|string|null $content = null)
     {
         $this->content = match (true) {
-            get_class($content) === Stream::class => $content,
+            $content instanceof Stream => $content,
             default => Stream::create($content ?? '')
         };
     }

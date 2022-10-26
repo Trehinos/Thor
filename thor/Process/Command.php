@@ -148,6 +148,9 @@ abstract class Command implements Executable
 
     /**
      * @throws CommandError
+     *
+     * TODO : refactor in CommandParser
+     * @see CommandParser
      */
     #[ArrayShape(['command' => "mixed|null|string", 'arguments' => "array", 'options' => "array"])]
     public function parse(array $commandLineArguments): array
