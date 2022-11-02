@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Database\PdoTable\TableType;
+namespace Thor\Database\Definition\TableType;
 
 /**
  *
@@ -9,15 +9,16 @@ namespace Thor\Database\PdoTable\TableType;
 /**
  *
  */
-class SqlType extends BaseType
+class StringType extends BaseType
 {
 
     /**
+     * @param int    $size
      * @param string $sqlType
      */
-    public function __construct(string $sqlType = 'VARCHAR')
+    public function __construct(public readonly int $size = 255, string $sqlType = 'VARCHAR')
     {
-        parent::__construct("$sqlType", 'string');
+        parent::__construct("$sqlType({$this->size})", 'string');
     }
 
     /**
@@ -27,7 +28,7 @@ class SqlType extends BaseType
      */
     public function toPhpValue(mixed $sqlValue): string
     {
-        return "$sqlValue";
+        return $sqlValue;
     }
 
     /**
@@ -39,5 +40,4 @@ class SqlType extends BaseType
     {
         return "$phpValue";
     }
-
 }

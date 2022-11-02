@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Database\PdoTable\TableType;
+namespace Thor\Database\Definition\TableType;
 
 /**
  *

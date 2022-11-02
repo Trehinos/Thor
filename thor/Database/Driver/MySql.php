@@ -1,12 +1,12 @@
 <?php
 
-namespace Thor\Database\PdoTable\Driver;
+namespace Thor\Database\Driver;
 
 use ReflectionException;
-use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
-use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
+use Thor\Database\Definition\Attributes\C;
+use Thor\Database\Definition\Attributes\I;
+use Thor\Database\Definition\Attributes\T;
 use Thor\Database\PdoTable\PdoTable\PdoAttributesReader;
-use Thor\Database\PdoTable\PdoTable\Attributes\PdoColumn;
 
 /**
  *
@@ -32,14 +32,14 @@ class MySql implements DriverInterface
         $columns = implode(
             $separator,
             array_map(
-                fn(PdoColumn $column) => $this->addColumn($column, $autoKey),
+                fn(C $column) => $this->addColumn($column, $autoKey),
                 $attrs->getAttributes()['columns']
             )
         );
         $indexes = implode(
             $separator,
             array_map(
-                fn(PdoIndex $index) => $this->addIndex($index),
+                fn(I $index) => $this->addIndex($index),
                 $attrs->getAttributes()['indexes']
             )
         );
@@ -60,12 +60,12 @@ class MySql implements DriverInterface
     }
 
     /**
-     * @param PdoColumn   $column
+     * @param C   $column
      * @param string|null $autoKey
      *
      * @return string
      */
-    public function addColumn(PdoColumn $column, ?string $autoKey = null): string
+    public function addColumn(C $column, ?string $autoKey = null): string
     {
         $nullStr = $column->isNullable() ? '' : ' NOT NULL';
         $defaultStr = ($column->getDefault() === null)
@@ -77,11 +77,11 @@ class MySql implements DriverInterface
     }
 
     /**
-     * @param PdoIndex $index
+     * @param I $index
      *
      * @return string
      */
-    public function addIndex(PdoIndex $index): string
+    public function addIndex(I $index): string
     {
         $unq = $index->isUnique() ? ' UNIQUE' : '';
         $cols = implode(', ', $index->getColumnNames());
@@ -90,12 +90,12 @@ class MySql implements DriverInterface
     }
 
     /**
-     * @param PdoTable    $table
+     * @param T    $table
      * @param string|null $autoKey
      *
      * @return string
      */
-    public function primaryKeys(PdoTable $table, ?string $autoKey = null): string
+    public function primaryKeys(T $table, ?string $autoKey = null): string
     {
         $keys = $table->getPrimaryKeys();
         if (empty($keys)) {
