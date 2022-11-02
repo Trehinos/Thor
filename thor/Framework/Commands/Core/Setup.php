@@ -3,12 +3,14 @@
 namespace Thor\Framework\Commands\Core;
 
 use Exception;
-use Thor\Debug\Logger;
-use Thor\Cli\Console\{Mode, Color};
-use Thor\Process\Command;
-use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, SchemaHelper, Driver\Sqlite};
-use Thor\Framework\{Security\DbUser, Managers\UserManager};
+use Thor\Cli\Console\{Color, Mode};
+use Thor\Database\Driver\MySql;
+use Thor\Database\Driver\Sqlite;
 use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoTable\{CrudHelper, SchemaHelper};
+use Thor\Debug\Logger;
+use Thor\Framework\{Managers\UserManager, Security\DbUser};
+use Thor\Process\Command;
 
 /**
  * @package          Thor/Framework
@@ -29,7 +31,7 @@ final class Setup extends Command
         $driver = match ($driverName = $handler->getDriverName()) {
             'sqlite' => new Sqlite(),
             'mysql' => new MySql(),
-            default => throw new Exception("Unsupported driver '$driverName' for PdoTable...")
+            default => throw new Exception("Unsupported driver '$driverName' for T...")
         };
         Logger::write("SETUP : Creating table user...");
         $schema = new SchemaHelper($requester, $driver, DbUser::class);

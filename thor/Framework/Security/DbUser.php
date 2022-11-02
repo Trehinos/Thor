@@ -11,7 +11,9 @@ use Thor\Database\PdoTable\PdoTable\Attributes\{PdoColumn};
 use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
 use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
 use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
-use Thor\Database\PdoTable\TableType\{ArrayType, StringType, IntegerType};
+use Thor\Database\Definition\TableType\ArrayType;
+use Thor\Database\Definition\TableType\IntegerType;
+use Thor\Database\Definition\TableType\StringType;
 
 /**
  * This extension of BaseUser gives a way to have an Identity stored in DB.
@@ -30,26 +32,26 @@ use Thor\Database\PdoTable\TableType\{ArrayType, StringType, IntegerType};
 class DbUser extends BaseUser implements PdoRowInterface, HasPublicId
 {
 
-    
+
     use PdoRowTrait {
         PdoRowTrait::__construct as private traitConstructor;
     }
     use HasPublicIdTrait;
 
     /**
-     * @param int|null    $id
-     * @param string      $username
-     * @param string      $clearPassword
-     * @param array       $permissions
-     * @param array       $parameters
+     * @param int|null $id
+     * @param string $username
+     * @param string $clearPassword
+     * @param array $permissions
+     * @param array $parameters
      * @param string|null $public_id
      */
     public function __construct(
-        ?int $id = null,
-        string $username = '',
-        string $clearPassword = '',
-        array $permissions = [],
-        array $parameters = [],
+        ?int    $id = null,
+        string  $username = '',
+        string  $clearPassword = '',
+        array   $permissions = [],
+        array   $parameters = [],
         ?string $public_id = null
     ) {
         parent::__construct($username, $clearPassword, $permissions, $parameters);

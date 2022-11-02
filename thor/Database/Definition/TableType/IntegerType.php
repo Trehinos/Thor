@@ -2,13 +2,6 @@
 
 namespace Thor\Database\Definition\TableType;
 
-/**
- *
- */
-
-/**
- *
- */
 class IntegerType extends BaseType
 {
 

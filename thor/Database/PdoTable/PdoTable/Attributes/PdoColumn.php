@@ -3,8 +3,7 @@
 namespace Thor\Database\PdoTable\PdoTable\Attributes;
 
 use Attribute;
-use Thor\Database\PdoTable\TableType\TableTypeInterface;
-
+use Thor\Database\Definition\TableType\TypeInterface;
 /**
  * Describe a PdoColumn attribute. Use this attribute on a PdoRowInterface implementor
  * to specify a column from which read and which to write data in the database.
@@ -18,14 +17,14 @@ class PdoColumn
 {
 
     /**
-     * @param string             $name
-     * @param TableTypeInterface $type
-     * @param bool               $nullable
-     * @param mixed|null         $defaultValue
+     * @param string $name
+     * @param TypeInterface $type
+     * @param bool $nullable
+     * @param mixed|null $defaultValue
      */
     public function __construct(
         private string $name,
-        private TableTypeInterface $type,
+        private TypeInterface $type,
         private bool $nullable = true,
         private mixed $defaultValue = null,
     ) {
