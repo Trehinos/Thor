@@ -25,7 +25,7 @@ final class Adn
     {
         return new self(
             array_map(
-                fn() => Nucleus::cases()[rand(3)],
+                fn() => Nucleus::cases()[random_int(0, 3)],
                 array_fill(0, $size, null)
             )
         );
@@ -47,7 +47,7 @@ final class Adn
             array_map(
                 fn (string $char) => match ($char) {
                     'A', 'a' => Nucleus::A,
-                    'C', 'C' => Nucleus::C,
+                    'C', 'c' => Nucleus::C,
                     'G', 'g' => Nucleus::G,
                     'T', 't' => Nucleus::T,
                     default => throw new Exception("Invalid character $char in ADN sequence.")
