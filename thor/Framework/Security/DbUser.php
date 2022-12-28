@@ -2,6 +2,8 @@
 
 namespace Thor\Framework\Security;
 
+use Thor\Database\PdoTable\HasId;
+use Thor\Database\PdoTable\HasIdTrait;
 use Thor\Security\PasswordHasher;
 use Thor\Security\Identity\BaseUser;
 use Thor\Database\PdoTable\HasPublicId;
@@ -12,7 +14,6 @@ use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
 use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
 use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
 use Thor\Database\Definition\TableType\ArrayType;
-use Thor\Database\Definition\TableType\IntegerType;
 use Thor\Database\Definition\TableType\StringType;
 
 /**
@@ -23,20 +24,19 @@ use Thor\Database\Definition\TableType\StringType;
  * @license MIT
  */
 #[PdoTable('user', ['id'], 'id')]
-#[PdoColumn('id', new IntegerType(), false)]
 #[PdoColumn('username', new StringType(), false)]
 #[PdoColumn('hash', new StringType(), false)]
 #[PdoColumn('permissions', new ArrayType(4096), false)]
 #[PdoColumn('parameters', new ArrayType(4096), false)]
 #[PdoIndex(['username'], true)]
-class DbUser extends BaseUser implements PdoRowInterface, HasPublicId
+class DbUser extends BaseUser implements PdoRowInterface, HasPublicId, HasId
 {
 
-
+    use HasIdTrait;
+    use HasPublicIdTrait;
     use PdoRowTrait {
         PdoRowTrait::__construct as private traitConstructor;
     }
-    use HasPublicIdTrait;
 
     /**
      * @param int|null $id

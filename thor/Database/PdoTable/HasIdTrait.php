@@ -3,7 +3,9 @@
 namespace Thor\Database\PdoTable;
 
 use Exception;
-use Thor\Database\PdoTable\{TableType\IntegerType, PdoTable\Attributes\PdoIndex, PdoTable\Attributes\PdoColumn};
+use Thor\Database\Definition\TableType\IntegerType;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
+use Thor\Database\PdoTable\PdoTable\Attributes\PdoColumn;
 
 /**
  * Adds an "id" column to a PdoRowInterface.
