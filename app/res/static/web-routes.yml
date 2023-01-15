@@ -5,3 +5,4 @@ load:
     - Thor\Framework\Actions\Users
     - Thor\Framework\Actions\Permissions
     - Thor\Framework\Actions\Security
+    - Evolution\EvolutionActions
