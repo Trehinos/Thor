@@ -3,6 +3,7 @@ thor-css:
     cache: true
     list:
         - thor/thor-theme.css
+        - evolution/game.css
 thor-js:
     type: js
     cache: true

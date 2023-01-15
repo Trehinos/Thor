@@ -1,0 +1,43 @@
+#game .menu .btn {
+    margin-bottom: 0.25em;
+    width: 100%;
+    color: #999;
+}
+#game .menu .btn .fa-fw {
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+}
+
+#game .info .resource .label {
+    position: absolute;
+    right: 8px;
+    top: 4px;
+    font-size: 0.66em;
+}
+#game .info .resource {
+    position: relative;
+    border: 1px solid #666;
+    border-radius: 3px;
+    padding: 4px;
+    width: 100%;
+    display: block;
+}
+#game .info div.flex-wrap .resource {
+    width: 124px;
+}
+#game .info {
+    background: #444;
+    color: #aaa;
+}
+#game .info > div {
+}
+#game .info .resource .fa-fw {
+    margin-right: 0.125em;
+}
+
+#screen {
+    background: #888;
+    border: 2px solid #444;
+}

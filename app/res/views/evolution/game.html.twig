@@ -1,0 +1,347 @@
+{% extends "thor/pages/base.html.twig" %}
+
+{% block titlebar %}{{ icon('play', 'fas', true) }} Evolution{% endblock %}
+
+{% block toolbar %}
+    Edition
+    <button class="btn btn-sm btn-outline-primary ms-4">
+        Plaine
+    </button>
+    <button class="btn btn-sm btn-outline-primary">
+        Eau
+    </button>
+
+    <button class="btn btn-sm btn-outline-primary ms-4">
+        Ressource
+    </button>
+{% endblock %}
+
+{% block page %}
+    <div id="game" class="row p-2">
+        <div class="menu col-2">
+            <div class="d-flex flex-column" style="">
+                <button class="btn btn-dark">
+                    {{ icon('code-branch', 'far fa-lg', true) }}
+                    Avancement
+                </button>
+                <div class="d-flex">
+                    <button class="btn btn-dark me-1">
+                        {{ icon('map', 'far fa-lg', true) }}
+                        Carte
+                    </button>
+                    <button class="btn btn-dark">
+                        {{ icon('users', 'far fa-lg', true) }}
+                        Peuple
+                    </button>
+                </div>
+                <button class="btn btn-dark">
+                    {{ icon('flag', 'far fa-lg', true) }}
+                    Nation
+                </button>
+                <div class="d-flex">
+                    <button class="btn btn-dark me-1">
+                        {{ icon('th', 'far fa-lg', true) }}
+                        Territoire
+                    </button>
+                    <button class="btn btn-dark">
+                        {{ icon('city', 'far fa-lg', true) }}
+                        Ville
+                    </button>
+                </div>
+                <hr>
+                <div class="d-flex">
+                    <button class="btn btn-dark me-1">
+                        {{ icon('handshake-alt', 'far fa-lg', true) }}
+                        Diplomatie
+                    </button>
+                    <button class="btn btn-dark">
+                        {{ icon('store', 'far fa-lg', true) }}
+                        Commerce
+                    </button>
+                </div>
+                <button class="btn btn-dark">
+                    {{ icon('comments', 'far fa-lg', true) }}
+                    Forum
+                </button>
+                <hr>
+                <button class="btn btn-dark">
+                    {{ icon('list', 'far fa-lg', true) }}
+                    Rang
+                </button>
+                <button class="btn btn-dark">
+                    {{ icon('cogs', 'far fa-lg', true) }}
+                    Options
+                </button>
+            </div>
+        </div>
+        <div class="col-10 border">
+            <div class="info border mb-1 p-2">
+                Nation
+                <div class="d-flex w-100 border p-2 mb-4">
+                    <div class="resource flex" style="color: #9d4">
+                        <span class="label">Nourriture</span>
+                        {{ icon('wheat', fixed=true) }} 400
+                    </div>
+                    <div class="resource" style="color: #b274de">
+                        <span class="label">Culture</span>
+                        {{ icon('books', fixed=true) }} 24
+                    </div>
+                    <div class="resource" style="color: #dc0">
+                        <span class="label">Trésor</span>
+                        {{ icon('coins', fixed=true) }} 7450
+                    </div>
+                    <div class="resource" style="color: #f97">
+                        <span class="label">Combattants</span>
+                        {{ icon('user', fixed=true) }} 24K
+                    </div>
+                    <div class="resource" style="color: #d42">
+                        <span class="label">Production</span>
+                        {{ icon('wrench', fixed=true) }} +44
+                    </div>
+                    <div class="resource" style="color: #e05885">
+                        <span class="label">Santé</span>
+                        {{ icon('heartbeat', fixed=true) }} 122%
+                    </div>
+                </div>
+
+                Peuple
+                <div class="d-flex w-100 border p-2 mb-2">
+                    <div class="resource" style="color: #ddd">
+                        <span class="label">Foi</span>
+                        {{ icon('praying-hands', fixed=true) }} 11
+                    </div>
+                    <div class="resource" style="color: #b274de">
+                        <span class="label">Culture</span>
+                        {{ icon('books', fixed=true) }} 24
+                    </div>
+                    <div class="resource" style="color: #99d">
+                        <span class="label">Technique</span>
+                        {{ icon('tools', fixed=true) }} 0
+                    </div>
+                    <div class="resource" style="color: #0c9">
+                        <span class="label">Science</span>
+                        {{ icon('flask', fixed=true) }} 0
+                    </div>
+                    <div class="resource" style="color: #dc0">
+                        <span class="label">Monnaie</span>
+                        {{ icon('coins', fixed=true) }} Euro
+                    </div>
+                </div>
+                <div class="d-flex w-100 border p-2 mb-4">
+                    <div class="resource" style="color: #fd6">
+                        <span class="label">Richesse</span>
+                        {{ icon('sack', fixed=true) }} 2400
+                    </div>
+                    <div class="resource" style="color: #efa10d">
+                        <span class="label">Bohneur</span>
+                        {{ icon('smile', fixed=true) }} 100%
+                    </div>
+                    <div class="resource" style="color: #49c">
+                        <span class="label">Electricité</span>
+                        {{ icon('battery-bolt', fixed=true) }} 24
+                    </div>
+                    <div class="resource" style="color: #ccc">
+                        <span class="label">Villes</span>
+                        {{ icon('city', fixed=true) }} 4
+                    </div>
+                </div>
+
+                <hr>
+
+                Ville
+                <div class="d-flex w-100 border p-2 mb-2">
+                    <div class="resource" style="color: #fd6">
+                        <span class="label">Richesse</span>
+                        {{ icon('sack', fixed=true) }} 415
+                    </div>
+                    <div class="resource flex" style="color: #9d4">
+                        <span class="label">Nourriture</span>
+                        {{ icon('wheat', fixed=true) }} 400
+                    </div>
+                    <div class="d-flex border p-1 flex-grow-1" style="min-width: 75%;">
+                        <div class="resource" style="color: #9f9">
+                            <span class="label">Population</span>
+                            {{ icon('user', fixed=true) }} 3214<small>/4847</small>
+                        </div>
+                        <div class="resource" style="color: #ff9">
+                            <span class="label">Travailleurs</span>
+                            {{ icon('user', fixed=true) }} 455<small>/1240</small>
+                        </div>
+                        <div class="resource" style="color: #fd6">
+                            <span class="label">Constructeurs</span>
+                            {{ icon('user', fixed=true) }} 225<small>/428</small>
+                        </div>
+                        <div class="resource" style="color: #f97">
+                            <span class="label">Combattants</span>
+                            {{ icon('user', fixed=true) }} 0<small>/400</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex w-100 border p-2 mb-2">
+                    <div class="resource" style="color: #d42">
+                        <span class="label">Production</span>
+                        {{ icon('wrench', fixed=true) }} +44
+                    </div>
+                    <div class="resource" style="color: #e05885">
+                        <span class="label">Santé</span>
+                        {{ icon('heartbeat', fixed=true) }} 122%
+                    </div>
+                    <div class="resource" style="color: #efa10d">
+                        <span class="label">Bohneur</span>
+                        {{ icon('smile', fixed=true) }} 100%
+                    </div>
+                    <div class="resource" style="color: #49c">
+                        <span class="label">Electricité</span>
+                        {{ icon('battery-bolt', fixed=true) }} 24
+                    </div>
+                </div>
+
+                Ressources
+                <div class="d-flex w-100 border p-2 mb-2 flex-wrap">
+                    <div class="resource" style="color: #999">
+                        <span class="label">Bois</span>
+                        {{ icon('tree', fixed=true) }} 963
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Pierre</span>
+                        {{ icon('mountains', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Cuivre</span>
+                        {{ icon('kaaba', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Fer</span>
+                        {{ icon('kaaba', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Or</span>
+                        {{ icon('kaaba', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Acier</span>
+                        {{ icon('kaaba', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Eau</span>
+                        {{ icon('tint', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Bétail</span>
+                        {{ icon('cow', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Gibier</span>
+                        {{ icon('deer', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Cheval</span>
+                        {{ icon('horse', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Coton</span>
+                        {{ icon('tshirt', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Salpètre</span>
+                        {{ icon('kaaba', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Argent</span>
+                        {{ icon('kaaba', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Pierre précieuse</span>
+                        {{ icon('gem', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Charbon</span>
+                        {{ icon('kaaba', fixed=true) }}
+                    </div>
+                </div>
+
+                Matériaux
+                <div class="d-flex w-100 border p-2 mb-2 flex-wrap">
+                    <div class="resource" style="color: #999">
+                        <span class="label">Cuir</span>
+                        {{ icon('scroll', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Planche</span>
+                        {{ icon('horizontal-rule', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Tige</span>
+                        {{ icon('line-columns', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Poutre</span>
+                        {{ icon('grip-lines', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Fronde</span>
+                        {{ icon('tools', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Hache</span>
+                        {{ icon('tools', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Pioche</span>
+                        {{ icon('tools', fixed=true) }}
+                    </div>
+                    <div class="resource" style="color: #999">
+                        <span class="label">Houe</span>
+                        {{ icon('tools', fixed=true) }}
+                    </div>
+                </div>
+            </div>
+            <div id="screen" class="" style="height: 792px;">
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        function random(min, max) {
+            return Math.floor(
+                (max * Math.random()) + min + 1
+            );
+        }
+
+        function tileType(name, color) {
+            return {name, color};
+        }
+
+        const TYPE_PLAIN = tileType("Plaine", "#cfc");
+        const TYPE_WATER = tileType("Eau", "#acf");
+
+        function $tile(x, y, type) {
+            return $(
+                `<div class="tile" data-pos-x="${x}" data-pos-y="${y}"
+    style="position: absolute; border: 1px solid #ccc; background: ${type.color};"
+    ></div>`
+            );
+        }
+
+        function createTiles(startX, startY, sizeX, sizeY) {
+            let tiles = [];
+            for (let y = startY; y < startY + sizeY; y++) {
+                for (let x = startX; x < startX + sizeX; x++) {
+                    tiles.push($tile(x, y, TYPE_PLAIN));
+                }
+            }
+        }
+
+        function showGrid(tiles) {
+            for (const tile of tiles) {
+                tile.css("left", "");
+                tile.css("top", "");
+            }
+        }
+
+    </script>
+
+{% endblock %}

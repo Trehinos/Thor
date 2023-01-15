@@ -2,6 +2,10 @@
     icon: home
     route: index-page
     key: CTRL+F2
+-   label: Jeu
+    icon: play
+    route: game
+    key: F5
 -   label: Configurations
     icon: cogs
     group:
