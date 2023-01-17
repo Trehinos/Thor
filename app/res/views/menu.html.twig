@@ -93,9 +93,9 @@
 
     function menuClick($elem) {
         let url = $elem.data("url");
-        unselect($("#menu ul li a"));
         loadPage(url, null, (response) => {
             $elem.addClass("active");
+            unselect($("#menu ul li a"));
             if ($elem.hasClass("dropdown-item")) {
                 $elem.parent().parent().parent().find("a.dropdown-toggle").addClass("active");
             }
