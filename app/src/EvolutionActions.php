@@ -2,6 +2,7 @@
 
 namespace Evolution;
 
+use Evolution\Common\Resources;
 use Thor\Http\Response\Response;
 use Thor\Http\Routing\Route;
 use Thor\Web\WebController;
@@ -12,6 +13,7 @@ class EvolutionActions extends WebController
     #[Route('game', '/evolution/game')]
     public function game(): Response
     {
+
         return $this->twigResponse(
             'evolution/game.html.twig',
             []
@@ -21,6 +23,8 @@ class EvolutionActions extends WebController
     #[Route('game', '/evolution/game/city/$city', parameters: ['city' => '.+'])]
     public function city(string $city): Response
     {
+        dump(Resources::allResources());
+
         return $this->twigResponse(
             'evolution/game.html.twig',
             []

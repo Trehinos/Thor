@@ -76,7 +76,7 @@ final class Globals
      *
      * @example Globals::path('{VAR}foo/bar.baz') === realpath(Globals::VAR_DIR) . 'foo/bar.baz'
      *
-     * @see     Strings::interpolate()
+     * @uses     Strings::interpolate()
      *
      */
     public static function path(string $pathString): string

@@ -21,7 +21,6 @@ enum Env: string
      */
     case DEBUG = 'DEBUG';
 
-
     /**
      * Production env. Errors are logged, errors are silenced.
      */
