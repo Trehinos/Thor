@@ -3,8 +3,10 @@
 namespace Evolution\Common;
 
 use Evolution\DataModel\City\City;
-use Evolution\DataModel\Nation;
-use Evolution\DataModel\Player;
+use Evolution\DataModel\Player\Advance;
+use Evolution\DataModel\Player\Nation;
+use Evolution\DataModel\Player\Player;
+use Evolution\DataModel\Player\Unlock;
 use Evolution\DataModel\Resource\Count;
 use Evolution\DataModel\Resource\Recipe;
 
@@ -34,6 +36,22 @@ final class StaticFactory
         ];
     }
 
+    public static function basicTree(): array
+    {
+        return self::$data['basic_tree'] ??= [
+            'settlement' => new Advance(
+                'Sédentarisation',
+                'Votre peuple s\'installe sur ses propres terres et apprend à prospérer.',
+                Resources::peopleCosts(),
+                [
+                    new Unlock(Resources::get('wood')),
+                    new Unlock(Resources::get('stone')),
+                    new Unlock(Resources::get('food')),
+                ]
+            )
+        ];
+    }
+
     /**
      * @return array<string, Recipe>
      */
@@ -47,6 +65,10 @@ final class StaticFactory
             'leather'    => self::createRecipe(
                 Resources::count('leather', 1),
                 Resources::counts(['skin' => 2])
+            ),
+            'wood_plank' => self::createRecipe(
+                Resources::count('wood_plank', 1),
+                Resources::counts(['wood' => 6])
             ),
             'wood_plate' => self::createRecipe(
                 Resources::count('wood_plate', 1),

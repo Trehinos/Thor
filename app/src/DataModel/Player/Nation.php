@@ -1,6 +1,6 @@
 <?php
 
-namespace Evolution\DataModel;
+namespace Evolution\DataModel\Player;
 
 use Evolution\DataModel\City\City;
 
