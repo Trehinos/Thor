@@ -10,21 +10,18 @@ final class Count
     public function __construct(
         public readonly Resource $resource,
         private float            $count = 0.0,
-        public readonly ?float   $max = null,
-        protected ?Unit          $unit = null,
-    ) {
-        $this->unit ??= Units::unit();
-    }
+        public readonly ?float   $max = null
+    ) {}
 
     public function get(): float|int
     {
-        return $this->unit->digits === 0 ? intval($this->count) : $this->count;
+        return $this->resource->unit->digits === 0 ? intval($this->count) : $this->count;
     }
 
     public function __toString(): string
     {
-        $max = $this->max ? ' / ' . $this->unit->get($this->max) : '';
-        return $this->unit->get($this->count) . $max;
+        $max = $this->max ? ' / ' . $this->resource->unit->get($this->max) : '';
+        return $this->resource->unit->get($this->count) . $max;
     }
 
     public function set(int $v): void
