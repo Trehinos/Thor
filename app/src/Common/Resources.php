@@ -46,6 +46,12 @@ class Resources
         ];
     }
 
+    public static function get(string $name): ?Resource
+    {
+        $all = self::allResources();
+        return $all[$name] ?? null;
+    }
+
     /**
      * @return Resource[]
      */
@@ -57,6 +63,25 @@ class Resources
             'technique' => new Resource('Technique', icon: 'tools', color: '#99d', flags: Resource::PRIMARY),
             'science'   => new Resource('Science', icon: 'flask', color: '#0c9', flags: Resource::PRIMARY),
             'money'     => new Resource('Monaie', icon: 'coins', color: '#ac4', flags: Resource::PRIMARY),
+        ];
+    }
+
+    /**
+     * @return Count[]
+     */
+    public static function peopleCosts(
+        float $faith = 0.0,
+        float $culture = 0.0,
+        float $technique = 0.0,
+        float $science = 0.0,
+        float $money = 0.0
+    ): array {
+        return [
+            'faith'     => self::count('faith', $faith),
+            'culture'   => self::count('culture', $culture),
+            'technique' => self::count('technique', $technique),
+            'science'   => self::count('science', $science),
+            'money'     => self::count('money', $money),
         ];
     }
 
@@ -97,9 +122,10 @@ class Resources
     public static function materials(): array
     {
         return self::$data['materials'] ??= [
-            'wood_plate' => new Resource('Planche', null, 'horizontal-rule', '#aaa', Resource::PRODUCT),
-            'wood_rod'   => new Resource('Tige', null, 'line-columns', '#aaa', Resource::PRODUCT),
-            'wood_beam'  => new Resource('Poutre', null, 'grip-lines', '#aaa', Resource::PRODUCT),
+            'wood_plank' => new Resource('Planche en bois', null, 'horizontal-rule', '#aaa', Resource::PRODUCT),
+            'wood_plate' => new Resource('Plaque de bois', null, 'square', '#aaa', Resource::PRODUCT),
+            'wood_rod'   => new Resource('Tige de bois', null, 'line-columns', '#aaa', Resource::PRODUCT),
+            'wood_beam'  => new Resource('Poutre de bois', null, 'grip-lines', '#aaa', Resource::PRODUCT),
             'skin'       => new Resource('Peau', Units::weight(), 'scroll', '#aaa', Resource::PRODUCT),
             'leather'    => new Resource('Cuir', null, 'scroll', '#aaa', Resource::PRODUCT),
         ];
