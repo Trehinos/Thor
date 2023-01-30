@@ -104,7 +104,7 @@ class PdoRequester
         return $this->handler;
     }
 
-    static function in(array $elements) : string
+    public static function in(array $elements) : string
     {
         return '(' . implode(',', array_fill(0, count($elements), '?')) . ')';
     }
