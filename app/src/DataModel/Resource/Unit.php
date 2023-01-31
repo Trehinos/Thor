@@ -17,15 +17,23 @@ class Unit
         $unitIndex = 0;
 
         if ($this->multiple > 0) {
-            $value = $value % $this->multiple;
-            $unitIndex = intdiv($value, $this->multiple);
+            while ($value >= $this->multiple && $unitIndex < count($this->suite)) {
+                $value = $value / $this->multiple;
+                $unitIndex++;
+            }
         }
-        $unit = $this->suite[min(count($this->suite) - 1, $unitIndex)];
+        $unit = $this->suite[$unitIndex];
         if (count($this->suite) === 0) {
             $unit = $this->name;
         }
 
-        return round($value, $this->digits) . $unit;
+        if (abs($value) > 1) {
+            $digits = $this->digits - strlen(intval($value));
+        } else {
+            $digits = $this->digits;
+        }
+
+        return number_format($value, $digits) . $unit;
     }
 
 }
