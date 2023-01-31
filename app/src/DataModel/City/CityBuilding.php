@@ -12,7 +12,7 @@ class CityBuilding
         public readonly Building $building,
         public int               $posX,
         public int               $posY,
-        public int               $built = 0,
+        public float             $built = 0.0,
         public int               $currentWorkers = 0
     ) {
     }

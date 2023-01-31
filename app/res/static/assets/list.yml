@@ -27,3 +27,8 @@ vendors-js:
         - vendors/bootstrap.bundle.min.js
         - vendors/datatables.min.js
         - vendors/dt-langs/fr.js
+game:
+    type: js
+    cache: true
+    list:
+        - evolution/game.js

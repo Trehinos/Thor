@@ -26,11 +26,11 @@ class JsonType extends BaseType
     }
 
     /**
-     * @param mixed $sqlValue
+     * @param string $sqlValue
      *
      * @return mixed
      */
-    public function toPhpValue(mixed $sqlValue): array
+    public function toPhpValue(mixed $sqlValue): mixed
     {
         return json_decode($sqlValue, $this->associative);
     }

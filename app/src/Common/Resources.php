@@ -62,7 +62,7 @@ class Resources
             'culture'   => new Resource('Culture', icon: 'books', color: '#b7d', flags: Resource::PRIMARY),
             'technique' => new Resource('Technique', icon: 'tools', color: '#99d', flags: Resource::PRIMARY),
             'science'   => new Resource('Science', icon: 'flask', color: '#0c9', flags: Resource::PRIMARY),
-            'money'     => new Resource('Monaie', icon: 'coins', color: '#ac4', flags: Resource::PRIMARY),
+            'money'     => new Resource('Monaie', icon: 'coins', color: '#fc4', flags: Resource::PRIMARY),
         ];
     }
 
@@ -92,11 +92,11 @@ class Resources
     {
         return self::$data['city'] ??= [
             'food'        => new Resource('Nourriture', icon: 'wheat', color: '#ac4', flags: Resource::PRIMARY),
-            'wealth'      => new Resource('Richesse', icon: 'wheat', color: '#ac4', flags: Resource::PRIMARY),
-            'production'  => new Resource('Production', icon: 'books', color: '#9d4', flags: Resource::PRIMARY),
-            'health'      => new Resource('Santé', icon: 'wheat', color: '#ac4', flags: Resource::PRIMARY),
-            'happiness'   => new Resource('Bohneur', icon: 'wheat', color: '#ac4', flags: Resource::PRIMARY),
-            'electricity' => new Resource('Electricité', icon: 'wheat', color: '#ac4', flags: Resource::PRIMARY),
+            'wealth'      => new Resource('Richesse', icon: 'sack', color: '#cc0', flags: Resource::PRIMARY),
+            'production'  => new Resource('Production', icon: 'tools', color: '#c94', flags: Resource::PRIMARY),
+            'health'      => new Resource('Santé', icon: 'heartbeat', color: '#e56', flags: Resource::PRIMARY),
+            'happiness'   => new Resource('Bohneur', icon: 'smile', color: '#ff9', flags: Resource::PRIMARY),
+            'electricity' => new Resource('Electricité', icon: 'bolt', color: '#7cc', flags: Resource::PRIMARY),
         ];
     }
 

@@ -1,3 +1,7 @@
+#game  {
+    font-size: 9pt;
+}
+
 #game .menu .btn {
     margin-bottom: 0.25em;
     width: 100%;
@@ -14,11 +18,11 @@
     position: absolute;
     right: 8px;
     top: 4px;
-    font-size: 0.66em;
+    font-size: 0.8em;
 }
 #game .info .resource {
     position: relative;
-    border: 1px solid #666;
+    border: 1px solid #333;
     border-radius: 3px;
     padding: 4px;
     width: 100%;
