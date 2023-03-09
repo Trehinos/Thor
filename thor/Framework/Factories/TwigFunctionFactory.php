@@ -46,6 +46,7 @@ final class TwigFunctionFactory
                     'warning' => ['exclamation-triangle', 'text-dark', '', 'text-dark bg-warning'],
                     'error', 'danger' => ['exclamation-triangle', 'text-danger', 'bg-danger text-light', ''],
                     'success', 'ok' => ['check', 'text-success', 'bg-success text-light', ''],
+                    'default' => ['comment', 'text-dark', 'text-dark', 'bg-light text-dark'],
                 };
                 return <<<§
                     <div class="toast" role="alert">

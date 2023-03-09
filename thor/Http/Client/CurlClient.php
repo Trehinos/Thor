@@ -8,7 +8,8 @@ use Thor\Http\{Response\Response,
     Request\HttpMethod,
     Response\HttpStatus,
     Request\RequestInterface,
-    Response\ResponseInterface};
+    Response\ResponseInterface
+};
 
 /**
  * Provides an implementation of ClientInterface to send requests with Curl.
@@ -89,7 +90,11 @@ final class CurlClient implements ClientInterface
             },
         ]);
         if ($this->preparedRequest->getMethod() !== HttpMethod::GET) {
-            curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->preparedRequest->getBody()->getContents());
+            curl_setopt(
+                $this->curl,
+                CURLOPT_POSTFIELDS,
+                json_decode($this->preparedRequest->getBody()->getContents(), true)
+            );
         }
 
         if (!in_array($request->getMethod(), [HttpMethod::GET, HttpMethod::POST])) {
@@ -111,7 +116,7 @@ final class CurlClient implements ClientInterface
     public static function toHeadersLines(array $headers): array
     {
         return array_map(
-            fn (string $key, array|string $value) => "$key: " . (is_string($value) ? $value : implode(', ', $value)),
+            fn(string $key, array|string $value) => "$key: " . (is_string($value) ? $value : implode(', ', $value)),
             array_keys($headers),
             array_values($headers),
         );

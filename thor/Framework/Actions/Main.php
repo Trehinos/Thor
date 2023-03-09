@@ -40,7 +40,8 @@ final class Main extends WebController
     #[Route('index-page', '/index', HttpMethod::GET)]
     public function indexPage(): Response
     {
-        return $this->twigResponse('thor/pages/index.html.twig');
+        $this->addMessage("Ceci est un message de test", "Message TEST", "default", "Thor V1");
+        return $this->twigResponse('thor/pages/index.html.twig', retrieveMessages: true);
     }
 
     /**

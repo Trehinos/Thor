@@ -67,6 +67,9 @@ class UploadedFile implements UploadedFileInterface
     private static function createUploadedFileFromSpec(array $value): UploadedFile|array
     {
         if (is_array($value['tmp_name'])) {
+            if ($value['tmp_name'][0] === '') {
+                return [];
+            }
             return self::normalizeNestedFileSpec($value);
         }
         return new self(
