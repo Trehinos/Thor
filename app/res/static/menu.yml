@@ -2,6 +2,10 @@
     icon: home
     route: index-page
     key: CTRL+F2
+-   label: Moteur
+    icon: cog
+    route: ngine
+    key: F5
 -   label: Jeu
     icon: play
     route: game

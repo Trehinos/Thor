@@ -1,6 +1,6 @@
 <?php
 
-namespace JuNe\Process;
+namespace June\Process;
 class Engine extends Node {
 
     public function __construct(
@@ -13,7 +13,7 @@ class Engine extends Node {
 
     public function complete(float $delta): void
     {
-
+        $this->init();
     }
 
 }

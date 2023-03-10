@@ -180,5 +180,5 @@ route/list:
     description: 'list all routes in app/res/static/routes.yml'
 
 test:
-    class: App\Test
-    description: '...'
+    class: June\Test
+    description: 'test'

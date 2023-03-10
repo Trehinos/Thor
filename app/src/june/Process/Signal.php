@@ -1,6 +1,6 @@
 <?php
 
-namespace JuNe\Process;
+namespace June\Process;
 class Signal
 {
 

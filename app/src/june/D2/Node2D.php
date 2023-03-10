@@ -1,23 +1,27 @@
 <?php
 
-namespace JuNe\D2;
+namespace June\D2;
 
-use Evolution\june\Process\Node;
-use Evolution\june\Process\Priority;
+use June\Process\Node;
 
 class Node2D extends Node
 {
 
-    public float $x = 0;
-    public float $y = 0;
-
-    public function __construct(string $name, string $description = '', Priority $priority = Priority::AVG)
-    {
-        parent::__construct($name, $description, $priority);
+    public function __construct(
+        string $name,
+        public float $x = 0,
+        public float $y = 0,
+        public float $rotation = 0,
+        public float $scale_x = 1,
+        public float $scale_y = 1
+    ) {
+        parent::__construct($name);
     }
 
-    public function draw(): void
+    public function getRepr(): string
     {
+        $this->rotation %= 360;
+        return "(x=$this->x, y=$this->y, angle={$this->rotation}°, scale=$this->scale_x/$this->scale_y)";
     }
 
 }

@@ -1,7 +1,12 @@
 <?php
 
-namespace JuNe\Process;
+namespace June\Process;
 
-class Event extends Node
+class Event
 {
+
+    public function __construct(
+        public string $data = '',
+    ) {}
+
 }

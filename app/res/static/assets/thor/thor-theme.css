@@ -176,3 +176,15 @@ Thor elements
 ul.fa-ul li .badge {
     vertical-align: middle;
 }
+
+.node {
+    cursor: pointer;
+    user-select: none;
+    border-radius: 8px;
+    padding: 8px;
+    line-height: 1.0em;
+}
+
+.node:hover {
+    background: #111;
+}

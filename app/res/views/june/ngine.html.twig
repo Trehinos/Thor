@@ -1,0 +1,172 @@
+{% extends "thor/pages/base.html.twig" %}
+
+{% block titlebar %}Moteur{% endblock %}
+{% block toolbar %}
+    <button class="btn btn-sm btn-light">
+        {{ icon('plus') }}
+        Ajouter
+    </button>
+{% endblock %}
+
+{% block page %}
+    <div class="row">
+        <div class="col-3">
+            <h3>Noeuds de la scène</h3>
+            <div id="node-list" class="bg-dark text-light border p-2" style="height: 600px; overflow: auto;">
+
+            </div>
+        </div>
+        <div class="col-9">
+            <h3>Scène</h3>
+            <div class="bg-secondary border">
+                <div class="bg-dark" style="width: 800px; height: 600px; overflow: hidden;"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_js %}
+    <script>
+
+        class JNode {
+            static internalNodeId = 1;
+
+            constructor(icon, name, description = "", color = "light", id = null) {
+                this.icon = icon;
+                this.name = name;
+                this.description = description;
+                this.color = color;
+                if (id === null) {
+                    id = "node-" + (JNode.internalNodeId++);
+                }
+                this.id = id;
+            }
+
+            html() {
+                return `<span id="${this.id}" class="node"></span>`;
+            }
+        }
+
+        class TextNode extends JNode {
+            constructor(text, id = null) {
+                super("text", "Text", "Un contrôle qui contient du texte", "light", id);
+                this.text = text;
+            }
+
+            html() {
+                return `<span id="${this.id}" class="node textnode">${this.text}</span>`;
+            }
+        }
+
+        class Progress extends JNode {
+            constructor(percent, id = null) {
+                super("tasks-alt", "Progress", "Affiche une barre de progressin", "light", id);
+                this.set(percent);
+            }
+
+            set(percent) {
+                this.percent = Math.min(100, Math.max(0, percent));
+            }
+
+            html() {
+                return `<div id="${this.id}" class="node progress" role="progressbar">
+                    <div class="progress-bar" style="width: ${this.percent}%"></div>
+                </div>`;
+            }
+        }
+
+        class Spinner extends JNode {
+            constructor(id = null) {
+                super("spinner", "Spinner", "Affiche un cercle d'attente", "light", id);
+            }
+
+            html() {
+                return `<div id="${this.id}" class="node spinner text-center p-4">
+                    <i class="fas fa-spin fa-spinner"></i>
+                </div>`;
+            }
+        }
+
+        class NodeDisplay {
+            constructor(node) {
+                this.node = node;
+            }
+
+            html() {
+                return `<div class="node d-flex">
+                            <i class="fas fa-2x me-2 fa-fw text-${this.node.color} fa-${this.node.icon}"></i>
+                            <div>
+                                ${this.node.name}<br>
+                                <small class="text-muted">${this.node.description}</small>
+                            </div>
+                        </div>`;
+            }
+        }
+
+        class Separator extends NodeDisplay {
+            constructor() {
+                super(null);
+            }
+            html() {
+                return `<hr>`;
+            }
+        }
+
+        $(() => {
+            let nodes = [
+                new JNode("square", "JNode", "Un noeud sans fonctionnalité"),
+                new Separator(),
+                new TextNode(),
+                new Progress(),
+                new Spinner(),
+                new JNode("music", "Audio", "Joue un son"),
+                new JNode("image", "Image", "Affiche une image"),
+                new JNode("play-circle", "Video", "Affiche une vidéo"),
+                new JNode("crop-alt", "Frame", "Affiche une page à partir d'une URL"),
+                new Separator(),
+                new JNode("box-open", "Container", "Contient d'autres noeuds", "info"),
+                new JNode("puzzle-piece", "Section", "Représente une partie d'interface", "info"),
+                new JNode("bars", "Navigation", "Conteneur pour liens et boutons de navigation", "info"),
+                new JNode("layer-group", "Layers", "Contient d'autres noeuds dans différentes couches", "info"),
+                new JNode("window-restore", "Tabs", "Contient d'autres noeuds dans différents onglets", "info"),
+                new JNode("expand", "Separator", "Un élément vide pour espacer les noeuds", "info"),
+                new JNode("arrows-h", "Row", "Divise la vue en ligne", "info"),
+                new JNode("arrows-v", "Column", "Divise la vue en colonne", "info"),
+                new JNode("angle-double-down", "Accordion", "Divise la vue en panneaux ouvrables", "info"),
+                new JNode("file-edit", "Form", "Permet de créer un formulaire", "info"),
+                new Separator(),
+                new JNode("link", "Link", "Lien HTTP", "warning"),
+                new JNode("tag", "Label", "Représente une information textuelle", "warning"),
+                new JNode("edit", "Field", "Représente un champ de saisie", "warning"),
+                new JNode("check-square", "Options", "Représente une sélection parmi plusieurs options", "warning"),
+                new JNode("mouse-pointer", "Button", "Représente un bouton cliquable", "warning"),
+                new Separator(),
+                new JNode("keyboard", "KeyboardEvent", "Représente un évènement du clavier", "success"),
+                new JNode("mouse", "MouseEvent", "Représente un évènement de la souris", "success"),
+                new JNode("clock", "MediaEvent", "Représente un évènement sur un média", "success"),
+                new JNode("window", "UiEvent", "Représente un évènement sur l'interface", "success"),
+                new Separator(),
+                new JNode("database", "DataSource", "Représente une source de données", "danger"),
+                new JNode("server", "AjaxRequest", "Permet une communication avec un serveur", "danger"),
+                new Separator(),
+                new JNode("bell", "Alert", "Affiche une alerte", "primary"),
+                new JNode("address-card", "Card", "Affiche une carte d'informations", "primary"),
+                new JNode("list", "Menu", "Permet d'afficher un menu interactif", "primary"),
+                new JNode("map-marker", "Map", "Affiche une carte géographique", "primary"),
+                new JNode("images", "Carousel", "Affiche une galerie paramétrable", "primary"),
+            ];
+            let html = "";
+            for(const node of nodes) {
+                let nd;
+                if (node instanceof JNode) {
+                    nd = new NodeDisplay(node);
+                } else {
+                    nd = node;
+                }
+
+                html += nd.html();
+            }
+            $("#node-list").html(html);
+        });
+    </script>
+{% endblock %}

@@ -1,6 +1,7 @@
 <?php
 
-namespace JuNe\Process;
+namespace June\Process;
+
 use Thor\Tools\Strings;
 
 class Node
@@ -9,7 +10,7 @@ class Node
     /**
      * @var Node[]
      */
-    private array $children;
+    private array $children = [];
 
     private ?Node $owner = null;
 
@@ -17,6 +18,7 @@ class Node
      * @param string $name
      * @param string $description
      * @param Priority $priority
+     * @param bool $enabled
      */
     public function __construct(
         public string $name,
@@ -26,7 +28,24 @@ class Node
     ) {
     }
 
-    final public function getOwner(): Node
+    public function getRepr(): string
+    {
+        return $this->description;
+    }
+
+    public function getDebug(int $level = 0): string
+    {
+        $r = $this->getRepr();
+        $spaces = str_pad('', $level * 3, ' ');
+        $type = basename(str_replace('\\', '/', static::class));
+        $output = "{$spaces}• [$type:$this->name:$r]\n";
+        foreach ($this->getChildren() as $child) {
+            $output .= $child->getDebug($level + 1);
+        }
+        return $output;
+    }
+
+    final public function getOwner(): ?Node
     {
         return $this->owner;
     }
@@ -75,10 +94,21 @@ class Node
      */
     final public function getChildren(): array
     {
-        return array_reduce(
-            $this->children,
-            fn($carry, $item) => $carry === null ? $item : array_merge($carry, $item)
-        );
+        $children = [];
+        krsort($this->children);
+        foreach ($this->children as $p => $c) {
+            foreach ($c as $child) {
+                $children[] = $child;
+            }
+        }
+
+        return $children;
+    }
+
+    final public function getPath(): string
+    {
+        $ownerPath = ($this->getOwner()?->getPath() ?? '') . '/';
+        return "$ownerPath/$this->name";
     }
 
     public function enter(): void
@@ -87,15 +117,6 @@ class Node
 
     public function leave(): void
     {
-    }
-
-    public function input(mixed $instr = null): void
-    {
-    }
-
-    public function output(): mixed
-    {
-        return null;
     }
 
     /**
@@ -131,6 +152,52 @@ class Node
 
     public function end(): void
     {
+    }
+
+    final public function init(): void
+    {
+        foreach ($this->getChildren() as $child) {
+            $child->init();
+        }
+        $this->ready();
+    }
+
+    /**
+     * Called AFTER all children has been init()
+     *
+     * @return void
+     */
+    public function ready(): void
+    {
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return bool true if disptach() MUST continue
+     */
+    final public function dispatch(Event $event): bool
+    {
+        $done = !$this->event($event);
+        foreach ($this->getChildren() as $child) {
+            if ($done) {
+                break;
+            }
+            $done = !$child->dispatch($event);
+        }
+        return !$done;
+    }
+
+    /**
+     * Called when an event has been dispatched on this Node's owner.
+     *
+     * @param Event $event
+     *
+     * @return bool
+     */
+    public function event(Event $event): bool
+    {
+        return true;
     }
 
 }
