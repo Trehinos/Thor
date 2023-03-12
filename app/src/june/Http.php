@@ -15,4 +15,11 @@ final class Http extends WebController
         return $this->twigResponse('june/ngine.html.twig');
     }
 
+
+    #[Route('june-page', '/june')]
+    public function june(): Response
+    {
+        return $this->twigResponse('june/ngine.html.twig');
+    }
+
 }

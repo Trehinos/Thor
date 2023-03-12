@@ -32,3 +32,17 @@ game:
     cache: true
     list:
         - evolution/game.js
+june-css:
+    type: css
+    cache: true
+    list:
+        - june/theme.css
+        - evolution/game.css
+june-js:
+    type: js
+    cache: true
+    list:
+        - thor/thor.general.js
+        - thor/thor.modal.js
+        - thor/thor.toast.js
+        - thor/thor.keys.js

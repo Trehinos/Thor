@@ -1,0 +1,13 @@
+{% extends "thor/base.html.twig" %}
+
+{% block head_title %}{{ appName }}{% endblock %}
+
+{% block body_js %}
+    {{ parent() }}
+    <script defer>
+        $(() => {
+            let menuItem = "{{ menuItem ? menuItem : 'index-page' }}"
+            menuClick($(`#btn-${menuItem}`));
+        });
+    </script>
+{% endblock %}

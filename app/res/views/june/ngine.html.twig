@@ -1,4 +1,4 @@
-{% extends "thor/pages/base.html.twig" %}
+{% extends "june/page-base.html.twig" %}
 
 {% block titlebar %}Moteur{% endblock %}
 {% block toolbar %}
@@ -9,17 +9,19 @@
 {% endblock %}
 
 {% block page %}
-    <div class="row">
-        <div class="col-3">
-            <h3>Noeuds de la scène</h3>
-            <div id="node-list" class="bg-dark text-light border p-2" style="height: 600px; overflow: auto;">
+    <div class="row" style="height: 100%">
+        <div class="col-3 bg-primary" style="height: 100%; overflow: auto">
+            <h3 style="background: #ccc; position: sticky; top: 0;">Noeuds de la scène</h3>
+            <div class="d-flex overflow-auto">
+                <div id="node-list" class="bg-dark text-light border p-2">
 
+                </div>
             </div>
         </div>
         <div class="col-9">
             <h3>Scène</h3>
             <div class="bg-secondary border">
-                <div class="bg-dark" style="width: 800px; height: 600px; overflow: hidden;"></div>
+                <div class="bg-dark" style="width: 800px; height: 1px; overflow: hidden;"></div>
             </div>
         </div>
     </div>

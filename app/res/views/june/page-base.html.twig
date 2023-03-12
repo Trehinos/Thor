@@ -1,0 +1,16 @@
+<div class="toast-container position-absolute bottom-0 end-0 align-items-end"
+     style="max-height: 100%; overflow: auto; padding: 144px 16px 96px 16px;"
+>
+    {% for message in _messages %}
+        {{ toast(message) }}
+    {% endfor %}
+</div>
+<div id="titlebar" class="fixed-top" style="top: 56px">{% block titlebar %}{% endblock %}</div>
+<div id="toolbar" class="fixed-top" style="top: 80px;">{% block toolbar %}{% endblock %}</div>
+<div id="page" style="height: 100%; overflow: auto;">{% block page %}{% endblock %}</div>
+{% block page_js %}{% endblock %}
+<script>
+    $(() => {
+        initToasts();
+    });
+</script>

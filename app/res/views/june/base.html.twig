@@ -1,0 +1,118 @@
+{% extends "base.html.twig" %}
+
+{% block head_css %}
+    {{ asset('june-css' ) }}
+{% endblock %}
+
+{% block body_html %}
+    <nav id="menu" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        {% block menu %}
+            <div class="container-fluid">
+                <span id="title" class="navbar-brand" style="color: #bbb;">
+                    {{ icon('bolt', 'fad', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;') }}
+                    <span style="color: #fa4">{{ appName|upper }}</span>
+                </span>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-navbar">
+                    {{ icon('list-alt') }}
+                </button>
+                <div class="collapse navbar-collapse" id="menu-navbar">
+                    {{ render('menu') }}
+                    <ul class="navbar-nav me-0">
+                        <li class="nav-item dropdown"
+                            title="Revoir les notifications"
+                        >
+                            <a class="nav-link" href="#"
+                               onclick="showToasts();" id="btn-show-toasts"
+                            >
+                                <i class="fas fa-comment-alt-exclamation {% if _messages|length > 0 %}text-danger{% endif %} fa-lg"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                <i class="fas fa-user fa-lg"></i>
+                                {{ server.security.currentIdentity.identifier }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item link-danger" href="{{ url('logout') }}">
+                                        {{ icon('sign-out', 'fas') }}
+                                        {{ DICT.menu.logout }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                       onclick="Modal.load('{{ url('user-parameters-form', {public_id: server.security.currentIdentity.publicId}) }}');"
+                                    >
+                                        {{ icon('user', 'fas') }}
+                                        {{ DICT.menu.profile }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                       onclick="Modal.load('{{ url('users-change-password-form', {public_id: server.security.currentIdentity.publicId}) }}');"
+                                    >
+                                        {{ icon('lock', 'fas') }}
+                                        {{ DICT.users.change_password }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endblock %}
+    </nav>
+    <div id="content">{% block body_content %}{% endblock %}</div>
+    <div id="footer" class="pt-2">
+        <div>
+            {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;')|raw }}
+            {{ appVendor }}/{{ appName }} {{ versionName|raw }} [{{ version }}]
+        </div>
+        <div>{{ icon('copyright', 'far fa-lg', true)|raw }} 2022 {{ appVendor }}</div>
+        {% block footer %}
+            <div class="mt-1 pt-1 border-top border-secondary" style="font-size: 0.9em;">
+                {{ icon('info-circle', 'fas fa-lg', true)|raw }}
+                <button
+                        id="btn-about"
+                        onclick="menuClick($(this));"
+                        data-url="{{ url('about') }}"
+                        data-item="about">
+                    {{ DICT.footer.about }}
+                </button>
+                <button
+                        id="btn-legal"
+                        onclick="menuClick($(this));"
+                        data-url="{{ url('legal') }}"
+                        data-item="legal"
+                >
+                    {{ DICT.footer.legal }}
+                </button>
+                <button
+                        id="btn-changelog"
+                        onclick="menuClick($(this));"
+                        data-url="{{ url('changelog') }}"
+                        data-item="changelog"
+                >
+                    {{ DICT.footer.changelog }}
+                </button>
+            </div>
+        {% endblock %}
+    </div>
+
+    <div id="modal" class="modal" tabindex="-1" role="dialog">
+        {% include "modal-base.html.twig" %}
+    </div>
+{% endblock %}
+
+{% block body_js %}
+    <script>
+        let helpUrl = "{{ url('help') }}";
+    </script>
+    {{ asset('june-js', {defer: true}) }}
+    <script defer>
+        $(() => {
+            Modal.$elem = $("#modal");
+        });
+    </script>
+{% endblock %}
