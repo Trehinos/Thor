@@ -188,3 +188,26 @@ ul.fa-ul li .badge {
 .node:hover {
     background: #111;
 }
+
+#scene {
+    display: grid;
+    width: 800px;
+    height: 600px;
+    grid-template: repeat(16, 32px) / repeat(16, 32px);
+    /*grid-gap: 0;*/
+    z-index: 1;
+    user-select: none;
+}
+#scene .tile {
+    color: #000;
+    font-size: 0.6em;
+    text-align: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ccc;
+    background: #ddd;
+    z-index: 100;
+}
+#scene .tile:hover {
+    background: #88c;
+}

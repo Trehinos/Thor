@@ -21,7 +21,13 @@
         <div class="col-9">
             <h3>Scène</h3>
             <div class="bg-secondary border">
-                <div class="bg-dark" style="width: 800px; height: 1px; overflow: hidden;"></div>
+                <div id="scene">
+                    {% for row in 1..16 %}
+                            {% for column in 1..16 %}
+                                <div class="tile" style="grid-column: {{ column }}; grid-row: {{ row }};">{{ column }},{{ row }}</div>
+                            {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
