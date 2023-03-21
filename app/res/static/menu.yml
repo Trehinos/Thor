@@ -6,10 +6,6 @@
     icon: cog
     route: ngine
     key: F5
--   label: Jeu
-    icon: play
-    route: game
-    key: F5
 -   label: Configurations
     icon: cogs
     group:
