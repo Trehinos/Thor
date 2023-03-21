@@ -20,7 +20,7 @@ class Stream implements StreamInterface
     private const WRITABLE_MODES = '/a|w|r\+|rb\+|rw|x|c/';
 
     /**
-     * @param resource
+     * @param resource $stream
      * @param array $options
      *
      * @throws InvalidArgumentException

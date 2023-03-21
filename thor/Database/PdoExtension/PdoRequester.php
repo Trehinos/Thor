@@ -60,15 +60,15 @@ class PdoRequester
         $result = true;
 
         foreach ($parameters as $pdoRowsArray) {
-            Logger::writeDebug(' -> DB parameters', array_values($pdoRowsArray), LogLevel::INFO);
+            Logger::writeDebug(' -> DB parameters', array_values($pdoRowsArray), LogLevel::MINIMAL);
             try {
                 $result = $result && $stmt->execute(array_values($pdoRowsArray));
             } catch (PDOException $e) {
                 if (!Thor::isDebug()) {
                     Logger::writeDebug(' -> DB parameters', array_values($pdoRowsArray), LogLevel::WARNING);
                 }
-                Logger::logThrowable($e);
                 Logger::writeDebug(' -> DB execution failed : ', array_values($pdoRowsArray), LogLevel::ERROR);
+                Logger::logThrowable($e);
                 if (!$continueIfError) {
                     throw $e;
                 }
@@ -97,13 +97,20 @@ class PdoRequester
     }
 
     /**
-     * Gets the PdoHandler of this requester.
+     * Returns this instance's PDO connection handler.
      */
     final public function getPdoHandler(): PdoHandler
     {
         return $this->handler;
     }
 
+    /**
+     * Format a string like "(?, ?, ?, ...)" where number of '?' is `count($elements)`
+     *
+     * @param array $elements
+     *
+     * @return string
+     */
     public static function in(array $elements) : string
     {
         return '(' . implode(',', array_fill(0, count($elements), '?')) . ')';
