@@ -1,6 +1,8 @@
 security: true
 pdo-handler: default
 security-factory: 'Thor\Framework\Factories\SecurityFactory:produceSecurity'
+user-class: 'Thor\Framework\Security\DbUser'
+username-field: 'username'
 firewalls:
     -
         pattern: /index.php

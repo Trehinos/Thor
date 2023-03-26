@@ -228,7 +228,7 @@ final class Users extends WebController
             'thor/pages/users_modals/change-password.html.twig',
             [
                 'user'              => $user,
-                'generatedPassword' => UserManager::generatePassword(),
+                'generatedPassword' => UserManager::generatePassword(32),
             ]
         );
     }

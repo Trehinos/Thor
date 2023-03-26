@@ -4,6 +4,7 @@ namespace Thor\Framework\Factories;
 
 use Thor\Http\Routing\Router;
 use Thor\Http\Server\HttpServer;
+use Thor\Framework\Security\DbUser;
 use Thor\Configuration\Configuration;
 use Thor\Framework\Security\HttpSecurity;
 use Thor\Security\{Firewall, SecurityInterface};
@@ -34,7 +35,11 @@ final class SecurityFactory
         if (!$config->security()) {
             return null;
         }
-        $security = new HttpSecurity($server->getRequester($config->pdoHandler()));
+        $security = new HttpSecurity(
+            $server->getRequester($config->pdoHandler()),
+            className: $config['user-class'] ?? DbUser::class,
+            usernameField: $config['username-field'] ?? 'username'
+        );
         foreach ($config->firewalls ?? [] as $firewallConfig) {
             $security->addFirewall(
                 self::produceFirewall(
@@ -61,15 +66,15 @@ final class SecurityFactory
         Configuration $firewallConfig
     ): Firewall {
         return new Firewall(
-                            $security,
-                            $router,
-            pattern:        $firewallConfig['pattern'] ?? '/',
-            redirect:       $firewallConfig['redirect'] ?? 'login',
-            loginRoute:     $firewallConfig['login-route'] ?? 'login',
-            logoutRoute:    $firewallConfig['logout-route'] ?? 'logout',
-            checkRoute:     $firewallConfig['check-route'] ?? 'check',
+            $security,
+            $router,
+            pattern: $firewallConfig['pattern'] ?? '/',
+            redirect: $firewallConfig['redirect'] ?? 'login',
+            loginRoute: $firewallConfig['login-route'] ?? 'login',
+            logoutRoute: $firewallConfig['logout-route'] ?? 'logout',
+            checkRoute: $firewallConfig['check-route'] ?? 'check',
             excludedRoutes: $firewallConfig['exclude-route'] ?? [],
-            excludedPaths:  $firewallConfig['exclude-path'] ?? [],
+            excludedPaths: $firewallConfig['exclude-path'] ?? [],
         );
     }
 

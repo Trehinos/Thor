@@ -9,7 +9,7 @@ use Thor\Web\WebServer;
 use Thor\Tools\DateTimes;
 
 /**
- * A factory to create twig Filters.
+ * A factory to create the framework's available twig Filters.
  *
  * @package          Thor/Database/PdoTable
  * @copyright (2021) Sébastien Geldreich
@@ -101,15 +101,38 @@ final class TwigFilterFactory
         );
     }
 
-    /**
-     * @return TwigFilter
-     */
-    public static function format(): TwigFilter
-    {
+    public static function money(
+        string $name,
+        string $currency = '€',
+        int    $decimals = 2,
+        string $decimalSeparator = ',',
+        string $thousandSeparator = "\u{202F}",
+        bool   $symbolBefore = false
+    ): TwigFilter {
         return new TwigFilter(
-            'format',
-            fn($value, $format) => sprintf($format, $value)
+            $name,
+            fn(
+                $value,
+                $c = null,
+                $d = null,
+                $ds = null,
+                $ts = null,
+                $sb = null,
+            ) => (($sb ?? $symbolBefore) ? ($c ?? $currency) . ' ' : '') .
+                number_format($value, $d ?? $decimals, $ds ?? $decimalSeparator, $ts ?? $thousandSeparator) .
+                (($sb ?? $symbolBefore) ? '' : ' ' . ($c ?? $currency)),
+            ['is_safe' => ['html', 'js']]
         );
+    }
+
+    public static function euro(): TwigFilter
+    {
+        return self::money("euro");
+    }
+
+    public static function dollar(): TwigFilter
+    {
+        return self::money("dollar", '$', 2, '.', "'", true);
     }
 
 }

@@ -89,6 +89,7 @@ final class TwigFactory
         $this->twig->addGlobal('appName', Thor::appName());
         $this->twig->addGlobal('appVendor', Thor::vendor());
         $this->twig->addGlobal('version', Thor::version());
+        $this->twig->addGlobal('env', Thor::getEnv()->value);
         $this->twig->addGlobal('versionName', Thor::versionName());
         $this->twig->addGlobal('_lang', ThorConfiguration::get()->lang());
         $this->twig->addGlobal('DICT', $server->getLanguage());
@@ -108,10 +109,11 @@ final class TwigFactory
         $this->twig->addFilter(TwigFilterFactory::datetimeRelative());
         $this->twig->addFilter(TwigFilterFactory::toUtf8());
         $this->twig->addFilter(TwigFilterFactory::fromUtf8());
-        $this->twig->addFilter(TwigFilterFactory::format());
+        $this->twig->addFilter(TwigFilterFactory::money('money'));
+        $this->twig->addFilter(TwigFilterFactory::euro());
+        $this->twig->addFilter(TwigFilterFactory::dollar());
 
         return $this;
     }
-
 
 }

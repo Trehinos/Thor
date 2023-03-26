@@ -1,0 +1,3 @@
+[submodule "app/res/static/assets/vendors"]
+	path = app/res/static/assets/vendors
+	url = ssh://git@asgard.trehinos.eu/Trehinos/thor-web-vendors

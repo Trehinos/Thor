@@ -122,7 +122,8 @@ abstract class Command implements Executable
                 if ($option->cumulative) {
                     $console->echoes(Mode::BRIGHT, Color::FG_RED, '+');
                 } elseif ($option->hasValue) {
-                    $console->echoes(Mode::BRIGHT, Color::FG_RED, ' ', strtoupper($option->name));
+                    $console->write('=');
+                    $console->echoes(Mode::BRIGHT, Color::FG_RED, '', strtoupper($option->name));
                 }
                 $console->writeln();
             }
@@ -147,6 +148,9 @@ abstract class Command implements Executable
 
     /**
      * @throws CommandError
+     *
+     * TODO : refactor in CommandParser
+     * @see CommandParser
      */
     #[ArrayShape(['command' => "mixed|null|string", 'arguments' => "array", 'options' => "array"])]
     public function parse(array $commandLineArguments): array

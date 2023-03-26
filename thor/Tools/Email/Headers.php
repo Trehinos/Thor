@@ -21,17 +21,17 @@ final class Headers implements ArrayAccess
      * Construct Headers with most important headers.
      *
      * @param string $contentType
-     * @param string $transfertEncoding
+     * @param string $transferEncoding
      * @param string $contentDisposition
      */
     public function __construct(
         string $contentType = self::TYPE_HTML,
-        string $transfertEncoding = '7bit',
+        string $transferEncoding = '7bit',
         string $contentDisposition = 'inline'
     ) {
         $this->headers = [
             'Content-Type'              => $contentType,
-            'Content-Transfer-Encoding' => $transfertEncoding,
+            'Content-Transfer-Encoding' => $transferEncoding,
             'Content-Disposition'       => $contentDisposition,
         ];
     }

@@ -71,14 +71,27 @@ class ConfigurationFromFile extends Configuration
     public static function writeTo(Configuration $configuration, string $name, bool $staticResource = false): bool
     {
         $str = Yaml::dump(
-                   $configuration->getArrayCopy(),
-                   6,
+            $configuration->getArrayCopy(),
+            6,
             flags: Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK | Yaml::DUMP_NULL_AS_TILDE
         );
         return file_put_contents(
                    ($staticResource ? Globals::STATIC_DIR : Globals::CONFIG_DIR) . "$name.yml",
                    $str
                ) !== false;
+    }
+
+    public function write(string $name, bool $staticResource = false): bool
+    {
+        $str = Yaml::dump(
+            $this->getArrayCopy(),
+            6,
+            flags: Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK | Yaml::DUMP_NULL_AS_TILDE
+        );
+        return file_put_contents(
+                ($staticResource ? Globals::STATIC_DIR : Globals::CONFIG_DIR) . "$name.yml",
+                $str
+            ) !== false;
     }
 
 }

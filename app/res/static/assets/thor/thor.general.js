@@ -14,3 +14,16 @@ function loadPage(url, params, callback) {
         }
     });
 }
+
+const Throttle = {
+    handler: null,
+    handle: (func, timeout) => {
+        if (this.handler !== null) {
+            clearTimeout(this.handler);
+        }
+        this.handler = setTimeout(() => {
+            func();
+            this.handler = null;
+        }, timeout);
+    }
+};

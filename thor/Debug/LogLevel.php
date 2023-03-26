@@ -27,6 +27,10 @@ enum LogLevel: int
     case ALERT = 6;
     case EMERGENCY = 7;
 
+    public const MINIMAL = self::INFO;
+
+    public const MAXIMAL = self::EMERGENCY;
+
     /**
      * Returns **minimum** LogLevel according to Env :
      *  - DEV --> INFO

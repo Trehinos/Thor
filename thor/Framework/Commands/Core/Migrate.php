@@ -5,6 +5,7 @@ namespace Thor\Framework\Commands\Core;
 use Thor\Process\Command;
 use Thor\Cli\Console\Color;
 use Thor\Database\PdoExtension\PdoMigrator;
+use Thor\Configuration\ConfigurationFromFile;
 
 /**
  * @package          Thor/Framework
@@ -29,6 +30,9 @@ final class Migrate extends Command
             Color::FG_GRAY,
             ".\n"
         );
+        $updateConfig = ConfigurationFromFile::fromFile('update');
+        $updateConfig['migration-index'] = $index;
+        $updateConfig->write('update');
     }
 
 }
