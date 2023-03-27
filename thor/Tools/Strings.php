@@ -34,6 +34,13 @@ final class Strings
         return implode($delimiter, array_slice($parts, 1));
     }
 
+    public static function token(string $stringToSplit, string $delimiter, string &$tail): string
+    {
+        $parts = explode($delimiter, $stringToSplit);
+        $tail = implode($delimiter, array_slice($parts, 1));
+        return $parts[0] ?? '';
+    }
+
     /**
      * @param array<string, scalar|Stringable> $context
      */
