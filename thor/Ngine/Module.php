@@ -10,6 +10,15 @@ class Module extends Node
 
     public function __construct(string $name)
     {
+        /**
+         * @todo TITLE
+         *       MENU (= actions depuis le menu)
+         *       ACTIONS (= actions depuis l'interface)
+         *       VIEW (= vue paramétrée ou personnalisée (= twig))
+         *       MODALES
+         *       CSS
+         *       JS
+         */
         parent::__construct($name);
     }
 
