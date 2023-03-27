@@ -28,7 +28,7 @@
     "bin-dir": "bin/"
   },
   "require": {
-    "php": "^8.21",
+    "php": "^8.2",
     "ext-calendar": "*",
     "ext-curl": "*",
     "ext-ftp": "*",
