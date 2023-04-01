@@ -16,6 +16,7 @@ vendors-css:
     cache: true
     list:
         - vendors/bootstrap.min.css
+        - vendors/fontawesome/all.min.css
         - vendors/datatables.min.css
 vendors-js:
     type: js
@@ -23,6 +24,5 @@ vendors-js:
     list:
         - vendors/jquery.min.js
         - vendors/bootstrap.bundle.min.js
-        - vendors/fontawesome.min.js
         - vendors/datatables.min.js
         - vendors/dt-langs/fr.js
