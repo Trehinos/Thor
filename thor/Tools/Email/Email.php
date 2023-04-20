@@ -14,7 +14,7 @@ class Email extends Part
 {
 
     /** @var Part[] */
-    private array $parts;
+    private array $parts = [];
 
     public readonly string $boundary;
 
@@ -88,7 +88,7 @@ class Email extends Part
     public function __toString(): string
     {
         return
-            "{$this->headers}\r\n\r\n" . $this->getBody();
+            "{$this->headers}\r\n" . $this->getBody();
     }
 
     /**

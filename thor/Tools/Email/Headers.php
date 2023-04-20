@@ -45,11 +45,14 @@ final class Headers implements ArrayAccess
      */
     public static function fileAttachment(string $name): self
     {
-        return new self(
+        $headers = new self(
             Strings::interpolate(Headers::TYPE_OCTET_STREAM, ['name' => $name]),
             'base64',
             "attachment; filename=\"$name\""
         );
+        $headers['Content-ID'] = $name;
+        $headers['Content-Location'] = $name;
+        return $headers;
     }
 
     public function toArray(): array
