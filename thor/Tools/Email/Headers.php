@@ -4,6 +4,7 @@ namespace Thor\Tools\Email;
 
 use ArrayAccess;
 use Thor\Tools\Strings;
+use Thor\FileSystem\FileSystem;
 
 /**
  * This class represents an email part headers.
@@ -12,8 +13,9 @@ final class Headers implements ArrayAccess
 {
 
     public const TYPE_OCTET_STREAM = 'application/octet-stream; name="{name}"';
-    public const TYPE_MULTIPART = 'multipart/mixed; boundary="{boundary}"';
+    public const TYPE_MULTIPART = 'multipart/{type}; boundary="{boundary}"';
     public const TYPE_HTML = 'text/html; charset=utf-8';
+    public const TYPE_IMAGE = 'image/{ext}; name="{name}"';
 
     private array $headers;
 
@@ -45,8 +47,15 @@ final class Headers implements ArrayAccess
      */
     public static function fileAttachment(string $name): self
     {
+        $ext = FileSystem::getExtension($name);
+
+        $type = Strings::interpolate(Headers::TYPE_OCTET_STREAM, ['name' => $name]);
+        if (in_array(strtolower($ext), ['png', 'jpg', 'bmp', 'gif'])) {
+            $type = Strings::interpolate(Headers::TYPE_IMAGE, ['name' => $name, 'ext' => $ext]);
+        }
+
         $headers = new self(
-            Strings::interpolate(Headers::TYPE_OCTET_STREAM, ['name' => $name]),
+            $type,
             'base64',
             "attachment; filename=\"$name\""
         );

@@ -13,11 +13,6 @@ use Thor\Tools\Strings;
 class Email extends Part
 {
 
-    /** @var Part[] */
-    private array $parts = [];
-
-    public readonly string $boundary;
-
     /**
      * Constructs a new Email object with specified subject and from email address.
      *
@@ -32,11 +27,9 @@ class Email extends Part
         private readonly string $subject,
         private readonly string $from,
         array                   $additionalHeaders = [],
-        ?string                 $message = null
     ) {
-        $this->boundary = Guid::base64();
         $headers = new Headers(
-            Strings::interpolate(Headers::TYPE_MULTIPART, ['boundary' => $this->boundary]),
+            Strings::interpolate(Headers::TYPE_MULTIPART, ['type' => 'mixed', 'boundary' => Guid::base64()]),
             'binary'
         );
         unset($headers['Content-Disposition']);
@@ -48,12 +41,7 @@ class Email extends Part
                 $headers[$name] = $value;
             }
         );
-
         parent::__construct($headers, '');
-
-        if ($message !== null) {
-            $this->addPart(Part::text($message));
-        }
     }
 
     /**
@@ -68,17 +56,6 @@ class Email extends Part
         return str_replace("\n", "\r\n", $source);
     }
 
-    /**
-     * Adds an email part to this email.
-     *
-     * @param Part $part
-     *
-     * @return void
-     */
-    public function addPart(Part $part): void
-    {
-        $this->parts[] = $part;
-    }
 
     /**
      * Returns the raw MIME message.
@@ -91,23 +68,6 @@ class Email extends Part
             "{$this->headers}\r\n" . $this->getBody();
     }
 
-    /**
-     * Returns the raw MIME message's body.
-     *
-     * @return string
-     */
-    public function getBody(): string
-    {
-        return "\r\n\r\n--$this->boundary\r\n" .
-            implode(
-                "\r\n\r\n--$this->boundary\r\n",
-                array_map(
-                    fn(Part $part) => "$part",
-                    $this->parts
-                )
-            ) .
-            "\r\n\r\n--$this->boundary--\r\n";
-    }
 
     /**
      * Sends the email. Returns false if the mail() instruction fails.
@@ -137,6 +97,30 @@ class Email extends Part
             }
             $this->headers[$fieldName] = $field;
         }
+    }
+
+    public static function complete(
+        string $subject,
+        string $body,
+        string $from,
+        array $files = [],
+        array $images = [],
+    ) : self {
+        $email = new self($subject, $from);
+        $related = Part::multipart('related');
+        $alternative = Part::multipart('alternative');
+
+        foreach ($images as $image) {
+            $alternative->addPart(Part::file($image));
+        }
+        $alternative->addPart(Part::text($body));
+        $related->addPart($alternative);
+        $email->addPart($related);
+        foreach ($files as $file) {
+            $email->addPart(Part::file($file));
+        }
+
+        return $email;
     }
 
 }
