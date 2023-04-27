@@ -178,3 +178,7 @@ clear/logs:
 route/list:
     class: Thor\Framework\Commands\Http\RoutesList
     description: 'list all routes in app/res/static/routes.yml'
+
+test:
+    class: App\Test
+    description: '...'
