@@ -42,6 +42,7 @@ class FilePart extends DataPart
 
     public static function inlineImage(
         string $filename,
+        ?string $cid = null,
         ContentDisposition $disposition = ContentDisposition::INLINE
     ): self {
         $basename = basename($filename);
@@ -49,6 +50,7 @@ class FilePart extends DataPart
             $filename,
             'image',
             FileSystem::getExtension($basename),
+            $cid,
             encoding: ContentTransferEncoding::BASE64,
             disposition: $disposition
         );

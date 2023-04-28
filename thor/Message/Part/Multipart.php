@@ -5,7 +5,6 @@ namespace Thor\Message\Part;
 use Thor\Tools\Guid;
 use Thor\Message\Headers\Headers;
 use Thor\Message\Headers\ContentTransferEncoding;
-
 class Multipart extends Part
 {
 
@@ -35,7 +34,7 @@ class Multipart extends Part
         if (!in_array($encoding, [null, ContentTransferEncoding::BIT7, ContentTransferEncoding::BIT8, ContentTransferEncoding::BINARY])) {
             throw new \TypeError("ContentTransferEncoding::$encoding->name invalid for a multipart/* part.");
         }
-        $this->boundary ??= ("bound-" . bin2hex((new Guid())->get()));
+        $this->boundary ??= bin2hex((new Guid())->get());
         parent::__construct(
             'multipart',
             $mediaSubType,

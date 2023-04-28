@@ -26,12 +26,21 @@ class Email extends Message
         Headers $headers = new Headers()
     ) {
         parent::__construct($from, $subject, [
-            Multipart::related([
-                HtmlPart::embedded($subject, $this->body, $this->lang, $this->charset),
-                ...array_map(fn(string $fileName) => FilePart::inlineImage($fileName), $this->images),
-            ]),
-            ...array_map(fn(string $filename) => new FilePart($filename, disposition: ContentDisposition::ATTACHMENT), $this->files),
-        ], headers: $headers);
+            Multipart::related(
+                [
+                    HtmlPart::embedded($subject, $this->body, $this->lang, $this->charset),
+                    ...array_map(
+                        fn(string $cid, string $fileName) => FilePart::inlineImage($fileName, $cid),
+                        array_keys($this->images),
+                        $this->images
+                    ),
+                ]
+            ),
+            ...array_map(
+                fn(string $filename) => new FilePart($filename, disposition: ContentDisposition::ATTACHMENT),
+                $this->files
+            ),
+        ], headers:         $headers);
     }
 
 }
