@@ -4,7 +4,6 @@ namespace App;
 
 use Thor\Message\Email;
 use Thor\Process\Command;
-use Thor\Message\Part\ContentPart;
 
 final class Test extends Command
 {

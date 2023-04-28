@@ -147,8 +147,8 @@ final class DaemonState
                 self::DATE_FORMAT,
                 $nextRun->format('YmdHi') . '00'
             );
-            $this->isRunning = $running;
         }
+        $this->isRunning = $running;
     }
 
     /**
