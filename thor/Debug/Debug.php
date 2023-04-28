@@ -4,7 +4,6 @@ namespace Thor\Debug;
 
 final class Debug
 {
-
     public static function dump(mixed $var): void
     {
         dump($var);
@@ -35,6 +34,5 @@ final class Debug
         }
         return true;
     }
-
 
 }

@@ -31,7 +31,7 @@ class JsonRequest extends Request
     ) {
         parent::__construct(
             $version,
-            $headers,
+            $headers + ['Content-Type' => 'application/json'],
             Stream::create(self::encode($data)),
             $method,
             Uri::create($target)
