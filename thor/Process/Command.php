@@ -33,12 +33,26 @@ abstract class Command implements Executable
         $this->context = [];
     }
 
+    /**
+     * Returns true if the $commandLineArguments array corresponds to this command.
+     *
+     * @param array $commandLineArguments
+     *
+     * @return bool
+     */
     public function matches(array $commandLineArguments): bool
     {
         $command = array_shift($commandLineArguments);
         return $command === $this->command;
     }
 
+    /**
+     * Sets the context this command execute with.
+     *
+     * @param array $context
+     *
+     * @return void
+     */
     public function setContext(array $context): void
     {
         $this->context = $context;
