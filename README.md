@@ -27,7 +27,7 @@ This project's goal is to provide a base project for **PHP developers** to devel
     - Clear : `cache`, `logs`,
     - Route : `list`
     - Daemons : `status`, `state`, `run`, `kill`
-    - `project/document` : **auto-documentation of your project** in markdown ([an example here](https://lab.frogg.it/Trehinos/Thor/-/wikis/documentation)) 
+    - `project/document` : **auto-documentation of your project** in markdown ([an example here](https://asgard.trehinos.eu/Trehinos/Thor/-/wikis/documentation)) 
 
 ## Dependencies
 
@@ -64,9 +64,9 @@ This project's goal is to provide a base project for **PHP developers** to devel
 
 ## Documentation
 
-* [Complete documentation](https://lab.frogg.it/Trehinos/Thor/-/wikis/home)
-  * [Setup THOR](https://lab.frogg.it/Trehinos/Thor/-/wikis/setup)
-  * [Classes reference](https://lab.frogg.it/Trehinos/Thor/-/wikis/documentation)
+* [Complete documentation](https://asgard.trehinos.eu/Trehinos/Thor/-/wikis/home)
+  * [Setup THOR](https://asgard.trehinos.eu/Trehinos/Thor/-/wikis/setup)
+  * [Classes reference](https://asgard.trehinos.eu/Trehinos/Thor/-/wikis/documentation)
 
 ## License
 
