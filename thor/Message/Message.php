@@ -10,6 +10,7 @@ use Thor\Message\Headers\ContentTransferEncoding;
 
 class Message extends Multipart
 {
+
     public function __construct(
         public readonly string $from,
         public readonly string $subject,

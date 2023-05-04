@@ -60,6 +60,11 @@ class Multipart extends Part
         return "--{$this->getBoundary()}--\r\n";
     }
 
+    public function addPart(Part $part): void
+    {
+        $this->parts[] = $part;
+    }
+
     /**
      * @return Part[]
      */

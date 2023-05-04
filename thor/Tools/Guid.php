@@ -37,7 +37,7 @@ final class Guid
      */
     public function __toString(): string
     {
-        $hex = bin2hex($this->guid);
+        $hex = $this->getHex();
         return strtoupper(
             match (true) {
                 $this->size <= 4  => $hex,
@@ -60,6 +60,14 @@ final class Guid
     }
 
     /**
+     * @return string
+     */
+    public function getHex(): string
+    {
+        return bin2hex($this->guid);
+    }
+
+    /**
      * @param int $size
      *
      * @return string
@@ -67,6 +75,19 @@ final class Guid
      * @throws \Exception
      */
     public static function hex(int $size = 16): string
+    {
+        $uuid = new self($size);
+        return $uuid->getHex();
+    }
+
+    /**
+     * @param int $size
+     *
+     * @return string
+     * @throws \Exception
+     * @throws \Exception
+     */
+    public static function hexString(int $size = 16): string
     {
         $uuid = new self($size);
         return "$uuid";
