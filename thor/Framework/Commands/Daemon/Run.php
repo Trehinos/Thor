@@ -2,9 +2,9 @@
 
 namespace Thor\Framework\Commands\Daemon;
 
-use Thor\Process\Command;
-use Thor\Process\CommandError;
-use Thor\Cli\{DaemonState, Console\Mode, Console\Color, Console\Console, DaemonScheduler};
+use Thor\Cli\Command\Command;
+use Thor\Cli\Command\CommandError;
+use Thor\Cli\{Console\Mode, Console\Color, Console\Console, Daemon\DaemonState, Daemon\DaemonScheduler};
 
 
 /**

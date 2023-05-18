@@ -4,10 +4,10 @@ namespace Thor\Framework\Commands\Daemon;
 
 use Throwable;
 use Thor\Globals;
-use Thor\Cli\Daemon;
-use Thor\Process\Command;
+use Thor\Cli\Daemon\Daemon;
+use Thor\Cli\Command\Command;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Cli\DaemonState;
+use Thor\Cli\Daemon\DaemonState;
 use Thor\Configuration\ConfigurationFromFile;
 
 final class State extends Command

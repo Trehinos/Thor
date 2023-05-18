@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Process;
+namespace Thor\Cli\Command;
 
 class CommandError extends \RuntimeException
 {

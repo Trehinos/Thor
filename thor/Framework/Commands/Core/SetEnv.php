@@ -6,7 +6,7 @@ use Thor\Env;
 use Thor\Globals;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
-use Thor\Process\Command;
+use Thor\Cli\Command\Command;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Configuration\ThorConfiguration;
 

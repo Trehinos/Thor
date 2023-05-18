@@ -2,8 +2,8 @@
 
 namespace Thor\Framework\Commands\Core;
 
-use Thor\Process\Command;
 use Thor\Cli\Console\Color;
+use Thor\Cli\Command\Command;
 use Thor\Database\PdoExtension\PdoMigrator;
 use Thor\Configuration\ConfigurationFromFile;
 

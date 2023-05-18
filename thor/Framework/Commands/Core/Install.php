@@ -3,7 +3,7 @@
 namespace Thor\Framework\Commands\Core;
 
 use Thor\Debug\Logger;
-use Thor\Process\Command;
+use Thor\Cli\Command\Command;
 use Thor\Database\PdoExtension\PdoMigrator;
 
 /**

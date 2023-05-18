@@ -1,18 +1,20 @@
 <?php
 
-namespace Thor\Cli;
+namespace Thor\Cli\Daemon;
 
 use Throwable;
 use Thor\{Thor,
     Globals,
     Debug\Logger,
+    Cli\CliKernel,
     Debug\LogLevel,
     FileSystem\Folder,
     Process\Application,
     Process\KernelInterface,
     Configuration\Configuration,
     Configuration\ThorConfiguration,
-    Framework\Factories\Configurations};
+    Framework\Factories\Configurations
+};
 
 /**
  * This class is the Kernel of thor daemons.
@@ -81,14 +83,14 @@ final class DaemonScheduler implements KernelInterface
     /**
      * Executes the specified daemon.
      *
-     * @param Daemon|null $daemon
-     * @param bool        $force
+     * @param DaemonInterface|null $daemon
+     * @param bool                 $force
      *
      * @return bool false if ($daemon === null)
      *
      * @throws Throwable
      */
-    public function executeDaemon(?Daemon $daemon, bool $force = false): bool
+    public function executeDaemon(?DaemonInterface $daemon, bool $force = false): bool
     {
         if (null === $daemon) {
             return false;
@@ -109,7 +111,7 @@ final class DaemonScheduler implements KernelInterface
     /**
      * Executes the DaemonScheduler in a new process with the specified daemon as argument.
      */
-    private function cycleDaemonIfRunnable(Daemon $daemon): void
+    private function cycleDaemonIfRunnable(DaemonInterface $daemon): void
     {
         Logger::write("Cycle {$daemon->getName()}");
         $state = new DaemonState($daemon);
@@ -127,7 +129,7 @@ final class DaemonScheduler implements KernelInterface
     /**
      * Gets daemons of this DaemonScheduler.
      *
-     * @return Daemon[]
+     * @return DaemonInterface[]
      */
     public function getDaemons(): array
     {
@@ -137,9 +139,9 @@ final class DaemonScheduler implements KernelInterface
     /**
      * @param string $daemonName
      *
-     * @return Daemon|null
+     * @return DaemonInterface|null
      */
-    public function getDaemon(string $daemonName): ?Daemon
+    public function getDaemon(string $daemonName): ?DaemonInterface
     {
         foreach ($this->daemons as $daemon) {
             if ($daemonName === $daemon->getName()) {

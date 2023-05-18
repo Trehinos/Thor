@@ -1,14 +1,14 @@
 <?php
 
-namespace Thor\Cli;
+namespace Thor\Cli\Daemon;
 
 use DateTime;
 use DateInterval;
+use Thor\Globals;
 use DateTimeImmutable;
+use Thor\FileSystem\Folder;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Yaml\Yaml;
-use Thor\FileSystem\Folder;
-use Thor\Globals;
 
 /**
  * Represents the current state of a Thor daemon.
@@ -29,9 +29,9 @@ final class DaemonState
     private ?string $pid = null;
 
     /**
-     * @param Daemon $daemon
+     * @param DaemonInterface $daemon
      */
-    public function __construct(private Daemon $daemon)
+    public function __construct(private DaemonInterface $daemon)
     {
     }
 

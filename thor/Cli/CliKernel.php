@@ -4,11 +4,11 @@ namespace Thor\Cli;
 
 use Thor\Globals;
 use Thor\Debug\Logger;
-use Thor\Process\Option;
 use Thor\Debug\LogLevel;
-use Thor\Process\Argument;
-use Thor\Process\CommandError;
+use Thor\Cli\Command\Option;
+use Thor\Cli\Command\Argument;
 use Thor\Process\KernelInterface;
+use Thor\Cli\Command\CommandError;
 use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Framework\Factories\Configurations;

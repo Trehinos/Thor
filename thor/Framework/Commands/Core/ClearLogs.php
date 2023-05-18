@@ -6,7 +6,7 @@ use Thor\Globals;
 use Thor\Debug\Logger;
 use Thor\Cli\Console\Color;
 use Thor\FileSystem\Folder;
-use Thor\Process\Command;
+use Thor\Cli\Command\Command;
 
 /**
  * @package          Thor/Framework

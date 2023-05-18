@@ -3,9 +3,9 @@
 namespace Thor\Cli;
 
 use Thor\Thor;
-use Thor\Process\Command;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
+use Thor\Cli\Command\Command;
 use Thor\Cli\Console\CursorControl;
 
 /**
