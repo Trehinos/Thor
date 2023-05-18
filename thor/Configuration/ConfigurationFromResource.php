@@ -8,7 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * @uses app/res/static
  */
-class ConfigurationFromFile extends Configuration
+class ConfigurationFromResource extends Configuration
 {
 
     private static array $configurations = [];
@@ -18,7 +18,7 @@ class ConfigurationFromFile extends Configuration
      *
      * @return static
      */
-    final public static function get(mixed ...$args): static
+    public static function get(mixed ...$args): static
     {
         return static::$configurations[static::class] ??= new static(...$args);
     }
@@ -50,7 +50,7 @@ class ConfigurationFromFile extends Configuration
      */
     public static function loadYml(string $name): array
     {
-        return Yaml::parseFile(Globals::CONFIG_DIR . "$name.yml");
+        return Yaml::parseFile(Globals::STATIC_DIR . "$name.yml");
     }
 
     /**

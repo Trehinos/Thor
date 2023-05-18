@@ -5,13 +5,6 @@ namespace Thor\Framework\Configurations;
 use Thor\Globals;
 use Thor\Configuration\ConfigurationFromFile;
 
-/**
- *
- */
-
-/**
- *
- */
 final class TwigConfiguration extends ConfigurationFromFile
 {
 

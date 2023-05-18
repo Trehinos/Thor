@@ -4,13 +4,6 @@ namespace Thor\Configuration;
 
 use ArrayObject;
 
-/**
- *
- */
-
-/**
- *
- */
 class Configuration extends ArrayObject
 {
 

@@ -4,13 +4,6 @@ namespace Thor\Configuration;
 
 use Thor\Env;
 
-/**
- *
- */
-
-/**
- *
- */
 final class ThorConfiguration extends ConfigurationFromFile
 {
 

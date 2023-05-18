@@ -2,16 +2,9 @@
 
 namespace Thor\Framework\Configurations;
 
-use Thor\Configuration\ConfigurationFromFile;
+use Thor\Configuration\ConfigurationFromResource;
 
-/**
- *
- */
-
-/**
- *
- */
-final class LanguageDictionary extends ConfigurationFromFile
+final class LanguageDictionary extends ConfigurationFromResource
 {
 
     private static array $configurations = [];
@@ -31,7 +24,7 @@ final class LanguageDictionary extends ConfigurationFromFile
      */
     public function __construct(string $lang)
     {
-        parent::__construct("langs/$lang", true);
+        parent::__construct("langs/$lang");
     }
 
 }
