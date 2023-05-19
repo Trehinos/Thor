@@ -1,0 +1,35 @@
+version: "1.0"
+services:
+    thor-php:
+        build: .
+        container_name: thor-php
+        working_dir: /www/
+        volumes:
+            - ./web/: /www/
+        networks:
+            - thornet
+
+    thor-db:
+        image: mariadb
+        restart: always
+        container_name: thor-mysql
+        ports:
+            - "3306:3306"
+        environment:
+            MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+            MARIADB_DATABASE: ${DB_DATABASE}
+            MARIADB_USER: ${DB_USERNAME}
+            MARIADB_PASSWORD: ${DB_PASSWORD}
+        networks:
+            - thornet
+
+    thor-db-admin:
+        image: adminer
+        container_name: thor-adminer
+        ports:
+            - "8080:8080"
+        networks:
+            - thornet
+
+    http:
+        image: httpd:2.4
