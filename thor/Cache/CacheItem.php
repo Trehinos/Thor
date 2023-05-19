@@ -4,7 +4,7 @@ namespace Thor\Cache;
 
 use DateInterval;
 use DateTimeImmutable;
-use Thor\Structures\Item;
+use Thor\Tools\Structures\Item;
 
 /**
  * This class represent an element of a Thor\Cache\Cache object.

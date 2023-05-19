@@ -2,8 +2,8 @@
 
 namespace Thor\Http;
 
-use Thor\Tools\Strings;
 use JetBrains\PhpStorm\Pure;
+use Thor\Common\Types\Strings;
 
 /**
  * Holds and manages an URI.
@@ -135,7 +135,7 @@ class Uri implements UriInterface
         $path = $map['path'] ?? '';
         if ($host === null && $port === null && str_contains($path, '/')) {
             $host = '';
-            $path = Strings::split($path, '/', $host);
+            $path = Strings::tail($path, '/', $host);
         }
 
         $queryArguments = [];

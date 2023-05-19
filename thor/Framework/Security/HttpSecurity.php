@@ -2,8 +2,9 @@
 
 namespace Thor\Framework\Security;
 
+use Thor\Http\Security\Authentication\SessionAuthenticator;
 use Thor\Database\{PdoTable\CrudHelper, PdoExtension\PdoRequester};
-use Thor\Security\{Security, ProtectWithFirewalls, Authentication\SessionAuthenticator};
+use Thor\Security\{Thor\Http\Security\Security, Thor\Http\Security\ProtectWithFirewalls};
 
 /**
  * Default HTTP security context.
@@ -12,10 +13,10 @@ use Thor\Security\{Security, ProtectWithFirewalls, Authentication\SessionAuthent
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-class HttpSecurity extends Security
+class HttpSecurity extends \Thor\Http\Security\Security
 {
 
-    use ProtectWithFirewalls;
+    use \Thor\Http\Security\ProtectWithFirewalls;
 
     /**
      * @param PdoRequester $requester

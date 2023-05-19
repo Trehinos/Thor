@@ -4,6 +4,7 @@ namespace Thor\Tools;
 
 use Stringable;
 use Symfony\Component\Yaml\Yaml;
+use Thor\Common\Types\PlaceholderFormat;
 
 /**
  *

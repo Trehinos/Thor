@@ -2,7 +2,7 @@
 
 namespace Thor\Message\Headers;
 
-use Thor\Tools\Strings;
+use Thor\Common\Types\Strings;
 
 enum ContentDisposition: string
 {

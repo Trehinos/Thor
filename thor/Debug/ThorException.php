@@ -4,7 +4,7 @@ namespace Thor\Debug;
 
 use Exception;
 use Throwable;
-use Thor\Tools\Strings;
+use Thor\Common\Types\Strings;
 
 class ThorException extends Exception
 {

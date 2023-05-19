@@ -4,8 +4,8 @@ namespace Thor\Http\Request;
 
 use Thor\Thor;
 use Thor\Web\Headers;
-use Thor\Tools\Strings;
 use Thor\Http\UriInterface;
+use Thor\Common\Types\Strings;
 
 /**
  *

@@ -8,8 +8,8 @@ use Thor\Thor;
 use Throwable;
 use Stringable;
 use JsonException;
-use Thor\Tools\Strings;
 use Thor\FileSystem\Folder;
+use Thor\Common\Types\Strings;
 
 /**
  * Logger class for Thor.

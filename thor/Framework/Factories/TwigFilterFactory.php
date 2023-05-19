@@ -4,9 +4,9 @@ namespace Thor\Framework\Factories;
 
 use DateTime;
 use Twig\TwigFilter;
-use Thor\Tools\Strings;
 use Thor\Web\WebServer;
-use Thor\Tools\DateTimes;
+use Thor\Common\Types\Strings;
+use Thor\Common\Types\DateTimes;
 
 /**
  * A factory to create the framework's available twig Filters.

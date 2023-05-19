@@ -4,10 +4,10 @@ namespace Thor\Http\Server;
 
 use InvalidArgumentException;
 use Thor\Debug\{Logger, LogLevel};
-use Thor\Security\SecurityInterface;
 use Thor\Configuration\Configuration;
 use JetBrains\PhpStorm\ExpectedValues;
 use Thor\Http\Response\ResponseFactory;
+use Thor\Http\Security\SecurityInterface;
 use Thor\Database\PdoExtension\{PdoHandler, PdoRequester, PdoCollection};
 use Thor\Http\{Uri,
     UriInterface,

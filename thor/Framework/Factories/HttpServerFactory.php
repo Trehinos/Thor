@@ -4,8 +4,8 @@ namespace Thor\Framework\Factories;
 
 use Thor\Http\Routing\Router;
 use Thor\Http\Server\HttpServer;
-use Thor\Security\SecurityInterface;
 use Thor\Configuration\Configuration;
+use Thor\Http\Security\SecurityInterface;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Framework\Configurations\SecurityConfiguration;
 
@@ -59,10 +59,10 @@ final class HttpServerFactory
     }
 
     /**
-     * @param Router                 $router
-     * @param SecurityInterface|null $security
-     * @param PdoCollection          $pdoCollection
-     * @param Configuration          $language
+     * @param Router                                     $router
+     * @param \Thor\Http\Security\SecurityInterface|null $security
+     * @param PdoCollection                              $pdoCollection
+     * @param Configuration                              $language
      *
      * @return HttpServer
      */

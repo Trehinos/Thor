@@ -11,7 +11,7 @@ use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Http\Response\ResponseFactory;
 use Thor\Configuration\ConfigurationFromFile;
-use Thor\Security\Authorization\Authorization;
+use Thor\Http\Security\Authorization\Authorization;
 use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod, Response\ResponseInterface};
 
 /**

@@ -3,7 +3,7 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use Thor\Validation\Filters\RegexFilter;
+use Thor\Common\Validation\Filters\RegexFilter;
 
 final class ValidationTest extends TestCase
 {

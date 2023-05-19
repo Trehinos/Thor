@@ -3,7 +3,7 @@
 namespace Thor\Framework\Configurations;
 
 use Thor\Http\Server\HttpServer;
-use Thor\Security\SecurityInterface;
+use Thor\Http\Security\SecurityInterface;
 use Thor\Configuration\ConfigurationFromFile;
 
 final class SecurityConfiguration extends ConfigurationFromFile
@@ -41,7 +41,7 @@ final class SecurityConfiguration extends ConfigurationFromFile
     /**
      * @param HttpServer $server
      *
-     * @return SecurityInterface|null
+     * @return \Thor\Http\Security\SecurityInterface|null
      */
     public function getSecurityFromFactory(HttpServer $server): ?SecurityInterface
     {

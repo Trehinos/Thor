@@ -4,6 +4,7 @@ namespace Thor\Cli\Daemon;
 
 use DateTime;
 use Throwable;
+use Thor\Common\Types\Strings;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
@@ -178,16 +179,28 @@ abstract class Daemon implements DaemonInterface
                 $state->write();
                 $this->execute();
             } catch (Throwable $e) {
-                $state->error($e->getMessage());
+                $errorMessage = $e->getMessage();
+                if (str_contains($errorMessage, ':')) {
+                    $errorMessage =  Strings::tail($errorMessage, ':');
+                }
+                $state->error($errorMessage);
                 $state->setPid(null);
                 $state->setRunning(false);
                 $state->write();
-                throw $e;
+                throw DaemonException::in($e, $this, $this->getDaemonExceptionMessage($e));
             }
             $state->setPid(null);
             $state->setRunning(false);
             $state->write();
         }
+    }
+
+    /**
+     * @return string by default : "Error thrown in {name}->execute() : {e->message}"
+     */
+    public function getDaemonExceptionMessage(Throwable $e): string
+    {
+        return Strings::interpolate("Error thrown in {$this->getName()}->execute() : {$e->getMessage()}");
     }
 
 }

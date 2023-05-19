@@ -9,7 +9,7 @@ use Thor\Http\Routing\Route;
 use Thor\Http\Routing\Router;
 use InvalidArgumentException;
 use Thor\Http\Request\HttpMethod;
-use Thor\Security\Authorization\Authorization;
+use Thor\Http\Security\Authorization\Authorization;
 use Thor\Framework\Configurations\RoutesConfiguration;
 
 /**
@@ -78,13 +78,13 @@ final class RouterFactory
     }
 
     /**
-     * @param string             $routeName
-     * @param string             $className
-     * @param string|null        $methodName
-     * @param string|null        $path
-     * @param string|null        $method
-     * @param array|null         $parameters
-     * @param Authorization|null $authorization
+     * @param string                                               $routeName
+     * @param string                                               $className
+     * @param string|null                                          $methodName
+     * @param string|null                                          $path
+     * @param string|null                                          $method
+     * @param array|null                                           $parameters
+     * @param \Thor\Http\Security\Authorization\Authorization|null $authorization
      *
      * @return Route[]
      *

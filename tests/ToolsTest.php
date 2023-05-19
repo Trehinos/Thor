@@ -2,11 +2,11 @@
 
 namespace Tests;
 
-use Thor\Tools\Strings;
-use Thor\Tools\DateTimes;
-use Thor\Tools\Email\Email;
+use Thor\Tools\Email;
+use Thor\Common\Types\Strings;
+use Thor\Common\Types\DateTimes;
 use PHPUnit\Framework\TestCase;
-use Thor\Tools\PlaceholderFormat;
+use Thor\Common\Types\PlaceholderFormat;
 
 final class ToolsTest extends TestCase
 {
@@ -31,23 +31,23 @@ final class ToolsTest extends TestCase
         $stringToSplit = 'a string to split';
         $head = '';
 
-        $stringToSplit = Strings::split($stringToSplit, ' ', $head);
+        $stringToSplit = Strings::tail($stringToSplit, ' ', $head);
         $this->assertSame('a', $head);
         $this->assertSame('string to split', $stringToSplit);
 
-        $stringToSplit = Strings::split($stringToSplit, ' ', $head);
+        $stringToSplit = Strings::tail($stringToSplit, ' ', $head);
         $this->assertSame('string', $head);
         $this->assertSame('to split', $stringToSplit);
 
-        $stringToSplit = Strings::split($stringToSplit, ' ', $head);
+        $stringToSplit = Strings::tail($stringToSplit, ' ', $head);
         $this->assertSame('to', $head);
         $this->assertSame('split', $stringToSplit);
 
-        $stringToSplit = Strings::split($stringToSplit, ' ', $head);
+        $stringToSplit = Strings::tail($stringToSplit, ' ', $head);
         $this->assertSame('split', $head);
         $this->assertSame('', $stringToSplit);
 
-        $stringToSplit = Strings::split($stringToSplit, ' ', $head);
+        $stringToSplit = Strings::tail($stringToSplit, ' ', $head);
         $this->assertSame('', $head);
         $this->assertSame('', $stringToSplit);
     }

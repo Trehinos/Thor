@@ -2,9 +2,8 @@
 
 namespace Thor\Framework\Security;
 
-use Thor\Security\PasswordHasher;
-use Thor\Security\Identity\BaseUser;
 use Thor\Database\PdoTable\HasPublicId;
+use Thor\Http\Security\Identity\BaseUser;
 use Thor\Database\PdoTable\HasPublicIdTrait;
 use Thor\Database\PdoTable\PdoTable\PdoRowTrait;
 use Thor\Database\PdoTable\PdoTable\Attributes\{PdoColumn};
@@ -74,7 +73,7 @@ class DbUser extends BaseUser implements PdoRowInterface, HasPublicId
      */
     public function setPwdHashFrom(string $clearPassword): void
     {
-        $this->hash = PasswordHasher::hashPassword($clearPassword);
+        $this->hash = \Thor\Http\Security\PasswordHasher::hashPassword($clearPassword);
     }
 
 }

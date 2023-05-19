@@ -2,7 +2,7 @@
 
 namespace Thor\Tools\Spreadsheet;
 
-use Thor\Structures\Collection\Collection;
+use Thor\Tools\Structures\Collection\Collection;
 
 /**
  *

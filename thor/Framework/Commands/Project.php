@@ -8,13 +8,13 @@ use Thor\Globals;
 use ReflectionEnum;
 use ReflectionClass;
 use ReflectionMethod;
-use Thor\Tools\Strings;
 use ReflectionProperty;
 use ReflectionException;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\FileSystem\Folder;
 use ReflectionClassConstant;
+use Thor\Common\Types\Strings;
 use Thor\Cli\Command\Command;
 use Thor\FileSystem\FileSystem;
 
@@ -70,8 +70,8 @@ final class Project extends Command
             $rc = new ReflectionClass($label);
             $thor = '';
             $baseModule = '';
-            $rest = Strings::split($label, '\\', $thor);
-            $rest = Strings::split($rest, '\\', $baseModule);
+            $rest = Strings::tail($label, '\\', $thor);
+            $rest = Strings::tail($rest, '\\', $baseModule);
             $module = "$thor\\$baseModule";
             if ($label === $module) {
                 $module = "$thor";

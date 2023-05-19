@@ -3,7 +3,7 @@
 namespace Thor\Cache;
 
 use DateInterval;
-use Thor\Structures\Container;
+use Thor\Tools\Structures\Container;
 
 /**
  * This class represents a memory cache and a container.

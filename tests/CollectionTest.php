@@ -5,9 +5,9 @@ namespace Tests;
 use PHPUnit\Framework\TestCase;
 use Thor\Framework\Security\DbUser;
 use Thor\Database\PdoTable\CrudHelper;
-use Thor\Structures\Collection\Collection;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Tools\Structures\Collection\Collection;
 
 final class CollectionTest extends TestCase
 {

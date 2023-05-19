@@ -2,7 +2,7 @@
 
 namespace Thor\Message\Part;
 
-use Thor\Tools\Guid;
+use Thor\Common\Guid;
 use Thor\FileSystem\FileSystem;
 use Thor\Message\Headers\Headers;
 use Thor\Message\Headers\ContentDisposition;

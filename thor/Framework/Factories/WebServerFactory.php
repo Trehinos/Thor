@@ -5,8 +5,8 @@ namespace Thor\Framework\Factories;
 use Thor\Web\WebServer;
 use Thor\Http\Routing\Router;
 use JetBrains\PhpStorm\ArrayShape;
-use Thor\Security\SecurityInterface;
 use Thor\Configuration\Configuration;
+use Thor\Http\Security\SecurityInterface;
 use Thor\Database\PdoExtension\PdoCollection;
 
 /**

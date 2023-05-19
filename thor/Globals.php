@@ -2,7 +2,7 @@
 
 namespace Thor;
 
-use Thor\Tools\Strings;
+use Thor\Common\Types\Strings;
 use Thor\Configuration\ConfigurationFolder;
 
 /**

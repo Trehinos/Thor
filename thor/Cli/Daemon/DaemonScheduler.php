@@ -113,10 +113,11 @@ final class DaemonScheduler implements KernelInterface
      */
     private function cycleDaemonIfRunnable(DaemonInterface $daemon): void
     {
-        Logger::write("Cycle {$daemon->getName()}");
+        Logger::write("Try to cycle {$daemon->getName()}", LogLevel::INFO);
         $state = new DaemonState($daemon);
         $state->load();
         if (!$state->isRunning() && $daemon->isNowRunnable($state->getNextRun())) {
+            Logger::write("Run {$daemon->getName()}", LogLevel::DEBUG);
             $logPath = Globals::VAR_DIR . ThorConfiguration::get()->logPath();
             Folder::createIfNotExists($logPath . "{$logPath}daemon/{$daemon->getName()}/");
             CliKernel::executeBackgroundProgram(
@@ -139,15 +140,17 @@ final class DaemonScheduler implements KernelInterface
     /**
      * @param string $daemonName
      *
-     * @return DaemonInterface|null
+     * @return DaemonInterface
+     *
+     * @throws DaemonException if the daemon "daemonName" is not found
      */
-    public function getDaemon(string $daemonName): ?DaemonInterface
+    public function getDaemon(string $daemonName): DaemonInterface
     {
         foreach ($this->daemons as $daemon) {
             if ($daemonName === $daemon->getName()) {
                 return $daemon;
             }
         }
-        return null;
+        throw DaemonException::notFound($daemonName);
     }
 }

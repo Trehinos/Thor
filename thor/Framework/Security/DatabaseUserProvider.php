@@ -2,7 +2,7 @@
 
 namespace Thor\Framework\Security;
 
-use Thor\Security\Identity\ProviderInterface;
+use Thor\Http\Security\Identity\ProviderInterface;
 use Thor\Database\PdoTable\{Criteria, CrudHelper};
 
 /**

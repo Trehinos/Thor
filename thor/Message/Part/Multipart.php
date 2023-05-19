@@ -2,9 +2,10 @@
 
 namespace Thor\Message\Part;
 
-use Thor\Tools\Guid;
+use Thor\Common\Guid;
 use Thor\Message\Headers\Headers;
 use Thor\Message\Headers\ContentTransferEncoding;
+
 class Multipart extends Part
 {
 

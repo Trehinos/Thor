@@ -3,10 +3,10 @@
 namespace Thor\Http\Routing;
 
 use Attribute;
-use Thor\Tools\Strings;
+use Thor\Common\Types\Strings;
 use Thor\Http\Request\HttpMethod;
-use Thor\Tools\PlaceholderFormat;
-use Thor\Security\Authorization\Authorization;
+use Thor\Common\Types\PlaceholderFormat;
+use Thor\Http\Security\Authorization\Authorization;
 
 /**
  * Describes a route.
@@ -24,13 +24,13 @@ final class Route
     private array $filledParams = [];
 
     /**
-     * @param string|null             $routeName
-     * @param string|null             $path
-     * @param HttpMethod|HttpMethod[] $method
-     * @param array                   $parameters
-     * @param string|null             $controllerClass
-     * @param string|null             $controllerMethod
-     * @param Authorization|null      $authorization
+     * @param string|null                                          $routeName
+     * @param string|null                                          $path
+     * @param HttpMethod|HttpMethod[]                              $method
+     * @param array                                                $parameters
+     * @param string|null                                          $controllerClass
+     * @param string|null                                          $controllerMethod
+     * @param \Thor\Http\Security\Authorization\Authorization|null $authorization
      */
     public function __construct(
         private ?string $routeName = null,

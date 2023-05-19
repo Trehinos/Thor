@@ -2,7 +2,7 @@
 
 namespace Thor\Configuration;
 
-use Thor\Tools\Strings;
+use Thor\Common\Types\Strings;
 
 final readonly class ConfigurationFolder
 {

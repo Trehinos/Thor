@@ -4,9 +4,9 @@ namespace Thor\Http\Routing;
 
 use Thor\Http\Uri;
 use RuntimeException;
-use Thor\Tools\Strings;
 use Thor\Http\UriInterface;
-use Thor\Tools\PlaceholderFormat;
+use Thor\Common\Types\Strings;
+use Thor\Common\Types\PlaceholderFormat;
 use Thor\Http\Request\RequestInterface;
 
 /**

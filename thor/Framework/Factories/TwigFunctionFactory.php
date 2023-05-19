@@ -2,12 +2,12 @@
 
 namespace Thor\Framework\Factories;
 
-use Thor\Tools\Guid;
+use Thor\Common\Guid;
 use Twig\TwigFunction;
 use Thor\Web\WebServer;
 use Thor\Web\Assets\Asset;
 use Thor\Http\Routing\Router;
-use Thor\Security\SecurityInterface;
+use Thor\Http\Security\SecurityInterface;
 use Symfony\Component\VarDumper\VarDumper;
 
 /**
@@ -111,7 +111,7 @@ final class TwigFunctionFactory
     }
 
     /**
-     * @param SecurityInterface|null $security
+     * @param \Thor\Http\Security\SecurityInterface|null $security
      *
      * @return TwigFunction
      */

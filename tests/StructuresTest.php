@@ -2,10 +2,10 @@
 
 namespace Tests;
 
-use Thor\Structures\Item;
-use Thor\Structures\Container;
+use Thor\Tools\Structures\Item;
 use PHPUnit\Framework\TestCase;
-use Thor\Structures\ItemInterface;
+use Thor\Tools\Structures\Container;
+use Thor\Tools\Structures\ItemInterface;
 
 final class StructuresTest extends TestCase
 {

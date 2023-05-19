@@ -3,7 +3,7 @@
 namespace Thor\Database\PdoExtension;
 
 use PDO;
-use Thor\Structures\Collection\Collection;
+use Thor\Tools\Structures\Collection\Collection;
 use Thor\Framework\Configurations\DatabasesConfiguration;
 
 /**

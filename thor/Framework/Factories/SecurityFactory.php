@@ -2,12 +2,13 @@
 
 namespace Thor\Framework\Factories;
 
+use Thor\Http\Security\{SecurityInterface};
 use Thor\Http\Routing\Router;
+use Thor\Http\Security\Firewall;
 use Thor\Http\Server\HttpServer;
 use Thor\Framework\Security\DbUser;
 use Thor\Configuration\Configuration;
 use Thor\Framework\Security\HttpSecurity;
-use Thor\Security\{Firewall, SecurityInterface};
 use Thor\Framework\Configurations\SecurityConfiguration;
 
 /**
@@ -28,7 +29,7 @@ final class SecurityFactory
      * @param HttpServer            $server
      * @param SecurityConfiguration $config
      *
-     * @return SecurityInterface|null
+     * @return \Thor\Http\Security\SecurityInterface|null
      */
     public static function produceSecurity(HttpServer $server, SecurityConfiguration $config): ?SecurityInterface
     {
@@ -54,11 +55,11 @@ final class SecurityFactory
     }
 
     /**
-     * @param SecurityInterface $security
-     * @param Router            $router
-     * @param Configuration     $firewallConfig
+     * @param \Thor\Http\Security\SecurityInterface $security
+     * @param Router                                $router
+     * @param Configuration                         $firewallConfig
      *
-     * @return Firewall
+     * @return \Thor\Http\Security\Firewall
      */
     public static function produceFirewall(
         SecurityInterface $security,

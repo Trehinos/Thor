@@ -3,7 +3,7 @@
 namespace Thor\Database\PdoTable;
 
 use Exception;
-use Thor\Tools\Guid;
+use Thor\Common\Guid;
 use Thor\Database\PdoTable\{TableType\StringType, PdoTable\Attributes\PdoIndex, PdoTable\Attributes\PdoColumn};
 
 /**
