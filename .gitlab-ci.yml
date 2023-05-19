@@ -6,8 +6,10 @@ image: webdevops/php8.2-apache
 before_script:
   - bash ci/docker_install.sh > /dev/null
 
-stages:          # List of stages for jobs, and their order of execution
-  - build
-  - test
-  - deploy
+build:app:
+    script:
+        - composer install
 
+test:app:
+    script:
+        - phpunit tests
