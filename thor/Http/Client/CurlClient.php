@@ -8,8 +8,7 @@ use Thor\Http\{Response\Response,
     Request\HttpMethod,
     Response\HttpStatus,
     Request\RequestInterface,
-    Response\ResponseInterface
-};
+    Response\ResponseInterface};
 
 /**
  * Provides an implementation of ClientInterface to send requests with Curl.

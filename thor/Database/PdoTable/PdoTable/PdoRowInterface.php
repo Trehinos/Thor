@@ -3,7 +3,6 @@
 namespace Thor\Database\PdoTable\PdoTable;
 
 use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
-use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
 
 /**
  * Represents a class describing an SQL table.

@@ -13,8 +13,7 @@ use Thor\{Thor,
     Process\KernelInterface,
     Configuration\Configuration,
     Configuration\ThorConfiguration,
-    Framework\Factories\Configurations
-};
+    Framework\Factories\Configurations};
 
 /**
  * This class is the Kernel of thor daemons.

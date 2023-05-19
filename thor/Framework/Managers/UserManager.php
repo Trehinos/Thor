@@ -3,8 +3,8 @@
 namespace Thor\Framework\Managers;
 
 use Exception;
+use Thor\Debug\{Logger};
 use Thor\Globals;
-use Thor\Debug\{Logger, LogLevel};
 use Thor\Framework\Security\DbUser;
 use Thor\Configuration\ConfigurationFromFile;
 use Thor\Database\PdoTable\{Criteria, CrudHelper};

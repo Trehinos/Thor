@@ -2,14 +2,11 @@
 
 namespace Thor\Framework\Actions;
 
-use PDOException;
 use Thor\Globals;
 use Thor\Web\WebController;
+use Twig\Error\{LoaderError, SyntaxError, RuntimeError};
 use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod};
-use Thor\Database\PdoExtension\PdoCollection;
-use Thor\Framework\Configurations\{SecurityConfiguration, DatabasesConfiguration};
 use Thor\Configuration\{ThorConfiguration, ConfigurationFromFile, Configuration as YmlConfiguration};
-use Twig\Error\{LoaderError, RuntimeError, SyntaxError};
 
 /**
  * Configuration edition controller.

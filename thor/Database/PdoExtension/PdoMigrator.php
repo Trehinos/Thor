@@ -2,7 +2,6 @@
 
 namespace Thor\Database\PdoExtension;
 
-use Symfony\Component\Yaml\Yaml;
 use Thor\{Globals, Configuration\ConfigurationFromFile, Framework\Configurations\DatabasesConfiguration};
 
 /**

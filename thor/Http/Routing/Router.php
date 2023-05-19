@@ -6,8 +6,8 @@ use Thor\Http\Uri;
 use RuntimeException;
 use Thor\Http\UriInterface;
 use Thor\Common\Types\Strings;
-use Thor\Common\Types\PlaceholderFormat;
 use Thor\Http\Request\RequestInterface;
+use Thor\Common\Types\PlaceholderFormat;
 
 /**
  * Describes a router.

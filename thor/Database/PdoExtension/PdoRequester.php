@@ -4,7 +4,6 @@ namespace Thor\Database\PdoExtension;
 
 use Thor\Thor;
 use PDOStatement;
-
 use PDOException;
 use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;

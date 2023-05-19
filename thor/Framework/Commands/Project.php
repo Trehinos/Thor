@@ -14,8 +14,8 @@ use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\FileSystem\Folder;
 use ReflectionClassConstant;
-use Thor\Common\Types\Strings;
 use Thor\Cli\Command\Command;
+use Thor\Common\Types\Strings;
 use Thor\FileSystem\FileSystem;
 
 /**

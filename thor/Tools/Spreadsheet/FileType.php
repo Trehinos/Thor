@@ -3,11 +3,10 @@
 namespace Thor\Tools\Spreadsheet;
 
 use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
-use PhpOffice\PhpSpreadsheet\Writer\Xls as XlsWriter;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
-
 use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
+use PhpOffice\PhpSpreadsheet\Writer\Xls as XlsWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xls as XlsReader;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 
 /**
