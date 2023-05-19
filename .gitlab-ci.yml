@@ -1,23 +1,13 @@
+variables:
+    WEB_DOCUMENT_ROOT: /web
+
+image: webdevops/php8.2-apache
+
+before_script:
+  - bash ci/docker_install.sh > /dev/null
 
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
-  stage: build
-  script:
-    - "~/composer.phar install"
-
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
-  script:
-    - ""
-
-
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: dev
-  script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
