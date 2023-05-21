@@ -5,7 +5,7 @@ namespace Thor\Message\Part;
 use Thor\Message\Headers\Headers;
 use Thor\Message\Headers\ContentTransferEncoding;
 
-abstract class Part
+abstract class Part implements PartInterface
 {
 
     public function __construct(
@@ -30,17 +30,15 @@ abstract class Part
         $this->headers['Content-Type'] = "{$this->getMimeType()}$parameter";
     }
 
-    public function getHeaders(): Headers
+    final public function getHeaders(): Headers
     {
         return $this->headers;
     }
 
-    public function getMimeType(): string
+    final public function getMimeType(): string
     {
         return "{$this->mediaType}/{$this->mediaSubType}";
     }
-
-    abstract public function getBody(): string;
 
     public function __toString(): string
     {
@@ -48,7 +46,7 @@ abstract class Part
         return "{$this->getHeaders()}\r\n$body\r\n";
     }
 
-    public function chunk(string $text): string
+    final public function chunk(string $text): string
     {
         if ($this->encoding === null) {
             return $text;
