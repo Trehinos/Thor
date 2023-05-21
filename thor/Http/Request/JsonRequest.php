@@ -4,8 +4,8 @@ namespace Thor\Http\Request;
 
 use JsonException;
 use Thor\Http\Uri;
-use Thor\Stream\Stream;
 use Thor\Http\ProtocolVersion;
+use Thor\FileSystem\Stream\Stream;
 
 /**
  * A class too create Json APIs.

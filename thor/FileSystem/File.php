@@ -2,17 +2,8 @@
 
 namespace Thor\FileSystem;
 
-use Thor\Stream\Stream;
+use Thor\FileSystem\Stream\Stream;
 
-// TODO : Add methods to modify the content of the stream.
-
-/**
- *
- */
-
-/**
- *
- */
 class File
 {
 

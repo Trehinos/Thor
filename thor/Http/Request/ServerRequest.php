@@ -5,7 +5,7 @@ namespace Thor\Http\Request;
 use thor\Http\UriInterface;
 use JetBrains\PhpStorm\Pure;
 use Thor\Http\ProtocolVersion;
-use Thor\Stream\StreamInterface;
+use Thor\FileSystem\Stream\StreamInterface;
 use Thor\Framework\Factories\ServerRequestFactory;
 
 /**

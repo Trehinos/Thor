@@ -4,9 +4,9 @@ namespace Thor\Framework\Factories;
 
 use Thor\Common\Guid;
 use Twig\TwigFunction;
-use Thor\Web\WebServer;
-use Thor\Web\Assets\Asset;
+use Thor\Http\Web\WebServer;
 use Thor\Http\Routing\Router;
+use Thor\Http\Web\Assets\Asset;
 use Thor\Http\Security\SecurityInterface;
 use Symfony\Component\VarDumper\VarDumper;
 

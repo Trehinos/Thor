@@ -4,13 +4,13 @@ namespace Thor\Framework\Commands;
 
 use Stringable;
 use BackedEnum;
-use Thor\Globals;
 use ReflectionEnum;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 use ReflectionException;
 use Thor\Cli\Console\Mode;
+use Thor\Framework\Globals;
 use Thor\Cli\Console\Color;
 use Thor\FileSystem\Folder;
 use ReflectionClassConstant;

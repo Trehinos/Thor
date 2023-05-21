@@ -3,7 +3,7 @@
 namespace Thor\Cli\Daemon;
 
 use Throwable;
-use Thor\Debug\ThorException;
+use Thor\Common\Debug\ThorException;
 
 class DaemonException extends ThorException
 {

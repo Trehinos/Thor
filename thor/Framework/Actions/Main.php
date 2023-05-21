@@ -2,8 +2,8 @@
 
 namespace Thor\Framework\Actions;
 
-use Thor\Globals;
-use Thor\Web\WebController;
+use Thor\Framework\Globals;
+use Thor\Http\Web\WebController;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod};
 

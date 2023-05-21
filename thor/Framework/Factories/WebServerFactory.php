@@ -2,11 +2,11 @@
 
 namespace Thor\Framework\Factories;
 
-use Thor\Web\WebServer;
+use Thor\Http\Web\WebServer;
 use Thor\Http\Routing\Router;
 use JetBrains\PhpStorm\ArrayShape;
-use Thor\Configuration\Configuration;
 use Thor\Http\Security\SecurityInterface;
+use Thor\Common\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;
 
 /**
@@ -24,9 +24,9 @@ final class WebServerFactory
     }
 
     /**
-     * @param Configuration $config
+     * @param \Thor\Common\Configuration\Configuration $config
      *
-     * @return WebServer
+     * @return \Thor\Http\Web\WebServer
      * @throws \ReflectionException
      * @throws \ReflectionException
      */
@@ -51,13 +51,13 @@ final class WebServerFactory
     }
 
     /**
-     * @param Router                 $router
-     * @param SecurityInterface|null $security
-     * @param PdoCollection          $pdoCollection
-     * @param Configuration          $language
-     * @param Configuration|null     $twig_config
+     * @param Router                                        $router
+     * @param SecurityInterface|null                        $security
+     * @param PdoCollection                                 $pdoCollection
+     * @param \Thor\Common\Configuration\Configuration      $language
+     * @param \Thor\Common\Configuration\Configuration|null $twig_config
      *
-     * @return WebServer
+     * @return \Thor\Http\Web\WebServer
      * @throws \Exception
      * @throws \Exception
      */

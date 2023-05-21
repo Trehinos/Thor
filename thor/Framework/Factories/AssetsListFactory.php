@@ -3,17 +3,17 @@
 namespace Thor\Framework\Factories;
 
 use Exception;
-use Thor\Thor;
-use Thor\Globals;
-use Thor\Web\Assets\Asset;
+use Thor\Framework\Thor;
+use Thor\Framework\Globals;
 use Thor\Http\UriInterface;
-use Thor\Web\Assets\AssetType;
+use Thor\Http\Web\Assets\Asset;
 use Thor\FileSystem\FileSystem;
-use Thor\Web\Assets\MergedAsset;
-use Thor\Web\Assets\CachedAsset;
-use Thor\Web\Assets\AssetInterface;
-use Thor\Configuration\Configuration;
-use Thor\Configuration\ConfigurationFromFile;
+use Thor\Http\Web\Assets\AssetType;
+use Thor\Http\Web\Assets\MergedAsset;
+use Thor\Http\Web\Assets\CachedAsset;
+use Thor\Http\Web\Assets\AssetInterface;
+use Thor\Common\Configuration\Configuration;
+use Thor\Common\Configuration\ConfigurationFromFile;
 use Thor\Framework\Configurations\TwigConfiguration;
 use Thor\Framework\Configurations\RoutesConfiguration;
 
@@ -28,9 +28,9 @@ final class AssetsListFactory
 {
 
     /**
-     * @param Configuration $assetsDataList
+     * @param \Thor\Common\Configuration\Configuration $assetsDataList
      *
-     * @return Asset[]
+     * @return \Thor\Http\Web\Assets\Asset[]
      *
      * @throws Exception
      */
@@ -102,7 +102,7 @@ final class AssetsListFactory
     }
 
     /**
-     * @return Asset[]
+     * @return \Thor\Http\Web\Assets\Asset[]
      * @throws Exception
      * @throws Exception
      */

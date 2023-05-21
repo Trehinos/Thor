@@ -3,9 +3,9 @@
 namespace Thor\Framework\Factories;
 
 use Thor\Http\Uri;
-use Thor\Stream\Stream;
 use Thor\Http\ProtocolVersion;
 use Thor\Http\Request\HttpMethod;
+use Thor\FileSystem\Stream\Stream;
 use Thor\Http\Request\UploadedFile;
 use Thor\Http\Request\ServerRequest;
 use Thor\Http\Request\ServerRequestInterface;

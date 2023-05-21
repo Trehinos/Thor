@@ -2,9 +2,9 @@
 
 namespace Thor\Http\Server;
 
-use Thor\Debug\Logger;
-use Thor\Debug\LogLevel;
 use Thor\Http\Routing\Route;
+use Thor\Common\Debug\Logger;
+use Thor\Common\Debug\LogLevel;
 use Thor\Http\Response\ResponseInterface;
 use Thor\Http\Request\ServerRequestInterface;
 

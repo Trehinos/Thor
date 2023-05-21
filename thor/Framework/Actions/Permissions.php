@@ -2,10 +2,10 @@
 
 namespace Thor\Framework\Actions;
 
-use Thor\Globals;
 use Thor\Framework\{Managers\UserManager};
-use Thor\Web\WebServer;
-use Thor\Web\WebController;
+use Thor\Framework\Globals;
+use Thor\Http\Web\WebServer;
+use Thor\Http\Web\WebController;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Http\Security\Authorization\Authorization;
 use Thor\Framework\Configurations\LanguageDictionary;

@@ -4,7 +4,7 @@ namespace Thor\Framework\Configurations;
 
 use Thor\Http\Server\HttpServer;
 use Thor\Http\Security\SecurityInterface;
-use Thor\Configuration\ConfigurationFromFile;
+use Thor\Common\Configuration\ConfigurationFromFile;
 
 final class SecurityConfiguration extends ConfigurationFromFile
 {

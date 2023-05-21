@@ -4,11 +4,11 @@ namespace Thor\Http\Request;
 
 use Thor\Http\Uri;
 use Thor\Http\Message;
-use Thor\Stream\Stream;
 use thor\Http\UriInterface;
 use JetBrains\PhpStorm\Pure;
 use Thor\Http\ProtocolVersion;
-use Thor\Stream\StreamInterface;
+use Thor\FileSystem\Stream\Stream;
+use Thor\FileSystem\Stream\StreamInterface;
 
 
 /**
@@ -24,11 +24,11 @@ class Request extends Message implements RequestInterface
 {
 
     /**
-     * @param ProtocolVersion $version
-     * @param array           $headers
-     * @param StreamInterface $body
-     * @param HttpMethod      $method
-     * @param UriInterface    $target
+     * @param ProtocolVersion                         $version
+     * @param array                                   $headers
+     * @param \Thor\FileSystem\Stream\StreamInterface $body
+     * @param HttpMethod                              $method
+     * @param UriInterface                            $target
      */
     #[Pure]
     public function __construct(

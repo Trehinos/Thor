@@ -3,8 +3,8 @@
 namespace Thor\Http\Client;
 
 use Thor\Http\Uri;
-use Thor\Web\Headers;
-use Thor\Debug\Logger;
+use Thor\Http\Web\Headers;
+use Thor\Common\Debug\Logger;
 use Thor\Http\Request\HttpMethod;
 use Thor\Http\Request\RequestFactory;
 use Thor\Http\Request\RequestInterface;

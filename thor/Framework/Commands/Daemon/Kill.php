@@ -2,11 +2,11 @@
 
 namespace Thor\Framework\Commands\Daemon;
 
-use Thor\Cli\CliKernel;
 use Thor\Cli\Daemon\Daemon;
 use Thor\Cli\Command\Command;
 use Thor\Cli\Daemon\DaemonState;
-use Thor\Configuration\ConfigurationFromFile;
+use Thor\Framework\Kernels\CliKernel;
+use Thor\Common\Configuration\ConfigurationFromFile;
 
 final class Kill extends Command
 {

@@ -7,7 +7,7 @@ use Thor\Cli\Console\Color;
 use Thor\Cli\Command\Command;
 use Thor\Cli\Console\Console;
 use Thor\Cli\Console\FixedOutput;
-use Thor\Configuration\ThorConfiguration;
+use Thor\Framework\Configurations\ThorConfiguration;
 
 /**
  * @package          Thor/Framework

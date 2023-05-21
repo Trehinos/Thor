@@ -3,8 +3,8 @@
 namespace Thor\Tools;
 
 use Exception;
-use Thor\Web\Node;
-use Thor\Web\Html;
+use Thor\Http\Web\Node;
+use Thor\Http\Web\Html;
 use ReflectionException;
 use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoExtension\PdoHandler;

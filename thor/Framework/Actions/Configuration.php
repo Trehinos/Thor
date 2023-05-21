@@ -2,11 +2,13 @@
 
 namespace Thor\Framework\Actions;
 
-use Thor\Globals;
-use Thor\Web\WebController;
+use Thor\Framework\Globals;
+use Thor\Common\Configuration\{Configuration as YmlConfiguration};
+use Thor\Http\Web\WebController;
+use Thor\Framework\Configurations\ThorConfiguration;
+use Thor\Common\Configuration\ConfigurationFromFile;
 use Twig\Error\{LoaderError, SyntaxError, RuntimeError};
 use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod};
-use Thor\Configuration\{ThorConfiguration, ConfigurationFromFile, Configuration as YmlConfiguration};
 
 /**
  * Configuration edition controller.
@@ -28,7 +30,7 @@ final class Configuration extends WebController
      * @throws RuntimeError
      * @throws SyntaxError
      *
-     * @see ThorConfiguration
+     * @see \Thor\Framework\ThorConfiguration
      *
      */
     #[Route('config-config', '/config/general')]
@@ -60,7 +62,7 @@ final class Configuration extends WebController
      *
      * @return Response
      *
-     * @see ThorConfiguration
+     * @see \Thor\Framework\Configurations\ThorConfiguration
      *
      */
     #[Route('config-save', '/config-save/general', HttpMethod::POST)]

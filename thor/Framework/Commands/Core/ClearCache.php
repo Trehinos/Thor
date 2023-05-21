@@ -2,7 +2,7 @@
 
 namespace Thor\Framework\Commands\Core;
 
-use Thor\Globals;
+use Thor\Framework\Globals;
 use Thor\Cli\Console\Color;
 use Thor\FileSystem\Folder;
 use Thor\Cli\Command\Command;

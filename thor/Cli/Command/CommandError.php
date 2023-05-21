@@ -2,7 +2,7 @@
 
 namespace Thor\Cli\Command;
 
-use Thor\Debug\ThorException;
+use Thor\Common\Debug\ThorException;
 
 class CommandError extends ThorException
 {

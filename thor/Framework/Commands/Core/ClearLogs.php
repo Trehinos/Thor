@@ -2,10 +2,10 @@
 
 namespace Thor\Framework\Commands\Core;
 
-use Thor\Globals;
-use Thor\Debug\Logger;
+use Thor\Framework\Globals;
 use Thor\Cli\Console\Color;
 use Thor\FileSystem\Folder;
+use Thor\Common\Debug\Logger;
 use Thor\Cli\Command\Command;
 
 /**

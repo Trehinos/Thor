@@ -2,14 +2,14 @@
 
 namespace Thor\Framework\Factories;
 
-use Thor\Thor;
 use Thor\Http\{Routing\Router};
-use Thor\Globals;
 use Twig\Environment;
-use Thor\Web\WebServer;
+use Thor\Framework\Thor;
+use Thor\Framework\Globals;
+use Thor\Http\Web\WebServer;
 use Twig\Loader\FilesystemLoader;
-use Thor\Configuration\Configuration;
-use Thor\Configuration\ThorConfiguration;
+use Thor\Common\Configuration\Configuration;
+use Thor\Framework\Configurations\ThorConfiguration;
 
 /**
  * A factory to create the Twig Environment from configuration.
@@ -24,7 +24,7 @@ final class TwigFactory
     private Environment $twig;
 
     /**
-     * @param Configuration $twigConfig
+     * @param \Thor\Common\Configuration\Configuration $twigConfig
      */
     public function __construct(Configuration $twigConfig)
     {
@@ -32,7 +32,7 @@ final class TwigFactory
     }
 
     /**
-     * @param Configuration $twig_config
+     * @param \Thor\Common\Configuration\Configuration $twig_config
      *
      * @return Environment
      */
@@ -53,8 +53,8 @@ final class TwigFactory
     }
 
     /**
-     * @param WebServer     $server
-     * @param Configuration $twig_config
+     * @param WebServer                                $server
+     * @param \Thor\Common\Configuration\Configuration $twig_config
      *
      * @return Environment
      * @throws \Exception

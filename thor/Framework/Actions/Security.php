@@ -2,8 +2,9 @@
 
 namespace Thor\Framework\Actions;
 
-use Thor\Web\WebController;
-use Thor\Debug\{Logger, LogLevel};
+use Thor\Common\Debug\{LogLevel};
+use Thor\Common\Debug\Logger;
+use Thor\Http\Web\WebController;
 use Thor\Http\{Routing\Route, Request\HttpMethod, Response\ResponseInterface};
 
 /**

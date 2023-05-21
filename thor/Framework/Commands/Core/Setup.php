@@ -3,7 +3,7 @@
 namespace Thor\Framework\Commands\Core;
 
 use Exception;
-use Thor\Debug\Logger;
+use Thor\Common\Debug\Logger;
 use Thor\Cli\Command\Command;
 use Thor\Cli\Console\{Mode, Color};
 use Thor\Database\PdoExtension\PdoRequester;

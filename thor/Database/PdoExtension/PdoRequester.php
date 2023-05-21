@@ -2,11 +2,11 @@
 
 namespace Thor\Database\PdoExtension;
 
-use Thor\Thor;
 use PDOStatement;
 use PDOException;
-use Thor\Debug\Logger;
-use Thor\Debug\LogLevel;
+use Thor\Framework\Thor;
+use Thor\Common\Debug\Logger;
+use Thor\Common\Debug\LogLevel;
 
 /**
  * Defines a class which performs SQL queries on a PDO connection wrapped in a PdoHandler.

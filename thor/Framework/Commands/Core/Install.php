@@ -2,9 +2,9 @@
 
 namespace Thor\Framework\Commands\Core;
 
-use Thor\Debug\Logger;
+use Thor\Common\Debug\Logger;
 use Thor\Cli\Command\Command;
-use Thor\Database\PdoExtension\PdoMigrator;
+use Thor\Framework\Database\PdoMigrator;
 
 /**
  * @package          Thor/Framework

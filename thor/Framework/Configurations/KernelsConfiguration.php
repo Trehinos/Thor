@@ -2,7 +2,7 @@
 
 namespace Thor\Framework\Configurations;
 
-use Thor\Configuration\ConfigurationFromResource;
+use Thor\Common\Configuration\ConfigurationFromResource;
 
 final class KernelsConfiguration extends ConfigurationFromResource
 {

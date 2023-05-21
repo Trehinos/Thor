@@ -3,8 +3,9 @@
 namespace Thor\Http\Response;
 
 use JetBrains\PhpStorm\Pure;
+use Thor\FileSystem\Stream\{Stream};
 use Thor\Http\{Message, ProtocolVersion};
-use Thor\Stream\{Stream, StreamInterface};
+use Thor\FileSystem\Stream\StreamInterface;
 
 /**
  * Describes a Response of an HTTP Request.

@@ -3,9 +3,9 @@
 namespace Thor\Http\Request;
 
 use RuntimeException;
-use Thor\Stream\Stream;
 use InvalidArgumentException;
-use Thor\Stream\StreamInterface;
+use Thor\FileSystem\Stream\Stream;
+use Thor\FileSystem\Stream\StreamInterface;
 
 /**
  * This class can be used to manage files uploaded by an HTML form.

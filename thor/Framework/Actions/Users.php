@@ -3,15 +3,15 @@
 namespace Thor\Framework\Actions;
 
 use Thor\Framework\{Managers\UserManager};
-use Thor\Web\WebServer;
 use Thor\Tools\DataTables;
-use Thor\Web\WebController;
+use Thor\Http\Web\WebServer;
+use Thor\Http\Web\WebController;
 use Thor\Framework\Security\DbUser;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Http\Response\ResponseFactory;
-use Thor\Configuration\ConfigurationFromFile;
 use Thor\Http\Security\Authorization\Authorization;
+use Thor\Common\Configuration\ConfigurationFromFile;
 use Thor\Http\{Routing\Route, Response\Response, Request\HttpMethod, Response\ResponseInterface};
 
 /**
@@ -30,7 +30,7 @@ final class Users extends WebController
     private DataTables $userTable;
 
     /**
-     * @param WebServer $webServer
+     * @param \Thor\Http\Web\WebServer $webServer
      *
      * @throws \ReflectionException
      */

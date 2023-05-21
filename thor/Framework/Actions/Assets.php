@@ -2,9 +2,9 @@
 
 namespace Thor\Framework\Actions;
 
-use Thor\Web\WebServer;
-use Thor\Web\WebController;
+use Thor\Http\Web\WebServer;
 use Thor\Http\Routing\Route;
+use Thor\Http\Web\WebController;
 use Thor\Http\Response\Response;
 use Thor\Http\Response\ResponseFactory;
 use Thor\Framework\Factories\AssetsListFactory;
@@ -20,7 +20,7 @@ final class Assets extends WebController
 {
 
     /**
-     * @param WebServer $webServer
+     * @param \Thor\Http\Web\WebServer $webServer
      */
     public function __construct(WebServer $webServer)
     {

@@ -3,11 +3,11 @@
 namespace Thor\Framework\Managers;
 
 use Exception;
-use Thor\Debug\{Logger};
-use Thor\Globals;
+use Thor\Common\Debug\{Logger};
+use Thor\Framework\Globals;
 use Thor\Framework\Security\DbUser;
-use Thor\Configuration\ConfigurationFromFile;
 use Thor\Database\PdoTable\{Criteria, CrudHelper};
+use Thor\Common\Configuration\ConfigurationFromFile;
 use Thor\Framework\Configurations\LanguageDictionary;
 
 

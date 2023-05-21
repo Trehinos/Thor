@@ -152,7 +152,7 @@ env/set:
             description: 'PROD | DEBUG | DEV'
             
 core/repl:
-    class: Thor\Cli\Repl
+    class: Thor\Framework\Commands\Repl
     command: repl
     description: "launch a REPL"
 

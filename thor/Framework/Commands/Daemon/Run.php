@@ -4,7 +4,8 @@ namespace Thor\Framework\Commands\Daemon;
 
 use Thor\Cli\Command\Command;
 use Thor\Cli\Command\CommandError;
-use Thor\Cli\{Console\Mode, Console\Color, Console\Console, Daemon\DaemonState, Daemon\DaemonScheduler};
+use Thor\Framework\Kernels\DaemonScheduler;
+use Thor\Cli\{Console\Mode, Console\Color, Console\Console, Daemon\DaemonState};
 
 
 /**

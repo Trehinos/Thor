@@ -2,8 +2,8 @@
 
 namespace Thor\Http\Request;
 
-use Thor\Thor;
-use Thor\Web\Headers;
+use Thor\Framework\Thor;
+use Thor\Http\Web\Headers;
 use Thor\Http\UriInterface;
 use Thor\Common\Types\Strings;
 

@@ -3,10 +3,10 @@
 namespace Thor\Framework\Configurations;
 
 use PDO;
-use Thor\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoHandler;
+use Thor\Common\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;
-use Thor\Configuration\ConfigurationFromFile;
+use Thor\Common\Configuration\ConfigurationFromFile;
 
 final class DatabasesConfiguration extends ConfigurationFromFile
 {
@@ -17,7 +17,7 @@ final class DatabasesConfiguration extends ConfigurationFromFile
     }
 
     /**
-     * @return Configuration
+     * @return \Thor\Common\Configuration\Configuration
      */
     public function getDefault(): Configuration
     {

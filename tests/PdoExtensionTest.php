@@ -3,9 +3,9 @@
 namespace Tests;
 
 use PDO;
-use Thor\Globals;
-use Thor\Debug\Logger;
-use Thor\Debug\LogLevel;
+use Thor\Framework\Globals;
+use Thor\Common\Debug\Logger;
+use Thor\Common\Debug\LogLevel;
 use PHPUnit\Framework\TestCase;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoExtension\PdoRequester;

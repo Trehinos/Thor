@@ -4,7 +4,7 @@ namespace Thor\Framework\Factories;
 
 use DateTime;
 use Twig\TwigFilter;
-use Thor\Web\WebServer;
+use Thor\Http\Web\WebServer;
 use Thor\Common\Types\Strings;
 use Thor\Common\Types\DateTimes;
 
@@ -23,7 +23,7 @@ final class TwigFilterFactory
     }
 
     /**
-     * @param WebServer $server
+     * @param \Thor\Http\Web\WebServer $server
      *
      * @return TwigFilter
      */

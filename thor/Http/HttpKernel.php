@@ -3,10 +3,12 @@
 namespace Thor\Http;
 
 use Thor\Env;
-use Thor\Thor;
+use Thor\Common\Debug\{LogLevel};
+use Thor\Framework\Thor;
+use ReflectionException;
+use Thor\Common\Debug\Logger;
 use Thor\Process\KernelInterface;
-use Thor\Debug\{Logger, LogLevel};
-use Thor\Configuration\Configuration;
+use Thor\Common\Configuration\Configuration;
 use Thor\Framework\Factories\Configurations;
 use Thor\Framework\Factories\{HttpServerFactory, ServerRequestFactory};
 use Thor\Http\{Server\HttpServer, Response\ResponseInterface, Request\ServerRequestInterface};
@@ -35,7 +37,6 @@ class HttpKernel implements KernelInterface
      * It loads the configuration files and use it to instantiate the Kernel.
      *
      * @see Configurations::getHttpConfiguration()
-     * @see Thor::getConfigurationPool()
      */
     public static function create(): static
     {
@@ -64,11 +65,11 @@ class HttpKernel implements KernelInterface
     /**
      * This static function returns a new HttpKernel with specified configuration.
      *
-     * @param Configuration $config
+     * @param \Thor\Common\Configuration\Configuration $config
      *
      * @return static
-     * @throws \ReflectionException
-     * @throws \ReflectionException
+     * @throws ReflectionException
+     * @throws ReflectionException
      */
     public static function createFromConfiguration(Configuration $config): static
     {

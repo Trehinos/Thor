@@ -2,7 +2,7 @@
 
 namespace Thor\Message;
 
-use Thor\Thor;
+use Thor\Framework\Thor;
 use Thor\Message\Part\FilePart;
 use Thor\Message\Part\Multipart;
 use Thor\Message\Headers\Headers;

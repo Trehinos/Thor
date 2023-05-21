@@ -2,13 +2,13 @@
 
 namespace Thor\Cli\Command;
 
-use Thor\Cli\CliKernel;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
 use Thor\Process\Executable;
 use Thor\Cli\Console\Console;
 use Thor\Cli\Console\FixedOutput;
 use JetBrains\PhpStorm\ArrayShape;
+use Thor\Framework\Kernels\CliKernel;
 
 abstract class Command implements Executable
 {

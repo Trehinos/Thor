@@ -2,10 +2,10 @@
 
 namespace Thor\Framework\Factories;
 
-use Thor\Globals;
+use Thor\Framework\Globals;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Configuration\Configuration;
-use Thor\Configuration\ThorConfiguration;
+use Thor\Common\Configuration\Configuration;
+use Thor\Framework\Configurations\ThorConfiguration;
 use Thor\Framework\Configurations\TwigConfiguration;
 use Thor\Framework\Configurations\LanguageDictionary;
 use Thor\Framework\Configurations\RoutesConfiguration;
@@ -82,7 +82,7 @@ final class Configurations
     }
 
     /**
-     * @return Configuration
+     * @return \Thor\Common\Configuration\Configuration
      */
     public static function getBaseConfiguration(): Configuration
     {

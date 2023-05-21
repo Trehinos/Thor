@@ -7,7 +7,7 @@ use DateInterval;
 use JsonException;
 use DateTimeInterface;
 use DateTimeImmutable;
-use Thor\Stream\Stream;
+use Thor\FileSystem\Stream\Stream;
 use JetBrains\PhpStorm\ExpectedValues;
 use Thor\Http\{UriInterface, ProtocolVersion};
 

@@ -2,9 +2,9 @@
 
 namespace Tests;
 
-use Thor\Globals;
-use Thor\FileSystem\FileSystem;
+use Thor\Framework\Globals;
 use Thor\FileSystem\Folder;
+use Thor\FileSystem\FileSystem;
 use PHPUnit\Framework\TestCase;
 
 final class FileSystemTest extends TestCase

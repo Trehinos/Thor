@@ -2,18 +2,13 @@
 
 namespace Thor\Framework\Commands\Daemon;
 
-use Thor\Globals;
+use Thor\Framework\Globals;
 use Thor\Cli\Command\Command;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Cli\Command\CommandError;
+use Thor\Framework\Kernels\DaemonScheduler;
 use Thor\Framework\Factories\Configurations;
-use Thor\Cli\{Console\Mode,
-    Daemon\Daemon,
-    Console\Color,
-    Console\Console,
-    Daemon\DaemonState,
-    Console\FixedOutput,
-    Daemon\DaemonScheduler};
+use Thor\Cli\{Console\Mode, Daemon\Daemon, Console\Color, Console\Console, Daemon\DaemonState, Console\FixedOutput};
 
 
 /**

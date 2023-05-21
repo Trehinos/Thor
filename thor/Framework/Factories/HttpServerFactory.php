@@ -4,8 +4,8 @@ namespace Thor\Framework\Factories;
 
 use Thor\Http\Routing\Router;
 use Thor\Http\Server\HttpServer;
-use Thor\Configuration\Configuration;
 use Thor\Http\Security\SecurityInterface;
+use Thor\Common\Configuration\Configuration;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Framework\Configurations\SecurityConfiguration;
 

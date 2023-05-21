@@ -3,9 +3,9 @@
 namespace Thor\Framework\Daemons;
 
 use DateTime;
-use Thor\Thor;
 use DateInterval;
-use Thor\Globals;
+use Thor\Framework\Thor;
+use Thor\Framework\Globals;
 use Thor\Cli\Daemon\Daemon;
 use Thor\FileSystem\Folder;
 use Thor\Framework\Configurations\TwigConfiguration;

@@ -2,12 +2,13 @@
 
 namespace Thor\Http\Server;
 
+use Thor\Common\Debug\{Logger};
 use InvalidArgumentException;
-use Thor\Debug\{Logger, LogLevel};
-use Thor\Configuration\Configuration;
+use Thor\Common\Debug\LogLevel;
 use JetBrains\PhpStorm\ExpectedValues;
 use Thor\Http\Response\ResponseFactory;
 use Thor\Http\Security\SecurityInterface;
+use Thor\Common\Configuration\Configuration;
 use Thor\Database\PdoExtension\{PdoHandler, PdoRequester, PdoCollection};
 use Thor\Http\{Uri,
     UriInterface,
@@ -30,10 +31,10 @@ class HttpServer implements RequestHandlerInterface
     private ?ServerRequestInterface $request = null;
 
     /**
-     * @param Router                 $router
-     * @param SecurityInterface|null $security
-     * @param PdoCollection          $pdoCollection
-     * @param Configuration          $language
+     * @param Router                                   $router
+     * @param SecurityInterface|null                   $security
+     * @param PdoCollection                            $pdoCollection
+     * @param \Thor\Common\Configuration\Configuration $language
      */
     public function __construct(
         private Router $router,

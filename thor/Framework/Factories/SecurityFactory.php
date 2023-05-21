@@ -7,8 +7,8 @@ use Thor\Http\Routing\Router;
 use Thor\Http\Security\Firewall;
 use Thor\Http\Server\HttpServer;
 use Thor\Framework\Security\DbUser;
-use Thor\Configuration\Configuration;
 use Thor\Framework\Security\HttpSecurity;
+use Thor\Common\Configuration\Configuration;
 use Thor\Framework\Configurations\SecurityConfiguration;
 
 /**
@@ -55,9 +55,9 @@ final class SecurityFactory
     }
 
     /**
-     * @param \Thor\Http\Security\SecurityInterface $security
-     * @param Router                                $router
-     * @param Configuration                         $firewallConfig
+     * @param \Thor\Http\Security\SecurityInterface    $security
+     * @param Router                                   $router
+     * @param \Thor\Common\Configuration\Configuration $firewallConfig
      *
      * @return \Thor\Http\Security\Firewall
      */

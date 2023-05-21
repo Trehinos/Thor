@@ -4,7 +4,7 @@ namespace Thor\Http\Request;
 
 use RuntimeException;
 use InvalidArgumentException;
-use Thor\Stream\StreamInterface;
+use Thor\FileSystem\Stream\StreamInterface;
 
 /**
  * Value object representing a file uploaded through an HTTP request.
