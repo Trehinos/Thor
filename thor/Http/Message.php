@@ -3,7 +3,7 @@
 namespace Thor\Http;
 
 use JetBrains\PhpStorm\Pure;
-use Thor\FileSystem\Stream\StreamInterface;
+use Thor\Common\Stream\StreamInterface;
 
 /**
  * Default base implementation of MessageInterface.
@@ -20,7 +20,7 @@ class Message implements MessageInterface
     /**
      * @param ProtocolVersion                         $version
      * @param array                                   $headers
-     * @param \Thor\FileSystem\Stream\StreamInterface $body
+     * @param \Thor\Common\Stream\StreamInterface $body
      */
     public function __construct
     (

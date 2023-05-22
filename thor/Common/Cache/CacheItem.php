@@ -1,15 +1,15 @@
 <?php
 
-namespace Thor\Cache;
+namespace Thor\Common\Cache;
 
 use DateInterval;
 use DateTimeImmutable;
 use Thor\Tools\Structures\Item;
 
 /**
- * This class represent an element of a Thor\Cache\Cache object.
+ * This class represent an element of a Thor\Common\Cache\Cache object.
  *
- * @internal         used and never exposed by Thor\Cache\Cache
+ * @internal         used and never exposed by Thor\Common\Cache\Cache
  * @package          Thor/Cache
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT

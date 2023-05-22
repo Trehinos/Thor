@@ -2,14 +2,14 @@
 
 namespace Thor\Http\Response;
 
-use DateTime;
 use DateInterval;
-use JsonException;
-use DateTimeInterface;
+use DateTime;
 use DateTimeImmutable;
-use Thor\FileSystem\Stream\Stream;
+use DateTimeInterface;
 use JetBrains\PhpStorm\ExpectedValues;
-use Thor\Http\{UriInterface, ProtocolVersion};
+use JsonException;
+use Thor\Common\Stream\Stream;
+use Thor\Http\{ProtocolVersion, UriInterface};
 
 /**
  * A factory to create standard Responses.

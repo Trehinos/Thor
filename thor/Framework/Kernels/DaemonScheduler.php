@@ -2,20 +2,20 @@
 
 namespace Thor\Framework\Kernels;
 
-use Throwable;
-use Thor\{Framework\Thor,
-    Framework\Globals,
-    Cli\Daemon\Daemon,
-    FileSystem\Folder,
-    Common\Debug\Logger,
-    Common\Debug\LogLevel,
-    Cli\Daemon\DaemonState,
-    Process\KernelInterface,
+use Thor\{Cli\Daemon\Daemon,
     Cli\Daemon\DaemonException,
     Cli\Daemon\DaemonInterface,
+    Cli\Daemon\DaemonState,
     Common\Configuration\Configuration,
+    Common\Debug\Logger,
+    Common\Debug\LogLevel,
+    Common\FileSystem\Folder,
+    Framework\Configurations\ThorConfiguration,
     Framework\Factories\Configurations,
-    Framework\Configurations\ThorConfiguration};
+    Framework\Globals,
+    Framework\Thor,
+    Process\KernelInterface};
+use Throwable;
 
 /**
  * This class is the Kernel of thor daemons.

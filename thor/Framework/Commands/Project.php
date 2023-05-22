@@ -2,21 +2,21 @@
 
 namespace Thor\Framework\Commands;
 
-use Stringable;
 use BackedEnum;
-use ReflectionEnum;
 use ReflectionClass;
+use ReflectionClassConstant;
+use ReflectionEnum;
+use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
-use ReflectionException;
-use Thor\Cli\Console\Mode;
-use Thor\Framework\Globals;
-use Thor\Cli\Console\Color;
-use Thor\FileSystem\Folder;
-use ReflectionClassConstant;
+use Stringable;
 use Thor\Cli\Command\Command;
+use Thor\Cli\Console\Color;
+use Thor\Cli\Console\Mode;
+use Thor\Common\FileSystem\FileSystem;
+use Thor\Common\FileSystem\Folder;
 use Thor\Common\Types\Strings;
-use Thor\FileSystem\FileSystem;
+use Thor\Framework\Globals;
 
 /**
  * @package          Thor/Framework

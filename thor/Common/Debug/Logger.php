@@ -2,14 +2,14 @@
 
 namespace Thor\Common\Debug;
 
-use Thor\Env;
 use DateTime;
-use Throwable;
-use Stringable;
 use JsonException;
-use Thor\Framework\Thor;
-use Thor\FileSystem\Folder;
+use Stringable;
+use Thor\Common\FileSystem\Folder;
 use Thor\Common\Types\Strings;
+use Thor\Env;
+use Thor\Framework\Thor;
+use Throwable;
 
 /**
  * Logger class for Thor.

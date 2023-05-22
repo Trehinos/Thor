@@ -3,19 +3,19 @@
 namespace Thor\Framework\Factories;
 
 use Exception;
-use Thor\Framework\Thor;
-use Thor\Framework\Globals;
-use Thor\Http\UriInterface;
-use Thor\Http\Web\Assets\Asset;
-use Thor\FileSystem\FileSystem;
-use Thor\Http\Web\Assets\AssetType;
-use Thor\Http\Web\Assets\MergedAsset;
-use Thor\Http\Web\Assets\CachedAsset;
-use Thor\Http\Web\Assets\AssetInterface;
 use Thor\Common\Configuration\Configuration;
 use Thor\Common\Configuration\ConfigurationFromFile;
-use Thor\Framework\Configurations\TwigConfiguration;
+use Thor\Common\FileSystem\FileSystem;
 use Thor\Framework\Configurations\RoutesConfiguration;
+use Thor\Framework\Configurations\TwigConfiguration;
+use Thor\Framework\Globals;
+use Thor\Framework\Thor;
+use Thor\Http\UriInterface;
+use Thor\Http\Web\Assets\Asset;
+use Thor\Http\Web\Assets\AssetInterface;
+use Thor\Http\Web\Assets\AssetType;
+use Thor\Http\Web\Assets\CachedAsset;
+use Thor\Http\Web\Assets\MergedAsset;
 
 /**
  *

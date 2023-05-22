@@ -2,8 +2,8 @@
 
 namespace Thor\Http\Web\Assets;
 
+use Thor\Common\Stream\Stream;
 use Thor\Http\Uri;
-use Thor\FileSystem\Stream\Stream;
 
 /**
  *

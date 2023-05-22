@@ -2,10 +2,10 @@
 
 namespace Thor\Http\Request;
 
-use RuntimeException;
 use InvalidArgumentException;
-use Thor\FileSystem\Stream\Stream;
-use Thor\FileSystem\Stream\StreamInterface;
+use RuntimeException;
+use Thor\Common\Stream\Stream;
+use Thor\Common\Stream\StreamInterface;
 
 /**
  * This class can be used to manage files uploaded by an HTML form.
@@ -19,7 +19,7 @@ class UploadedFile implements UploadedFileInterface
     private bool $moved = false;
 
     /**
-     * @param StreamInterface $stream
+     * @param \Thor\Common\FileSystem\Stream\\Thor\Common\Stream\StreamInterface $stream
      * @param int|null        $size
      * @param UploadError     $errorStatus
      * @param string|null     $clientFilename

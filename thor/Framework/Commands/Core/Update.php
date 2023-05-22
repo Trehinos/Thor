@@ -2,16 +2,16 @@
 
 namespace Thor\Framework\Commands\Core;
 
-use Thor\Framework\Globals;
-use Thor\Cli\Daemon\Daemon;
-use Thor\FileSystem\Folder;
-use Thor\Common\Debug\Logger;
-use Thor\Cli\Command\Command;
-use Thor\Cli\Daemon\DaemonState;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Framework\Kernels\CliKernel;
-use Thor\Framework\Database\PdoMigrator;
+use Thor\Cli\Command\Command;
+use Thor\Cli\Daemon\Daemon;
+use Thor\Cli\Daemon\DaemonState;
 use Thor\Common\Configuration\ConfigurationFromFile;
+use Thor\Common\Debug\Logger;
+use Thor\Common\FileSystem\Folder;
+use Thor\Framework\Database\PdoMigrator;
+use Thor\Framework\Globals;
+use Thor\Framework\Kernels\CliKernel;
 
 /**
  * @package          Thor/Framework

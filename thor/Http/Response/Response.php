@@ -3,9 +3,9 @@
 namespace Thor\Http\Response;
 
 use JetBrains\PhpStorm\Pure;
-use Thor\FileSystem\Stream\{Stream};
+use Thor\Common\Stream\{Stream};
+use Thor\Common\Stream\StreamInterface;
 use Thor\Http\{Message, ProtocolVersion};
-use Thor\FileSystem\Stream\StreamInterface;
 
 /**
  * Describes a Response of an HTTP Request.
@@ -20,7 +20,7 @@ class Response extends Message implements ResponseInterface
     /**
      * @param ProtocolVersion $version
      * @param array           $headers
-     * @param StreamInterface $body
+     * @param \Thor\Common\FileSystem\Stream\StreamInterface $body
      * @param HttpStatus      $status
      */
     #[Pure]

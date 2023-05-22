@@ -1,8 +1,8 @@
 <?php
 
-namespace Thor\FileSystem;
+namespace Thor\Common\FileSystem;
 
-use Thor\FileSystem\Stream\Stream;
+use Thor\Common\Stream\Stream;
 
 class File
 {

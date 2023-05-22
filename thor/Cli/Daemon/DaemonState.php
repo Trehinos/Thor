@@ -2,13 +2,13 @@
 
 namespace Thor\Cli\Daemon;
 
-use DateTime;
 use DateInterval;
+use DateTime;
 use DateTimeImmutable;
-use Thor\Framework\Globals;
-use Thor\FileSystem\Folder;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Yaml\Yaml;
+use Thor\Common\FileSystem\Folder;
+use Thor\Framework\Globals;
 
 /**
  * Represents the current state of a Thor daemon.

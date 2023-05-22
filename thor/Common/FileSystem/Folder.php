@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\FileSystem;
+namespace Thor\Common\FileSystem;
 
 /**
  * Static utilities to perform operations on folders.

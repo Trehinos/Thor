@@ -2,9 +2,9 @@
 
 namespace Thor\Http\Request;
 
-use RuntimeException;
 use InvalidArgumentException;
-use Thor\FileSystem\Stream\StreamInterface;
+use RuntimeException;
+use Thor\Common\Stream\StreamInterface;
 
 /**
  * Value object representing a file uploaded through an HTTP request.
@@ -28,7 +28,7 @@ interface UploadedFileInterface
      * If the moveTo() method has been called previously, this method MUST raise
      * an exception.
      *
-     * @return StreamInterface Stream representation of the uploaded file.
+     * @return \Thor\Common\FileSystem\Stream\\Thor\Common\Stream\StreamInterface Stream representation of the uploaded file.
      * @throws RuntimeException in cases when no stream is available or can be
      *     created.
      */

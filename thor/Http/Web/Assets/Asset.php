@@ -2,12 +2,12 @@
 
 namespace Thor\Http\Web\Assets;
 
-use Thor\Http\Web\Node;
+use Thor\Common\Stream\Stream;
+use Thor\Common\Stream\StreamInterface;
 use Thor\Framework\Thor;
-use Thor\Http\Web\TextNode;
 use Thor\Http\UriInterface;
-use Thor\FileSystem\Stream\Stream;
-use Thor\FileSystem\Stream\StreamInterface;
+use Thor\Http\Web\Node;
+use Thor\Http\Web\TextNode;
 
 /**
  *
@@ -24,7 +24,7 @@ class Asset extends Node implements AssetInterface
      * @param string                                       $name
      * @param string                                       $filename
      * @param UriInterface                                 $uri
-     * @param \Thor\FileSystem\Stream\StreamInterface|null $file
+     * @param \Thor\Common\Stream\StreamInterface|null $file
      */
     public function __construct(
         public readonly AssetType $type,

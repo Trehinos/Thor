@@ -1,10 +1,10 @@
 <?php
 
-namespace Thor\FileSystem\Stream;
+namespace Thor\Common\Stream;
 
-use Throwable;
-use RuntimeException;
 use InvalidArgumentException;
+use RuntimeException;
+use Throwable;
 
 /**
  * Provides an object-oriented style for stream operations.

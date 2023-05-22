@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\FileSystem;
+namespace Thor\Common\FileSystem;
 
 use JetBrains\PhpStorm\Pure;
 

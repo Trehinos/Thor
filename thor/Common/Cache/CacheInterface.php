@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\Cache;
+namespace Thor\Common\Cache;
 
 use DateInterval;
 use InvalidArgumentException;

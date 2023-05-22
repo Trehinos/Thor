@@ -3,7 +3,7 @@
 namespace Thor\Http;
 
 use InvalidArgumentException;
-use Thor\FileSystem\Stream\StreamInterface;
+use Thor\Common\Stream\StreamInterface;
 
 /**
  * HTTP messages consist of requests from a client to a server and responses
@@ -170,7 +170,7 @@ interface MessageInterface
     /**
      * Gets the body of the message.
      *
-     * @return StreamInterface Returns the body as a stream.
+     * @return \Thor\Common\Stream\StreamInterface Returns the body as a stream.
      */
     public function getBody(): StreamInterface;
 
@@ -183,7 +183,7 @@ interface MessageInterface
      * immutability of the message, and MUST return a new instance that has the
      * new body stream.
      *
-     * @param \Thor\FileSystem\Stream\StreamInterface $body Body.
+     * @param \Thor\Common\Stream\StreamInterface $body Body.
      *
      * @return static
      * @throws InvalidArgumentException When the body is not valid.

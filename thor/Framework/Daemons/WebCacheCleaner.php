@@ -2,13 +2,13 @@
 
 namespace Thor\Framework\Daemons;
 
-use DateTime;
 use DateInterval;
-use Thor\Framework\Thor;
-use Thor\Framework\Globals;
+use DateTime;
 use Thor\Cli\Daemon\Daemon;
-use Thor\FileSystem\Folder;
+use Thor\Common\FileSystem\Folder;
 use Thor\Framework\Configurations\TwigConfiguration;
+use Thor\Framework\Globals;
+use Thor\Framework\Thor;
 
 final class WebCacheCleaner extends Daemon
 {

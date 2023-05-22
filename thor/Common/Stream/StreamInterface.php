@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\FileSystem\Stream;
+namespace Thor\Common\Stream;
 
 use RuntimeException;
 

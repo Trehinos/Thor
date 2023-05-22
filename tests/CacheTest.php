@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Thor\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use Thor\Common\Cache\Cache;
 
 final class CacheTest extends TestCase
 {

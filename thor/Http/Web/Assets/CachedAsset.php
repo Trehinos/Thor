@@ -3,11 +3,11 @@
 namespace Thor\Http\Web\Assets;
 
 use DateInterval;
-use Thor\Http\Uri;
 use DateTimeImmutable;
 use Thor\Common\Debug\Logger;
 use Thor\Common\Debug\LogLevel;
-use Thor\FileSystem\Stream\Stream;
+use Thor\Common\Stream\Stream;
+use Thor\Http\Uri;
 
 /**
  *
