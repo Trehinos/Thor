@@ -6,11 +6,7 @@ use Thor\Http\Response\Response;
 use Thor\Http\Response\HttpStatus;
 
 /**
- *
- */
-
-/**
- *
+ * TODO
  */
 class MultiAjax extends WebController
 {

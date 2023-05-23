@@ -5,8 +5,9 @@ namespace Thor\Framework\Managers;
 use Exception;
 use Thor\Common\Debug\{Logger};
 use Thor\Framework\Globals;
+use Thor\Database\PdoTable\{CrudHelper};
 use Thor\Framework\Security\DbUser;
-use Thor\Database\PdoTable\{Criteria, CrudHelper};
+use Thor\Database\PdoExtension\Criteria;
 use Thor\Common\Configuration\ConfigurationFromFile;
 use Thor\Framework\Configurations\LanguageDictionary;
 

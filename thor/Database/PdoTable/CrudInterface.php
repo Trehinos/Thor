@@ -2,13 +2,17 @@
 
 namespace Thor\Database\PdoTable;
 
+use Thor\Database\PdoExtension\Criteria;
+use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
+
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRows.
  *
- * @template         T
- * @package          Thor\Database\PdoTable
- * @copyright (2021) Sébastien Geldreich
- * @license          MIT
+ * @template            T
+ * @template-implements PdoRowInterface
+ * @package             Thor\Database\PdoTable
+ * @copyright (2021)    Sébastien Geldreich
+ * @license             MIT
  */
 interface CrudInterface
 {

@@ -37,4 +37,8 @@ class Argument
         return $array;
     }
 
+    public function isValid(string $argument): bool {
+        return ($this->validationFunction)($argument);
+    }
+
 }

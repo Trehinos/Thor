@@ -20,7 +20,7 @@ interface AuthenticatorInterface
      * After the execution of this method, `$this->current()` MUST return `$identity->getIdentifier()`
      * and `$this->isAuthenticated()` MUST return true.
      *
-     * @param \Thor\Http\Security\Identity\IdentityInterface $identity
+     * @param IdentityInterface $identity
      *
      * @return void
      */

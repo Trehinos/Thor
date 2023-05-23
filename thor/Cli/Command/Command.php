@@ -164,64 +164,13 @@ abstract class Command implements Executable
     /**
      * @throws CommandError
      *
-     * TODO : refactor in CommandParser
      * @see CommandParser
      */
     #[ArrayShape(['command' => "mixed|null|string", 'arguments' => "array", 'options' => "array"])]
     public function parse(array $commandLineArguments): array
     {
         $parser = CommandParser::with($this);
-        $commandFromLine = array_shift($commandLineArguments);
-        if ($commandFromLine !== $this->command) {
-            throw CommandError::mismatch($this, $commandFromLine);
-        }
-
-        $waitingForValue = false;
-        $options = [];
-        $arguments = [];
-        $nextArg = 0;
-        foreach ($commandLineArguments as $argumentFromLine) {
-            if ($waitingForValue !== false) {
-                $options[$waitingForValue->name] = $argumentFromLine;
-                $waitingForValue = false;
-                continue;
-            }
-
-            if ($parser->isOption($argumentFromLine)) {
-                $option = $parser->parseOption($argumentFromLine);
-                foreach (
-                match ($option['type'] ?? '') {
-                    'short' => $option['option'],
-                    'long' => [$option['option']]
-                } as $opt
-                ) {
-                    if ($opt === null) {
-                        continue;
-                    }
-                    if ($opt?->cumulative) {
-                        $options[$opt->name] = ($options[$opt->name] ?? 0) + 1;
-                    } else {
-                        $options[$opt->name] = true;
-                    }
-                }
-                if (array_key_exists('value', $option) && is_string($option['value'] ?? null)) {
-                    $options[$option['option']?->name] = $option['value'];
-                } elseif ($option['waiting'] ?? false) {
-                    $waitingForValue = $option['for'];
-                }
-                continue;
-            }
-
-            if ($nextArg !== null) {
-                $arguments[$this->arguments[$nextArg++]->name] = $argumentFromLine;
-            }
-        }
-
-        return [
-            'command'   => $commandFromLine,
-            'arguments' => $arguments,
-            'options'   => $options,
-        ];
+        return $parser->parse($this, $commandLineArguments);
     }
 
 }

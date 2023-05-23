@@ -2,6 +2,8 @@
 
 namespace Thor\Cli\Command;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 final class CommandParser
 {
 
@@ -11,6 +13,67 @@ final class CommandParser
      */
     private function __construct(private array $optionsSpecification, private array $argumentsSpecification)
     {
+    }
+
+    /**
+     * @throws CommandError
+     *
+     * @see CommandParser
+     */
+    #[ArrayShape(['command' => "mixed|null|string", 'arguments' => "array", 'options' => "array"])]
+    public function parse(Command $command, array $commandLineArguments): array
+    {
+        $commandFromLine = array_shift($commandLineArguments);
+        if ($commandFromLine !== $command->command) {
+            throw CommandError::mismatch($command, $commandFromLine);
+        }
+
+        $waitingForValue = false;
+        $options = [];
+        $arguments = [];
+        $nextArg = 0;
+        foreach ($commandLineArguments as $argumentFromLine) {
+            if ($waitingForValue !== false) {
+                $options[$waitingForValue->name] = $argumentFromLine;
+                $waitingForValue = false;
+                continue;
+            }
+
+            if ($this->isOption($argumentFromLine)) {
+                $option = $this->parseOption($argumentFromLine);
+                foreach (
+                match ($option['type'] ?? '') {
+                    'short' => $option['option'],
+                    'long'  => [$option['option']]
+                } as $opt
+                ) {
+                    if ($opt === null) {
+                        continue;
+                    }
+                    if ($opt?->cumulative) {
+                        $options[$opt->name] = ($options[$opt->name] ?? 0) + 1;
+                    } else {
+                        $options[$opt->name] = true;
+                    }
+                }
+                if (array_key_exists('value', $option) && is_string($option['value'] ?? null)) {
+                    $options[$option['option']?->name] = $option['value'];
+                } elseif ($option['waiting'] ?? false) {
+                    $waitingForValue = $option['for'];
+                }
+                continue;
+            }
+
+            if ($nextArg !== null) {
+                $arguments[$command->arguments[$nextArg++]->name] = $argumentFromLine;
+            }
+        }
+
+        return [
+            'command'   => $commandFromLine,
+            'arguments' => $arguments,
+            'options'   => $options,
+        ];
     }
 
     public static function with(Command $command): self
@@ -51,7 +114,9 @@ final class CommandParser
                 'type'    => 'long',
                 'option'  => $this->option($option),
                 'value'   => $value,
-                'waiting' => $value === null && ($this->option($option)?->hasValue ?? false) && !($this->option($option)?->cumulative),
+                'waiting' => $value === null && ($this->option($option)?->hasValue ?? false) && !($this->option(
+                        $option
+                    )?->cumulative),
             ];
         }
         $commandLineArgument = trim($commandLineArgument, '-');

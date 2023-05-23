@@ -17,7 +17,7 @@ final class Globals
     /**
      * The project's folder.
      */
-    public const CODE_DIR = __DIR__ . '/../';
+    public const CODE_DIR = __DIR__ . '/../../';
 
     /**
      * The folder where lies binary files and Cli scripts.

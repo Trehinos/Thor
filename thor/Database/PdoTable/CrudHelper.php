@@ -11,6 +11,7 @@ namespace Thor\Database\PdoTable;
 use Exception;
 use TypeError;
 use JetBrains\PhpStorm\Pure;
+use Thor\Database\PdoExtension\Criteria;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\PdoExtension\PdoArrayCrud;
 use Thor\Database\PdoTable\PdoTable\AbstractPdoRow;

@@ -3,7 +3,6 @@
 namespace Thor\Database\PdoExtension;
 
 use JetBrains\PhpStorm\Pure;
-use Thor\Database\PdoTable\Criteria;
 
 /**
  * For class CrudHelper : SQL CRUD operation requester for PdoRows.
