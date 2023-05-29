@@ -1,0 +1,69 @@
+### June : resources.yml
+#                   OnMap   Gather-able     Limited |||     Build   Train   Search
+# Type: Building    X       X               X               x       x
+# Type: Precious    X       X               X               x       x       x
+# Type: People              x                                               x
+# Type: Product                                             x       x       x
+
+people:
+    - "Technique"
+    - "Culture"
+    - "Strength"
+city:
+    - "Wealth"
+    - "Science"
+    - "Energy"
+primary:
+    - wood
+    - stone
+    - bronze
+    - gold
+    - iron
+    - coal
+    - steel
+    - copper
+    - petrol
+    - aluminium
+    - hydrogen
+    - uranium
+material:
+    wood plank: 5[wood]
+    wood rod: 5=1[wood]
+    stone brick: 10[stone]
+    bronze rod: 2=3[bronze]
+    iron plate: 15[iron]+7[wood]/15[iron]+2[coal]
+    iron rod: 1[iron]+1[wood]/5=5[iron]+2[coal]
+    steel plate: 15[iron]+4[coal]
+    steel rod: 3=10[iron]+4[coal]
+    copper plate: 13[copper]
+    aluminium plate: 7[aluminum]
+    ..:
+    oil: 5[petrol]+5[water]
+    heavy petrol: 5[petrol]+5[water]
+    plastique: 2[heavy petrol]
+    plastique plank: 4[plastique]
+    plastique rod: 2=1[plastique]
+    ...:
+    protium: 10[hydrogen]+5[energy]
+tools:
+    stone hammer: 1[wood rod]+1[stone brick]
+    hammer: 1[wood rod]+1[bronze rod]
+    axe: 2[wood rod]+1[bronze rod]
+    hoe: 2=1[wood plank]+2[bronze rod]
+    pickaxe: 2=1[wood plank]+2[iron rod]
+    oar: 2=4[wood rod]+1[wood plank]
+base:
+    wheel: 2[wood plank]
+    advanced wheel: 2[wood plank]+1[iron plate]
+    frame: 4[wood rod]+2[wood plank]
+weapons:
+    bow: 1[wood rod]
+    giant bow: 10[wood rod]
+    bronze gladius: 2[bronze rod]
+    iron gladius: 1[iron rod]
+    iron sword: 2[iron rod]
+    long sword: 2[steel rod]
+unit-base:
+    chariot: 4[wheel]+1[frame]
+    slipway: 3[frame]
+
