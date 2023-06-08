@@ -55,22 +55,18 @@ class ConfigurationFromResource extends Configuration
 
     /**
      * @param Configuration $configuration
-     * @param string        $name
-     * @param bool          $staticResource
+     * @param string $name
      *
      * @return bool
      */
-    public static function writeTo(Configuration $configuration, string $name, bool $staticResource = false): bool
+    public static function writeTo(Configuration $configuration, string $name): bool
     {
         $str = Yaml::dump(
             $configuration->getArrayCopy(),
             6,
             flags: Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK | Yaml::DUMP_NULL_AS_TILDE
         );
-        return file_put_contents(
-                   ($staticResource ? Globals::STATIC_DIR : Globals::CONFIG_DIR) . "$name.yml",
-                   $str
-               ) !== false;
+        return file_put_contents(Globals::STATIC_DIR . "$name.yml", $str) !== false;
     }
 
     public function write(string $name, bool $staticResource = false): bool
@@ -80,10 +76,7 @@ class ConfigurationFromResource extends Configuration
             6,
             flags: Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK | Yaml::DUMP_NULL_AS_TILDE
         );
-        return file_put_contents(
-                ($staticResource ? Globals::STATIC_DIR : Globals::CONFIG_DIR) . "$name.yml",
-                $str
-            ) !== false;
+        return file_put_contents(Globals::STATIC_DIR . "$name.yml", $str) !== false;
     }
 
 }

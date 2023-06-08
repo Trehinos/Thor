@@ -3,10 +3,10 @@
 namespace Thor\Framework\Managers;
 
 use Exception;
+use Thor\Configuration\ConfigurationFromResource;
 use Thor\Globals;
-use Thor\Debug\{Logger, LogLevel};
+use Thor\Debug\Logger;
 use Thor\Framework\Security\DbUser;
-use Thor\Configuration\ConfigurationFromFile;
 use Thor\Database\PdoTable\{Criteria, CrudHelper};
 use Thor\Framework\Configurations\LanguageDictionary;
 
@@ -54,7 +54,7 @@ final class UserManager
     {
         return array_map(
             self::getPermissionLabelsFunction(),
-            ConfigurationFromFile::get('permissions', true)->getArrayCopy()
+            ConfigurationFromResource::get('permissions', true)->getArrayCopy()
         );
     }
 

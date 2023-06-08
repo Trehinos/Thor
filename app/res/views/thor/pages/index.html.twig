@@ -3,38 +3,24 @@
 {% block titlebar %}{{ icon('book', 'fas', true) }} {{ DICT.index.title }}{% endblock %}
 
 {% block page %}
-    <div class="alert alert-info mb-5">
-        {{ DICT.index.thor_description }}
-    </div>
-    <div class="row">
-        <div class="col-6">
-            <div class="card">
-                <div class="card-body">
-                    {{ DICT.index.documentation_text }}
-                </div>
-                <div class="card-footer">
-                    <button onclick="menuClick($('#btn-documentation'))" class="box" style="background: #469">
-                        {{ icon('book box-icon') }}
-                        <span class="box-text">{{ DICT.index.documentation_button }}</span>
-                    </button>
-                </div>
-            </div>
+    <div class="container">
+        <div class="alert alert-info mb-2">
+            {{ DICT.index.thor_description }}
         </div>
-        <div class="col-6">
-            <div class="card">
-                <div class="card-body">
-                    {{ DICT.index.features_text }}
-                </div>
-                <div class="card-footer">
-                    <button onclick="menuClick($('#btn-users'))" class="box" style="background: #832">
-                        {{ icon('users box-icon') }}
-                        <span class="box-text">{{ DICT.index.users_button }}</span>
-                    </button>
-                    <button onclick="menuClick($('#btn-manage-permissions'))" class="box" style="background: #a60">
-                        {{ icon('gavel box-icon') }}
-                        <span class="box-text">{{ DICT.index.permissions_button }}</span>
-                    </button>
-                </div>
+        <div class="row">
+            <div class="col-6">
+                <thor-panel description="{{ DICT.index.documentation_text }}">
+                    <thor-button menu-target="btn-documentation" icon="book"
+                                 color="#469">{{ DICT.index.documentation_button }}</thor-button>
+                </thor-panel>
+            </div>
+            <div class="col-6">
+                <thor-panel description="{{ DICT.index.features_text }}">
+                    <thor-button menu-target="btn-users" icon="users"
+                                 color="#832">{{ DICT.index.users_button }}</thor-button>
+                    <thor-button menu-target="btn-manage-permissions" icon="gavel"
+                                 color="#a60">{{ DICT.index.permissions_button }}</thor-button>
+                </thor-panel>
             </div>
         </div>
     </div>

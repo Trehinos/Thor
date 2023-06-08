@@ -65,7 +65,7 @@ final class ThorConfiguration extends ConfigurationFromFile
      */
     public function env(): ?Env
     {
-        return Env::tryFrom($this['env'] ?? null) ?? Env::DEV;
+        return Env::tryFrom(strtoupper($this['env'] ?? 'DEV')) ?? Env::DEV;
     }
 
     /**
