@@ -9,7 +9,7 @@ use Thor\Structures\Collection\Collection;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoExtension\PdoRequester;
 
-final class CollectionTest extends TestCase
+final class BioTest extends TestCase
 {
 
     public function testCollection(): void
@@ -25,6 +25,11 @@ final class CollectionTest extends TestCase
         $this->assertTrue($collection->isList());
 
         $crud = new CrudHelper(DbUser::class, new PdoRequester(new PdoHandler('dsn')));
+
+    }
+
+    public function testNeuron() : void
+    {
 
     }
 

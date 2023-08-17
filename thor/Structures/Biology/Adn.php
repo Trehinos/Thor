@@ -7,7 +7,7 @@ use Exception;
 /**
  * Describe an ADN codon or an ADN sequence.
  */
-final class Adn
+class Adn
 {
 
     public function __construct(private array $nucleus = [])
@@ -20,6 +20,8 @@ final class Adn
      * @param int $size
      *
      * @return static
+     * 
+     * @throws Exception
      */
     public static function random(int $size): self
     {
