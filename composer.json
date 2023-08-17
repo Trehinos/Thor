@@ -20,6 +20,8 @@
     "autoload": {
         "psr-4": {
             "Thor\\": "thor/",
+            "Ems\\": "ems/core/",
+            "Ems\\Packages\\": "ems/packages/",
             "App\\": "app/src/"
         }
     },
