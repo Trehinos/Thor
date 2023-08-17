@@ -2,9 +2,9 @@
 
 namespace Thor\Framework\Commands\Http;
 
-use Thor\Process\Command;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
+use Thor\Cli\Command\Command;
 use Thor\Framework\Factories\RouterFactory;
 use Thor\Framework\Configurations\RoutesConfiguration;
 

@@ -1,0 +1,78 @@
+<template id="thor-vendors-css">{{ asset("thor-css") }}{{ asset("vendors-css") }}</template>
+
+<script>
+
+    const E = {
+        create: (type = "div", classes = "", text = null) => {
+            let e = document.createElement(type);
+            e.setAttribute("class", classes);
+            if (text !== null) {
+                e.textContent = text;
+            }
+            return e;
+        },
+        icon: (type) => {
+            return E.create("i", `fas fa-${type}`);
+        },
+        template: (id) => {
+            return document.getElementById(id);
+        }
+    };
+
+    class ThorElement extends HTMLElement {
+        constructor(type = "div", classes = "", text = null) {
+            super();
+            let styles = E.template("thor-vendors-css").cloneNode(true).innerHTML;
+            this.shadow = this.attachShadow({mode: "open"});
+            this.shadow.innerHTML = styles;
+            this.root = E.create(type, classes, text);
+        }
+    }
+
+    class ThorButton extends ThorElement {
+        constructor() {
+            super("button", "box");
+            let menuTarget = this.getAttribute("menu-target");
+            let link = this.getAttribute("link");
+            let icon = this.getAttribute("icon") ?? "circle";
+            let text = this.textContent;
+            let color = this.getAttribute("color");
+
+            if (link !== null) {
+                this.root.setAttribute("onclick", `window.location.href = "${link}";`);
+            } else if (menuTarget !== null) {
+                this.root.setAttribute("onclick", `menuClick($('#${menuTarget}'))`);
+            }
+            if (color !== null) {
+                this.root.setAttribute("style", `background: ${color};`)
+            }
+            if (icon !== null) {
+                this.root.appendChild(E.icon(`${icon} box-icon`));
+            }
+            this.root.appendChild(E.create("span", "box-text", text));
+            this.shadow.appendChild(this.root);
+        }
+    }
+
+    class ThorPanel extends ThorElement {
+        constructor() {
+            super("div", "card");
+            let description = this.getAttribute("description") ?? "";
+
+            let body = E.create("div", "card-body", description);
+            this.root.appendChild(body);
+
+            let footer = E.create("div", "card-footer");
+            for (let node of this.childNodes) {
+                footer.appendChild(node.cloneNode(true));
+            }
+            this.root.appendChild(footer);
+            this.shadow.appendChild(this.root);
+
+        }
+    }
+
+    customElements.define("thor-button", ThorButton);
+    customElements.define("thor-panel", ThorPanel);
+
+</script>

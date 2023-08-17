@@ -1,10 +1,9 @@
 <?php
 
-namespace Thor\Cli;
+namespace Thor\Cli\Daemon;
 
 use DateTime;
 use Throwable;
-use Thor\Process\Executable;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
@@ -16,7 +15,7 @@ use JetBrains\PhpStorm\ArrayShape;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-abstract class Daemon implements Executable
+abstract class Daemon implements DaemonInterface
 {
 
     /**

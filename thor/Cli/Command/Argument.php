@@ -1,8 +1,6 @@
 <?php
 
-namespace Thor\Process;
-
-use Thor\Configuration\Configuration;
+namespace Thor\Cli\Command;
 
 class Argument
 {

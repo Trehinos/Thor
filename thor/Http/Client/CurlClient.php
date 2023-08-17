@@ -26,10 +26,20 @@ final class CurlClient implements ClientInterface
     private ?CurlHandle $curl;
     private ?RequestInterface $preparedRequest = null;
     private array $responseHeaders = [];
+    private array $curlOptions = [];
 
-    public function __construct()
+    private array $authInfo = [];
+
+    public function __construct(array $curlOptions = [], ?string $basicUser = null, ?string $basicPwd = null)
     {
         $this->curl = curl_init();
+        $this->curlOptions = $curlOptions;
+        if ($basicUser !== null && $basicPwd !== null) {
+            $this->authInfo = [
+                'user'     => $basicUser,
+                'password' => $basicPwd,
+            ];
+        }
     }
 
     /**
@@ -74,26 +84,34 @@ final class CurlClient implements ClientInterface
     {
         $this->preparedRequest = $request;
         $this->responseHeaders = [];
-        curl_setopt_array($this->curl, [
-            CURLOPT_USERAGENT      => 'Thor/CurlClient',
-            CURLOPT_URL            => $request->getRequestTarget(),
-            CURLOPT_HTTPHEADER     => self::toHeadersLines($request->getHeaders()),
-            CURLOPT_HTTPGET        => $request->getMethod() === HttpMethod::GET,
-            CURLOPT_POST           => $request->getMethod() === HttpMethod::POST,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADERFUNCTION => function (CurlHandle $curlHandle, string $headerString) {
-                $header = explode(':', $headerString, 2);
-                if (count($header) === 2) {
-                    $this->responseHeaders[strtolower(trim($header[0]))][] = trim($header[1]);
-                }
-                return strlen($headerString);
-            },
-        ]);
+        curl_setopt_array(
+            $this->curl,
+            $this->curlOptions + [
+                CURLOPT_USERAGENT      => 'Thor/CurlClient',
+                CURLOPT_URL            => $request->getRequestTarget(),
+                CURLOPT_HTTPHEADER     => self::toHeadersLines($request->getHeaders()),
+                CURLOPT_HTTPGET        => $request->getMethod() === HttpMethod::GET,
+                CURLOPT_POST           => $request->getMethod() === HttpMethod::POST,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADERFUNCTION => function (CurlHandle $curlHandle, string $headerString) {
+                    $header = explode(':', $headerString, 2);
+                    if (count($header) === 2) {
+                        $this->responseHeaders[strtolower(trim($header[0]))][] = trim($header[1]);
+                    }
+                    return strlen($headerString);
+                },
+            ]
+        );
+        if (!empty($this->authInfo)) {
+            curl_setopt($this->curl, CURLOPT_USERPWD, "{$this->authInfo['user']}:{$this->authInfo['password']}");
+        }
         if ($this->preparedRequest->getMethod() !== HttpMethod::GET) {
             curl_setopt(
                 $this->curl,
                 CURLOPT_POSTFIELDS,
-                json_decode($this->preparedRequest->getBody()->getContents(), true)
+                str_ends_with($request->getHeaders()['Content-Type'] ?? '', 'json')
+                    ? $this->preparedRequest->getBody()->getContents()
+                    : json_decode($this->preparedRequest->getBody()->getContents(), true)
             );
         }
 

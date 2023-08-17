@@ -3,7 +3,7 @@
 namespace Thor\Framework\Commands\User;
 
 use Thor\Cli\Console\Color;
-use Thor\Process\Command;
+use Thor\Cli\Command\Command;
 use Thor\Framework\Security\DbUser;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Framework\Managers\UserManager;

@@ -13,9 +13,9 @@ use ReflectionProperty;
 use ReflectionException;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
-use Thor\Process\Command;
 use Thor\FileSystem\Folder;
 use ReflectionClassConstant;
+use Thor\Cli\Command\Command;
 use Thor\FileSystem\FileSystem;
 
 /**

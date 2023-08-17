@@ -6,11 +6,7 @@ use Thor\Globals;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- *
- */
-
-/**
- *
+ * @uses app/res/static
  */
 class ConfigurationFromFile extends Configuration
 {
@@ -22,43 +18,39 @@ class ConfigurationFromFile extends Configuration
      *
      * @return static
      */
-    public static function get(mixed ...$args): static
+    final public static function get(mixed ...$args): static
     {
         return static::$configurations[static::class] ??= new static(...$args);
     }
 
     /**
      * @param string $filename
-     * @param bool   $isStatic
      */
-    public function __construct(string $filename, bool $isStatic = false)
+    public function __construct(string $filename)
     {
-        parent::__construct(self::loadYml($filename, $isStatic));
+        parent::__construct(self::loadYml($filename));
     }
 
     /**
-     * Gets the configuration from a file in the resources' folder.
+     * Gets the configuration from a file in the config folder.
      *
      * @param string $name
-     * @param bool   $staticResource If false (default), search in the res/config/ folder.
-     *                               If true, search in the res/static/ folder.
      *
      * @return static
      */
-    public static function fromFile(string $name, bool $staticResource = false): static
+    public static function fromFile(string $name): static
     {
-        return new static($name, $staticResource);
+        return new static($name);
     }
 
     /**
      * @param string $name
-     * @param bool   $staticResource
      *
      * @return array
      */
-    public static function loadYml(string $name, bool $staticResource = false): array
+    public static function loadYml(string $name): array
     {
-        return Yaml::parseFile(($staticResource ? Globals::STATIC_DIR : Globals::CONFIG_DIR) . "$name.yml");
+        return Yaml::parseFile(Globals::CONFIG_DIR . "$name.yml");
     }
 
     /**

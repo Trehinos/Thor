@@ -2,21 +2,14 @@
 
 namespace Thor\Framework\Configurations;
 
-use Thor\Configuration\ConfigurationFromFile;
+use Thor\Configuration\ConfigurationFromResource;
 
-/**
- *
- */
-
-/**
- *
- */
-final class CommandsConfiguration extends ConfigurationFromFile
+final class CommandsConfiguration extends ConfigurationFromResource
 {
 
     public function __construct()
     {
-        parent::__construct('commands', true);
+        parent::__construct('commands');
     }
 
 }

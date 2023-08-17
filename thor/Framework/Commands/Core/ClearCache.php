@@ -5,7 +5,7 @@ namespace Thor\Framework\Commands\Core;
 use Thor\Globals;
 use Thor\Cli\Console\Color;
 use Thor\FileSystem\Folder;
-use Thor\Process\Command;
+use Thor\Cli\Command\Command;
 
 /**
  * @package          Thor/Framework

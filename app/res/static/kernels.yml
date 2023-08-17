@@ -1,4 +1,4 @@
 cli: Thor\Cli\CliKernel
-daemon: Thor\Cli\DaemonScheduler
+daemon: Thor\Cli\Daemon\DaemonScheduler
 api: Thor\Http\HttpKernel
 web: Thor\Web\WebKernel

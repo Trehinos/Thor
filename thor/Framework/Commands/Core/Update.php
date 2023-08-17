@@ -3,12 +3,12 @@
 namespace Thor\Framework\Commands\Core;
 
 use Thor\Globals;
-use Thor\Cli\Daemon;
 use Thor\Debug\Logger;
 use Thor\Cli\CliKernel;
-use Thor\Cli\DaemonState;
+use Thor\Cli\Daemon\Daemon;
 use Thor\FileSystem\Folder;
-use Thor\Process\Command;
+use Thor\Cli\Command\Command;
+use Thor\Cli\Daemon\DaemonState;
 use Symfony\Component\Yaml\Yaml;
 use Thor\Database\PdoExtension\PdoMigrator;
 use Thor\Configuration\ConfigurationFromFile;
@@ -41,8 +41,8 @@ final class Update extends Command
         Logger::write('[2/11] Disable daemons', print: true);
         $daemons = self::loadDaemons();
         /**
-         * @var Daemon      $daemon
-         * @var DaemonState $state
+         * @var Daemon $daemon
+         * @var DaemonState             $state
          */
         $oldStates = [];
         foreach ($daemons as ['daemon' => $daemon, 'state' => $state]) {
@@ -122,8 +122,8 @@ final class Update extends Command
         $daemons = self::loadDaemons();
 
         /**
-         * @var Daemon      $daemon
-         * @var DaemonState $state
+         * @var \Thor\Cli\Daemon\Daemon $daemon
+         * @var DaemonState             $state
          */
         foreach ($daemons as ['daemon' => $daemon, 'state' => $state]) {
             $daemonFile = Globals::STATIC_DIR . "daemons/{$daemon->getName()}.yml";

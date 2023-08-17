@@ -1,7 +1,7 @@
 app_vendor: Trehinos
 app_name: Thor
-app_version: 1.0.0
-app_version_name: 'Thor v1'
+app_version: 1.1.0
+app_version_name: 'v1.1'
 env: DEV
 lang: fr
 timezone: Europe/Paris

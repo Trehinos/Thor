@@ -3,33 +3,30 @@
         {% set is_group = item.group is defined %}
         {% if (item.authorization is defined and authorized(item.authorization)) or item.authorization is not defined %}
             {% if not is_group %}
-                <li class="nav-item">
-                    <a
-                            href="#"
+                    <button type="button"
                             id="btn-{{ item.route }}"
                             onclick="menuClick($(this));"
                             data-url="{% if item.route != '.' %}{{ url(item.route) }}{% else %}#{% endif %}"
                             data-item="{{ item.route }}"
                             title="{{ DICT.menu[item.label] ?? item.label ?? '' }}"
-                            class="nav-link {% if server.currentRouteName == item.route %}active{% endif %}"
+                            class="btn btn-light text-start m-1 w-100 {% if server.currentRouteName == item.route %}active{% endif %}"
                     >
                         {{ icon(item.icon, (item.icon_col ?? 'fas'), true) }}
                         <span class="menu-label" title="{{ item.key }}">
                             {{ DICT.menu[item.label] ?? item.label ?? '' }}
                         </span>
-                    </a>
-                </li>
+                    </button>
             {% else %}
                 {% set subactive = false %}
                 {% for sub_item in item.group %}
                     {% if sub_item.route == server.currentRouteName %}{% set subactive = true %}{% endif %}
                 {% endfor %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {% if subactive %}active{% endif %}" href="#" data-bs-toggle="dropdown">
+                <div class="dropdown">
+                    <button type="button" class="btn btn-light text-start m-1 w-100 dropdown-toggle {% if subactive %}active{% endif %}" href="#" data-bs-toggle="dropdown">
                         {{ icon(item.icon, (item.icon_col ?? 'fas'), true) }}
                         {{ DICT.menu[item.label] ?? item.label ?? '' }}
-                    </a>
-                    <ul class="dropdown-menu">
+                    </button>
+                    <ul class="dropdown-menu w-100">
                         {% if item.route is defined %}
                             <li>
                                 <a
@@ -81,7 +78,7 @@
                             {% endif %}
                         {% endfor %}
                     </ul>
-                </li>
+                </div>
             {% endif %}
         {% endif %}
     {% endfor %}
@@ -95,11 +92,12 @@
         let url = $elem.data("url");
         loadPage(url, null, (response) => {
             $elem.addClass("active");
-            unselect($("#menu ul li a"));
+            unselect($("#menu .btn, #menu a"));
             if ($elem.hasClass("dropdown-item")) {
-                $elem.parent().parent().parent().find("a.dropdown-toggle").addClass("active");
+                $elem.parent().parent().parent().find("button.dropdown-toggle").addClass("active");
             }
             window.history.pushState({"html": response}, null, "?menuItem=" + $elem.data("item"));
+            $("#menu .btn-close").click();
         });
     }
 </script>

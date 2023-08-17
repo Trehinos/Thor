@@ -4,7 +4,7 @@ namespace Thor\Framework\Commands;
 
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
-use Thor\Process\Command;
+use Thor\Cli\Command\Command;
 use Thor\Cli\Console\Console;
 use Thor\Cli\Console\FixedOutput;
 use Thor\Configuration\ThorConfiguration;

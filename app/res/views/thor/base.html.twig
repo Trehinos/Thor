@@ -5,100 +5,77 @@
 {% endblock %}
 
 {% block body_html %}
-    <nav id="menu" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-        {% block menu %}
-            <div class="container-fluid">
-                <span id="title" class="navbar-brand" style="color: #bbb;">
-                    {{ icon('bolt', 'fad', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;') }}
-                    <span style="color: #fa4">{{ appName|upper }}</span>
-                </span>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-navbar">
-                    {{ icon('list-alt') }}
-                </button>
-                <div class="collapse navbar-collapse" id="menu-navbar">
-                    {{ render('menu') }}
-                    <ul class="navbar-nav me-0">
-                        <li class="nav-item dropdown"
-                            title="Revoir les notifications"
+    {% block menu %}
+        <div class="offcanvas offcanvas-start" id="menu">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                {{ render('menu') }}
+            </div>
+
+            <div id="footer" class="pt-2">
+                <div>
+                    {{ icon('bolt', 'far fa-lg', true, 'color: #db0') }}
+                    {{ appVendor }}/{{ appName }} {{ versionName|raw }} [{{ version }}]
+                </div>
+                <div>{{ icon('copyright', 'far fa-lg', true)|raw }} 2022 {{ appVendor }}</div>
+                {% block footer %}
+                    <div class="mt-1 pt-1 border-top border-secondary" style="font-size: 0.9em;">
+                        {{ icon('info-circle', 'fas fa-lg', true)|raw }}
+                        <button
+                                id="btn-about"
+                                onclick="menuClick($(this));"
+                                data-url="{{ url('about') }}"
+                                data-item="about">
+                            {{ DICT.footer.about }}
+                        </button>
+                        <button
+                                id="btn-legal"
+                                onclick="menuClick($(this));"
+                                data-url="{{ url('legal') }}"
+                                data-item="legal"
                         >
-                            <a class="nav-link" href="#"
-                               onclick="showToasts();" id="btn-show-toasts"
-                            >
-                                <i class="fas fa-comment-alt-exclamation {% if _messages|length > 0 %}text-danger{% endif %} fa-lg"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                <i class="fas fa-user fa-lg"></i>
-                                {{ server.security.currentIdentity.identifier }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item link-danger" href="{{ url('logout') }}">
-                                        {{ icon('sign-out', 'fas') }}
-                                        {{ DICT.menu.logout }}
-                                    </a>
-                                </li>
-                                <li class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item" href="#"
-                                       onclick="Modal.load('{{ url('user-parameters-form', {public_id: server.security.currentIdentity.publicId}) }}');"
-                                    >
-                                        {{ icon('user', 'fas') }}
-                                        {{ DICT.menu.profile }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"
-                                       onclick="Modal.load('{{ url('users-change-password-form', {public_id: server.security.currentIdentity.publicId}) }}');"
-                                    >
-                                        {{ icon('lock', 'fas') }}
-                                        {{ DICT.users.change_password }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            {{ DICT.footer.legal }}
+                        </button>
+                        <button
+                                id="btn-changelog"
+                                onclick="menuClick($(this));"
+                                data-url="{{ url('changelog') }}"
+                                data-item="changelog"
+                        >
+                            {{ DICT.footer.changelog }}
+                        </button>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+        <nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <span id="title" class="navbar-brand">
+                    {{ icon('bolt', 'far fa-lg', true, 'color: #960') }}
+                    <span style="color: #333">{{ appName|upper }}</span>
+                </span>
+                <div class="collapse navbar-collapse" id="menu-navbar">
+                    <div class="input-group me-4" style="max-width: 320px;">
+                        <button class="btn btn-dark text-nowrap" href="#"
+                                data-bs-toggle="offcanvas" data-bs-target="#menu"
+                        >
+                            {{ icon("bars") }} MENU
+                        </button>
+                        <div class="input-group-text"><label for="search">{{ icon("search") }}</label></div>
+                        <input id="search" type="search" class="form-control">
+                    </div>
+                    <div class="flex-grow-1"></div>
+                    <ul class="navbar-nav me-0">
+                        {% include "thor/user-item.html.twig" %}
                     </ul>
                 </div>
             </div>
-        {% endblock %}
-    </nav>
+        </nav>
+    {% endblock %}
     <div id="content">{% block body_content %}{% endblock %}</div>
-    <div id="footer" class="pt-2">
-        <div>
-            {{ icon('bolt', 'fad fa-lg', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;')|raw }}
-            {{ appVendor }}/{{ appName }} {{ versionName|raw }} [{{ version }}]
-        </div>
-        <div>{{ icon('copyright', 'far fa-lg', true)|raw }} 2022 {{ appVendor }}</div>
-        {% block footer %}
-            <div class="mt-1 pt-1 border-top border-secondary" style="font-size: 0.9em;">
-                {{ icon('info-circle', 'fas fa-lg', true)|raw }}
-                <button
-                        id="btn-about"
-                        onclick="menuClick($(this));"
-                        data-url="{{ url('about') }}"
-                        data-item="about">
-                    {{ DICT.footer.about }}
-                </button>
-                <button
-                        id="btn-legal"
-                        onclick="menuClick($(this));"
-                        data-url="{{ url('legal') }}"
-                        data-item="legal"
-                >
-                    {{ DICT.footer.legal }}
-                </button>
-                <button
-                        id="btn-changelog"
-                        onclick="menuClick($(this));"
-                        data-url="{{ url('changelog') }}"
-                        data-item="changelog"
-                >
-                    {{ DICT.footer.changelog }}
-                </button>
-            </div>
-        {% endblock %}
-    </div>
 
     <div id="modal" class="modal" tabindex="-1" role="dialog">
         {% include "modal-base.html.twig" %}

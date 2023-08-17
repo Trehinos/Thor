@@ -2,10 +2,10 @@
 
 namespace Thor\Framework\Commands\Daemon;
 
-use Thor\Cli\Daemon;
 use Thor\Cli\CliKernel;
-use Thor\Cli\DaemonState;
-use Thor\Process\Command;
+use Thor\Cli\Daemon\Daemon;
+use Thor\Cli\Command\Command;
+use Thor\Cli\Daemon\DaemonState;
 use Thor\Configuration\ConfigurationFromFile;
 
 final class Kill extends Command

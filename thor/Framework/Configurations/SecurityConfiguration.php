@@ -6,13 +6,6 @@ use Thor\Http\Server\HttpServer;
 use Thor\Security\SecurityInterface;
 use Thor\Configuration\ConfigurationFromFile;
 
-/**
- *
- */
-
-/**
- *
- */
 final class SecurityConfiguration extends ConfigurationFromFile
 {
 

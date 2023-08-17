@@ -3,6 +3,7 @@
 namespace Thor\Framework\Factories;
 
 use Exception;
+use Thor\Configuration\ConfigurationFromResource;
 use Thor\Thor;
 use Thor\Globals;
 use Thor\Web\Assets\Asset;
@@ -108,7 +109,7 @@ final class AssetsListFactory
      */
     public static function listFromConfiguration(): array
     {
-        return self::produce(ConfigurationFromFile::fromFile('assets/list', true));
+        return self::produce(ConfigurationFromResource::fromFile('assets/list', true));
     }
 
 }

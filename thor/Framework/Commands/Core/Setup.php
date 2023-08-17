@@ -4,11 +4,11 @@ namespace Thor\Framework\Commands\Core;
 
 use Exception;
 use Thor\Debug\Logger;
+use Thor\Cli\Command\Command;
 use Thor\Cli\Console\{Mode, Color};
-use Thor\Process\Command;
-use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, SchemaHelper, Driver\Sqlite};
-use Thor\Framework\{Security\DbUser, Managers\UserManager};
 use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Framework\{Security\DbUser, Managers\UserManager};
+use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, SchemaHelper, Driver\Sqlite};
 
 /**
  * @package          Thor/Framework

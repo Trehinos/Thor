@@ -3,6 +3,7 @@
 namespace Thor;
 
 use Thor\Tools\Strings;
+use Thor\Configuration\ConfigurationFolder;
 
 /**
  * Defines some of Thor's common paths.
@@ -81,7 +82,7 @@ final class Globals
      */
     public static function path(string $pathString): string
     {
-        return Strings::interpolate($pathString, [
+        return (new ConfigurationFolder([
             'CODE'      => realpath(self::CODE_DIR),
             'BIN'       => realpath(self::BIN_DIR),
             'RESOURCES' => realpath(self::RESOURCES_DIR),
@@ -91,7 +92,7 @@ final class Globals
             'THOR'      => realpath(self::THOR_DIR),
             'VENDORS'   => realpath(self::VENDORS_DIR),
             'VAR'       => realpath(self::VAR_DIR),
-        ]);
+        ]))->getPath($pathString);
     }
 
 }

@@ -2,16 +2,9 @@
 
 namespace Thor\Framework\Configurations;
 
-use Thor\Configuration\ConfigurationFromFile;
+use Thor\Configuration\ConfigurationFromResource;
 
-/**
- *
- */
-
-/**
- *
- */
-final class RoutesConfiguration extends ConfigurationFromFile
+final class RoutesConfiguration extends ConfigurationFromResource
 {
 
     private static array $configurations = [];
@@ -31,7 +24,7 @@ final class RoutesConfiguration extends ConfigurationFromFile
      */
     public function __construct(string $type)
     {
-        parent::__construct("$type-routes", true);
+        parent::__construct("$type-routes");
     }
 
 }

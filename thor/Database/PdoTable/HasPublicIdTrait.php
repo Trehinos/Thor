@@ -37,7 +37,7 @@ trait HasPublicIdTrait
      */
     public function generatePublicId(): void
     {
-        $this->public_id = Guid::hex();
+        $this->public_id = Guid::hexString();
     }
 
 }
