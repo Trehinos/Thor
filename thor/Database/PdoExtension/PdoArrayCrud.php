@@ -174,7 +174,7 @@ final class PdoArrayCrud
      *
      * @return Criteria
      */
-    private function primaryArrayToCriteria(array $primaries): Criteria
+    public function primaryArrayToCriteria(array $primaries): Criteria
     {
         $criteria = [];
         foreach ($this->primary as $primaryKey) {

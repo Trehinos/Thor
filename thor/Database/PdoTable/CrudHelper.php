@@ -13,14 +13,14 @@ use TypeError;
 use JetBrains\PhpStorm\Pure;
 use Thor\Database\PdoExtension\PdoRequester;
 use Thor\Database\PdoExtension\PdoArrayCrud;
-use Thor\Database\PdoTable\PdoTable\AbstractPdoRow;
-use Thor\Database\PdoTable\PdoTable\PdoRowException;
-use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
+use Thor\Database\PdoTable\PdoRow\AbstractPdoRow;
+use Thor\Database\PdoTable\PdoRow\PdoRowException;
+use Thor\Database\PdoTable\PdoRow\PdoRowInterface;
 
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRows.
  *
- * @template T of PdoInterface
+ * @template T of PdoRowInterface
  * @package  Thor\Database\PdoTable
  */
 final class CrudHelper implements CrudInterface
@@ -215,7 +215,7 @@ final class CrudHelper implements CrudInterface
         array $row,
         bool $fromDb = false,
         mixed ...$constructorArguments
-    ): object {
+    ): PdoRowInterface {
         $rowObj = new $className(...$constructorArguments);
         $rowObj->fromPdoArray($row, $fromDb);
         return $rowObj;
@@ -226,7 +226,7 @@ final class CrudHelper implements CrudInterface
      *
      * @return Criteria
      */
-    private function primaryArrayToCriteria(array $primaries): Criteria
+    public function primaryArrayToCriteria(array $primaries): Criteria
     {
         $criteria = [];
         foreach ($this->primary as $primaryKey) {

@@ -2,9 +2,9 @@
 
 namespace Thor\Database\PdoTable\Driver;
 
-use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
-use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
-use Thor\Database\PdoTable\PdoTable\Attributes\PdoColumn;
+use Thor\Database\PdoTable\PdoRow\Attributes\PdoIndex;
+use Thor\Database\PdoTable\PdoRow\Attributes\PdoTable;
+use Thor\Database\PdoTable\PdoRow\Attributes\PdoColumn;
 
 /**
  *

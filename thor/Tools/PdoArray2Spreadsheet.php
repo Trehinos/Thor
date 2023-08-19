@@ -5,7 +5,7 @@ namespace Thor\Tools;
 use Thor\Tools\Spreadsheet\Builder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Thor\Structures\Collection\Collection;
-use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
+use Thor\Database\PdoTable\PdoRow\PdoRowInterface;
 
 /**
  *

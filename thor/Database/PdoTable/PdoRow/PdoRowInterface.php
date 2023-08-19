@@ -1,9 +1,8 @@
 <?php
 
-namespace Thor\Database\PdoTable\PdoTable;
+namespace Thor\Database\PdoTable\PdoRow;
 
-use Thor\Database\PdoTable\PdoTable\Attributes\PdoTable;
-use Thor\Database\PdoTable\PdoTable\Attributes\PdoIndex;
+use Thor\Database\PdoTable\PdoRow\Attributes\PdoTable;
 
 /**
  * Represents a class describing an SQL table.

@@ -88,6 +88,8 @@ interface CrudInterface
      */
     public function readMultipleBy(Criteria $criteria): array;
 
+    public function primaryArrayToCriteria(array $primaries): Criteria;
+
     /**
      * Updates all column of the corresponding row in DB.
      *

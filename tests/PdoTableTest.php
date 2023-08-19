@@ -12,7 +12,7 @@ use Thor\Database\PdoTable\SchemaHelper;
 use Thor\Database\PdoTable\Driver\Sqlite;
 use Thor\Database\PdoExtension\PdoHandler;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\PdoTable\PdoRowInterface;
+use Thor\Database\PdoTable\PdoRow\PdoRowInterface;
 
 final class PdoTableTest extends TestCase
 {
