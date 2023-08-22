@@ -13,7 +13,7 @@ use JetBrains\PhpStorm\Pure;
  * @license MIT
  */
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class PdoIndex
+class Index
 {
 
     private string $name;

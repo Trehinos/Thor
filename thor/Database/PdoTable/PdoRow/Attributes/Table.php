@@ -13,7 +13,7 @@ use Attribute;
  * @license MIT
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class PdoTable
+class Table
 {
 
     /**

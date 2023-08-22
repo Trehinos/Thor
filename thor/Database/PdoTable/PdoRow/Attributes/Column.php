@@ -14,7 +14,7 @@ use Thor\Database\PdoTable\TableType\TableTypeInterface;
  * @license          MIT
  */
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class PdoColumn
+class Column
 {
 
     /**

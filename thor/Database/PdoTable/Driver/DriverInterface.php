@@ -2,9 +2,9 @@
 
 namespace Thor\Database\PdoTable\Driver;
 
-use Thor\Database\PdoTable\PdoRow\Attributes\PdoIndex;
-use Thor\Database\PdoTable\PdoRow\Attributes\PdoTable;
-use Thor\Database\PdoTable\PdoRow\Attributes\PdoColumn;
+use Thor\Database\PdoTable\PdoRow\Attributes\Index;
+use Thor\Database\PdoTable\PdoRow\Attributes\Table;
+use Thor\Database\PdoTable\PdoRow\Attributes\Column;
 
 /**
  *
@@ -17,27 +17,27 @@ interface DriverInterface
 {
 
     /**
-     * @param PdoColumn   $column
+     * @param Column   $column
      * @param string|null $autoKey
      *
      * @return string
      */
-    public function addColumn(PdoColumn $column, ?string $autoKey = null): string;
+    public function addColumn(Column $column, ?string $autoKey = null): string;
 
     /**
-     * @param PdoIndex $index
+     * @param Index $index
      *
      * @return string
      */
-    public function addIndex(PdoIndex $index): string;
+    public function addIndex(Index $index): string;
 
     /**
-     * @param PdoTable    $table
+     * @param Table    $table
      * @param string|null $autoKey
      *
      * @return string
      */
-    public function primaryKeys(PdoTable $table, ?string $autoKey = null): string;
+    public function primaryKeys(Table $table, ?string $autoKey = null): string;
 
     /**
      * @param string $className

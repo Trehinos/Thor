@@ -3,7 +3,7 @@
 namespace Thor\Database\PdoTable;
 
 use Exception;
-use Thor\Database\PdoTable\{TableType\IntegerType, PdoRow\Attributes\PdoIndex, PdoRow\Attributes\PdoColumn};
+use Thor\Database\PdoTable\{TableType\IntegerType, PdoRow\Attributes\Index, PdoRow\Attributes\Column};
 
 /**
  * Adds an "id" column to a PdoRowInterface.
@@ -12,8 +12,8 @@ use Thor\Database\PdoTable\{TableType\IntegerType, PdoRow\Attributes\PdoIndex, P
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-#[PdoColumn('id', new IntegerType(), false)]
-#[PdoIndex(['id'], true)]
+#[Column('id', new IntegerType(), false)]
+#[Index(['id'], true)]
 trait HasIdTrait
 {
 

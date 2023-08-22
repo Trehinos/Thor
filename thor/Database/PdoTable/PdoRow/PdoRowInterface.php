@@ -2,7 +2,7 @@
 
 namespace Thor\Database\PdoTable\PdoRow;
 
-use Thor\Database\PdoTable\PdoRow\Attributes\PdoTable;
+use Thor\Database\PdoTable\PdoRow\Attributes\Table;
 
 /**
  * Represents a class describing an SQL table.
@@ -27,7 +27,7 @@ interface PdoRowInterface
     /**
      * Gets the PdoTable representing the table information of this PdoRowInterface.
      */
-    public static function getPdoTable(): PdoTable;
+    public static function getPdoTable(): Table;
 
     /**
      * Returns an array of 'column_name' => 'SQL_COLUMN_TYPE(SIZE)'.

@@ -9,9 +9,9 @@ use ReflectionException;
 use JetBrains\PhpStorm\ArrayShape;
 use Thor\Database\PdoExtension\PdoHandler;
 use DataTables\{Editor, Database, Editor\Field};
-use Thor\Database\PdoTable\PdoRow\Attributes\{PdoColumn};
+use Thor\Database\PdoTable\PdoRow\Attributes\{Column};
 use Thor\Database\PdoTable\PdoRow\PdoAttributesReader;
-use Thor\Database\PdoTable\PdoRow\Attributes\PdoTable;
+use Thor\Database\PdoTable\PdoRow\Attributes\Table;
 
 /**
  * Bridge for DataTables and PdoTable.
@@ -21,7 +21,7 @@ use Thor\Database\PdoTable\PdoRow\Attributes\PdoTable;
 final class DataTables
 {
 
-    #[ArrayShape(['table' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
+    #[ArrayShape(['table' => Table::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     private array $attributes;
 
     /**
@@ -51,7 +51,7 @@ final class DataTables
         $editor = new Editor($this->getDatabase(), $tableName, $primaries);
         $editor->field(
             array_map(
-                fn(PdoColumn $column) => (new Field($column->getName()))
+                fn(Column $column) => (new Field($column->getName()))
                     ->setFormatter($this->formatters[$column->getName()]['set'] ?? $noFormatter)
                     ->getFormatter($this->formatters[$column->getName()]['get'] ?? $noFormatter),
                 $this->getColumns()
@@ -82,7 +82,7 @@ final class DataTables
         return array_values(
             array_filter(
                 $this->attributes['columns'],
-                fn(PdoColumn $column) => empty($this->columns) || in_array($column->getName(), $this->columns)
+                fn(Column $column) => empty($this->columns) || in_array($column->getName(), $this->columns)
             )
         );
     }
@@ -111,7 +111,7 @@ final class DataTables
                                 'tr',
                                 [],
                                 array_map(
-                                    fn(PdoColumn $column) => Html::node(
+                                    fn(Column $column) => Html::node(
                                         'th',
                                         ['class' => 'bg-dark text-light'],
                                         [
@@ -128,7 +128,7 @@ final class DataTables
             ),
             'data'  => json_encode(
                 array_map(
-                    fn(PdoColumn $column) => ['data' => $column->getName()],
+                    fn(Column $column) => ['data' => $column->getName()],
                     $this->getColumns()
                 )
             ),

@@ -13,7 +13,7 @@ use Attribute;
  * @license          MIT
  */
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class PdoForeignKey
+class ForeignKey
 {
 
     private string $name;

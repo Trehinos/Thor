@@ -5,9 +5,9 @@ namespace Thor\Database\PdoTable\PdoRow;
 use ReflectionException;
 use JetBrains\PhpStorm\Pure;
 use JetBrains\PhpStorm\ArrayShape;
-use Thor\Database\PdoTable\PdoRow\Attributes\{PdoIndex};
-use Thor\Database\PdoTable\PdoRow\Attributes\PdoTable;
-use Thor\Database\PdoTable\PdoRow\Attributes\PdoColumn;
+use Thor\Database\PdoTable\PdoRow\Attributes\{Index};
+use Thor\Database\PdoTable\PdoRow\Attributes\Table;
+use Thor\Database\PdoTable\PdoRow\Attributes\Column;
 
 /**
  * Trait PdoRowTrait: implements PdoRowInterface with Pdo Attributes.
@@ -37,7 +37,7 @@ trait PdoRowTrait
     }
 
     /**
-     * @return PdoIndex[] an array of PdoIndex containing indexes information.
+     * @return Index[] an array of PdoIndex containing indexes information.
      *
      * @throws ReflectionException
      */
@@ -51,7 +51,7 @@ trait PdoRowTrait
      *
      * @throws ReflectionException
      */
-    #[ArrayShape(['table' => PdoTable::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
+    #[ArrayShape(['table' => Table::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     public static function getTableAttributes(): array
     {
         return static::$tablesAttributes[static::class] ??= PdoAttributesReader::pdoTableInformation(static::class);
@@ -85,7 +85,7 @@ trait PdoRowTrait
     final public static function getPdoColumnsDefinitions(): array
     {
         return array_combine(
-            array_map(fn(PdoColumn $column) => $column->getName(), static::getTableAttributes()['columns']),
+            array_map(fn(Column $column) => $column->getName(), static::getTableAttributes()['columns']),
             array_values(static::getTableAttributes()['columns'])
         );
     }
@@ -105,7 +105,7 @@ trait PdoRowTrait
      *
      * @throws ReflectionException
      */
-    final public static function getPdoTable(): PdoTable
+    final public static function getPdoTable(): Table
     {
         return static::getTableAttributes()['table'];
     }

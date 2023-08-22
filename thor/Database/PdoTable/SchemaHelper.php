@@ -4,7 +4,7 @@ namespace Thor\Database\PdoTable;
 
 use ReflectionException;
 use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\{Driver\DriverInterface, PdoRow\Attributes\PdoIndex, PdoRow\PdoAttributesReader};
+use Thor\Database\PdoTable\{Driver\DriverInterface, PdoRow\Attributes\Index, PdoRow\PdoAttributesReader};
 
 /**
  * This class provides methods to execute DQL statements from a PdoAttributesReader.
@@ -74,7 +74,7 @@ final class SchemaHelper
         $sql = '';
 
         $result = true;
-        /** @var PdoIndex $index */
+        /** @var Index $index */
         foreach ($attrs['indexes'] as $index) {
             $sql_i = "DROP INDEX {$index->getName()} ON $tableName";
             if ($this->isDebug) {

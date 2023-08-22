@@ -4,7 +4,7 @@ namespace Thor\Database\PdoTable;
 
 use Exception;
 use Thor\Tools\Guid;
-use Thor\Database\PdoTable\{TableType\StringType, PdoRow\Attributes\PdoIndex, PdoRow\Attributes\PdoColumn};
+use Thor\Database\PdoTable\{TableType\StringType, PdoRow\Attributes\Index, PdoRow\Attributes\Column};
 
 /**
  * Adds a "public_id" column to a PdoRowInterface.
@@ -13,8 +13,8 @@ use Thor\Database\PdoTable\{TableType\StringType, PdoRow\Attributes\PdoIndex, Pd
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-#[PdoColumn('public_id', new StringType(), false)]
-#[PdoIndex(['public_id'], true)]
+#[Column('public_id', new StringType(), false)]
+#[Index(['public_id'], true)]
 trait HasPublicIdTrait
 {
 

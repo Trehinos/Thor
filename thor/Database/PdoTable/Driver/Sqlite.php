@@ -2,10 +2,10 @@
 
 namespace Thor\Database\PdoTable\Driver;
 
-use Thor\Database\PdoTable\PdoRow\Attributes\PdoIndex;
-use Thor\Database\PdoTable\PdoRow\Attributes\PdoTable;
+use Thor\Database\PdoTable\PdoRow\Attributes\Index;
+use Thor\Database\PdoTable\PdoRow\Attributes\Table;
 use Thor\Database\PdoTable\PdoRow\PdoAttributesReader;
-use Thor\Database\PdoTable\PdoRow\Attributes\PdoColumn;
+use Thor\Database\PdoTable\PdoRow\Attributes\Column;
 
 /**
  *
@@ -34,7 +34,7 @@ class Sqlite implements DriverInterface
         $columns = implode(
             $separator,
             array_map(
-                fn(PdoColumn $column) => $this->addColumn($column, $autoKey),
+                fn(Column $column) => $this->addColumn($column, $autoKey),
                 $attrs->getAttributes()['columns']
             )
         );
@@ -52,12 +52,12 @@ class Sqlite implements DriverInterface
     }
 
     /**
-     * @param PdoColumn   $column
+     * @param Column   $column
      * @param string|null $autoKey
      *
      * @return string
      */
-    public function addColumn(PdoColumn $column, ?string $autoKey = null): string
+    public function addColumn(Column $column, ?string $autoKey = null): string
     {
         if ($autoKey === $column->getName()) {
             return "{$column->getName()} INTEGER PRIMARY KEY AUTOINCREMENT";
@@ -71,12 +71,12 @@ class Sqlite implements DriverInterface
     }
 
     /**
-     * @param PdoTable    $table
+     * @param Table    $table
      * @param string|null $autoKey
      *
      * @return string
      */
-    public function primaryKeys(PdoTable $table, ?string $autoKey = null): string
+    public function primaryKeys(Table $table, ?string $autoKey = null): string
     {
         if ($autoKey !== null) {
             return '';
@@ -100,17 +100,17 @@ class Sqlite implements DriverInterface
         $attrs = new PdoAttributesReader($className);
         $this->tableName = $attrs->getAttributes()['table']->getTableName();
         return array_map(
-            fn(PdoIndex $index) => $this->addIndex($index),
+            fn(Index $index) => $this->addIndex($index),
             $attrs->getAttributes()['indexes']
         );
     }
 
     /**
-     * @param PdoIndex $index
+     * @param Index $index
      *
      * @return string
      */
-    public function addIndex(PdoIndex $index): string
+    public function addIndex(Index $index): string
     {
         $unq = $index->isUnique() ? ' UNIQUE' : '';
         $cols = implode(', ', $index->getColumnNames());
