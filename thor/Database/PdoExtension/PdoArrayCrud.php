@@ -22,6 +22,11 @@ final class PdoArrayCrud
     ) {
     }
 
+    public function getRequester(): PdoRequester
+    {
+        return $this->requester;
+    }
+
     public function listAll(): array
     {
         return $this->requester->request("SELECT * FROM {$this->table()}", [])->fetchAll();

@@ -55,6 +55,11 @@ final class CrudHelper implements CrudInterface
         );
     }
 
+    public function getRequester(): PdoRequester
+    {
+        return $this->arrayCrud->getRequester();
+    }
+
     /**
      * List all rows of the entity managed by this Crud.
      *
