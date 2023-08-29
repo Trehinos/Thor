@@ -4,7 +4,7 @@ namespace Thor\Web;
 
 use Thor\Debug\Logger;
 use Twig\Error\{SyntaxError, LoaderError, RuntimeError};
-use Thor\Http\{Session, HttpController, Response\Response, Response\HttpStatus};
+use Thor\Http\{Session, HttpController, Response\HttpStatus};
 
 /**
  * Base controller for web context.
@@ -53,25 +53,31 @@ abstract class WebController extends HttpController
     }
 
     /**
+     * Adds a message in the current session.
+     * All messages are cleared when they are retrieved.
+     *
      * @param string $message
      * @param string $title
      * @param string $type
-     * @param string $muted
+     * @param string $mutedString
      *
      * @return void
      */
-    public function addMessage(string $message, string $title = '', string $type = 'info', string $muted = ''): void
+    public function addMessage(string $message, string $title = '', string $type = 'info', string $mutedString = ''): void
     {
         Session::write(
             'controller.messages',
-            array_merge($this->getMessages(), [
-                [
-                    'title'   => $title,
-                    'message' => $message,
-                    'type'    => $type,
-                    'muted'   => $muted,
-                ],
-            ])
+            [
+                ...$this->getMessages(),
+                ...[
+                    [
+                        'title' => $title,
+                        'message' => $message,
+                        'type' => $type,
+                        'muted' => $mutedString,
+                    ],
+                ]
+            ]
         );
     }
 
@@ -88,9 +94,17 @@ abstract class WebController extends HttpController
     /**
      * Returns a Response with twig rendering.
      *
-     * @throws SyntaxError
-     * @throws RuntimeError
+     * @param string $fileName
+     * @param array $params
+     * @param HttpStatus $status
+     * @param array $headers
+     * @param bool $retrieveMessages
+     *
+     * @return TwigResponse
+     *
      * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function twigResponse(
         string $fileName,
@@ -98,12 +112,12 @@ abstract class WebController extends HttpController
         HttpStatus $status = HttpStatus::OK,
         array $headers = [],
         bool $retrieveMessages = false
-    ): Response {
+    ): TwigResponse {
         if ($retrieveMessages) {
             $this->webServer->getTwig()->addGlobal('_messages', $this->getMessages());
         }
         Logger::write("     -> Twig : rendering file '$fileName'");
-        return Response::create($this->webServer->getTwig()->render($fileName, $params), $status, $headers);
+        return new TwigResponse($this->getServer()->getTwig(), $fileName, $params, $status, $headers);
     }
 
 }
