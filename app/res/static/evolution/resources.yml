@@ -87,56 +87,94 @@ rawPrimary:
         color: "#eee"
 
 rawSecondary:
-    wood:
+    coton:
         name: Coton
-        icon: trees
+        icon: shirt
         color: "#8a9"
     stone:
         name: Or
-        icon: mountains
-        color: "#bbb"
+        icon: gem
+        color: "#dc4"
     copper:
         name: Pierres précieuses
-        icon: weight-hanging
-        color: "#b98"
+        icon: gem
+        color: "#a8c"
     iron:
         name: Argent
-        icon: weight-hanging
-        color: "#879"
+        icon: gem
+        color: "#aaa"
     steel:
         name: Charbon
-        icon: weight-hanging
-        color: "#bb8"
+        icon: fire
+        color: "#977"
     aluminium:
         name: Salpètre
-        icon: weight-hanging
-        color: "#78c"
+        icon: explosion
+        color: "#c86"
     carbon:
         name: Pétrole
-        icon: weight-hanging
-        color: "#78c"
+        icon: oil-well
+        color: "#777"
     silicon:
         name: Uranium
-        icon: weight-hanging
-        color: "#78c"
-
-
+        icon: radiation
+        color: "#5f5"
 
 material:
     leather:
         name: Cuir
         icon: boot-heeled
-        color: "#942"
+        color: "#ccc"
     wood-plate:
         name: Planche de bois
         icon: square-full
-        color: "#a84"
+        color: "#ccc"
     wood-rod:
         name: Tige de bois
         icon: pipe
-        color: "#a84"
-
+        color: "#ccc"
     wood-frame:
         name: Cadre en bois
         icon: frame
-        color: "#a84"
+        color: "#ccc"
+    brick:
+        name: Brique
+        icon: block-brick
+        color: "#ccc"
+
+tools:
+    sling:
+        name: Fronde
+        icon: bullseye-arrow
+        color: "#ccc"
+    axe:
+        name: Hache
+        icon: axe
+        color: "#ccc"
+    pickaxe:
+        name: Pioche
+        icon: pickaxe
+        color: "#ccc"
+    scythe:
+        name: Faux
+        icon: scythe
+        color: "#ccc"
+
+
+animals:
+    deer:
+        name: Gibier
+        icon: deer
+        color: "#ccc"
+    cow:
+        name: Vache
+        icon: cow
+        color: "#ccc"
+    horse:
+        name: Cheval
+        icon: horse
+        color: "#ccc"
+    elephant:
+        name: Elephant
+        icon: elephant
+        color: "#ccc"

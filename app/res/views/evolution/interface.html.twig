@@ -77,34 +77,9 @@
                     Animaux
                 </div>
                 <div id="animals-bar" class="d-flex">
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Gibier"
-                    >
-                        <span style="color: #ccc">{{ icon('deer fa-lg', fixed=true) }}
-                            <strong>0</strong>
-                        </span><br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Bétail"
-                    >
-                        <span style="color: #ccc">{{ icon('cow fa-lg', fixed=true) }}
-                            <strong>0</strong>
-                        </span><br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Chevaux"
-                    >
-                        <span style="color: #ccc">{{ icon('horse fa-lg', fixed=true) }}
-                            <strong>0</strong>
-                        </span><br><small>0</small>
-                    </div>
-                    <div class="res p-1 bg-dark" style="color: #999"
-                         title="Eléphants"
-                    >
-                        <span style="color: #ccc">{{ icon('elephant fa-lg', fixed=true) }}
-                            <strong>0</strong>
-                        </span><br><small>0</small>
-                    </div>
+                    {% for key,resource in data.resources.animals %}
+                        {% include "evolution/resource.html.twig" with {bg: "dark", max: 0} %}
+                    {% endfor %}
                 </div>
             </div>
             <div class="p-2 bg-light border">
@@ -113,129 +88,14 @@
                     Matériaux bruts
                 </div>
                 <div id="resources1-bar" class="d-flex">
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Bois"
-                    >
-                    <span style="color: #8a9">
-                        {{ icon('trees fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span>
-                        <br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Pierre"
-                    >
-                    <span style="color: #bbb">{{ icon('mountains fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span><br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Cuivre"
-                    >
-                    <span style="color: #b98">{{ icon('weight-hanging fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span><br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Fer"
-                    >
-                    <span style="color: #879">{{ icon('weight-hanging fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span><br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Acier"
-                    >
-                    <span style="color: #bb8">{{ icon('weight-hanging fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span><br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Aluminium"
-                    >
-                    <span style="color: #78c">{{ icon('weight-hanging fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span><br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Carbone"
-                    >
-                    <span style="color: #666">{{ icon('block fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span><br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Silicium"
-                    >
-                    <span style="color: #eee">{{ icon('block fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span><br><small>0</small>
-                    </div>
+                    {% for key,resource in data.resources.rawPrimary %}
+                        {% include "evolution/resource.html.twig" with {bg: "dark", max: 0} %}
+                    {% endfor %}
                 </div>
                 <div id="resources2-bar" class="d-flex mt-2">
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Coton"
-                    >
-                    <span style="color: #ccc">{{ icon('reel fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span>
-                        <br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Or"
-                    >
-                    <span style="color: #c90">{{ icon('gem fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span>
-                        <br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Pierre précieuse"
-                    >
-                    <span style="color: #97c">{{ icon('gem fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span>
-                        <br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Argent"
-                    >
-                    <span style="color: #aaa">{{ icon('gem fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span>
-                        <br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Charbon"
-                    >
-                    <span style="color: #876">{{ icon('block-brick-fire fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span>
-                        <br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Salpètre"
-                    >
-                    <span style="color: #b66">{{ icon('explosion fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span>
-                        <br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Pétrole"
-                    >
-                    <span style="color: #666">{{ icon('oil-well fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span><br><small>0</small>
-                    </div>
-                    <div class="res p-1 me-1 bg-dark" style="color: #999"
-                         title="Uranium"
-                    >
-                    <span style="color: #969">{{ icon('radiation fa-lg', fixed=true) }}
-                        <strong>0</strong>
-                    </span>
-                        <br><small>0</small>
-                    </div>
+                    {% for key,resource in data.resources.rawSecondary %}
+                        {% include "evolution/resource.html.twig" with {bg: "dark", max: 0} %}
+                    {% endfor %}
                 </div>
             </div>
 
@@ -246,6 +106,18 @@
                 </div>
                 <div id="materials-bar" class="d-flex">
                     {% for key,resource in data.resources.material %}
+                        {% include "evolution/resource.html.twig" with {bg: "dark", max: 0} %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="p-2 bg-light border">
+                <div class="resource-category">
+                    {{ icon('tools fa-lg', fixed=true) }}
+                    Outils
+                </div>
+                <div id="materials-bar" class="d-flex">
+                    {% for key,resource in data.resources.tools %}
                         {% include "evolution/resource.html.twig" with {bg: "dark", max: 0} %}
                     {% endfor %}
                 </div>
