@@ -157,7 +157,7 @@ final class TwigFunctionFactory
     {
         return new TwigFunction(
             'icon',
-            function (string $icon, string $prefix = 'fas', bool $fixed = false, string $style = '') {
+            function (string $icon, string $prefix = 'fa-sharp fa-regular', bool $fixed = false, string $style = '') {
                 $fw = $fixed ? 'fa-fw' : '';
                 $style = ('' !== $style) ? "style='$style'" : '';
                 return "<i class='$prefix fa-$icon $fw' $style></i>";

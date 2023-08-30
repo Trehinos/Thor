@@ -1,0 +1,9 @@
+<div id="resource-{{ prefix }}-{{ key }}" class="res p-1 me-1 bg-{{ bg ?? 'light' }}" style="color: {{ resource.color }}"
+     title="{{ resource.name }}"
+>
+    {{ icon(resource.icon ~ ' fa-lg', fixed=true) }}
+    <strong>{{ resource.value ?? 0 }}</strong>
+    {% if max is defined %}
+        <br><small>{{ max }}</small>
+    {% endif %}
+</div>

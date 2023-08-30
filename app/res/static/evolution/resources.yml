@@ -1,0 +1,142 @@
+general:
+    faith:
+        name: Foi
+        icon: praying-hands
+        color: "#999"
+
+    wellness:
+        name: Richesse
+        icon: coins
+        color: "#ec4"
+
+    happiness:
+        name: Bonheur
+        icon: face-smile
+        color: "#d75"
+
+    culture:
+        name: Culture
+        icon: palette
+        color: "#96a"
+
+    technic:
+        name: Technique
+        icon: brain
+        color: "#69e"
+
+people:
+    science:
+        name: Science
+        icon: flask
+        color: "#68c"
+    energy:
+        name: Energie
+        icon: bolt
+        color: "#4cc"
+    money:
+        name: Monnaie
+        icon: dollar
+        color: "#0c6"
+
+city:
+    science:
+        name: Nourriture
+        icon: wheat
+        color: "#8c6"
+    energy:
+        name: Production
+        icon: wrench
+        color: "#860"
+    money:
+        name: Santé
+        icon: star-of-life
+        color: "#c00"
+
+rawPrimary:
+    wood:
+        name: Bois
+        icon: trees
+        color: "#8a9"
+    stone:
+        name: Pierre
+        icon: mountains
+        color: "#bbb"
+    copper:
+        name: Cuivre
+        icon: weight-hanging
+        color: "#b98"
+    iron:
+        name: Fer
+        icon: weight-hanging
+        color: "#879"
+    steel:
+        name: Acier
+        icon: weight-hanging
+        color: "#bb8"
+    aluminium:
+        name: Aluminium
+        icon: weight-hanging
+        color: "#78c"
+    carbon:
+        name: Carbone
+        icon: weight-hanging
+        color: "#666"
+    silicon:
+        name: Silicium
+        icon: weight-hanging
+        color: "#eee"
+
+rawSecondary:
+    wood:
+        name: Coton
+        icon: trees
+        color: "#8a9"
+    stone:
+        name: Or
+        icon: mountains
+        color: "#bbb"
+    copper:
+        name: Pierres précieuses
+        icon: weight-hanging
+        color: "#b98"
+    iron:
+        name: Argent
+        icon: weight-hanging
+        color: "#879"
+    steel:
+        name: Charbon
+        icon: weight-hanging
+        color: "#bb8"
+    aluminium:
+        name: Salpètre
+        icon: weight-hanging
+        color: "#78c"
+    carbon:
+        name: Pétrole
+        icon: weight-hanging
+        color: "#78c"
+    silicon:
+        name: Uranium
+        icon: weight-hanging
+        color: "#78c"
+
+
+
+material:
+    leather:
+        name: Cuir
+        icon: boot-heeled
+        color: "#942"
+    wood-plate:
+        name: Planche de bois
+        icon: square-full
+        color: "#a84"
+    wood-rod:
+        name: Tige de bois
+        icon: pipe
+        color: "#a84"
+
+    wood-frame:
+        name: Cadre en bois
+        icon: frame
+        color: "#a84"
