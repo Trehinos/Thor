@@ -80,7 +80,7 @@ rawPrimary:
     carbon:
         name: Carbone
         icon: weight-hanging
-        color: "#666"
+        color: "#888"
     silicon:
         name: Silicium
         icon: weight-hanging
@@ -114,17 +114,13 @@ rawSecondary:
     carbon:
         name: Pétrole
         icon: oil-well
-        color: "#777"
+        color: "#888"
     silicon:
         name: Uranium
         icon: radiation
         color: "#5f5"
 
-material:
-    leather:
-        name: Cuir
-        icon: boot-heeled
-        color: "#ccc"
+buildingMaterials:
     wood-plate:
         name: Planche de bois
         icon: square-full
@@ -140,6 +136,20 @@ material:
     brick:
         name: Brique
         icon: block-brick
+        color: "#ccc"
+
+otherMaterials:
+    leather:
+        name: Cuir
+        icon: boot-heeled
+        color: "#ccc"
+    shirt:
+        name: Tissu
+        icon: shirt
+        color: "#ccc"
+    s:
+        name: Tapisserie
+        icon: rug
         color: "#ccc"
 
 tools:
@@ -167,11 +177,11 @@ animals:
         icon: deer
         color: "#ccc"
     cow:
-        name: Vache
+        name: Bétail
         icon: cow
         color: "#ccc"
     horse:
-        name: Cheval
+        name: Chevaux
         icon: horse
         color: "#ccc"
     elephant:

@@ -8,14 +8,28 @@
             width: 6em;
             text-align: right;
             line-height: 1em;
+            height: 2.6em;
             position: relative;
+        }
+
+        .resource-category {
+            margin-bottom: 6px;
+        }
+
+        .container .d-flex > .res .label {
+            position: absolute;
+            left: 1px;
+            bottom: -2px;
+            opacity: 1;
+            font-size: 0.6em;
+            font-weight: bold;
         }
 
         .container .d-flex > .res .fa-regular {
             position: absolute;
-            left: 4px;
-            bottom: 16px;
-            opacity: 0.66;
+            left: 1px;
+            bottom: 20px;
+            opacity: 0.50;
         }
     </style>
 
@@ -104,8 +118,13 @@
                     {{ icon('industry fa-lg', fixed=true) }}
                     Matériaux usinés
                 </div>
-                <div id="materials-bar" class="d-flex">
-                    {% for key,resource in data.resources.material %}
+                <div id="materials1-bar" class="d-flex">
+                    {% for key,resource in data.resources.buildingMaterials %}
+                        {% include "evolution/resource.html.twig" with {bg: "dark", max: 0} %}
+                    {% endfor %}
+                </div>
+                <div id="materials2-bar" class="d-flex mt-2">
+                    {% for key,resource in data.resources.otherMaterials %}
                         {% include "evolution/resource.html.twig" with {bg: "dark", max: 0} %}
                     {% endfor %}
                 </div>
