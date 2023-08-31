@@ -52,11 +52,7 @@ city:
         icon: star-of-life
         color: "#c00"
 
-rawPrimary:
-    wood:
-        name: Bois
-        icon: trees
-        color: "#8a9"
+raw1:
     stone:
         name: Pierre
         icon: mountains
@@ -67,27 +63,49 @@ rawPrimary:
         color: "#b98"
     iron:
         name: Fer
-        icon: weight-hanging
-        color: "#879"
+        icon: link-horizontal
+        color: "#aaa"
     steel:
         name: Acier
-        icon: weight-hanging
-        color: "#bb8"
+        icon: pipe-section
+        color: "#999"
     aluminium:
         name: Aluminium
-        icon: weight-hanging
-        color: "#78c"
+        icon: object-union
+        color: "#ccd"
     carbon:
         name: Carbone
-        icon: weight-hanging
+        icon: block
         color: "#888"
-    silicon:
-        name: Silicium
-        icon: weight-hanging
-        color: "#eee"
 
-rawSecondary:
-    coton:
+raw2:
+    wood:
+        name: Bois
+        icon: trees
+        color: "#8a9"
+    coal:
+        name: Charbon
+        icon: fire
+        color: "#977"
+    petrol:
+        name: Pétrole
+        icon: oil-well
+        color: "#888"
+    uranium:
+        name: Uranium
+        icon: radiation
+        color: "#5f5"
+    lithium:
+        name: Lithium
+        icon: battery-bolt
+        color: "#f9c"
+    hydrogen:
+        name: Hydrogène
+        icon: atom-simple
+        color: "#99f"
+
+raw3:
+    cotton:
         name: Coton
         icon: shirt
         color: "#8a9"
@@ -95,30 +113,22 @@ rawSecondary:
         name: Or
         icon: gem
         color: "#dc4"
-    copper:
+    precious:
         name: Pierres précieuses
         icon: gem
         color: "#a8c"
-    iron:
+    argent:
         name: Argent
         icon: gem
         color: "#aaa"
-    steel:
-        name: Charbon
-        icon: fire
-        color: "#977"
-    aluminium:
+    salpetre:
         name: Salpètre
         icon: explosion
         color: "#c86"
-    carbon:
-        name: Pétrole
-        icon: oil-well
-        color: "#888"
     silicon:
-        name: Uranium
-        icon: radiation
-        color: "#5f5"
+        name: Silicium
+        icon: microchip
+        color: "#eee"
 
 buildingMaterials:
     wood-plate:
@@ -136,6 +146,14 @@ buildingMaterials:
     brick:
         name: Brique
         icon: block-brick
+        color: "#ccc"
+    ciment:
+        name: Ciment
+        icon: sack
+        color: "#ee9"
+    beton:
+        name: Béton armé
+        icon: sack
         color: "#ccc"
 
 otherMaterials:
@@ -156,19 +174,51 @@ tools:
     sling:
         name: Fronde
         icon: bullseye-arrow
-        color: "#ccc"
+        color: "#c99"
     axe:
         name: Hache
         icon: axe
-        color: "#ccc"
+        color: "#c99"
     pickaxe:
         name: Pioche
         icon: pickaxe
-        color: "#ccc"
+        color: "#6c9"
     scythe:
         name: Faux
         icon: scythe
-        color: "#ccc"
+        color: "#6c9"
+    gladius:
+        name: Glaive
+        icon: sword
+        color: "#c99"
+    horse:
+        name: Chevaux
+        icon: horse
+        color: "#ca4"
+    bow:
+        name: Arc
+        icon: bow-arrow
+        color: "#c99"
+    spear:
+        name: Lance
+        icon: wand
+        color: "#c99"
+    rame:
+        name: Rame
+        icon: cricket-bat-ball
+        color: "#99c"
+    reme:
+        name: Rème
+        icon: frame
+        color: "#99c"
+    filet:
+        name: Filet
+        icon: grid
+        color: "#99c"
+    balista:
+        name: Baliste
+        icon: bow-arrow
+        color: "#f88"
 
 
 animals:

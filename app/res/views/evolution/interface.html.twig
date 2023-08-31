@@ -50,9 +50,10 @@
         <div id="people-bar" class="p-2 bg-opacity-50 bg-secondary d-flex">
             <button class="btn btn-sm bg-light me-4 text-nowrap"
                     title="Ouvre une modale de gestion du peuple"
+                    style="width: 12em; text-align: left"
             >
                 {{ icon('users fa-lg', fixed=true) }}
-                <span class="placeholder" style="width: 10em;"></span>
+                {{ data.peopleName }}
             </button>
             {% for key,resource in data.resources.general %}
                 {% include "evolution/resource.html.twig" with {prefix: "people"} %}
@@ -65,8 +66,10 @@
         <div id="city-bar" class="p-2 bg-opacity-25 bg-secondary d-flex">
             <button class="btn btn-sm bg-light me-4 text-nowrap"
                     title="Ouvre une modale de gestion de la ville"
+                    style="width: 12em; text-align: left"
             >
-                {{ icon('tent fa-lg', fixed=true) }} <span class="placeholder" style="width: 10em;"></span>
+                {{ icon('tent fa-lg', fixed=true) }}
+                {{ data.cityName }}
             </button>
             {% for key,resource in data.resources.general %}
                 {% include "evolution/resource.html.twig" with {prefix: "city"} %}
@@ -84,7 +87,7 @@
                 </button>
             </div>
         </div>
-        <div id="collapsible-bars" class="collapse">
+        <div id="collapsible-bars" class="collapse text-white">
             <div class="p-2 float-end">
                 <div class="resource-category text-end">
                     {{ icon('paw fa-lg', fixed=true) }}
@@ -96,24 +99,29 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="p-2 bg-light border">
+            <div class="p-2 bg-dark bg-opacity-75 border">
                 <div class="resource-category">
                     {{ icon('diamond fa-lg', fixed=true) }}
                     Matériaux bruts
                 </div>
                 <div id="resources1-bar" class="d-flex">
-                    {% for key,resource in data.resources.rawPrimary %}
+                    {% for key,resource in data.resources.raw1 %}
                         {% include "evolution/resource.html.twig" with {bg: "dark", max: 0} %}
                     {% endfor %}
                 </div>
                 <div id="resources2-bar" class="d-flex mt-2">
-                    {% for key,resource in data.resources.rawSecondary %}
+                    {% for key,resource in data.resources.raw2 %}
+                        {% include "evolution/resource.html.twig" with {bg: "dark", max: 0} %}
+                    {% endfor %}
+                </div>
+                <div id="resources3-bar" class="d-flex mt-2">
+                    {% for key,resource in data.resources.raw3 %}
                         {% include "evolution/resource.html.twig" with {bg: "dark", max: 0} %}
                     {% endfor %}
                 </div>
             </div>
 
-            <div class="p-2 bg-light border">
+            <div class="p-2 bg-dark bg-opacity-75 border">
                 <div class="resource-category">
                     {{ icon('industry fa-lg', fixed=true) }}
                     Matériaux usinés
@@ -130,7 +138,7 @@
                 </div>
             </div>
 
-            <div class="p-2 bg-light border">
+            <div class="p-2 bg-dark bg-opacity-75 border">
                 <div class="resource-category">
                     {{ icon('tools fa-lg', fixed=true) }}
                     Outils

@@ -1,10 +1,14 @@
-<div id="resource-{{ prefix }}-{{ key }}" class="res p-1 me-1 bg-{{ bg ?? 'light' }}" style="color: {{ resource.color }}"
-     title="{{ resource.name }}"
->
-    {{ icon(resource.icon ~ ' fa-lg', fixed=true) }}
-    <strong>{{ resource.value ?? 0 }}</strong>
-    {% if max is defined %}
-        <br><small>{{ max }}</small>
-    {% endif %}
-    <span class="label">{{ resource.name }}</span>
-</div>
+{% if resource == "separator" %}
+    <div class="ms-2 me-2"></div>
+{% else %}
+    <div id="resource-{{ prefix }}-{{ key }}" class="res p-1 {% if not loop.last %}me-1{% endif%} bg-{{ bg ?? 'light' }}" style="color: {{ resource.color }}"
+         title="{{ resource.name }}"
+    >
+        {{ icon(resource.icon ~ ' fa-lg', fixed=true) }}
+        <strong>{{ resource.value ?? 0 }}</strong>
+        {% if max is defined %}
+            <br><small>{{ max }}</small>
+        {% endif %}
+        <span class="label">{{ resource.name }}</span>
+    </div>
+{% endif %}
