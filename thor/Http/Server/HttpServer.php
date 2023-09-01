@@ -98,10 +98,10 @@ class HttpServer implements RequestHandlerInterface
         $ip = $request->getServerParams()['REMOTE_ADDR'] ?? 'localhost';
         Logger::write("Routing request [{method} '{path}'] from $ip", context: [
             'method' => $request->getMethod()->value,
-            'path'   => substr($request->getUri()->getPath(), strlen('/api.php')),
+            'path'   => $request->getUri()->getPath(),
         ]);
 
-        return $this->router->match($request, 'api.php');
+        return $this->router->match($request);
     }
 
     /**

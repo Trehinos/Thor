@@ -26,13 +26,13 @@ class DatabaseUserProvider implements ProviderInterface
     }
 
     /**
-     * @param string $identifier
+     * @param ?string $identifier
      *
      * @return DbUser|null
      */
-    public function getIdentity(string $identifier): ?DbUser
+    public function getIdentity(?string $identifier): ?DbUser
     {
-        return $this->userCrud->readOneBy(new Criteria([$this->usernameField => $identifier]));
+        return $this->userCrud->readOneBy(new Criteria([$this->usernameField => $identifier ?? '']));
     }
 
 }

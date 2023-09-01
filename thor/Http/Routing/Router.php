@@ -72,13 +72,12 @@ final class Router
      * In this case, `$router->errorRoute` stays null.
      *
      * @param RequestInterface $request
-     * @param string           $prefix
      *
      * @return Route|false|null
      */
-    public function match(RequestInterface $request, string $prefix = ''): Route|false|null
+    public function match(RequestInterface $request): Route|false|null
     {
-        $pathInfo = substr($request->getUri()->getPath(), strlen($prefix) + 1);
+        $pathInfo = $request->getUri()->getPath();
         $method = $request->getMethod();
         $pathInfo = str_starts_with($pathInfo, '/') ? $pathInfo : "/$pathInfo";
 

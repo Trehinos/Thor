@@ -1,6 +1,5 @@
 {% extends "thor/base.html.twig" %}
 
-{% block menu %}{% endblock %}
 {% block footer %}{% endblock %}
 
 {% block head_css %}
@@ -30,7 +29,7 @@
     </style>
 {% endblock %}
 
-{% block body_content %}
+{% block body_html %}
     <div class="container h-100 position-relative w-100">
         <div class="position-absolute w-100" style="bottom: 25%; left: 0;">
             <div class="container rounded border border-success p-4 bg-dark text-white">
@@ -38,7 +37,7 @@
                     <div class="col-md-6 text-start d-flex align-items-center justify-content-center">
                         <h1 class="text-center">
                             {{ icon('bolt', 'fad', true, '--fa-secondary-opacity: 1; --fa-primary-color: #fe4; --fa-secondary-color: #fc4;') }}<br>
-                            {{ appName }}
+                            {{ appName }} - {{ env }}
                         </h1>
                     </div>
                     <div class="col-md-6">

@@ -61,10 +61,10 @@ class WebServer extends HttpServer
         $ip = $request->getServerParams()['REMOTE_ADDR'] ?? 'localhost';
         Logger::write("Routing request [{method} '{path}'] from $ip", context: [
             'method' => $request->getMethod()->value,
-            'path'   => substr($request->getUri()->getPath(), strlen('/index.php')),
+            'path'   => $request->getUri()->getPath(),
         ]);
 
-        return $this->getRouter()->match($request, 'index.php');
+        return $this->getRouter()->match($request);
     }
 
 }

@@ -51,6 +51,7 @@
                 {% endblock %}
             </div>
         </div>
+        {% block navbar %}
         <nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <span id="title" class="navbar-brand">
@@ -74,6 +75,7 @@
                 </div>
             </div>
         </nav>
+        {% endblock %}
     {% endblock %}
     <div id="content">{% block body_content %}{% endblock %}</div>
 

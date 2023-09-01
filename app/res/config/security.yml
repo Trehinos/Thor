@@ -5,7 +5,7 @@ user-class: 'Thor\Framework\Security\DbUser'
 username-field: 'username'
 firewalls:
     -
-        pattern: /index.php
+        pattern: /
         redirect: ~
         login-route: login
         logout-route: logout

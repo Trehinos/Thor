@@ -112,7 +112,7 @@ final class Route
     public function url(array $parameters): string
     {
         $path = Strings::interpolate($this->path, $parameters, PlaceholderFormat::SIGIL);
-        return "/index.php$path";
+        return "$path";
     }
 
     /**
