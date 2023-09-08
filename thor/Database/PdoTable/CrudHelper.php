@@ -193,7 +193,8 @@ final class CrudHelper implements CrudInterface
      */
     public function updateOne(object $row): bool
     {
-        return $this->arrayCrud->updateOne($row->toPdoArray());
+        $criteria = $this->primaryArrayToCriteria($row->getPrimary());
+        return $this->arrayCrud->update($row->toPdoArray(), $criteria);
     }
 
     /**
@@ -207,7 +208,8 @@ final class CrudHelper implements CrudInterface
      */
     public function deleteOne(object $row): bool
     {
-        return $this->arrayCrud->deleteOne($row->toPdoArray());
+        $criteria = $this->primaryArrayToCriteria($row->getPrimary());
+        return $this->arrayCrud->delete($criteria);
     }
 
     /**

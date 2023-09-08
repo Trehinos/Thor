@@ -15,7 +15,7 @@ use DateTimeImmutable;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class DateTimes
+final class DateTimes implements ClockInterface
 {
 
     private function __construct()
@@ -77,4 +77,8 @@ final class DateTimes
         return new DatePeriod($start, new DateInterval($interval), $end);
     }
 
+    public function now(): DateTimeImmutable
+    {
+        return new DateTimeImmutable();
+    }
 }

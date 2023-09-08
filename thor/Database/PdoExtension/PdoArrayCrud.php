@@ -217,10 +217,11 @@ final class PdoArrayCrud
 
     /**
      * @param array $row
+     * @param Criteria $criteria
      *
      * @return bool
      */
-    public function updateOne(array $row): bool
+    public function update(array $row, Criteria $criteria): bool
     {
         $filtered = array_filter(
             $row,
@@ -229,8 +230,6 @@ final class PdoArrayCrud
         );
         $sets = implode(', ', array_map(fn(string $col) => "$col = ?", array_keys($filtered)));
 
-        $criteria = $this->primaryArrayToCriteria($this->extractPrimaries($row));
-
         return $this->requester->execute(
             "UPDATE {$this->table()} SET $sets " . Criteria::getWhere($criteria),
             array_merge(array_values($filtered), $criteria->getParams())
@@ -238,13 +237,12 @@ final class PdoArrayCrud
     }
 
     /**
-     * @param array $row
+     * @param Criteria $criteria
      *
      * @return bool
      */
-    public function deleteOne(array $row): bool
+    public function delete(Criteria $criteria): bool
     {
-        $criteria = $this->primaryArrayToCriteria($this->extractPrimaries($row));
         return $this->requester->execute(
             "DELETE FROM {$this->table()} " . Criteria::getWhere($criteria),
             $criteria->getParams()
