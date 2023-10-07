@@ -21,8 +21,8 @@ final class Strings
     /**
      * Split a first element (head) and the rest of the string (tail) against a specified delimiter.
      *
-     * @param string  $stringToSplit
-     * @param string  $delimiter
+     * @param string $stringToSplit
+     * @param string $delimiter
      * @param string &$head
      *
      * @return string tail
@@ -39,6 +39,26 @@ final class Strings
         $parts = explode($delimiter, $stringToSplit);
         $tail = implode($delimiter, array_slice($parts, 1));
         return $parts[0] ?? '';
+    }
+
+    public static function trimOrPad(string $str, int $length, string $pad = ' ', int $padType = STR_PAD_LEFT): string
+    {
+        $str = trim($str, $pad);
+        $padLen = $length - mb_strlen($str);
+        if ($padType === STR_PAD_LEFT) {
+            return str_repeat($pad, $padLen) . Strings::right($str, $length);
+        }
+        return Strings::left($str, $length) . str_repeat($pad, $padLen);
+    }
+
+    public static function left(string $str, string $length): string
+    {
+        return mb_substr($str, 0, $length);
+    }
+
+    public static function right(string $str, string $length): string
+    {
+        return mb_substr($str, -$length, mb_strlen($str));
     }
 
     /**

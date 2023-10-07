@@ -82,6 +82,8 @@ abstract class WebController extends HttpController
     }
 
     /**
+     * Gets and clears messages in the current session.
+     *
      * @return array
      */
     public function getMessages(): array

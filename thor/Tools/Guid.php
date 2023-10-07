@@ -2,6 +2,8 @@
 
 namespace Thor\Tools;
 
+use Exception;
+
 /**
  *
  */
@@ -17,7 +19,7 @@ final class Guid
     /**
      * @param int $size
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(private readonly int $size = 16)
     {
@@ -71,8 +73,8 @@ final class Guid
      * @param int $size
      *
      * @return string
-     * @throws \Exception
-     * @throws \Exception
+     * @throws Exception
+     * @throws Exception
      */
     public static function hex(int $size = 16): string
     {
@@ -84,8 +86,8 @@ final class Guid
      * @param int $size
      *
      * @return string
-     * @throws \Exception
-     * @throws \Exception
+     * @throws Exception
+     * @throws Exception
      */
     public static function hexString(int $size = 16): string
     {
@@ -97,8 +99,8 @@ final class Guid
      * @param int $size
      *
      * @return string
-     * @throws \Exception
-     * @throws \Exception
+     * @throws Exception
+     * @throws Exception
      */
     public static function base64(int $size = 16): string
     {
