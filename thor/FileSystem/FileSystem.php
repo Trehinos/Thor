@@ -116,21 +116,6 @@ final class FileSystem
         return file_get_contents($name);
     }
 
-    /**
-     * Returns true if the file has the exact specified permissions.
-     *
-     * @see Permission
-     */
-    public static function hasPermission(string $name, int $permission): ?bool
-    {
-        $filePermissions = Permission::permissions($name);
-        if (!is_int($filePermissions)) {
-            return null;
-        }
-
-        return ($filePermissions & $permission) === $permission;
-    }
-
 
     /**
      * Returns the last part of a (*.{ext}) string.

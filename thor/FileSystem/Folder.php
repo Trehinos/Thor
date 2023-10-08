@@ -110,7 +110,7 @@ final class Folder
      */
     public static function createIfNotExists(
         string $name,
-        int $permissions = FileSystem::ALL_ALL,
+        int $permissions = Permission::OWNER_ALL | Permission::ANY_EXEC,
         ?string $user = null,
         ?string $group = null,
     ): void {
