@@ -4,14 +4,9 @@ namespace Thor\Tools\Spreadsheet;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
+use PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
+use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
 
-/**
- *
- */
-
-/**
- *
- */
 final class Builder
 {
 
@@ -43,6 +38,7 @@ final class Builder
      * @param string|null $style
      *
      * @return Builder
+     *
      * @throws PhpSpreadsheetException
      */
     public function cell(mixed $value, string $coordinates, ?int $sheetIndex = null, ?string $style = null): self
@@ -53,7 +49,7 @@ final class Builder
 
         if (str_contains(':', $coordinates)) {
             [$column, $row] = explode(':', $coordinates);
-            $cell = $worksheet->getCellByColumnAndRow($column, $row);
+            $cell = $worksheet->getCell([$column, $row]);
         } else {
             $cell = $worksheet->getCell($coordinates);
         }
@@ -69,6 +65,8 @@ final class Builder
      * @param string $filename
      *
      * @return void
+     *
+     * @throws WriterException
      */
     public function write(string $filename): void
     {
@@ -80,7 +78,8 @@ final class Builder
      * @param FileType $type
      *
      * @return static
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     *
+     * @throws ReaderException
      */
     public static function read(string $filename, FileType $type): self
     {

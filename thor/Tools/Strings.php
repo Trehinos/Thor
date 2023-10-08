@@ -34,6 +34,15 @@ final class Strings
         return implode($delimiter, array_slice($parts, 1));
     }
 
+    /**
+     * Split a last element (tail) and the rest of the string (head) against a specific delimiter.
+     *
+     * @param string $stringToSplit
+     * @param string $delimiter
+     * @param string &$tail
+     *
+     * @return string head
+     */
     public static function token(string $stringToSplit, string $delimiter, string &$tail): string
     {
         $parts = explode($delimiter, $stringToSplit);

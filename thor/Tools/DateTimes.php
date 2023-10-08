@@ -29,7 +29,7 @@ final class DateTimes implements ClockInterface
      *
      * @return string
      */
-    public static function format(string $date, string $from = 'Y-m-d', string $to = 'd/m/Y'): string
+    public static function translate(string $date, string $from = 'Y-m-d', string $to = 'd/m/Y'): string
     {
         return DateTimeImmutable::createFromFormat($from, $date)->format($to);
     }
@@ -75,6 +75,12 @@ final class DateTimes implements ClockInterface
             $end = $end->modify('last day of this month');
         }
         return new DatePeriod($start, new DateInterval($interval), $end);
+    }
+
+    public static function get(): self
+    {
+        static $s = new self();
+        return $s;
     }
 
     public function now(): DateTimeImmutable

@@ -17,12 +17,11 @@ class Multipart extends Part
     private string $preamble;
 
     /**
-     * @param Part[]       $parts
-     * @param string       $mediaSubType
-     * @param string|null  $boundary
+     * @param Part[] $parts
+     * @param string $mediaSubType
+     * @param string|null $boundary
+     * @param ContentTransferEncoding|null $encoding
      * @param Headers|null $additionalHeaders
-     *
-     * @throws \Exception
      */
     public function __construct(
         protected array $parts = [],

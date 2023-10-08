@@ -2,6 +2,7 @@
 
 namespace Thor\Message\Part;
 
+use Exception;
 use Thor\Tools\Guid;
 use Thor\FileSystem\FileSystem;
 use Thor\Message\Headers\Headers;
@@ -29,7 +30,11 @@ class FilePart extends DataPart
             $disposition,
             $additionalHeaders
         );
-        $this->contentId ??= Guid::hex();
+        try {
+            $this->contentId ??= Guid::hex();
+        } catch (Exception) {
+            $this->contentId = '';
+        }
         $this->headers['Content-Disposition'] = $disposition->get(['filename' => $basename]);
         $this->headers['Content-ID'] = "<{$this->contentId}>";
         $this->headers['Content-Location'] = $basename;
