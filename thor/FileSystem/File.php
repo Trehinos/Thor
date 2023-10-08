@@ -4,15 +4,6 @@ namespace Thor\FileSystem;
 
 use Thor\Stream\Stream;
 
-// TODO : Add methods to modify the content of the stream.
-
-/**
- *
- */
-
-/**
- *
- */
 class File
 {
 
@@ -23,7 +14,7 @@ class File
      * @param string             $filename
      * @param Stream|string|null $content
      */
-    public function __construct(private string $filename, Stream|string|null $content = null)
+    public function __construct(private readonly string $filename, Stream|string|null $content = null)
     {
         $this->content = match (true) {
             $content instanceof Stream => $content,
@@ -41,6 +32,19 @@ class File
         $fd = new static($path, Stream::createFromFile($path, 'r'));
         $fd->syncWithDisk = true;
         return $fd;
+    }
+
+    /**
+     * Gets the raw stream of the file. De-synchronize the file with the disk until the next call to writeToDisk().
+     *
+     * @see self::writeToDisk()
+     *
+     * @return Stream
+     */
+    public function stream(): Stream
+    {
+        $this->syncWithDisk = false;
+        return $this->content;
     }
 
     /**
