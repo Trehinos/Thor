@@ -4,7 +4,7 @@ namespace Thor\Framework\Commands\Core;
 
 use Thor\Globals;
 use Thor\Cli\Console\Color;
-use Thor\FileSystem\Folder;
+use Thor\FileSystem\Folders;
 use Thor\Cli\Command\Command;
 
 /**
@@ -21,7 +21,7 @@ final class ClearCache extends Command
                       ->writeln('Clearing the cache...')
                       ->mode()
         ;
-        $deleted = Folder::removeTree(Globals::VAR_DIR . 'cache', removeFirst: false);
+        $deleted = Folders::removeTree(Globals::VAR_DIR . 'cache', removeRoot: false);
         foreach ($deleted as $file) {
             $this->console->writeln(" - $file deleted.");
         }

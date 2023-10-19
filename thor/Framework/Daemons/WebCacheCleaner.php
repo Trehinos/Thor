@@ -7,7 +7,7 @@ use Thor\Thor;
 use DateInterval;
 use Thor\Globals;
 use Thor\Cli\Daemon\Daemon;
-use Thor\FileSystem\Folder;
+use Thor\FileSystem\Folders;
 use Thor\Framework\Configurations\TwigConfiguration;
 
 final class WebCacheCleaner extends Daemon
@@ -27,9 +27,9 @@ final class WebCacheCleaner extends Daemon
 
         $assets_cache = Globals::WEB_DIR . $configuration['assets_cache'];
         if (file_exists($assets_cache)) {
-            Folder::removeTree(
+            Folders::removeTree(
                 $assets_cache,
-                removeFirst: false,
+                removeRoot: false,
                 removeCondition: fn(string $filename) => $limit->format('YmdHis') >= date(
                         'YmdHis',
                         filemtime($filename)
@@ -39,17 +39,17 @@ final class WebCacheCleaner extends Daemon
 
         $cache_dir = Globals::VAR_DIR . $configuration['cache_dir'];
         if (file_exists($cache_dir)) {
-            Folder::removeTree(
+            Folders::removeTree(
                 $cache_dir,
-                removeFirst: false,
+                removeRoot: false,
                 removeCondition: fn(string $filename) => $limit->format('YmdHis') >= date(
                         'YmdHis',
                         filemtime($filename)
                     )
             );
-            Folder::removeTree(
+            Folders::removeTree(
                 $cache_dir,
-                removeCondition: fn(string $filename) => is_dir($filename) && empty(Folder::fileList($filename))
+                removeCondition: fn(string $filename) => is_dir($filename) && empty(Folders::fileList($filename))
             );
         }
     }

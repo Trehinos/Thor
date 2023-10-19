@@ -6,7 +6,7 @@ use DateTime;
 use DateInterval;
 use Thor\Globals;
 use DateTimeImmutable;
-use Thor\FileSystem\Folder;
+use Thor\FileSystem\Folders;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Yaml\Yaml;
 
@@ -88,7 +88,7 @@ final class DaemonState
      */
     public function write(): void
     {
-        Folder::createIfNotExists(dirname($this->getFileName()));
+        Folders::createIfNotExists(dirname($this->getFileName()));
         file_put_contents(
             $this->getFileName(),
             Yaml::dump(

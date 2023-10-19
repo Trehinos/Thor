@@ -6,7 +6,7 @@ use Thor\Globals;
 use Thor\Debug\Logger;
 use Thor\Cli\CliKernel;
 use Thor\Cli\Daemon\Daemon;
-use Thor\FileSystem\Folder;
+use Thor\FileSystem\Folders;
 use Thor\Cli\Command\Command;
 use Thor\Cli\Daemon\DaemonState;
 use Symfony\Component\Yaml\Yaml;
@@ -34,8 +34,8 @@ final class Update extends Command
 
         // 1. Copy static files
         Logger::write('[1/11] Backup resources', print: true);
-        Folder::createIfNotExists($resourcesBackupFolder);
-        Folder::copyTree(Globals::RESOURCES_DIR, $resourcesBackupFolder);
+        Folders::createIfNotExists($resourcesBackupFolder);
+        Folders::copyTree(Globals::RESOURCES_DIR, $resourcesBackupFolder);
 
         // 2. Disable all daemons
         Logger::write('[2/11] Disable daemons', print: true);
@@ -66,8 +66,8 @@ final class Update extends Command
                 $target . 'app/src' => Globals::CODE_DIR . 'app/src',
             ] as $sourceFolder => $targetFolder
         ) {
-            Folder::createIfNotExists($targetFolder);
-            Folder::copyTree($sourceFolder, $targetFolder);
+            Folders::createIfNotExists($targetFolder);
+            Folders::copyTree($sourceFolder, $targetFolder);
         }
 
         // 5. Restore instance files
@@ -92,8 +92,8 @@ final class Update extends Command
         };
         $configBackup = $resourcesBackupFolder . 'config/';
         $staticBackup = $resourcesBackupFolder . 'static/';
-        Folder::mapFiles($configBackup, $restoreResource, $configBackup, Globals::CONFIG_DIR);
-        Folder::mapFiles($staticBackup, $restoreResource, $staticBackup, Globals::STATIC_DIR);
+        Folders::mapFiles($configBackup, $restoreResource, $configBackup, Globals::CONFIG_DIR);
+        Folders::mapFiles($staticBackup, $restoreResource, $staticBackup, Globals::STATIC_DIR);
 
         // 6. Migrate DB
         Logger::write('[6/11] Migrate database', print: true);
@@ -135,7 +135,7 @@ final class Update extends Command
         // 11. Clear update folder
         Logger::write('[11/11] Clear update folder', print: true);
         sleep(2);
-        Folder::removeTree($updateFolder);
+        Folders::removeTree($updateFolder);
     }
 
     /**

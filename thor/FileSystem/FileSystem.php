@@ -28,6 +28,10 @@ final class FileSystem
 
     /**
      * Deletes a file if it exists. Do nothing otherwise.
+     * This method can NOT delete folders.
+     *
+     * @see Folders::removeTree()
+     * @see Folders::removeIfEmpty()
      */
     public static function deleteIfExists(string $name): bool
     {
@@ -110,7 +114,7 @@ final class FileSystem
      */
     public static function read(string $name): ?string
     {
-        if (!FileSystem::exists($name)) {
+        if (!self::exists($name)) {
             return null;
         }
         return file_get_contents($name);

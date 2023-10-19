@@ -5,7 +5,7 @@ namespace Thor\Framework\Commands\Core;
 use Thor\Globals;
 use Thor\Debug\Logger;
 use Thor\Cli\Console\Color;
-use Thor\FileSystem\Folder;
+use Thor\FileSystem\Folders;
 use Thor\Cli\Command\Command;
 
 /**
@@ -29,7 +29,7 @@ final class ClearLogs extends Command
                       ->writeln("Clearing the $env logs...")
                       ->mode()
         ;
-        $deleted = Folder::removeTree(
+        $deleted = Folders::removeTree(
             Globals::VAR_DIR . 'logs',
             ".*[.]log",
             false,

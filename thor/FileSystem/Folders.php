@@ -9,7 +9,7 @@ namespace Thor\FileSystem;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class Folder
+final class Folders
 {
 
     private function __construct()
@@ -17,15 +17,20 @@ final class Folder
     }
 
     /**
-     * Removes all elements in the corresponding $path and returns an array of all files effectively deleted.
+     * A façade function to delete files and folders.
      *
-     * @param bool $removeFirst ignored if $removeDirs is false
+     * Removes all elements recursively in the corresponding $path and returns an array of all path of files effectively deleted.
+     *
+     * @param string|false  $mask            if provided, removes the current element only if its basename matches the $mask regular expression.
+     * @param bool          $removeRoot      is ignored if $removeFolders is false
+     * @param callable|null $removeCondition if provided, removes the current element only if the function returns true.
+     *                                       The callable prototype is fn(string $path).
      */
     public static function removeTree(
         string $path,
         string|false $mask = false,
-        bool $removeDirs = true,
-        bool $removeFirst = true,
+        bool $removeFolders = true,
+        bool $removeRoot = true,
         ?callable $removeCondition = null
     ): array {
         $files = self::fileList($path);
@@ -35,7 +40,7 @@ final class Folder
             if (FileSystem::isDir("$path/$file")) {
                 $ret = array_merge(
                     $ret,
-                    self::removeTree("$path/$file", $mask, $removeDirs, $removeDirs, $removeCondition)
+                    self::removeTree("$path/$file", $mask, $removeFolders, $removeFolders, $removeCondition)
                 );
                 continue;
             }
@@ -51,7 +56,7 @@ final class Folder
             }
         }
 
-        if ($removeDirs && $removeFirst) {
+        if ($removeFolders && $removeRoot) {
             $result = false;
             if ($removeCondition === null || $removeCondition("$path") === true) {
                 $result = self::removeIfEmpty("$path");
@@ -81,7 +86,7 @@ final class Folder
         $files = self::fileList($path);
         foreach ($files as $file) {
             if (FileSystem::isDir("$path/$file")) {
-                Folder::createIfNotExists("$dest/$file");
+                self::createIfNotExists("$dest/$file");
                 self::copyTree("$path/$file", "$dest/$file");
                 continue;
             }
@@ -110,7 +115,7 @@ final class Folder
      */
     public static function createIfNotExists(
         string $name,
-        int $permissions = Permission::OWNER_ALL | Permission::ANY_EXEC,
+        int $permissions = Permissions::OWNER_ALL | Permissions::ANY_EXEC,
         ?string $user = null,
         ?string $group = null,
     ): void {

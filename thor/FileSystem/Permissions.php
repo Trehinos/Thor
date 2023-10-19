@@ -3,15 +3,17 @@
 namespace Thor\FileSystem;
 
 /**
- * Static class
+ * Documentation class.
  *
- * 0AAABCCC
+ * This class holds constants to help using POSIX/UNIX permissions.
+ *
+ * The format is an octal number "AAABCCC" with :
  *
  * - AAA : Type
  * - B : Special
  * - CCC : Permissions
  */
-class Permission
+class Permissions
 {
 
     // Type bits 'AAA'
@@ -44,18 +46,22 @@ class Permission
     public const ANY_READ = self::OWNER_READ | self::GROUP_READ | self::OTHER_READ;
     public const ANY_WRITE = self::OWNER_WRITE | self::GROUP_WRITE | self::OTHER_WRITE;
     public const ANY_EXEC = self::OWNER_EXEC | self::GROUP_EXEC | self::OTHER_EXEC;
+
     public const OWNER_READ_WRITE = self::OWNER_READ | self::OWNER_WRITE;
     public const OWNER_WRITE_EXEC = self::OWNER_EXEC | self::OWNER_WRITE;
     public const OWNER_READ_EXEC = self::OWNER_READ | self::OWNER_EXEC;
     public const OWNER_ALL = self::OWNER_READ_WRITE | self::OWNER_EXEC;
+
     public const GROUP_READ_WRITE = self::GROUP_READ | self::GROUP_WRITE;
     public const GROUP_WRITE_EXEC = self::GROUP_EXEC | self::GROUP_WRITE;
     public const GROUP_READ_EXEC = self::GROUP_READ | self::GROUP_EXEC;
     public const GROUP_ALL = self::GROUP_READ_WRITE | self::GROUP_EXEC;
+
     public const OTHER_READ_WRITE = self::OTHER_READ | self::OTHER_WRITE;
     public const OTHER_WRITE_EXEC = self::OTHER_EXEC | self::OTHER_WRITE;
     public const OTHER_READ_EXEC = self::OTHER_READ | self::OTHER_EXEC;
     public const OTHER_ALL = self::OTHER_READ_WRITE | self::OTHER_EXEC;
+
     public const ANY_ALL = self::ANY_READ | self::ANY_WRITE | self::ANY_EXEC;
 
     /**
@@ -63,7 +69,7 @@ class Permission
      */
     public static function has(string $name, int $permission): ?bool
     {
-        $filePermissions = self::permissions($name);
+        $filePermissions = self::of($name);
         if (!is_int($filePermissions)) {
             return null;
         }
@@ -74,25 +80,25 @@ class Permission
     /**
      * Gets the file's permissions. If the file is not found, returns null. Returns false if an error occurs.
      */
-    public static function permissions(string $name): int|false|null
+    public static function of(string $file): int|false|null
     {
-        if (!FileSystem::exists($name)) {
+        if (!FileSystem::exists($file)) {
             return null;
         }
-        return fileperms($name);
+        return fileperms($file);
     }
 
     /**
-     * Returns a permissions string like in a `ls -la` command.
+     * Returns a permissions string like in a `ls -l` command.
      *
      * @example -rwxrw-r--
      * @example drwxr-x--x
      *
      * @link    https://www.php.net/manual/fr/function.fileperms.php#example-2167
      */
-    public static function permissionsString(string $name): ?string
+    public static function stringRepresentationFor(string $file): ?string
     {
-        $perms = self::permissions($name);
+        $perms = self::of($file);
 
         if (!is_int($perms)) {
             return null;
@@ -113,31 +119,20 @@ class Permission
                self::permissionsStringFor($perms, self::OTHER_READ, self::OTHER_WRITE, self::OTHER_EXEC, self::STICKY_BIT, 't', 'T');
     }
 
-    /**
-     * @param int    $permission
-     * @param int    $read
-     * @param int    $write
-     * @param int    $exec
-     * @param int    $special
-     * @param string $special_exec
-     * @param string $special_notExec
-     *
-     * @return string
-     */
     private static function permissionsStringFor(
         int $permission,
-        int $read,
-        int $write,
-        int $exec,
-        int $special,
-        string $special_exec,
-        string $special_notExec
+        int $readFilter,
+        int $writeFilter,
+        int $execFilter,
+        int $specialFilter,
+        string $specialStringOn,
+        string $specialStringOff
     ): string {
-        return (($permission & $read) ? 'r' : '-') .
-               (($permission & $write) ? 'w' : '-') .
-               (($permission & $exec)
-                   ? (($permission & $special) ? $special_exec : 'x')
-                   : (($permission & $special) ? $special_notExec : '-'));
+        return (($permission & $readFilter) ? 'r' : '-') .
+               (($permission & $writeFilter) ? 'w' : '-') .
+               (($permission & $execFilter)
+                   ? (($permission & $specialFilter) ? $specialStringOn : 'x')
+                   : (($permission & $specialFilter) ? $specialStringOff : '-'));
     }
 
 }

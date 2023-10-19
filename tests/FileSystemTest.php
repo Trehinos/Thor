@@ -4,7 +4,7 @@ namespace Tests;
 
 use Thor\Globals;
 use Thor\FileSystem\FileSystem;
-use Thor\FileSystem\Folder;
+use Thor\FileSystem\Folders;
 use PHPUnit\Framework\TestCase;
 
 final class FileSystemTest extends TestCase
@@ -15,17 +15,17 @@ final class FileSystemTest extends TestCase
 
     public function testCreateFolder(): void
     {
-        Folder::createIfNotExists(self::PATH);
+        Folders::createIfNotExists(self::PATH);
         $this->assertTrue(FileSystem::exists(self::PATH));
         $this->assertTrue(FileSystem::hasPermission(self::PATH, FileSystem::ALL_ALL));
 
-        Folder::createIfNotExists(self::PATH . 'folder1');
+        Folders::createIfNotExists(self::PATH . 'folder1');
         $this->assertTrue(FileSystem::exists(self::PATH . 'folder1'));
 
-        Folder::createIfNotExists(self::PATH . 'folder2');
+        Folders::createIfNotExists(self::PATH . 'folder2');
         $this->assertTrue(FileSystem::exists(self::PATH . 'folder2'));
 
-        Folder::createIfNotExists(self::PATH . 'folder3');
+        Folders::createIfNotExists(self::PATH . 'folder3');
         $this->assertTrue(FileSystem::exists(self::PATH . 'folder3'));
     }
 
@@ -44,12 +44,12 @@ final class FileSystemTest extends TestCase
      */
     public function testRemoveFolder(): void
     {
-        Folder::removeTree(self::PATH, removeFirst: false);
+        Folders::removeTree(self::PATH, removeRoot: false);
         $this->assertTrue(FileSystem::exists(self::PATH));
         $this->assertFalse(FileSystem::exists(self::PATH . 'folder1'));
         $this->assertFalse(FileSystem::exists(self::PATH . 'folder2'));
         $this->assertFalse(FileSystem::exists(self::PATH . 'folder3'));
-        Folder::removeTree(self::PATH);
+        Folders::removeTree(self::PATH);
         $this->assertFalse(FileSystem::exists(self::PATH));
     }
 

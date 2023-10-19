@@ -9,7 +9,7 @@ use Throwable;
 use Stringable;
 use JsonException;
 use Thor\Tools\Strings;
-use Thor\FileSystem\Folder;
+use Thor\FileSystem\Folders;
 
 /**
  * Logger class for Thor.
@@ -148,7 +148,7 @@ final class Logger implements LoggerInterface
             }
 
             try {
-                Folder::createIfNotExists(dirname($this->filename));
+                Folders::createIfNotExists(dirname($this->filename));
                 file_put_contents($this->filename, "$message\n", FILE_APPEND);
             } catch (Throwable $t) {
                 echo "LOGGER ERROR : {$t->getMessage()}\n";

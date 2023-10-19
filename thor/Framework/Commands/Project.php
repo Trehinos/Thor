@@ -13,7 +13,7 @@ use ReflectionProperty;
 use ReflectionException;
 use Thor\Cli\Console\Mode;
 use Thor\Cli\Console\Color;
-use Thor\FileSystem\Folder;
+use Thor\FileSystem\Folders;
 use ReflectionClassConstant;
 use Thor\Cli\Command\Command;
 use Thor\FileSystem\FileSystem;
@@ -44,7 +44,7 @@ final class Project extends Command
         $verbose = $this->get('verbose') ?? false;
 
         $classes = $this->getClasses(Globals::CODE_DIR . $folder, $namespace);
-        Folder::createIfNotExists(Globals::VAR_DIR . 'documentation');
+        Folders::createIfNotExists(Globals::VAR_DIR . 'documentation');
         $output = '';
         $links = [];
         foreach ($classes as $className) {

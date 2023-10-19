@@ -8,7 +8,7 @@ use Thor\{Thor,
     Debug\Logger,
     Cli\CliKernel,
     Debug\LogLevel,
-    FileSystem\Folder,
+    FileSystem\Folders,
     Process\Application,
     Process\KernelInterface,
     Configuration\Configuration,
@@ -118,7 +118,7 @@ final class DaemonScheduler implements KernelInterface
         $state->load();
         if (!$state->isRunning() && $daemon->isNowRunnable($state->getNextRun())) {
             $logPath = Globals::VAR_DIR . ThorConfiguration::get()->logPath();
-            Folder::createIfNotExists($logPath . "{$logPath}daemon/{$daemon->getName()}/");
+            Folders::createIfNotExists($logPath . "{$logPath}daemon/{$daemon->getName()}/");
             CliKernel::executeBackgroundProgram(
                 'php ' . Globals::BIN_DIR . "daemon.php {$daemon->getName()}",
                 "$logPath{$daemon->getName()}/output.log"

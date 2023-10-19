@@ -18,7 +18,8 @@ class File
     {
         $this->content = match (true) {
             $content instanceof Stream => $content,
-            default => Stream::create($content ?? '')
+            is_string($content) => Stream::create($content),
+            default => Stream::createFromFile($this->filename, 'rw'),
         };
     }
 
@@ -37,9 +38,9 @@ class File
     /**
      * Gets the raw stream of the file. De-synchronize the file with the disk until the next call to writeToDisk().
      *
+     * @return Stream
      * @see self::writeToDisk()
      *
-     * @return Stream
      */
     public function stream(): Stream
     {
