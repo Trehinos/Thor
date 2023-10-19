@@ -17,13 +17,13 @@ final class FileSystem
     }
 
     /**
-     * @param string $name
+     * @param string $path
      *
      * @return bool
      */
-    public static function isDir(string $name): bool
+    public static function isDir(string $path): bool
     {
-        return self::exists($name) && is_dir($name);
+        return self::exists($path) && is_dir($path);
     }
 
     /**
@@ -33,10 +33,10 @@ final class FileSystem
      * @see Folders::removeTree()
      * @see Folders::removeIfEmpty()
      */
-    public static function deleteIfExists(string $name): bool
+    public static function deleteIfExists(string $path): bool
     {
-        if (self::exists($name) && !self::isDir($name)) {
-            return unlink($name);
+        if (self::exists($path) && !self::isDir($path)) {
+            return unlink($path);
         }
         return false;
     }
@@ -64,37 +64,37 @@ final class FileSystem
     /**
      * Returns if a file exists.
      */
-    public static function exists(string $name): bool
+    public static function exists(string $path): bool
     {
-        return file_exists($name);
+        return file_exists($path);
     }
 
     /**
      * Appends in a file if it exists. Do nothing otherwise (no error thrown).
      */
-    public static function appendIfExists(string $name, string $data): void
+    public static function appendIfExists(string $path, string $data): void
     {
-        if (self::exists($name)) {
-            self::write($name, $data, true);
+        if (self::exists($path)) {
+            self::write($path, $data, true);
         }
     }
 
     /**
      * Writes in a file.
      */
-    public static function write(string $name, string $data, bool $append = false): void
+    public static function write(string $path, string $data, bool $append = false): void
     {
-        file_put_contents($name, $data, $append ? FILE_APPEND : 0);
+        file_put_contents($path, $data, $append ? FILE_APPEND : 0);
     }
 
     /**
      * Sets owner (and group) of a file.
      */
-    public static function chown(string $name, string $user, ?string $group = null): bool
+    public static function chown(string $path, string $user, ?string $group = null): bool
     {
-        $result = chown($name, $user);
+        $result = chown($path, $user);
         if ($group !== null) {
-            $result = $result && chgrp($name, $group);
+            $result = $result && chgrp($path, $group);
         }
 
         return $result;
@@ -103,21 +103,21 @@ final class FileSystem
     /**
      * Sets a file's permissions.
      */
-    public static function chmod(string $name, int $permissions): bool
+    public static function chmod(string $path, int $permissions): bool
     {
-        return chmod($name, $permissions);
+        return chmod($path, $permissions);
     }
 
     /**
      * Reads from a file.
      * Returns null if the file doesn't exist.
      */
-    public static function read(string $name): ?string
+    public static function read(string $path): ?string
     {
-        if (!self::exists($name)) {
+        if (!self::exists($path)) {
             return null;
         }
-        return file_get_contents($name);
+        return file_get_contents($path);
     }
 
 

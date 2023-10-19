@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Thor\FileSystem\Permissions;
 use Thor\Globals;
 use Thor\FileSystem\FileSystem;
 use Thor\FileSystem\Folders;
@@ -15,18 +16,10 @@ final class FileSystemTest extends TestCase
 
     public function testCreateFolder(): void
     {
-        Folders::createIfNotExists(self::PATH);
+        Folders::createIfNotExists(self::PATH, Permissions::OWNER_ALL);
         $this->assertTrue(FileSystem::exists(self::PATH));
-        $this->assertTrue(FileSystem::hasPermission(self::PATH, FileSystem::ALL_ALL));
-
-        Folders::createIfNotExists(self::PATH . 'folder1');
-        $this->assertTrue(FileSystem::exists(self::PATH . 'folder1'));
-
-        Folders::createIfNotExists(self::PATH . 'folder2');
-        $this->assertTrue(FileSystem::exists(self::PATH . 'folder2'));
-
-        Folders::createIfNotExists(self::PATH . 'folder3');
-        $this->assertTrue(FileSystem::exists(self::PATH . 'folder3'));
+        $this->assertTrue(Permissions::has(self::PATH, Permissions::OWNER_ALL));
+        $this->assertEquals('drwx------', Permissions::stringRepresentationFor(self::PATH));
     }
 
     /**
@@ -46,9 +39,7 @@ final class FileSystemTest extends TestCase
     {
         Folders::removeTree(self::PATH, removeRoot: false);
         $this->assertTrue(FileSystem::exists(self::PATH));
-        $this->assertFalse(FileSystem::exists(self::PATH . 'folder1'));
-        $this->assertFalse(FileSystem::exists(self::PATH . 'folder2'));
-        $this->assertFalse(FileSystem::exists(self::PATH . 'folder3'));
+        $this->assertFalse(FileSystem::exists(self::PATH . 'folder'));
         Folders::removeTree(self::PATH);
         $this->assertFalse(FileSystem::exists(self::PATH));
     }

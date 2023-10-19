@@ -67,25 +67,25 @@ class Permissions
     /**
      * Returns true if the file has at least the specified permissions.
      */
-    public static function has(string $name, int $permission): ?bool
+    public static function has(string $path, int $permission): ?bool
     {
-        $filePermissions = self::of($name);
-        if (!is_int($filePermissions)) {
+        $pathPermissions = self::of($path);
+        if (!is_int($pathPermissions)) {
             return null;
         }
 
-        return ($filePermissions & $permission) === $permission;
+        return ($pathPermissions & $permission) === $permission;
     }
 
     /**
      * Gets the file's permissions. If the file is not found, returns null. Returns false if an error occurs.
      */
-    public static function of(string $file): int|false|null
+    public static function of(string $path): int|false|null
     {
-        if (!FileSystem::exists($file)) {
+        if (!FileSystem::exists($path)) {
             return null;
         }
-        return fileperms($file);
+        return fileperms($path);
     }
 
     /**
@@ -96,9 +96,9 @@ class Permissions
      *
      * @link    https://www.php.net/manual/fr/function.fileperms.php#example-2167
      */
-    public static function stringRepresentationFor(string $file): ?string
+    public static function stringRepresentationFor(string $path): ?string
     {
-        $perms = self::of($file);
+        $perms = self::of($path);
 
         if (!is_int($perms)) {
             return null;

@@ -114,16 +114,16 @@ final class Folders
      * Creates (a) folder(s) recursively if the path does not exist.
      */
     public static function createIfNotExists(
-        string $name,
+        string $path,
         int $permissions = Permissions::OWNER_ALL | Permissions::ANY_EXEC,
         ?string $user = null,
         ?string $group = null,
     ): void {
-        if (!FileSystem::exists($name)) {
-            mkdir($name, recursive: true);
-            chmod($name, $permissions);
+        if (!FileSystem::exists($path)) {
+            mkdir($path, recursive: true);
+            chmod($path, $permissions);
             if (null !== $user) {
-                FileSystem::chown($name, $user, $group);
+                FileSystem::chown($path, $user, $group);
             }
         }
     }

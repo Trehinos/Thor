@@ -78,9 +78,8 @@ final class ToolsTest extends TestCase
 
     public function testEmail(): void
     {
-        $email = new Email('Test', 'noreply@trehinos.eu', message: 'Ceci est un <strong>test</strong>');
+        $email = Email::complete('Test', 'Ceci est un <strong>test</strong>', 'noreply@trehinos.eu');
         $r = $email->send('user@example.com');
-
         $this->assertTrue($r);
     }
 
