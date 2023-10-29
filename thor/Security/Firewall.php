@@ -5,10 +5,8 @@ namespace Thor\Security;
 use JetBrains\PhpStorm\Immutable;
 use Thor\Http\Response\ResponseFactory;
 use Thor\Framework\Factories\SecurityFactory;
-use Thor\Http\{Routing\Router,
-    Response\ResponseInterface,
-    Request\ServerRequestInterface,
-    Server\RequestHandlerInterface};
+use Thor\Http\{Routing\Router, Response\ResponseInterface, Request\ServerRequestInterface, Server\MiddlewareInterface, Server\RequestHandlerInterface};
+use Thor\Security\Authorization\HasPermissions;
 
 /**
  * Thor firewall.
@@ -19,10 +17,10 @@ use Thor\Http\{Routing\Router,
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-class Firewall implements RequestHandlerInterface
+class Firewall implements RequestHandlerInterface, MiddlewareInterface
 {
 
-    public bool $isAuthenticated = false;
+    public bool $userIsAuthenticated = false;
 
     /**
      * @param SecurityInterface $security
@@ -53,36 +51,6 @@ class Firewall implements RequestHandlerInterface
         #[Immutable(allowedWriteScope: Immutable::PROTECTED_WRITE_SCOPE)]
         public array $excludedPaths = []
     ) {
-    }
-
-    /**
-     * True if the Request will cause a redirection.
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return bool
-     */
-    public function redirect(ServerRequestInterface $request): bool
-    {
-        if (!str_starts_with($request->getUri()->getPath(), $this->pattern)) {
-            return false;
-        }
-
-        if ($this->pathIsExcluded($request) || $this->routeIsExcluded()) {
-            return false;
-        }
-
-        if (!$this->isAuthenticated) {
-            return true;
-        }
-        $routeName = $this->router->getMatchedRouteName();
-        if ($routeName !== null) {
-            $route = $this->router->getRoute($routeName);
-            if ($route->authorization !== null) {
-                return !$route->authorization->isAuthorized($this->security->getCurrentIdentity());
-            }
-        }
-        return false;
     }
 
     /**
@@ -127,4 +95,24 @@ class Firewall implements RequestHandlerInterface
     {
         return ResponseFactory::found($this->router->getUrl($this->redirect));
     }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $routeName = $this->router->getMatchedRouteName();
+        if ($routeName !== null) {
+            $route = $this->router->getRoute($routeName);
+            $identity = $this->security->getCurrentIdentity();
+            if ($this->userIsAuthenticated && $route->authorization !== null && $identity instanceof HasPermissions && $route->authorization->isAuthorized($identity)) {
+                return $handler->handle($request);
+            }
+        }
+        return ResponseFactory::forbidden();
+    }
+
+    public function matches(ServerRequestInterface $request): bool
+    {
+        return str_starts_with($request->getUri()->getPath(), $this->pattern)|| $this->pathIsExcluded($request) || $this->routeIsExcluded();
+    }
+
+
 }

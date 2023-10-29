@@ -74,9 +74,6 @@ class HttpServer implements RequestHandlerInterface
         }
 
         $controllerHandler = new ControllerHandler($this, $route);
-        if (null !== ($redirect = $this->security?->protect($request))) {
-            return $redirect;
-        }
         return $controllerHandler->handle($request);
     }
 

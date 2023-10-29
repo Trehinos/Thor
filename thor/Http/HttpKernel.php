@@ -146,6 +146,9 @@ class HttpKernel implements KernelInterface
      */
     public function handle(ServerRequestInterface $serverRequest): ResponseInterface
     {
+        if ($this->server->getSecurity() !== null) {
+            return $this->server->getSecurity()->process($serverRequest, $this->server);
+        }
         return $this->server->handle($serverRequest);
     }
 

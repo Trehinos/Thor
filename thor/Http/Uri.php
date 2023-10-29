@@ -71,6 +71,9 @@ class Uri implements UriInterface
         if (empty($queryArguments) && isset($_SERVER['QUERY_STRING'])) {
             parse_str($_SERVER['QUERY_STRING'], $queryArguments);
         }
+        if (str_contains($path, '.php')) {
+            $path = preg_replace('/^(.+\.php)/', '', $path);
+        }
 
         return new self(
             !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'
