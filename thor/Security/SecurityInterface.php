@@ -4,6 +4,8 @@ namespace Thor\Security;
 
 use Thor\Http\Request\ServerRequestInterface;
 use Thor\Http\Response\ResponseInterface;
+use Thor\Http\Server\MiddlewareInterface;
+use Thor\Http\Server\RequestHandlerInterface;
 use Thor\Security\Identity\IdentityInterface;
 use Thor\Security\Authentication\AuthenticatorInterface;
 use Thor\Security\Identity\ProviderInterface;
@@ -15,7 +17,7 @@ use Thor\Security\Identity\ProviderInterface;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-interface SecurityInterface
+interface SecurityInterface extends MiddlewareInterface
 {
 
     /**
@@ -41,14 +43,8 @@ interface SecurityInterface
 
     /**
      * Protect the server from a Request.
-     *
-     * Returns null or a redirect response.
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface|null
      */
-    public function protect(ServerRequestInterface $request): ?ResponseInterface;
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface;
 
     /**
      * Gets the current authenticated identity.

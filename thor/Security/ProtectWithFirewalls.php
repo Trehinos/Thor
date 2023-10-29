@@ -4,11 +4,12 @@ namespace Thor\Security;
 
 use Thor\Http\Response\ResponseInterface;
 use Thor\Http\Request\ServerRequestInterface;
+use Thor\Http\Server\RequestHandlerInterface;
 
 /**
- * Default implementation of SecurityInterface::protect().
+ * Default implementation of SecurityInterface::process().
  *
- * @method getAuthenticator()
+ * @method Security::getAuthenticator()
  * @method getFirewalls()
  *
  * @package          Thor/Security
@@ -18,22 +19,20 @@ use Thor\Http\Request\ServerRequestInterface;
 trait ProtectWithFirewalls
 {
 
-    /**
-     * @see SecurityInterface::protect()
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface|null
-     */
-    public function protect(ServerRequestInterface $request): ?ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+
+
+        /**
+         * @var Firewall $firewall
+         */
         foreach ($this->getFirewalls() as $firewall) {
-            $firewall->isAuthenticated = $this->getAuthenticator()->isAuthenticated();
-            if ($firewall->redirect($request)) {
-                return $firewall->handle($request);
+            $firewall->userIsAuthenticated = $this->getAuthenticator()->isAuthenticated();
+            if ($firewall->matches($request)) {
+                return $firewall->process($request, $handler);
             }
         }
-        return null;
+        return $handler->handle($request);
     }
 
 }
