@@ -6,7 +6,7 @@ username-field: 'username'
 firewalls:
     -
         pattern: /
-        redirect: ~
+        redirect: login
         login-route: login
         logout-route: logout
         check-route: check

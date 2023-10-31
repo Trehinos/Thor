@@ -21,8 +21,6 @@ trait ProtectWithFirewalls
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-
-
         /**
          * @var Firewall $firewall
          */

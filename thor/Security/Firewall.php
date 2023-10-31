@@ -5,7 +5,7 @@ namespace Thor\Security;
 use JetBrains\PhpStorm\Immutable;
 use Thor\Http\Response\ResponseFactory;
 use Thor\Framework\Factories\SecurityFactory;
-use Thor\Http\{Routing\Router, Response\ResponseInterface, Request\ServerRequestInterface, Server\MiddlewareInterface, Server\RequestHandlerInterface};
+use Thor\Http\{Routing\Router, Response\ResponseInterface, Request\ServerRequestInterface, Server\MiddlewareInterface, Server\RequestHandlerInterface, Uri};
 use Thor\Security\Authorization\HasPermissions;
 
 /**
@@ -102,16 +102,20 @@ class Firewall implements RequestHandlerInterface, MiddlewareInterface
         if ($routeName !== null) {
             $route = $this->router->getRoute($routeName);
             $identity = $this->security->getCurrentIdentity();
-            if ($this->userIsAuthenticated && $route->authorization !== null && $identity instanceof HasPermissions && $route->authorization->isAuthorized($identity)) {
+            if ($this->userIsAuthenticated && ($route->authorization === null || ($route->authorization !== null && $identity instanceof HasPermissions && $route->authorization->isAuthorized($identity)))) {
                 return $handler->handle($request);
             }
+        }
+        if ($this->redirect !== null) {
+            $uri = $this->router->getUrl($this->redirect);
+            return ResponseFactory::temporaryRedirect($uri);
         }
         return ResponseFactory::forbidden();
     }
 
     public function matches(ServerRequestInterface $request): bool
     {
-        return str_starts_with($request->getUri()->getPath(), $this->pattern)|| $this->pathIsExcluded($request) || $this->routeIsExcluded();
+        return str_starts_with($request->getUri()->getPath(), $this->pattern) && !$this->pathIsExcluded($request) && !$this->routeIsExcluded();
     }
 
 

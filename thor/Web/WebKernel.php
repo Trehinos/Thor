@@ -59,15 +59,4 @@ class WebKernel extends HttpKernel
         return new self(WebServerFactory::creatWebServerFromConfiguration($config));
     }
 
-    /**
-     * Makes the HttpServer handle the ServerRequestInterface and returns its ResponseInterface.
-     */
-    public function handle(ServerRequestInterface $serverRequest): ResponseInterface
-    {
-        if ($this->server->getSecurity() !== null) {
-            return $this->server->getSecurity()->process($serverRequest, $this->server);
-        }
-        return $this->server->handle($serverRequest);
-    }
-
 }
