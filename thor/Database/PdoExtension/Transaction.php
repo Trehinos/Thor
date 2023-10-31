@@ -14,14 +14,14 @@ namespace Thor\Database\PdoExtension;
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-final class PdoTransaction extends PdoRequester
+final class Transaction extends Requester
 {
 
     /**
-     * @param PdoHandler $handler
+     * @param Handler $handler
      * @param bool       $autoTransaction
      */
-    public function __construct(PdoHandler $handler, private bool $autoTransaction = true)
+    public function __construct(Handler $handler, private bool $autoTransaction = true)
     {
         parent::__construct($handler);
         if ($this->autoTransaction && !$this->handler->getPdo()->inTransaction()) {

@@ -16,13 +16,13 @@ use Thor\Debug\LogLevel;
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-class PdoRequester
+class Requester
 {
 
     /**
-     * @param PdoHandler $handler
+     * @param Handler $handler
      */
-    public function __construct(protected PdoHandler $handler)
+    public function __construct(protected Handler $handler)
     {
     }
 
@@ -99,7 +99,7 @@ class PdoRequester
     /**
      * Returns this instance's PDO connection handler.
      */
-    final public function getPdoHandler(): PdoHandler
+    final public function getPdoHandler(): Handler
     {
         return $this->handler;
     }

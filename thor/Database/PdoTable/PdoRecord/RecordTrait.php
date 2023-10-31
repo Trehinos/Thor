@@ -2,18 +2,18 @@
 
 namespace Thor\Database\PdoTable\PdoRecord;
 
-use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoExtension\Requester;
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Database\PdoTable\Driver\DriverInterface;
 use Thor\Database\PdoTable\SchemaHelper;
-use Thor\Database\PdoTable\PdoRow\PdoRowInterface;
+use Thor\Database\PdoTable\PdoRow\RowInterface;
 
 /**
- * @implements PdoRecordInterface
- * @implements PdoRowInterface
+ * @implements RecordInterface
+ * @implements RowInterface
  */
-trait PdoRecordTrait
+trait RecordTrait
 {
 
     protected bool $isSynced = false;
@@ -24,7 +24,7 @@ trait PdoRecordTrait
     {
     }
 
-    public static function load(DriverInterface $driver, PdoRequester $requester, mixed ...$args): static
+    public static function load(DriverInterface $driver, Requester $requester, mixed ...$args): static
     {
         return new static(RecordManager::create($driver, $requester, static::class), ...$args);
     }

@@ -12,7 +12,7 @@ use Thor\{Globals, Configuration\ConfigurationFromFile, Framework\Configurations
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-final class PdoMigrator
+final class Migrator
 {
 
     /**
@@ -39,7 +39,7 @@ final class PdoMigrator
         $lastIndex = 0;
         foreach ($this->sqlMigrations as $handlerName => $migrations) {
             ksort($migrations);
-            $requester = new PdoRequester($this->pdoCollection->get($handlerName));
+            $requester = new Requester($this->pdoCollection->get($handlerName));
             foreach ($migrations as $migrationIndex => $migrationQueries) {
                 $migrationQueries = explode(";\n", $migrationQueries);
                 if ($migrationIndex > $this->migrationIndex) {

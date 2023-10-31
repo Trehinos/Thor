@@ -21,14 +21,14 @@ use Thor\Database\PdoTable\CrudHelper;
  * @copyright Author
  * @license   MIT
  */
-final class PdoRowConverter
+final class RowConverter
 {
 
     /**
-     * @param PdoRowInterface $pdoRow
+     * @param RowInterface $pdoRow
      */
     public function __construct(
-        private PdoRowInterface $pdoRow
+        private RowInterface $pdoRow
     ) {
     }
 
@@ -61,7 +61,7 @@ final class PdoRowConverter
      *
      * @return T
      */
-    public function get(): PdoRowInterface
+    public function get(): RowInterface
     {
         return $this->pdoRow;
     }

@@ -7,10 +7,10 @@ use Thor\Web\Node;
 use Thor\Web\Html;
 use ReflectionException;
 use JetBrains\PhpStorm\ArrayShape;
-use Thor\Database\PdoExtension\PdoHandler;
+use Thor\Database\PdoExtension\Handler;
 use DataTables\{Editor, Database, Editor\Field};
 use Thor\Database\PdoTable\PdoRow\Attributes\{Column};
-use Thor\Database\PdoTable\PdoRow\PdoAttributesReader;
+use Thor\Database\PdoTable\PdoRow\AttributesReader;
 use Thor\Database\PdoTable\PdoRow\Attributes\Table;
 
 /**
@@ -31,11 +31,11 @@ final class DataTables
      */
     public function __construct(
         private string $className,
-        private PdoHandler $handler,
+        private Handler $handler,
         private array $columns = [],
         private array $formatters = []
     ) {
-        $this->attributes = PdoAttributesReader::pdoTableInformation($this->className);
+        $this->attributes = AttributesReader::pdoTableInformation($this->className);
     }
 
     /**

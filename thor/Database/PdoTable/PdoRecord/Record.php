@@ -4,13 +4,13 @@ namespace Thor\Database\PdoTable\PdoRecord;
 
 use Thor\Database\PdoTable\PdoRow\PdoRowTrait;
 
-class PdoRecord implements PdoRecordInterface
+class Record implements RecordInterface
 {
     use PdoRowTrait {
         PdoRowTrait::__construct as private pdoRow;
     }
-    use PdoRecordTrait {
-        PdoRecordTrait::__construct as private pdoRecord;
+    use RecordTrait {
+        RecordTrait::__construct as private pdoRecord;
     }
 
     public function __construct(RecordManager $manager, array $primaries)

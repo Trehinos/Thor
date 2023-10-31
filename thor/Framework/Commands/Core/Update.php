@@ -10,7 +10,7 @@ use Thor\FileSystem\Folders;
 use Thor\Cli\Command\Command;
 use Thor\Cli\Daemon\DaemonState;
 use Symfony\Component\Yaml\Yaml;
-use Thor\Database\PdoExtension\PdoMigrator;
+use Thor\Database\PdoExtension\Migrator;
 use Thor\Configuration\ConfigurationFromFile;
 
 /**
@@ -97,7 +97,7 @@ final class Update extends Command
 
         // 6. Migrate DB
         Logger::write('[6/11] Migrate database', print: true);
-        $migrator = PdoMigrator::createFromConfiguration();
+        $migrator = Migrator::createFromConfiguration();
         $migrator->migrate(null);
 
         // 7. Run after-update

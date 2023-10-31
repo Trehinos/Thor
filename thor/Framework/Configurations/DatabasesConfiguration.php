@@ -5,8 +5,8 @@ namespace Thor\Framework\Configurations;
 use PDO;
 use Thor\Configuration\Configuration;
 use Thor\Configuration\ConfigurationFromFile;
-use Thor\Database\PdoExtension\PdoHandler;
-use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoExtension\Handler;
+use Thor\Database\PdoExtension\Requester;
 use Thor\Database\PdoExtension\PdoCollection;
 
 final class DatabasesConfiguration extends ConfigurationFromFile
@@ -52,24 +52,24 @@ final class DatabasesConfiguration extends ConfigurationFromFile
         return $pdos;
     }
 
-    public function createPdoRequester(string $name): ?PdoRequester
+    public function createPdoRequester(string $name): ?Requester
     {
         $config = $this[$name] ?? null;
         if ($config === null) {
             return null;
         }
 
-        return new PdoRequester($this->createPdoHandler($name));
+        return new Requester($this->createPdoHandler($name));
     }
 
-    public function createPdoHandler(string $name): ?PdoHandler
+    public function createPdoHandler(string $name): ?Handler
     {
         $config = $this[$name] ?? null;
         if ($config === null) {
             return null;
         }
 
-        return new PdoHandler(
+        return new Handler(
             $config['dsn'] ?? '',
             $config['user'] ?? null,
             $config['password'] ?? null,

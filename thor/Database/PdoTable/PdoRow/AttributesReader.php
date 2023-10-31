@@ -19,7 +19,7 @@ use Thor\Database\PdoTable\PdoRow\Attributes\ForeignKey;
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-final class PdoAttributesReader
+final class AttributesReader
 {
 
     #[ArrayShape(['table' => Table::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]

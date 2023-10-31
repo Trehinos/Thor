@@ -4,7 +4,7 @@ namespace Thor\Framework\Commands\Core;
 
 use Thor\Cli\Console\Color;
 use Thor\Cli\Command\Command;
-use Thor\Database\PdoExtension\PdoMigrator;
+use Thor\Database\PdoExtension\Migrator;
 use Thor\Configuration\ConfigurationFromFile;
 
 /**
@@ -18,7 +18,7 @@ final class Migrate extends Command
     public function execute(): void
     {
         $index = $this->get('index');
-        $migrator = PdoMigrator::createFromConfiguration();
+        $migrator = Migrator::createFromConfiguration();
         $index = $migrator->migrate($index);
         $this->console->echoes(
             Color::FG_GREEN,

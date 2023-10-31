@@ -2,10 +2,10 @@
 
 namespace Thor\Database\PdoTable\PdoRecord;
 
-use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoExtension\Requester;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Database\PdoTable\Driver\DriverInterface;
-use Thor\Database\PdoTable\PdoRow\PdoRowInterface;
+use Thor\Database\PdoTable\PdoRow\RowInterface;
 use Thor\Database\PdoTable\SchemaHelper;
 
 final readonly class RecordManager
@@ -15,16 +15,16 @@ final readonly class RecordManager
 
     /**
      * @template T
-     * @template-implements PdoRowInterface
-     * @template-implements PdoRecordInterface
+     * @template-implements RowInterface
+     * @template-implements RecordInterface
      *
      * @param DriverInterface $driver
-     * @param PdoRequester $requester
+     * @param Requester $requester
      * @param class-string<T> $class
      *
-     * @return PdoRecordInterface
+     * @return RecordInterface
      */
-    public static function create(DriverInterface $driver, PdoRequester $requester, string $class): object
+    public static function create(DriverInterface $driver, Requester $requester, string $class): object
     {
         return new $class(
             new CrudHelper($class, $requester),

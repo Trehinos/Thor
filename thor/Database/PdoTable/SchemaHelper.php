@@ -3,8 +3,8 @@
 namespace Thor\Database\PdoTable;
 
 use ReflectionException;
-use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\{Driver\DriverInterface, PdoRow\Attributes\Index, PdoRow\PdoAttributesReader};
+use Thor\Database\PdoExtension\Requester;
+use Thor\Database\PdoTable\{Driver\DriverInterface, PdoRow\Attributes\Index, PdoRow\AttributesReader};
 
 /**
  * This class provides methods to execute DQL statements from a PdoAttributesReader.
@@ -22,13 +22,13 @@ final class SchemaHelper
 {
 
     /**
-     * @param PdoRequester    $requester
+     * @param Requester    $requester
      * @param DriverInterface $driver
      * @param class-string    $className
      * @param bool            $isDebug if true, generates and returns SQL statements instead of executing them.
      */
     public function __construct(
-        private PdoRequester $requester,
+        private Requester $requester,
         private DriverInterface $driver,
         private string $className,
         private bool $isDebug = false
@@ -68,7 +68,7 @@ final class SchemaHelper
      */
     public function dropTable(): bool|string
     {
-        $attrs = (new PdoAttributesReader($this->className))->getAttributes();
+        $attrs = (new AttributesReader($this->className))->getAttributes();
         $tableName = $attrs['table']->getTableName();
 
         $sql = '';

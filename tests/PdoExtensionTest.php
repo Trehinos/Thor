@@ -7,8 +7,8 @@ use Thor\Globals;
 use Thor\Debug\Logger;
 use Thor\Debug\LogLevel;
 use PHPUnit\Framework\TestCase;
-use Thor\Database\PdoExtension\PdoHandler;
-use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoExtension\Handler;
+use Thor\Database\PdoExtension\Requester;
 
 final class PdoExtensionTest extends TestCase
 {
@@ -16,19 +16,19 @@ final class PdoExtensionTest extends TestCase
     public const USER = null;
     public const PASSWORD = null;
 
-    public static PdoRequester $requester;
+    public static Requester $requester;
 
     public static function setUpBeforeClass(): void
     {
         Logger::setDefaultLogger(LogLevel::INFO, Globals::VAR_DIR . '/test-logs/');
-        $pdoHandler = new PdoHandler(self::DSN, self::USER, self::PASSWORD);
-        self::$requester = new PdoRequester($pdoHandler);
+        $pdoHandler = new Handler(self::DSN, self::USER, self::PASSWORD);
+        self::$requester = new Requester($pdoHandler);
     }
 
-    public function testConnect(): PdoRequester
+    public function testConnect(): Requester
     {
-        $this->assertInstanceOf(PdoRequester::class, self::$requester);
-        $this->assertInstanceOf(PdoHandler::class, self::$requester->getPdoHandler());
+        $this->assertInstanceOf(Requester::class, self::$requester);
+        $this->assertInstanceOf(Handler::class, self::$requester->getPdoHandler());
         $this->assertInstanceOf(PDO::class, self::$requester->getPdoHandler()->getPdo());
 
         return self::$requester;

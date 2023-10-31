@@ -4,7 +4,7 @@ namespace Thor\Framework\Commands\Core;
 
 use Thor\Debug\Logger;
 use Thor\Cli\Command\Command;
-use Thor\Database\PdoExtension\PdoMigrator;
+use Thor\Database\PdoExtension\Migrator;
 
 /**
  * @package          Thor/Framework
@@ -20,7 +20,7 @@ final class Install extends Command
         $setup->execute();
 
         Logger::write('Migrate database...', print: true);
-        $migrator = PdoMigrator::createFromConfiguration();
+        $migrator = Migrator::createFromConfiguration();
         $migrator->migrate(null);
     }
 

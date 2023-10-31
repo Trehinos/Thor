@@ -6,8 +6,8 @@ use PHPUnit\Framework\TestCase;
 use Thor\Framework\Security\DbUser;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Structures\Collection\Collection;
-use Thor\Database\PdoExtension\PdoHandler;
-use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoExtension\Handler;
+use Thor\Database\PdoExtension\Requester;
 
 final class CollectionTest extends TestCase
 {
@@ -24,7 +24,7 @@ final class CollectionTest extends TestCase
         $this->assertEquals('test2', $collection[1]);
         $this->assertTrue($collection->isList());
 
-        $crud = new CrudHelper(DbUser::class, new PdoRequester(new PdoHandler('dsn')));
+        $crud = new CrudHelper(DbUser::class, new Requester(new Handler('dsn')));
 
     }
 

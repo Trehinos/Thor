@@ -2,6 +2,9 @@
 
 namespace Thor\Database\PdoTable\PdoRow;
 
+use Thor\Database\PdoTable\HasId;
+use Thor\Database\PdoTable\HasIdTrait;
+
 /**
  * Default implementor of PdoRowInterface.
  *
@@ -9,19 +12,20 @@ namespace Thor\Database\PdoTable\PdoRow;
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-abstract class BasePdoRow implements PdoRowInterface
+abstract class BaseTable implements RowInterface, HasId
 {
 
     use PdoRowTrait {
         PdoRowTrait::__construct as private traitConstructor;
     }
+    use HasIdTrait;
 
     /**
-     * @param array $primaries
+     * @param int|null $id
      */
-    public function __construct(array $primaries = [])
+    public function __construct(?int $id = null)
     {
-        $this->traitConstructor($primaries);
+        $this->traitConstructor(['id' => $id]);
     }
 
 }

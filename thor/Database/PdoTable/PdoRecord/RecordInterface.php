@@ -4,10 +4,10 @@ namespace Thor\Database\PdoTable\PdoRecord;
 
 use Thor\Database\PdoTable\Criteria;
 use Thor\Database\PdoTable\CrudHelper;
-use Thor\Database\PdoTable\PdoRow\PdoRowInterface;
+use Thor\Database\PdoTable\PdoRow\RowInterface;
 use Thor\Database\PdoTable\SchemaHelper;
 
-interface PdoRecordInterface extends PdoRowInterface
+interface RecordInterface extends RowInterface
 {
 
     public function getCrudHelper(): CrudHelper;

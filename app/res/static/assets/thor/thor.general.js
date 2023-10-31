@@ -4,6 +4,7 @@ const confirmPost = (url, params, message, after) => {
     }
 };
 
+// TODO move this function
 function loadPage(url, params, callback) {
     $("#btn-show-toasts").find(".fa-lg").removeClass("text-danger");
     let $page = $("#content");
@@ -15,15 +16,15 @@ function loadPage(url, params, callback) {
     });
 }
 
-const Throttle = {
-    handler: null,
-    handle: (func, timeout) => {
-        if (this.handler !== null) {
-            clearTimeout(this.handler);
+const Throttler = {
+    timeoutHandler: null,
+    throttle: (functionToDelay, delay) => {
+        if (this.timeoutHandler !== null) {
+            clearTimeout(this.timeoutHandler);
         }
-        this.handler = setTimeout(() => {
-            func();
-            this.handler = null;
-        }, timeout);
+        this.timeoutHandler = setTimeout(() => {
+            functionToDelay();
+            this.timeoutHandler = null;
+        }, delay);
     }
 };

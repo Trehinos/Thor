@@ -5,7 +5,7 @@ namespace Thor\Tools;
 use Thor\Tools\Spreadsheet\Builder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Thor\Structures\Collection\Collection;
-use Thor\Database\PdoTable\PdoRow\PdoRowInterface;
+use Thor\Database\PdoTable\PdoRow\RowInterface;
 
 /**
  *
@@ -20,7 +20,7 @@ final class PdoArray2Spreadsheet
     const OPTION_NO_HEADERS = 0b0001;
 
     /**
-     * @param Collection<PdoRowInterface> $pdoArray
+     * @param Collection<RowInterface> $pdoArray
      * @param Builder|null                $builder
      */
     public function __construct(private Collection $pdoArray, private ?Builder $builder = null)

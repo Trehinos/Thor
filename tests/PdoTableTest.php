@@ -10,9 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Database\PdoTable\SchemaHelper;
 use Thor\Database\PdoTable\Driver\Sqlite;
-use Thor\Database\PdoExtension\PdoHandler;
-use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoTable\PdoRow\PdoRowInterface;
+use Thor\Database\PdoExtension\Handler;
+use Thor\Database\PdoExtension\Requester;
+use Thor\Database\PdoTable\PdoRow\RowInterface;
 
 final class PdoTableTest extends TestCase
 {
@@ -20,23 +20,23 @@ final class PdoTableTest extends TestCase
     public const USER = null;
     public const PASSWORD = null;
 
-    public static PdoRequester $requester;
+    public static Requester    $requester;
     public static SchemaHelper $schema;
     public static CrudHelper $crud;
 
     public static function setUpBeforeClass(): void
     {
         Logger::setDefaultLogger(LogLevel::INFO, Globals::VAR_DIR . '/test-logs/');
-        $pdoHandler = new PdoHandler(self::DSN, self::USER, self::PASSWORD);
-        self::$requester = new PdoRequester($pdoHandler);
+        $pdoHandler = new Handler(self::DSN, self::USER, self::PASSWORD);
+        self::$requester = new Requester($pdoHandler);
         self::$schema = new SchemaHelper(self::$requester, new Sqlite(), TestTable::class);
         self::$crud = new CrudHelper(TestTable::class, self::$requester);
     }
 
-    public function testConnect(): PdoRequester
+    public function testConnect(): Requester
     {
-        $this->assertInstanceOf(PdoRequester::class, self::$requester);
-        $this->assertInstanceOf(PdoHandler::class, self::$requester->getPdoHandler());
+        $this->assertInstanceOf(Requester::class, self::$requester);
+        $this->assertInstanceOf(Handler::class, self::$requester->getPdoHandler());
         $this->assertInstanceOf(PDO::class, self::$requester->getPdoHandler()->getPdo());
 
         return self::$requester;
@@ -59,7 +59,7 @@ final class PdoTableTest extends TestCase
     {
         $result = self::$crud->createOne($table = new TestTable($id, $data));
 
-        $this->assertInstanceOf(PdoRowInterface::class, $table);
+        $this->assertInstanceOf(RowInterface::class, $table);
         $this->assertSame($id, (int)$result);
     }
 

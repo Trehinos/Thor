@@ -17,7 +17,7 @@ use JetBrains\PhpStorm\Pure;
  * @author    Trehinos
  * @license   MIT
  */
-class PdoRowException extends RuntimeException
+class RowException extends RuntimeException
 {
 
     /**

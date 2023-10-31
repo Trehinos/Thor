@@ -10,7 +10,7 @@ use Thor\Cli\Command\Argument;
 use Thor\Process\KernelInterface;
 use Thor\Cli\Command\CommandError;
 use Thor\Configuration\Configuration;
-use Thor\Database\PdoExtension\PdoHandler;
+use Thor\Database\PdoExtension\Handler;
 use Thor\Framework\Factories\Configurations;
 use Thor\Database\PdoExtension\PdoCollection;
 
@@ -170,7 +170,7 @@ class CliKernel implements KernelInterface
         return $kernel;
     }
 
-    public function getHandler(string $name): ?PdoHandler
+    public function getHandler(string $name): ?Handler
     {
         return $this->pdoCollection->get($name);
     }

@@ -6,7 +6,7 @@ use Exception;
 use Thor\Debug\Logger;
 use Thor\Cli\Command\Command;
 use Thor\Cli\Console\{Mode, Color};
-use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoExtension\Requester;
 use Thor\Framework\{Security\DbUser, Managers\UserManager};
 use Thor\Database\PdoTable\{CrudHelper, Driver\MySql, SchemaHelper, Driver\Sqlite};
 
@@ -24,7 +24,7 @@ final class Setup extends Command
     public function execute(): void
     {
         $databaseName = $this->get('database') ?? 'default';
-        $requester = new PdoRequester($handler = $this->kernel->getHandler($databaseName));
+        $requester = new Requester($handler = $this->kernel->getHandler($databaseName));
 
         $driver = match ($driverName = $handler->getDriverName()) {
             'sqlite' => new Sqlite(),

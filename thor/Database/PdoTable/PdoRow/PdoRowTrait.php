@@ -19,7 +19,7 @@ use Thor\Database\PdoTable\PdoRow\Attributes\Column;
  * @author    Trehinos
  * @copyright Author
  * @license   MIT
- * @implements PdoRowInterface
+ * @implements RowInterface
  */
 trait PdoRowTrait
 {
@@ -54,7 +54,7 @@ trait PdoRowTrait
     #[ArrayShape(['table' => Table::class, 'columns' => 'array', 'indexes' => 'array', 'foreign_keys' => 'array'])]
     public static function getTableAttributes(): array
     {
-        return static::$tablesAttributes[static::class] ??= PdoAttributesReader::pdoTableInformation(static::class);
+        return static::$tablesAttributes[static::class] ??= AttributesReader::pdoTableInformation(static::class);
     }
 
     /**

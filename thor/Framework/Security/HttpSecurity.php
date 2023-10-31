@@ -2,7 +2,7 @@
 
 namespace Thor\Framework\Security;
 
-use Thor\Database\{PdoTable\CrudHelper, PdoExtension\PdoRequester};
+use Thor\Database\{PdoTable\CrudHelper, PdoExtension\Requester};
 use Thor\Security\{Security, ProtectWithFirewalls, Authentication\SessionAuthenticator};
 
 /**
@@ -18,13 +18,13 @@ class HttpSecurity extends Security
     use ProtectWithFirewalls;
 
     /**
-     * @param PdoRequester $requester
+     * @param Requester $requester
      * @param array        $firewalls
      * @param class-string $className
      * @param string       $usernameField
      */
     public function __construct(
-        PdoRequester $requester,
+        Requester $requester,
         array $firewalls = [],
         string $className = DbUser::class,
         string $usernameField = 'username'

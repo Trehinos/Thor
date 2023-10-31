@@ -11,23 +11,23 @@ namespace Thor\Database\PdoTable;
 use Exception;
 use TypeError;
 use JetBrains\PhpStorm\Pure;
-use Thor\Database\PdoExtension\PdoRequester;
-use Thor\Database\PdoExtension\PdoArrayCrud;
-use Thor\Database\PdoTable\PdoRow\AbstractPdoRow;
-use Thor\Database\PdoTable\PdoRow\PdoRowException;
-use Thor\Database\PdoTable\PdoRow\PdoRowInterface;
+use Thor\Database\PdoExtension\Requester;
+use Thor\Database\PdoExtension\ArrayCrud;
+use Thor\Database\PdoTable\PdoRow\AbstractRow;
+use Thor\Database\PdoTable\PdoRow\RowException;
+use Thor\Database\PdoTable\PdoRow\RowInterface;
 
 /**
  * Class CrudHelper : SQL CRUD operation requester for PdoRows.
  *
- * @template T of PdoRowInterface
+ * @template T of RowInterface
  * @package  Thor\Database\PdoTable
  */
 final class CrudHelper implements CrudInterface
 {
 
-    private PdoArrayCrud $arrayCrud;
-    private array $primary;
+    private ArrayCrud $arrayCrud;
+    private array     $primary;
 
     /**
      * CrudHelper constructor.
@@ -37,16 +37,16 @@ final class CrudHelper implements CrudInterface
      */
     public function __construct(
         private readonly string $className,
-        PdoRequester $requester,
+        Requester $requester,
         array $insertExcludedColumns = [],
         array $updateExcludedColumns = []
     ) {
-        if (!class_exists($this->className) || !in_array(PdoRowInterface::class, class_implements($this->className))) {
+        if (!class_exists($this->className) || !in_array(RowInterface::class, class_implements($this->className))) {
             throw new TypeError("{$this->className} class not found or not implementing PdoRowInterface...");
         }
         $tableName = ($this->className)::getPdoTable()->getTableName();
         $this->primary = ($this->className)::getPrimaryKeys();
-        $this->arrayCrud = new PdoArrayCrud(
+        $this->arrayCrud = new ArrayCrud(
             $tableName,
             $this->primary,
             $requester,
@@ -55,7 +55,7 @@ final class CrudHelper implements CrudInterface
         );
     }
 
-    public function getRequester(): PdoRequester
+    public function getRequester(): Requester
     {
         return $this->arrayCrud->getRequester();
     }
@@ -85,7 +85,7 @@ final class CrudHelper implements CrudInterface
     /**
      * Create one row in DB.
      *
-     * @param PdoRowInterface|T $row
+     * @param RowInterface|T $row
      *
      * @return string primary string/key
      *
@@ -94,12 +94,12 @@ final class CrudHelper implements CrudInterface
     public function createOne(object $row): string
     {
         if (!empty($row->getFormerPrimary())) {
-            throw new PdoRowException(
+            throw new RowException(
                 "PdoRow with primary string '{$row->getPrimaryString()}' cannot be inserted as it has been loaded from DB."
             );
         }
         $primaryString = $this->arrayCrud->createOne($row->toPdoArray());
-        if ($row instanceof AbstractPdoRow) {
+        if ($row instanceof AbstractRow) {
             return $row->getPublicId();
         }
         return $primaryString;
@@ -116,7 +116,7 @@ final class CrudHelper implements CrudInterface
      */
     public function createMultiple(array $rows): bool
     {
-        return $this->arrayCrud->createMultiple(array_map(fn(PdoRowInterface $row) => $row->toPdoArray(), $rows));
+        return $this->arrayCrud->createMultiple(array_map(fn(RowInterface $row) => $row->toPdoArray(), $rows));
     }
 
     /**
@@ -222,7 +222,7 @@ final class CrudHelper implements CrudInterface
         array $row,
         bool $fromDb = false,
         mixed ...$constructorArguments
-    ): PdoRowInterface {
+    ): RowInterface {
         $rowObj = new $className(...$constructorArguments);
         $rowObj->fromPdoArray($row, $fromDb);
         return $rowObj;

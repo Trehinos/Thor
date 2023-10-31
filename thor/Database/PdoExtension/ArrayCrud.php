@@ -10,19 +10,19 @@ use Thor\Database\PdoTable\Criteria;
  *
  * @package Thor\Database\Sql
  */
-final class PdoArrayCrud
+final class ArrayCrud
 {
 
     public function __construct(
         private string $tableName,
         private array $primary,
-        private PdoRequester $requester,
+        private Requester $requester,
         private array $insertExcludedColumns = [],
         private array $updateExcludedColumns = []
     ) {
     }
 
-    public function getRequester(): PdoRequester
+    public function getRequester(): Requester
     {
         return $this->requester;
     }
@@ -246,6 +246,14 @@ final class PdoArrayCrud
         return $this->requester->execute(
             "DELETE FROM {$this->table()} " . Criteria::getWhere($criteria),
             $criteria->getParams()
+        );
+    }
+
+    public static function toAssociativeArray(array $data, string $keyColumn, string $valueColumn): array
+    {
+        return array_combine(
+            array_map(fn (array $row) => $row[$keyColumn], $data),
+            array_map(fn (array $row) => $row[$valueColumn], $data),
         );
     }
 

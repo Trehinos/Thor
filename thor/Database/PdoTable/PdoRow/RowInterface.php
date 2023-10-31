@@ -12,8 +12,8 @@ use Thor\Database\PdoTable\PdoRow\Attributes\Table;
  * Use PdoRowTrait, AbstractPdoRow or BasePdoRow to implement easily all methods and use with PdoTable\Attributes.
  *
  * @see              PdoRowTrait
- * @see              AbstractPdoRow
- * @see              BasePdoRow
+ * @see              AbstractRow
+ * @see              Row
  * @see              CrudHelper
  * @see              SchemaHelper
  *
@@ -21,7 +21,7 @@ use Thor\Database\PdoTable\PdoRow\Attributes\Table;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-interface PdoRowInterface
+interface RowInterface
 {
 
     /**

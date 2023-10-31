@@ -8,7 +8,7 @@ use Thor\Database\PdoTable\HasPublicId;
 use Thor\Database\PdoTable\HasPublicIdTrait;
 use Thor\Database\PdoTable\PdoRow\PdoRowTrait;
 use Thor\Database\PdoTable\PdoRow\Attributes\{Column};
-use Thor\Database\PdoTable\PdoRow\PdoRowInterface;
+use Thor\Database\PdoTable\PdoRow\RowInterface;
 use Thor\Database\PdoTable\PdoRow\Attributes\Index;
 use Thor\Database\PdoTable\PdoRow\Attributes\Table;
 use Thor\Database\PdoTable\TableType\{ArrayType, StringType, IntegerType};
@@ -27,7 +27,7 @@ use Thor\Database\PdoTable\TableType\{ArrayType, StringType, IntegerType};
 #[Column('permissions', new ArrayType(4096), false)]
 #[Column('parameters', new ArrayType(4096), false)]
 #[Index(['username'], true)]
-class DbUser extends BaseUser implements PdoRowInterface, HasPublicId
+class DbUser extends BaseUser implements RowInterface, HasPublicId
 {
 
     

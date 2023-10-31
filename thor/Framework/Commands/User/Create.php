@@ -7,7 +7,7 @@ use Thor\Cli\Command\Command;
 use Thor\Framework\Security\DbUser;
 use Thor\Database\PdoTable\CrudHelper;
 use Thor\Framework\Managers\UserManager;
-use Thor\Database\PdoExtension\PdoRequester;
+use Thor\Database\PdoExtension\Requester;
 use Thor\Database\PdoExtension\PdoCollection;
 use Thor\Framework\Configurations\DatabasesConfiguration;
 
@@ -24,7 +24,7 @@ final class Create extends Command
         $manager = new UserManager(
             new CrudHelper(
                 DbUser::class,
-                new PdoRequester(PdoCollection::createFromConfiguration(DatabasesConfiguration::get())->get())
+                new Requester(PdoCollection::createFromConfiguration(DatabasesConfiguration::get())->get())
             )
         );
 

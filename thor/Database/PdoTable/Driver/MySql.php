@@ -5,7 +5,7 @@ namespace Thor\Database\PdoTable\Driver;
 use ReflectionException;
 use Thor\Database\PdoTable\PdoRow\Attributes\Index;
 use Thor\Database\PdoTable\PdoRow\Attributes\Table;
-use Thor\Database\PdoTable\PdoRow\PdoAttributesReader;
+use Thor\Database\PdoTable\PdoRow\AttributesReader;
 use Thor\Database\PdoTable\PdoRow\Attributes\Column;
 
 /**
@@ -25,7 +25,7 @@ class MySql implements DriverInterface
      */
     public function createTable(string $className): string
     {
-        $attrs = new PdoAttributesReader($className);
+        $attrs = new AttributesReader($className);
         $separator = ",\n    ";
         $tableName = $attrs->getAttributes()['table']->getTableName();
         $autoKey = $attrs->getAttributes()['table']->getAutoColumnName();

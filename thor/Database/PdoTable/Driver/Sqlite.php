@@ -4,7 +4,7 @@ namespace Thor\Database\PdoTable\Driver;
 
 use Thor\Database\PdoTable\PdoRow\Attributes\Index;
 use Thor\Database\PdoTable\PdoRow\Attributes\Table;
-use Thor\Database\PdoTable\PdoRow\PdoAttributesReader;
+use Thor\Database\PdoTable\PdoRow\AttributesReader;
 use Thor\Database\PdoTable\PdoRow\Attributes\Column;
 
 /**
@@ -27,7 +27,7 @@ class Sqlite implements DriverInterface
      */
     public function createTable(string $className): string
     {
-        $attrs = new PdoAttributesReader($className);
+        $attrs = new AttributesReader($className);
         $separator = ",\n    ";
         $tableName = $attrs->getAttributes()['table']->getTableName();
         $autoKey = $attrs->getAttributes()['table']->getAutoColumnName();
@@ -97,7 +97,7 @@ class Sqlite implements DriverInterface
      */
     public function createIndexes(string $className): array
     {
-        $attrs = new PdoAttributesReader($className);
+        $attrs = new AttributesReader($className);
         $this->tableName = $attrs->getAttributes()['table']->getTableName();
         return array_map(
             fn(Index $index) => $this->addIndex($index),

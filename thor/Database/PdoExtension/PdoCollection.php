@@ -9,7 +9,7 @@ use Thor\Framework\Configurations\DatabasesConfiguration;
 /**
  * Holds a collection of PdoHandlers.
  *
- * @see PdoHandler
+ * @see Handler
  *
  * @package Thor/Database/PdoExtension
  * @copyright (2021) Sébastien Geldreich
@@ -28,7 +28,7 @@ final class PdoCollection extends Collection
      *
      * Fluent method.
      */
-    public function add(string $connectionName, PdoHandler $handler): self
+    public function add(string $connectionName, Handler $handler): self
     {
         $this[$connectionName] = $handler;
         return $this;
@@ -39,7 +39,7 @@ final class PdoCollection extends Collection
      *
      * If the PdoHandler is not found in the collection, this method returns null.
      */
-    public function get(string $connectionName = 'default'): ?PdoHandler
+    public function get(string $connectionName = 'default'): ?Handler
     {
         return $this[$connectionName] ?? null;
     }
@@ -47,7 +47,7 @@ final class PdoCollection extends Collection
     /**
      * Gets all PdoHandlers in this collection.
      *
-     * @return PdoHandler[]
+     * @return Handler[]
      */
     public function all(): array
     {
@@ -64,7 +64,7 @@ final class PdoCollection extends Collection
         foreach ($db_config as $connectionName => $config) {
             $pdos->add(
                 $connectionName,
-                new PdoHandler(
+                new Handler(
                     $config['dsn'] ?? '',
                     $config['user'] ?? null,
                     $config['password'] ?? null,

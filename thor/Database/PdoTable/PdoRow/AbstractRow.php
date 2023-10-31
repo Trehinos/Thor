@@ -4,19 +4,19 @@ namespace Thor\Database\PdoTable\PdoRow;
 
 use Thor\Database\PdoTable\HasPublicId;
 use Thor\Database\PdoTable\HasPublicIdTrait;
-use Thor\Database\PdoTable\PdoRow\BasePdoRow;
+use Thor\Database\PdoTable\PdoRow\Row;
 
 /**
  * Merges BasePdoRow and HasPublicId.
  *
- * @see BasePdoRow
+ * @see Row
  * @see HasPublicIdTrait
  *
  * @package Thor/Database/PdoTable
  * @copyright (2021) Sébastien Geldreich
  * @license MIT
  */
-abstract class AbstractPdoRow extends BasePdoRow implements HasPublicId
+abstract class AbstractRow extends Row implements HasPublicId
 {
 
     use HasPublicIdTrait;

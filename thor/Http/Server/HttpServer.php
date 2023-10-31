@@ -8,7 +8,7 @@ use Thor\Security\SecurityInterface;
 use Thor\Configuration\Configuration;
 use JetBrains\PhpStorm\ExpectedValues;
 use Thor\Http\Response\ResponseFactory;
-use Thor\Database\PdoExtension\{PdoHandler, PdoRequester, PdoCollection};
+use Thor\Database\PdoExtension\{Handler, Requester, PdoCollection};
 use Thor\Http\{Uri,
     UriInterface,
     Routing\Route,
@@ -121,11 +121,11 @@ class HttpServer implements RequestHandlerInterface
      *
      * @param string $name
      *
-     * @return PdoRequester|null
+     * @return Requester|null
      */
-    public function getRequester(string $name = 'default'): ?PdoRequester
+    public function getRequester(string $name = 'default'): ?Requester
     {
-        return null !== ($handler = $this->getHandler($name)) ? new PdoRequester($handler) : null;
+        return null !== ($handler = $this->getHandler($name)) ? new Requester($handler) : null;
     }
 
     /**
@@ -135,9 +135,9 @@ class HttpServer implements RequestHandlerInterface
      *
      * @param string $name
      *
-     * @return PdoRequester|null
+     * @return Requester|null
      */
-    public function getHandler(string $name = 'default'): ?PdoHandler
+    public function getHandler(string $name = 'default'): ?Handler
     {
         return $this->pdoCollection->get($name);
     }

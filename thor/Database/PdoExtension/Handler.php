@@ -16,7 +16,7 @@ use PDOException;
  * @copyright (2021) Sébastien Geldreich
  * @license          MIT
  */
-final class PdoHandler
+final class Handler
 {
 
     private ?PDO $pdo = null;
