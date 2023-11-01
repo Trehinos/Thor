@@ -68,7 +68,8 @@ final class Globals
      *
      * ### Example :
      * ```php
-     * Globals::path('{VAR}exports/export.xlsx'); // === realpath(Globals::VAR_DIR) . 'exports/export.xlsx'
+     * // realpath(Globals::VAR_DIR) . '/exports/export.xlsx'
+     * Globals::path('{VAR}exports/export.xlsx');
      * ```
      *
      * @param string $pathString

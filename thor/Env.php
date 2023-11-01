@@ -12,7 +12,7 @@ namespace Thor;
 enum Env: string
 {
     /**
-     * Developpement env. Everything is logged, all errors are dumped.
+     * Development env. Everything is logged, all errors are dumped.
      */
     case DEV = 'DEV';
 

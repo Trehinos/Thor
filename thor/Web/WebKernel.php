@@ -3,10 +3,9 @@
 namespace Thor\Web;
 
 use Thor\Debug\Logger;
+use Thor\Http\HttpKernel;
 use Thor\Configuration\Configuration;
 use Thor\Framework\Factories\{Configurations, WebServerFactory};
-use Thor\Http\{HttpKernel, Response\ResponseInterface, Request\ServerRequestInterface};
-
 /**
  * WebKernel of Thor. It is by default instantiated with the `index.php` entry point.
  *

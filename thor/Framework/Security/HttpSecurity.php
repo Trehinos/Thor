@@ -3,7 +3,7 @@
 namespace Thor\Framework\Security;
 
 use Thor\Database\{PdoTable\CrudHelper, PdoExtension\Requester};
-use Thor\Security\{Security, ProtectWithFirewalls, Authentication\SessionAuthenticator};
+use Thor\Security\{Security, Authentication\SessionAuthenticator};
 
 /**
  * Default HTTP security context.
@@ -14,8 +14,6 @@ use Thor\Security\{Security, ProtectWithFirewalls, Authentication\SessionAuthent
  */
 class HttpSecurity extends Security
 {
-
-    use ProtectWithFirewalls;
 
     /**
      * @param Requester $requester

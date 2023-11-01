@@ -42,11 +42,6 @@ interface SecurityInterface extends MiddlewareInterface
     public function getProvider(): ProviderInterface;
 
     /**
-     * Protect the server from a Request.
-     */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface;
-
-    /**
      * Gets the current authenticated identity.
      *
      * @return IdentityInterface|null

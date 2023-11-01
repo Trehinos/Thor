@@ -2,6 +2,9 @@
 
 namespace Thor\Security;
 
+use Thor\Http\Request\ServerRequestInterface;
+use Thor\Http\Response\ResponseInterface;
+use Thor\Http\Server\RequestHandlerInterface;
 use Thor\Security\Identity\IdentityInterface;
 use Thor\Security\Authentication\AuthenticatorInterface;
 use Thor\Security\Identity\ProviderInterface;
@@ -70,6 +73,17 @@ abstract class Security implements SecurityInterface
     public function getCurrentIdentity(): ?IdentityInterface
     {
         return $this->getProvider()->getIdentity($this->getAuthenticator()->current());
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        foreach ($this->getFirewalls() as $firewall) {
+            $firewall->userIsAuthenticated = $this->getAuthenticator()->isAuthenticated();
+            if ($firewall->matches($request)) {
+                return $firewall->process($request, $handler);
+            }
+        }
+        return $handler->handle($request);
     }
 
 }
