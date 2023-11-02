@@ -14,15 +14,15 @@ class Dispatcher
         $this->events = [];
     }
 
-    public function on(string $event, callable $callback, ?string $id = null): string
+    public function on(string $event, callable $listener, ?string $listenerId = null): string
     {
         if (!array_key_exists($event, $this->events)) {
             $this->events[$event] = [];
         }
-        $id ??= Guid::hex(4);
-        $this->events[$event][$id] = $callback;
+        $listenerId ??= Guid::hex(4);
+        $this->events[$event][$listenerId] = $listener;
 
-        return $id;
+        return $listenerId;
     }
 
     public function off(string $event, ?string $id = null): void
@@ -37,8 +37,8 @@ class Dispatcher
 
     public function trigger(string $event, mixed ...$data): void
     {
-        foreach (($this->events[$event] ?? []) as $callback) {
-            $callback(...$data);
+        foreach (($this->events[$event] ?? []) as $listener) {
+            $listener(...$data);
         }
     }
 
